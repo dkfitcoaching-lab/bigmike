@@ -1,10 +1,13 @@
 {
   "name": "Big Mike Ely Coaching Lab",
   "short_name": "Coaching Lab",
+  "description": "IFBB Pro coaching management — clients, sessions, nutrition & revenue tracking.",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#020202",
   "theme_color": "#08080a",
+  "orientation": "portrait",
   "icons": [
     {
       "src": "icons/icon-512.png",

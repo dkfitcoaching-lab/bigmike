@@ -4,11 +4,18 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
 <title>Big Mike Ely Coaching Lab</title>
+<meta name="description" content="Big Mike Ely's Coaching Lab — IFBB Pro personal training management app. Track clients, sessions, nutrition, and revenue."/>
+<link rel="canonical" href="https://www.bigmikeely.com/"/>
+<meta property="og:title" content="Big Mike Ely Coaching Lab"/>
+<meta property="og:description" content="IFBB Pro coaching management — clients, sessions, nutrition & revenue tracking."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://www.bigmikeely.com/"/>
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="Big Mike Ely Coaching Lab"/>
 <meta name="theme-color" content="#08080a"/>
+<link rel="manifest" href="manifest.json"/>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -162,6 +169,9 @@ button{font-family:var(--body);cursor:pointer;border:none;outline:none;transitio
 <div class="qnote-fab" id="qnoteFab" style="display:none">
   <button onclick="openQNote()" style="width:52px;height:52px;border-radius:50%;background:var(--goldGrad);background-size:200% 100%;color:#1a1408;font-size:22px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(200,160,40,.35);border:none;cursor:pointer;animation:shimmer 3s ease-in-out infinite" title="Quick Note">&#9998;</button>
 </div>
+<div id="swFab" style="display:none;position:fixed;bottom:80px;left:16px;z-index:9">
+  <button onclick="toggleStopwatch()" style="width:46px;height:46px;border-radius:50%;background:rgba(200,160,40,.08);border:1.5px solid rgba(212,168,48,.4);color:var(--acc);font-size:18px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.4);cursor:pointer" title="Stopwatch">&#9201;</button>
+</div>
 <script>
 var VERSION="4.0";
 var DN=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
@@ -236,6 +246,8 @@ function render(){
   var ct=el("ct");ct.style.animation="none";ct.offsetHeight;ct.style.animation="fadeIn .3s ease";
   var renderers={home:renderHome,clients:renderClients,sessions:renderSessions,schedule:renderSchedule,nutrition:renderNutrition,settings:renderSettings};
   ct.innerHTML=(renderers[currentView.tab]||renderHome)();
+  if(el("qnoteFab"))el("qnoteFab").style.display=(currentView.tab==="home")?"":"none";
+  if(el("swFab"))el("swFab").style.display=(currentView.tab==="sessions")?"flex":"none";
   timerUpdateUI();
 }
 
@@ -260,7 +272,7 @@ function renderHome(){
     +'</div>'
     +'<div style="margin-top:16px;font-size:32px;font-weight:800;color:var(--wh);line-height:1.05;font-family:var(--display)">'+gr+',</div>'
     +'<div style="font-size:32px;font-weight:800;line-height:1.15;font-family:var(--display);animation:glowPulse 6s ease-in-out infinite"><span style="background:linear-gradient(135deg,#8B6914,#C49628,#E8C050,#C49628,#8B6914);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:goldShimmer 4s ease-in-out infinite;filter:drop-shadow(0 0 8px rgba(200,160,40,.2))">Coach</span></div></div></div>';
-  var projSched=schedule.filter(function(s){var d=new Date(s.date+"T12:00:00");return d.getMonth()===mo&&d.getFullYear()===yr&&s.status!==""&&s.status!=="cancelled"&&s.status!=="complete";});
+  var projSched=schedule.filter(function(s){var d=new Date(s.date+"T12:00:00");return d.getMonth()===mo&&d.getFullYear()===yr&&s.status!=="cancelled"&&s.status!=="complete";});
   var projected=projSched.reduce(function(a,s){return a+parseFloat(s.rate||70);},0);
   html+='<div style="display:flex;align-items:baseline;gap:0;margin-bottom:6px;margin-top:20px"><div class="sl" style="margin:0">'+t.toLocaleDateString("en-US",{month:"long"}).toUpperCase()+' EARNINGS</div>'+deltaHTML+'</div>';
   html+='<div class="g4" style="margin-top:4px;margin-bottom:'+(projected>0?8:20)+'px"><div class="stat"><b style="color:var(--acc)">'+moS.length+'</b><small>SESSIONS</small></div><div class="stat"><b style="color:var(--ow)">$'+gross+'</b><small>GROSS</small></div><div class="stat"><b style="color:var(--dm)"><span style="font-size:50%;vertical-align:super;opacity:.5;margin-right:1px">-</span>$'+cut+'</b><small>GYM '+Math.round(getGymCut()*100)+'%</small></div><div class="stat"><b style="color:var(--accVib)">$'+take+'</b><small>YOURS</small></div></div>';
@@ -301,9 +313,10 @@ function renderEarningsChart(){
   var html='<div style="display:flex;justify-content:space-between;align-items:center"><div class="sl" style="margin:0">REVENUE</div><div style="display:flex;gap:3px">';
   [3,6,12].forEach(function(r){html+='<div class="chip'+(range===r?" on":"")+'" onclick="LS.set(\'chartRange\','+r+');render()" style="padding:3px 8px;font-size:8px">'+r+'MO</div>';});
   html+='</div></div><div class="cd" style="padding:16px 12px 10px"><div class="chart-bar-wrap" style="align-items:flex-end">';
-  for(var i=0;i<months.length;i++){var pct=maxVal>0?Math.max(2,Math.round((vals[i]/maxVal)*100)):0;var isCurrent=i===months.length-1;if(vals[i]===0){html+='<div style="flex:1;height:2px;border-radius:2px;background:var(--borderS);align-self:flex-end"></div>';}else{html+='<div class="chart-bar" style="height:'+pct+'%;background:'+(isCurrent?"linear-gradient(180deg,var(--accBright),var(--accDeep))":"linear-gradient(180deg,var(--acc),var(--accDeep))")+'"><div class="chart-tooltip">$'+vals[i]+'</div></div>';}
-    html+='<div style="font-size:8px;color:'+(vals[i]>0?"var(--acc)":"var(--borderS)")+';font-family:var(--mono);text-align:center;margin-top:2px;font-weight:'+(isCurrent?"700":"400")+'">$'+vals[i]+'</div>';}
+  for(var i=0;i<months.length;i++){var pct=maxVal>0?Math.max(2,Math.round((vals[i]/maxVal)*100)):0;var isCurrent=i===months.length-1;if(vals[i]===0){html+='<div style="flex:1;height:2px;border-radius:2px;background:var(--borderS);align-self:flex-end"></div>';}else{html+='<div class="chart-bar" style="height:'+pct+'%;background:'+(isCurrent?"linear-gradient(180deg,var(--accBright),var(--accDeep))":"linear-gradient(180deg,var(--acc),var(--accDeep))")+'"><div class="chart-tooltip">$'+vals[i]+'</div></div>';}}
   html+='</div><div style="display:flex;gap:4px;margin-top:6px">';
+  for(var i=0;i<months.length;i++)html+='<div style="flex:1;text-align:center;font-size:8px;color:'+(vals[i]>0?"var(--acc)":"var(--borderS)")+';font-family:var(--mono);font-weight:'+(i===months.length-1?"700":"400")+'">$'+vals[i]+'</div>';
+  html+='</div><div style="display:flex;gap:4px;margin-top:2px">';
   for(var i=0;i<months.length;i++)html+='<div style="flex:1;text-align:center;font-size:8px;color:var(--dm);font-family:var(--mono)">'+months[i].label+'</div>';
   html+='</div></div>';return html;
 }
@@ -430,7 +443,7 @@ function renderClientOverview(c,idx,cs,rev,info){
   html+=renderClientPRs(c.id);
   html+=renderClientProgression(c.id);
   if(cs.length){html+='<div class="sl" style="margin-top:20px">SESSION HISTORY</div>';var rec=cs.slice().reverse().slice(0,10);for(var i=0;i<rec.length;i++){var x=rec[i];var sc2=x.status==="cancelled"?' <span class="status-chip status-cancelled">NO CHARGE</span>':x.status==="latecancel"?' <span class="status-chip status-latecancel">LATE CANCEL</span>':x.status==="noshow"?' <span class="status-chip status-noshow">NO-SHOW</span>':"";html+='<div class="cd cd-link" style="display:flex;justify-content:space-between;align-items:center" onclick="navToSession(\''+x.id+'\')"><div><div style="font-size:12px;font-weight:500;color:var(--wh)">'+x.type+sc2+'</div><div style="font-size:10px;color:var(--dm);font-family:var(--mono)">'+fmtDate(x.date)+' \u00b7 '+(x.duration||60)+'min</div></div><div style="font-size:10px;color:var(--ow);font-family:var(--mono)">$'+x.rate+'</div></div>';}}
-    html+=renderSupplements(idx);
+    html+=renderClientSupplements(c,idx);
   html+='<div class="sl" style="margin-top:18px">COACH NOTES</div><div class="cd" style="padding:12px"><textarea id="clientNotes" rows="3" style="width:100%;box-sizing:border-box;font-size:12px;resize:vertical" placeholder="Quick notes..." onchange="clients['+idx+'].notes=this.value;save();">'+(c.notes?esc(c.notes):'')+'</textarea></div>';
   if(!c.weightLog)c.weightLog=[];
   var wh2='<div class="sl" style="margin-top:18px">WEIGHT LOG</div><div class="cd" style="padding:12px"><div style="display:flex;gap:6px;margin-bottom:10px"><input id="wLogVal" type="number" step="0.1" placeholder="lbs" style="flex:1"><button class="btn2" onclick="addWeight('+idx+')" style="padding:6px 12px">LOG</button></div>';
@@ -1113,6 +1126,13 @@ function renderSupplements(){
   if(!cl.supplements.length)return html+'<div class="cd" style="padding:20px;text-align:center;color:var(--dm);font-size:11px">No supplements</div>';
   for(var i=0;i<cl.supplements.length;i++){var s=cl.supplements[i];
     html+='<div class="cd" style="display:flex;align-items:center;gap:10px;padding:12px 14px"><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--wh)">'+esc(s.name)+'</div><div style="font-size:10px;color:var(--dm);font-family:var(--mono)">'+esc(s.dose)+' \u00b7 '+esc(s.timing)+'</div></div><span style="font-size:12px;color:var(--danger);cursor:pointer;padding:2px 6px" onclick="rmSupp('+i+')">\u2715</span></div>';}
+  return html;
+}
+function renderClientSupplements(cl,idx){
+  if(!cl.supplements||!cl.supplements.length)return'';
+  var html='<div class="sl" style="margin-top:18px">SUPPLEMENTS</div>';
+  for(var i=0;i<cl.supplements.length;i++){var s=cl.supplements[i];
+    html+='<div class="cd" style="display:flex;align-items:center;gap:10px;padding:12px 14px"><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--wh)">'+esc(s.name)+'</div><div style="font-size:10px;color:var(--dm);font-family:var(--mono)">'+esc(s.dose)+' \u00b7 '+esc(s.timing)+'</div></div></div>';}
   return html;
 }
 function addSupp(){var cl=clientById(_nutClientId);if(!cl)return;var n=prompt("Supplement name:");if(!n)return;var d=prompt("Dose (e.g. 5g, 1 cap):")||"";var t=prompt("Timing (e.g. morning, pre-workout):")||"";if(!cl.supplements)cl.supplements=[];cl.supplements.push({name:n,dose:d,timing:t});save();render();}
