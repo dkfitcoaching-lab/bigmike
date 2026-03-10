@@ -10,6 +10,7 @@
 <meta name="apple-mobile-web-app-title" content="Big Mike Ely Coaching Lab"/>
 <meta name="theme-color" content="#08080a"/>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
 :root{
   --bg:#020202;--bg2:#050505;--card:#0a0a0c;--cardH:#111114;
@@ -162,6 +163,9 @@ button{font-family:var(--body);cursor:pointer;border:none;outline:none;transitio
 <div class="qnote-fab" id="qnoteFab" style="display:none">
   <button onclick="openQNote()" style="width:52px;height:52px;border-radius:50%;background:var(--goldGrad);background-size:200% 100%;color:#1a1408;font-size:22px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(200,160,40,.35);border:none;cursor:pointer;animation:shimmer 3s ease-in-out infinite" title="Quick Note">&#9998;</button>
 </div>
+<div id="swFab" style="display:none;position:fixed;bottom:80px;right:76px;z-index:9">
+  <button onclick="toggleStopwatch()" style="width:46px;height:46px;border-radius:50%;background:rgba(200,160,40,.08);border:1.5px solid rgba(212,168,48,.4);color:var(--acc);font-size:18px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.4);cursor:pointer" title="Stopwatch">&#9201;</button>
+</div>
 <script>
 var VERSION="4.0";
 var DN=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
@@ -201,8 +205,7 @@ var _timerAudioCtx=null;
 function getAudioCtx(){if(!_timerAudioCtx){try{_timerAudioCtx=new(window.AudioContext||window.webkitAudioContext)();}catch(e){}}return _timerAudioCtx;}
 function playTone(freq,dur,vol){var ctx=getAudioCtx();if(!ctx||!LS.get("timerSound",true))return;try{var o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.type="sine";o.frequency.setValueAtTime(freq,ctx.currentTime);g.gain.setValueAtTime(vol||0.18,ctx.currentTime);g.gain.exponentialRampToValueAtTime(0.0001,ctx.currentTime+(dur||0.18));o.start(ctx.currentTime);o.stop(ctx.currentTime+(dur||0.18));}catch(e){}}
 function timerStart(){if(timer.running)return;if(timer.seconds<=0)timer.seconds=timer.preset;timer.running=true;timer.interval=setInterval(function(){timer.seconds--;if(timer.seconds===10){playTone(880,0.12,0.12);if(navigator.vibrate)navigator.vibrate(80);}else if(timer.seconds===5){playTone(1046,0.12,0.15);if(navigator.vibrate)navigator.vibrate(100);}else if(timer.seconds===3||timer.seconds===2||timer.seconds===1){playTone(1318,0.1,0.18);if(navigator.vibrate)navigator.vibrate(60);}timerUpdateUI();
-if(el("qnoteFab"))el("qnoteFab").style.display=(currentView.tab==="home")?"":"none";
-if(el("swFab"))el("swFab").style.display=(currentView.tab==="log")?"flex":"none";if(timer.seconds<=0){timerStop();playTone(523,0.08,0.22);setTimeout(function(){playTone(659,0.08,0.22);},120);setTimeout(function(){playTone(784,0.25,0.28);},240);if(navigator.vibrate)navigator.vibrate([200,100,200]);}},1000);timerUpdateUI();}
+if(timer.seconds<=0){timerStop();playTone(523,0.08,0.22);setTimeout(function(){playTone(659,0.08,0.22);},120);setTimeout(function(){playTone(784,0.25,0.28);},240);if(navigator.vibrate)navigator.vibrate([200,100,200]);}},1000);timerUpdateUI();}
 function timerStop(){clearInterval(timer.interval);timer.running=false;timerUpdateUI();}
 function timerToggle(){if(timer.running)timerStop();else timerStart();}
 function timerReset(){timerStop();timer.seconds=timer.preset;timerUpdateUI();}
@@ -236,6 +239,8 @@ function render(){
   var ct=el("ct");ct.style.animation="none";ct.offsetHeight;ct.style.animation="fadeIn .3s ease";
   var renderers={home:renderHome,clients:renderClients,sessions:renderSessions,schedule:renderSchedule,nutrition:renderNutrition,settings:renderSettings};
   ct.innerHTML=(renderers[currentView.tab]||renderHome)();
+  if(el("qnoteFab"))el("qnoteFab").style.display=(currentView.tab==="home"||currentView.tab==="clients")?"":"none";
+  if(el("swFab"))el("swFab").style.display=(currentView.tab==="sessions"&&currentView.view==="new")?"flex":"none";
   timerUpdateUI();
 }
 
@@ -260,7 +265,7 @@ function renderHome(){
     +'</div>'
     +'<div style="margin-top:16px;font-size:32px;font-weight:800;color:var(--wh);line-height:1.05;font-family:var(--display)">'+gr+',</div>'
     +'<div style="font-size:32px;font-weight:800;line-height:1.15;font-family:var(--display);animation:glowPulse 6s ease-in-out infinite"><span style="background:linear-gradient(135deg,#8B6914,#C49628,#E8C050,#C49628,#8B6914);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:goldShimmer 4s ease-in-out infinite;filter:drop-shadow(0 0 8px rgba(200,160,40,.2))">Coach</span></div></div></div>';
-  var projSched=schedule.filter(function(s){var d=new Date(s.date+"T12:00:00");return d.getMonth()===mo&&d.getFullYear()===yr&&s.status!==""&&s.status!=="cancelled"&&s.status!=="complete";});
+  var projSched=schedule.filter(function(s){var d=new Date(s.date+"T12:00:00");return d.getMonth()===mo&&d.getFullYear()===yr&&s.status!=="cancelled"&&s.status!=="complete";});
   var projected=projSched.reduce(function(a,s){return a+parseFloat(s.rate||70);},0);
   html+='<div style="display:flex;align-items:baseline;gap:0;margin-bottom:6px;margin-top:20px"><div class="sl" style="margin:0">'+t.toLocaleDateString("en-US",{month:"long"}).toUpperCase()+' EARNINGS</div>'+deltaHTML+'</div>';
   html+='<div class="g4" style="margin-top:4px;margin-bottom:'+(projected>0?8:20)+'px"><div class="stat"><b style="color:var(--acc)">'+moS.length+'</b><small>SESSIONS</small></div><div class="stat"><b style="color:var(--ow)">$'+gross+'</b><small>GROSS</small></div><div class="stat"><b style="color:var(--dm)"><span style="font-size:50%;vertical-align:super;opacity:.5;margin-right:1px">-</span>$'+cut+'</b><small>GYM '+Math.round(getGymCut()*100)+'%</small></div><div class="stat"><b style="color:var(--accVib)">$'+take+'</b><small>YOURS</small></div></div>';
@@ -301,8 +306,8 @@ function renderEarningsChart(){
   var html='<div style="display:flex;justify-content:space-between;align-items:center"><div class="sl" style="margin:0">REVENUE</div><div style="display:flex;gap:3px">';
   [3,6,12].forEach(function(r){html+='<div class="chip'+(range===r?" on":"")+'" onclick="LS.set(\'chartRange\','+r+');render()" style="padding:3px 8px;font-size:8px">'+r+'MO</div>';});
   html+='</div></div><div class="cd" style="padding:16px 12px 10px"><div class="chart-bar-wrap" style="align-items:flex-end">';
-  for(var i=0;i<months.length;i++){var pct=maxVal>0?Math.max(2,Math.round((vals[i]/maxVal)*100)):0;var isCurrent=i===months.length-1;if(vals[i]===0){html+='<div style="flex:1;height:2px;border-radius:2px;background:var(--borderS);align-self:flex-end"></div>';}else{html+='<div class="chart-bar" style="height:'+pct+'%;background:'+(isCurrent?"linear-gradient(180deg,var(--accBright),var(--accDeep))":"linear-gradient(180deg,var(--acc),var(--accDeep))")+'"><div class="chart-tooltip">$'+vals[i]+'</div></div>';}
-    html+='<div style="font-size:8px;color:'+(vals[i]>0?"var(--acc)":"var(--borderS)")+';font-family:var(--mono);text-align:center;margin-top:2px;font-weight:'+(isCurrent?"700":"400")+'">$'+vals[i]+'</div>';}
+  for(var i=0;i<months.length;i++){var pct=maxVal>0?Math.max(2,Math.round((vals[i]/maxVal)*100)):0;var isCurrent=i===months.length-1;html+='<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px">';if(vals[i]===0){html+='<div style="width:100%;height:2px;border-radius:2px;background:var(--borderS);margin-top:auto"></div>';}else{html+='<div class="chart-bar" style="width:100%;height:'+pct+'%;background:'+(isCurrent?"linear-gradient(180deg,var(--accBright),var(--accDeep))":"linear-gradient(180deg,var(--acc),var(--accDeep))")+'"><div class="chart-tooltip">$'+vals[i]+'</div></div>';}
+    html+='<div style="font-size:8px;color:'+(vals[i]>0?"var(--acc)":"var(--borderS)")+';font-family:var(--mono);text-align:center;font-weight:'+(isCurrent?"700":"400")+'">$'+vals[i]+'</div></div>';}
   html+='</div><div style="display:flex;gap:4px;margin-top:6px">';
   for(var i=0;i<months.length;i++)html+='<div style="flex:1;text-align:center;font-size:8px;color:var(--dm);font-family:var(--mono)">'+months[i].label+'</div>';
   html+='</div></div>';return html;
@@ -415,6 +420,7 @@ function renderClientDetail(){
   html+=subTab==="progress"?renderClientProgress(c,idx):subTab==="notes"?renderClientNotes(c,idx):renderClientOverview(c,idx,cs,rev,info);
   html+='</div>';
   html+='<div style="display:flex;gap:8px;margin-top:16px"><button class="btn" style="flex:1" onclick="navToLogFromClient(\''+c.id+'\',\''+c.rate+'\',\''+c.type+'\')">LOG SESSION</button><button class="btn2" style="flex:1" onclick="navToScheduleFromClient(\''+c.id+'\')">SCHEDULE</button></div>';
+  if(c.phone)html+='<button class="btn2" style="width:100%;margin-top:8px" onclick="sendQuickSMS(\''+c.id+'\')">SEND SMS \u2192</button>';
   html+='<div style="margin-top:24px;border:1px solid rgba(216,120,120,.2);border-radius:10px;overflow:hidden"><div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display===\'none\'?\'block\':\'none\'" style="cursor:pointer;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;background:rgba(216,120,120,.03)"><span style="font-size:10px;font-weight:700;color:var(--danger);font-family:var(--mono);letter-spacing:.1em">DANGER ZONE</span><span style="font-size:10px;color:var(--dm)">\u25bc</span></div><div style="display:none;padding:16px"><div style="font-size:11px;color:var(--dm);margin-bottom:12px">This cannot be undone. Session history will be preserved.</div><button class="btn-danger" onclick="deleteClient('+idx+')">DELETE CLIENT</button></div></div>';
   return html;
 }
@@ -430,7 +436,7 @@ function renderClientOverview(c,idx,cs,rev,info){
   html+=renderClientPRs(c.id);
   html+=renderClientProgression(c.id);
   if(cs.length){html+='<div class="sl" style="margin-top:20px">SESSION HISTORY</div>';var rec=cs.slice().reverse().slice(0,10);for(var i=0;i<rec.length;i++){var x=rec[i];var sc2=x.status==="cancelled"?' <span class="status-chip status-cancelled">NO CHARGE</span>':x.status==="latecancel"?' <span class="status-chip status-latecancel">LATE CANCEL</span>':x.status==="noshow"?' <span class="status-chip status-noshow">NO-SHOW</span>':"";html+='<div class="cd cd-link" style="display:flex;justify-content:space-between;align-items:center" onclick="navToSession(\''+x.id+'\')"><div><div style="font-size:12px;font-weight:500;color:var(--wh)">'+x.type+sc2+'</div><div style="font-size:10px;color:var(--dm);font-family:var(--mono)">'+fmtDate(x.date)+' \u00b7 '+(x.duration||60)+'min</div></div><div style="font-size:10px;color:var(--ow);font-family:var(--mono)">$'+x.rate+'</div></div>';}}
-    html+=renderSupplements(idx);
+    html+=renderClientSupplements(c,idx);
   html+='<div class="sl" style="margin-top:18px">COACH NOTES</div><div class="cd" style="padding:12px"><textarea id="clientNotes" rows="3" style="width:100%;box-sizing:border-box;font-size:12px;resize:vertical" placeholder="Quick notes..." onchange="clients['+idx+'].notes=this.value;save();">'+(c.notes?esc(c.notes):'')+'</textarea></div>';
   if(!c.weightLog)c.weightLog=[];
   var wh2='<div class="sl" style="margin-top:18px">WEIGHT LOG</div><div class="cd" style="padding:12px"><div style="display:flex;gap:6px;margin-bottom:10px"><input id="wLogVal" type="number" step="0.1" placeholder="lbs" style="flex:1"><button class="btn2" onclick="addWeight('+idx+')" style="padding:6px 12px">LOG</button></div>';
@@ -460,6 +466,8 @@ function renderClientProgress(c,idx){
   html+='</div><div class="sl">HISTORY</div>';
   var rev=meas.slice().reverse();
   for(var i=0;i<rev.length;i++){var m=rev[i];html+='<div class="cd" style="padding:12px 14px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="font-size:11px;font-weight:700;color:var(--wh);font-family:var(--mono)">'+fmtDate(m.date)+'</span><span style="font-size:11px;color:var(--danger);cursor:pointer;padding:2px 6px" onclick="deleteMeasurement('+idx+',\''+m.id+'\')">&#10005;</span></div><div style="display:flex;flex-wrap:wrap;gap:6px">';for(var j=0;j<FIELDS.length;j++){if(!m.fields[j])continue;html+='<div style="padding:4px 8px;background:var(--accS);border:1px solid var(--borderS);border-radius:5px;font-size:10px;font-family:var(--mono);color:var(--ow)"><span style="color:var(--dm)">'+FIELDS[j].split(" ")[0]+'</span> '+m.fields[j]+'</div>';}html+='</div></div>';}
+  html+=renderClientPRs(c.id);
+  html+=renderClientProgression(c.id);
   return html;
 }
 function toggleMeasForm(){var f=el("measForm");if(f)f.style.display=f.style.display==="none"?"block":"none";}
@@ -808,6 +816,14 @@ function renderSettings(){
     +(function(){var nRet=LS.get("notif_retention",true),nSched=LS.get("notif_schedule",true);return '<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(212,168,48,.2)"><div><div style="font-size:13px;font-weight:500;color:var(--wh)">PR Celebrations</div><div style="font-size:10px;color:var(--dm)">Toast when a client hits a new weight record</div></div><div class="chip'+(nPR?" on":"")+'" onclick="toggleNotif(\'notif_pr\',this)" style="min-width:40px;text-align:center">'+(nPR?"ON":"OFF")+'</div></div><div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(212,168,48,.2)"><div><div style="font-size:13px;font-weight:500;color:var(--wh)">Retention Warnings</div><div style="font-size:10px;color:var(--dm)">Flag clients inactive 7+ days</div></div><div class="chip'+(nRet?" on":"")+'" onclick="toggleNotif(\'notif_retention\',this)" style="min-width:40px;text-align:center">'+(nRet?"ON":"OFF")+'</div></div><div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0"><div><div style="font-size:13px;font-weight:500;color:var(--wh)">Schedule Reminders</div><div style="font-size:10px;color:var(--dm)">Show upcoming sessions on home</div></div><div class="chip'+(nSched?" on":"")+'" onclick="toggleNotif(\'notif_schedule\',this)" style="min-width:40px;text-align:center">'+(nSched?"ON":"OFF")+'</div></div>'
     +'<div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(212,168,48,.2)"><div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:12px;font-weight:500;color:var(--wh)">Reminder Lead Time</div><div style="font-size:9px;color:var(--dm)">How early before sessions</div></div><select onchange="LS.set(\'reminderMin\',this.value)" style="font-size:11px;padding:4px 8px;width:auto"><option value="15"'+(LS.get("reminderMin","30")==="15"?" selected":"")+'>15 min</option><option value="30"'+(LS.get("reminderMin","30")==="30"?" selected":"")+'>30 min</option><option value="60"'+(LS.get("reminderMin","30")==="60"?" selected":"")+'>1 hour</option><option value="120"'+(LS.get("reminderMin","30")==="120"?" selected":"")+'>2 hours</option></select></div></div>';}())
     +'</div>'
+    +'<div class="sl" style="margin-top:18px">SMS REMINDERS</div><div class="cd" style="padding:16px">'
+    +'<div style="font-size:11px;color:var(--mu);margin-bottom:14px;line-height:1.6">Send SMS reminders to your phone before sessions. Requires Supabase project + Twilio credentials configured as Edge Function secrets.</div>'
+    +'<div class="field"><span class="lb">SUPABASE PROJECT URL</span><input id="supaUrl" placeholder="https://xxxx.supabase.co" value="'+esc(LS.get("supa_url",""))+'"></div>'
+    +'<div class="field"><span class="lb">SUPABASE ANON KEY</span><input id="supaKey" placeholder="eyJ..." value="'+esc(LS.get("supa_key",""))+'"></div>'
+    +'<div class="field"><span class="lb">COACH PHONE (receives reminders)</span><input id="coachPhone" placeholder="+1 555-123-4567" value="'+esc(LS.get("coach_phone",""))+'"></div>'
+    +'<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:1px solid rgba(212,168,48,.2)"><div><div style="font-size:13px;font-weight:500;color:var(--wh)">Send Coach Reminders</div><div style="font-size:10px;color:var(--dm)">SMS before each session</div></div><div class="chip'+(LS.get("sms_reminders",false)?" on":"")+'" onclick="toggleNotif(\'sms_reminders\',this);startSMSChecker()" style="min-width:40px;text-align:center">'+(LS.get("sms_reminders",false)?"ON":"OFF")+'</div></div>'
+    +'<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:1px solid rgba(212,168,48,.2)"><div><div style="font-size:13px;font-weight:500;color:var(--wh)">Send Client Reminders</div><div style="font-size:10px;color:var(--dm)">Also text clients before sessions</div></div><div class="chip'+(LS.get("sms_client_reminders",false)?" on":"")+'" onclick="toggleNotif(\'sms_client_reminders\',this)" style="min-width:40px;text-align:center">'+(LS.get("sms_client_reminders",false)?"ON":"OFF")+'</div></div>'
+    +'<div style="display:flex;gap:8px;margin-top:12px"><button class="btn" onclick="saveSMSConfig()" style="flex:1">SAVE & CONNECT</button><button class="btn2" onclick="testSMS()" style="flex:1">TEST SMS</button></div></div>'
     +'<div class="sl" style="margin-top:18px">DATA OVERVIEW</div><div class="cd" style="padding:16px"><div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(212,168,48,.2)"><span style="font-size:12px;color:var(--mu)">Clients</span><span style="font-size:13px;font-weight:700;color:var(--wh);font-family:var(--mono)">'+clients.length+'</span></div><div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(212,168,48,.2)"><span style="font-size:12px;color:var(--mu)">Sessions Logged</span><span style="font-size:13px;font-weight:700;color:var(--wh);font-family:var(--mono)">'+sessions.length+'</span></div><div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(212,168,48,.2)"><span style="font-size:12px;color:var(--mu)">All-Time Revenue</span><span style="font-size:13px;font-weight:700;color:var(--accVib);font-family:var(--mono)">$'+tr+'</span></div><div style="display:flex;justify-content:space-between;padding:8px 0"><span style="font-size:12px;color:var(--mu)">Gym Cut Owed</span><span style="font-size:13px;font-weight:700;color:var(--dm);font-family:var(--mono)">$'+go2+'</span></div></div>'
     +'<div class="sl" style="margin-top:18px">BACKUP & RESTORE</div><div class="cd" style="padding:16px"><div class="g2"><button class="btn2" onclick="exportData()" style="width:100%">EXPORT JSON</button><button class="btn2" onclick="el(\'importFile\').click()" style="width:100%">IMPORT</button></div><input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)"></div>'
     +'<div class="sl" style="margin-top:18px">GYM SETTINGS</div><div class="cd" style="padding:16px"><div class="field"><span class="lb">GYM CUT (%)</span><div style="display:flex;gap:4px;flex-wrap:wrap">'+ph+'</div></div><div class="field"><span class="lb">DEFAULT SESSION RATE ($)</span><input id="defRate" type="number" min="0" value="'+LS.get("defaultRate","70")+'" onchange="LS.set(\'defaultRate\',this.value)"></div></div>'
@@ -817,7 +833,7 @@ function renderSettings(){
     +'<div class="cd" style="padding:14px;margin-top:18px;text-align:center"><button class="btn2" onclick="sessionStorage.removeItem(\'fm_unlocked\');showLockScreen()" style="width:100%;padding:14px">LOCK & SIGN OUT</button></div>'
     +'<div style="text-align:center;padding:20px 0"><div style="font-size:9px;color:var(--dmL);font-family:var(--mono)">BIG MIKE ELY\'S COACHING LAB v'+VERSION+'</div></div>';
 }
-function toggleNotif(key,el_){var cur=LS.get(key,true);LS.set(key,!cur);el_.textContent=!cur?"ON":"OFF";if(!cur)el_.classList.add("on");else el_.classList.remove("on");}
+function toggleNotif(key,el_){var def=key.indexOf("sms")>=0?false:true;var cur=LS.get(key,def);LS.set(key,!cur);el_.textContent=!cur?"ON":"OFF";if(!cur)el_.classList.add("on");else el_.classList.remove("on");}
 function setGymCut(p){LS.set("gymCut",p);toast("\u2713 Gym cut "+p+"%");render();}
 
 
@@ -1069,7 +1085,9 @@ function renderMealPlans(){
   var html='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><span class="sl" style="margin:0">CLIENT MEAL PLANS</span><button class="btn2" onclick="newMealPlan()" style="padding:6px 10px;font-size:8px">+ NEW PLAN</button></div>';
   if(!mealPlans.length)return html+'<div class="cd" style="padding:24px;text-align:center;border:1px dashed var(--border)"><div style="color:var(--dm);margin-bottom:8px">No meal plans yet</div><button class="btn2" onclick="newMealPlan()">CREATE FIRST PLAN</button></div>';
   for(var i=0;i<mealPlans.length;i++){var mp=mealPlans[i],tot=calcPlanTotals(mp),cl=clientById(mp.clientId);
-    html+='<div class="cd cd-link" style="display:flex;align-items:center;gap:12px" onclick="_editMealPlan=\''+mp.id+'\';render()"><div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--wh)">'+esc(mp.name)+'</div><div style="font-size:10px;color:var(--dm);font-family:var(--mono)">'+(cl?esc(cl.name):"Unassigned")+' \u00b7 '+mp.meals.length+' meals</div><div style="font-size:10px;color:var(--acc);font-family:var(--mono);margin-top:2px">'+tot.cal+' cal \u00b7 '+tot.p+'p \u00b7 '+tot.c+'c \u00b7 '+tot.f+'f</div></div><div style="color:var(--dm)">\u203a</div></div>';}
+    var tgt2=mp.targets||{cal:0,p:0,c:0,f:0};var tgtStr=tgt2.cal>0?" / "+tgt2.cal+" target":"";
+    var calColor=tgt2.cal>0&&tot.cal>tgt2.cal*1.05?"var(--danger)":"var(--acc)";
+    html+='<div class="cd cd-link" style="display:flex;align-items:center;gap:12px" onclick="_editMealPlan=\''+mp.id+'\';render()"><div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--wh)">'+esc(mp.name)+'</div><div style="font-size:10px;color:var(--dm);font-family:var(--mono)">'+(cl?esc(cl.name):"Unassigned")+' \u00b7 '+mp.meals.length+' meals</div><div style="font-size:10px;color:'+calColor+';font-family:var(--mono);margin-top:2px">'+tot.cal+' cal'+tgtStr+' \u00b7 '+tot.p+'p \u00b7 '+tot.c+'c \u00b7 '+tot.f+'f</div></div><div style="color:var(--dm)">\u203a</div></div>';}
   return html;
 }
 function newMealPlan(){var mp={id:Date.now().toString(),name:"New Meal Plan",clientId:"",meals:[],created_at:new Date().toISOString()};mealPlans.push(mp);save();_editMealPlan=mp.id;render();}
@@ -1077,9 +1095,16 @@ function renderMealPlanEdit(){
   var mp=mealPlans.find(function(p){return p.id===_editMealPlan;});if(!mp){_editMealPlan=null;return renderMealPlans();}
   var tot=calcPlanTotals(mp);
   var cOpts='<option value="">Unassigned</option>';for(var i=0;i<clients.length;i++)cOpts+='<option value="'+clients[i].id+'"'+(mp.clientId===clients[i].id?' selected':'')+'>'+esc(clients[i].name)+'</option>';
+  var tgt=mp.targets||{cal:0,p:0,c:0,f:0};
+  var calPct=tgt.cal>0?Math.round((tot.cal/tgt.cal)*100):0;
+  var pPct=tgt.p>0?Math.round((tot.p/tgt.p)*100):0;
+  var cPct=tgt.c>0?Math.round((tot.c/tgt.c)*100):0;
+  var fPct=tgt.f>0?Math.round((tot.f/tgt.f)*100):0;
+  function macroBar(pct,col){if(!pct)return"";var w=Math.min(pct,100);var over=pct>105;return '<div style="height:4px;background:var(--borderS);border-radius:2px;margin-top:4px;overflow:hidden"><div style="height:100%;width:'+w+'%;background:'+(over?"var(--danger)":col)+';border-radius:2px;transition:width .3s"></div></div>';}
   var html='<button class="btn2" onclick="_editMealPlan=null;render()" style="margin-bottom:14px">\u2039 Back</button>'
     +'<div class="cd" style="padding:14px;margin-bottom:14px"><div class="g2 field"><div><span class="lb">PLAN NAME</span><input id="mpN" value="'+esc(mp.name)+'" onchange="mpSet(\'name\',this.value)"></div><div><span class="lb">CLIENT</span><select onchange="mpSet(\'clientId\',this.value)">'+cOpts+'</select></div></div></div>'
-    +'<div class="cd" style="padding:14px;margin-bottom:14px;border:1px solid var(--accB)"><div style="display:flex;justify-content:space-around;text-align:center"><div><div style="font-size:20px;font-weight:800;color:var(--acc);font-family:var(--mono)">'+tot.cal+'</div><div style="font-size:8px;color:var(--dm);font-family:var(--mono)">CALORIES</div></div><div><div style="font-size:18px;font-weight:700;color:var(--success);font-family:var(--mono)">'+tot.p+'g</div><div style="font-size:8px;color:var(--dm);font-family:var(--mono)">PROTEIN</div></div><div><div style="font-size:18px;font-weight:700;color:var(--warn);font-family:var(--mono)">'+tot.c+'g</div><div style="font-size:8px;color:var(--dm);font-family:var(--mono)">CARBS</div></div><div><div style="font-size:18px;font-weight:700;color:#cc88ee;font-family:var(--mono)">'+tot.f+'g</div><div style="font-size:8px;color:var(--dm);font-family:var(--mono)">FAT</div></div></div></div>';
+    +'<div class="cd" style="padding:14px;margin-bottom:14px;border:1px solid var(--accB)"><div style="display:flex;justify-content:space-around;text-align:center"><div style="flex:1"><div style="font-size:20px;font-weight:800;color:'+(tgt.cal>0&&calPct>105?"var(--danger)":"var(--acc)")+';font-family:var(--mono)">'+tot.cal+'</div>'+(tgt.cal>0?'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">/ '+tgt.cal+'</div>':'')+'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">CALORIES</div>'+macroBar(calPct,"var(--acc)")+'</div><div style="flex:1"><div style="font-size:18px;font-weight:700;color:'+(tgt.p>0&&pPct>105?"var(--danger)":"var(--success)")+';font-family:var(--mono)">'+tot.p+'g</div>'+(tgt.p>0?'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">/ '+tgt.p+'g</div>':'')+'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">PROTEIN</div>'+macroBar(pPct,"var(--success)")+'</div><div style="flex:1"><div style="font-size:18px;font-weight:700;color:'+(tgt.c>0&&cPct>105?"var(--danger)":"var(--warn)")+';font-family:var(--mono)">'+tot.c+'g</div>'+(tgt.c>0?'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">/ '+tgt.c+'g</div>':'')+'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">CARBS</div>'+macroBar(cPct,"var(--warn)")+'</div><div style="flex:1"><div style="font-size:18px;font-weight:700;color:'+(tgt.f>0&&fPct>105?"var(--danger)":"#cc88ee")+';font-family:var(--mono)">'+tot.f+'g</div>'+(tgt.f>0?'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">/ '+tgt.f+'g</div>':'')+'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">FAT</div>'+macroBar(fPct,"#cc88ee")+'</div></div></div>'
+    +'<div class="cd" style="padding:14px;margin-bottom:14px"><div onclick="var tf=document.getElementById(\'targetFields\');tf.style.display=tf.style.display===\'none\'?\'block\':\'none\'" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center"><span class="sl" style="margin:0">MACRO TARGETS</span><span style="font-size:10px;color:var(--dm)">\u25bc</span></div><div id="targetFields" style="display:'+(tgt.cal>0?"block":"none")+';margin-top:12px"><div class="g4"><div><span class="lb">CALORIES</span><input type="number" min="0" value="'+(tgt.cal||"")+'" onchange="mpSetTarget(\'cal\',this.value)" placeholder="\u2014" style="text-align:center;font-size:13px"></div><div><span class="lb">PROTEIN (g)</span><input type="number" min="0" value="'+(tgt.p||"")+'" onchange="mpSetTarget(\'p\',this.value)" placeholder="\u2014" style="text-align:center;font-size:13px"></div><div><span class="lb">CARBS (g)</span><input type="number" min="0" value="'+(tgt.c||"")+'" onchange="mpSetTarget(\'c\',this.value)" placeholder="\u2014" style="text-align:center;font-size:13px"></div><div><span class="lb">FAT (g)</span><input type="number" min="0" value="'+(tgt.f||"")+'" onchange="mpSetTarget(\'f\',this.value)" placeholder="\u2014" style="text-align:center;font-size:13px"></div></div><div style="display:flex;gap:4px;margin-top:8px;flex-wrap:wrap"><div class="chip" onclick="mpQuickTarget(2000,180,200,60)" style="font-size:9px">2000cal Cut</div><div class="chip" onclick="mpQuickTarget(2500,220,250,70)" style="font-size:9px">2500cal Maintain</div><div class="chip" onclick="mpQuickTarget(3000,250,320,80)" style="font-size:9px">3000cal Bulk</div><div class="chip" onclick="mpQuickTarget(3500,280,380,90)" style="font-size:9px">3500cal Mass</div></div></div></div>';
   for(var m=0;m<mp.meals.length;m++){var meal=mp.meals[m],mt=calcMealTotals(meal);
     html+='<div class="cd" style="padding:14px;margin-bottom:8px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><input value="'+esc(meal.name)+'" onchange="mealName('+m+',this.value)" style="font-size:14px;font-weight:700;border:none;background:none;color:var(--wh);padding:0;flex:1"><span style="font-size:9px;color:var(--acc);font-family:var(--mono)">'+mt.cal+'cal \u00b7 '+mt.p+'p</span><span style="font-size:14px;color:var(--danger);cursor:pointer;margin-left:8px" onclick="rmMeal('+m+')">\u2715</span></div>';
     for(var f=0;f<meal.foods.length;f++){var fd=meal.foods[f],db=FOOD_DB[fd.di]||{};
@@ -1093,6 +1118,8 @@ function renderMealPlanEdit(){
   return html;
 }
 function mpSet(k,v){var mp=mealPlans.find(function(p){return p.id===_editMealPlan;});if(mp){mp[k]=v;save();}}
+function mpSetTarget(k,v){var mp=mealPlans.find(function(p){return p.id===_editMealPlan;});if(!mp)return;if(!mp.targets)mp.targets={cal:0,p:0,c:0,f:0};mp.targets[k]=parseInt(v)||0;save();render();}
+function mpQuickTarget(cal,p,c,f){var mp=mealPlans.find(function(p2){return p2.id===_editMealPlan;});if(!mp)return;mp.targets={cal:cal,p:p,c:c,f:f};save();render();}
 function mealName(mi,n){var mp=mealPlans.find(function(p){return p.id===_editMealPlan;});if(mp&&mp.meals[mi]){mp.meals[mi].name=n;save();}}
 function addMeal(){var mp=mealPlans.find(function(p){return p.id===_editMealPlan;});if(!mp)return;mp.meals.push({name:"Meal "+(mp.meals.length+1),foods:[]});save();render();}
 function rmMeal(mi){var mp=mealPlans.find(function(p){return p.id===_editMealPlan;});if(!mp)return;mp.meals.splice(mi,1);save();render();}
@@ -1115,6 +1142,16 @@ function renderSupplements(){
     html+='<div class="cd" style="display:flex;align-items:center;gap:10px;padding:12px 14px"><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--wh)">'+esc(s.name)+'</div><div style="font-size:10px;color:var(--dm);font-family:var(--mono)">'+esc(s.dose)+' \u00b7 '+esc(s.timing)+'</div></div><span style="font-size:12px;color:var(--danger);cursor:pointer;padding:2px 6px" onclick="rmSupp('+i+')">\u2715</span></div>';}
   return html;
 }
+function renderClientSupplements(c,idx){
+  if(!c.supplements)c.supplements=[];
+  var html='<div style="display:flex;justify-content:space-between;align-items:center;margin-top:18px;margin-bottom:10px"><span class="sl" style="margin:0">SUPPLEMENTS</span><button class="btn2" onclick="addClientSupp('+idx+')" style="padding:5px 10px;font-size:8px">+ ADD</button></div>';
+  if(!c.supplements.length)return html+'<div class="cd" style="padding:16px;text-align:center;color:var(--dm);font-size:11px">No supplements tracked</div>';
+  for(var i=0;i<c.supplements.length;i++){var s=c.supplements[i];
+    html+='<div class="cd" style="display:flex;align-items:center;gap:10px;padding:12px 14px"><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--wh)">'+esc(s.name)+'</div><div style="font-size:10px;color:var(--dm);font-family:var(--mono)">'+esc(s.dose)+' \u00b7 '+esc(s.timing)+'</div></div><span style="font-size:12px;color:var(--danger);cursor:pointer;padding:2px 6px" onclick="rmClientSupp('+idx+','+i+')">\u2715</span></div>';}
+  return html;
+}
+function addClientSupp(idx){var cl=clients[idx];if(!cl)return;var n=prompt("Supplement name:");if(!n)return;var d=prompt("Dose (e.g. 5g, 1 cap):")||"";var t=prompt("Timing (e.g. morning, pre-workout):")||"";if(!cl.supplements)cl.supplements=[];cl.supplements.push({name:n,dose:d,timing:t});save();render();}
+function rmClientSupp(idx,i){var cl=clients[idx];if(!cl)return;cl.supplements.splice(i,1);save();render();}
 function addSupp(){var cl=clientById(_nutClientId);if(!cl)return;var n=prompt("Supplement name:");if(!n)return;var d=prompt("Dose (e.g. 5g, 1 cap):")||"";var t=prompt("Timing (e.g. morning, pre-workout):")||"";if(!cl.supplements)cl.supplements=[];cl.supplements.push({name:n,dose:d,timing:t});save();render();}
 function rmSupp(i){var cl=clientById(_nutClientId);if(!cl)return;cl.supplements.splice(i,1);save();render();}
 function renderWaterTracker(){
@@ -1204,6 +1241,89 @@ function swUpdateDisplay(){var d=el("swDisplay");if(!d)return;var elapsed=_swEla
 function addWeight(ci){var inp=el("wLogVal");if(!inp||!inp.value)return;var cl=clients[ci];if(!cl.weightLog)cl.weightLog=[];cl.weightLog.push({date:todayISO(),lbs:parseFloat(inp.value)});save();render();toast("\u2713 "+inp.value+" lbs logged");}
 function setMeasure(ci,key,val){if(!clients[ci].measurements)clients[ci].measurements={};clients[ci].measurements[key]=val?parseFloat(val):"";save();}
 function parseFrac(s){if(!s)return 0;s=String(s).trim();if(!isNaN(s))return parseFloat(s);var m=s.match(/^(\d+)\s+(\d+)\/(\d+)$/);if(m)return parseInt(m[1])+parseInt(m[2])/parseInt(m[3]);m=s.match(/^(\d+)\/(\d+)$/);if(m)return parseInt(m[1])/parseInt(m[2]);return parseFloat(s)||0;}
+// ── SMS SYSTEM ──
+var _supabase=null;
+function getSupabase(){
+  if(_supabase)return _supabase;
+  var url=LS.get("supa_url",""),key=LS.get("supa_key","");
+  if(!url||!key)return null;
+  try{_supabase=supabase.createClient(url,key);return _supabase;}catch(e){return null;}
+}
+function saveSMSConfig(){
+  var url=val("supaUrl"),key=val("supaKey"),phone=val("coachPhone");
+  LS.set("supa_url",url);LS.set("supa_key",key);LS.set("coach_phone",phone);
+  _supabase=null;
+  if(url&&key){var sb=getSupabase();if(sb){toast("\u2713 Supabase connected");testSMS();}else toast("\u2717 Connection failed");}
+  else toast("\u2713 Config saved");
+  render();
+}
+function testSMS(){
+  var phone=LS.get("coach_phone","");
+  if(!phone){toast("Set coach phone first");return;}
+  sendSMS(phone,"Big Mike Coaching Lab \u2014 SMS system active. Reminders will be sent to this number.");
+}
+function sendSMS(to,message){
+  var sb=getSupabase();if(!sb){toast("Configure Supabase first");return Promise.resolve(false);}
+  return sb.functions.invoke("send-sms",{body:{to:to,message:message}}).then(function(res){
+    if(res.error){console.error("SMS error:",res.error);toast("\u2717 SMS failed: "+(res.error.message||"Unknown error"));return false;}
+    if(res.data&&res.data.error){console.error("SMS error:",res.data.error);toast("\u2717 SMS: "+res.data.error);return false;}
+    return true;
+  }).catch(function(e){console.error("SMS error:",e);toast("\u2717 SMS send failed");return false;});
+}
+function sendClientSMS(clientId,message){
+  var c=clientById(clientId);if(!c||!c.phone)return Promise.resolve(false);
+  var phone=c.phone.replace(/[^0-9+]/g,"");
+  if(phone.length===10)phone="+1"+phone;
+  else if(!phone.startsWith("+"))phone="+1"+phone;
+  return sendSMS(phone,message);
+}
+function checkAndSendReminders(){
+  var sb=getSupabase();if(!sb)return;
+  if(!LS.get("sms_reminders",false))return;
+  var coachPhone=LS.get("coach_phone","");if(!coachPhone)return;
+  var now=new Date();
+  var today=todayISO();
+  var leadMin=parseInt(LS.get("reminderMin","30"))||30;
+  var sentKey="fm_sms_sent_"+today;
+  var sent=LS.get("sms_sent_"+today,{});
+  var upcoming=schedule.filter(function(s){
+    if(s.date!==today||s.status==="complete"||s.status==="cancelled")return false;
+    if(!s.time)return false;
+    if(sent[s.id])return false;
+    var parts=s.time.split(":");
+    var sessTime=new Date(now.getFullYear(),now.getMonth(),now.getDate(),parseInt(parts[0]),parseInt(parts[1]));
+    var diff=(sessTime-now)/(1000*60);
+    return diff>0&&diff<=leadMin;
+  });
+  upcoming.forEach(function(s){
+    var cl=clientById(s.clientId);
+    var clientName=cl?cl.name:s.clientName;
+    var msg="Reminder: "+clientName+" \u2014 "+(s.type||"Training")+" at "+fmtTimeStr(s.time)+" today. $"+(s.rate||70);
+    var formattedPhone=coachPhone.replace(/[^0-9+]/g,"");
+    if(formattedPhone.length===10)formattedPhone="+1"+formattedPhone;
+    else if(!formattedPhone.startsWith("+"))formattedPhone="+1"+formattedPhone;
+    sendSMS(formattedPhone,msg).then(function(ok){
+      if(ok){sent[s.id]=true;LS.set("sms_sent_"+today,sent);}
+    });
+    if(cl&&cl.phone&&LS.get("sms_client_reminders",false)){
+      var clientMsg="Hey "+clientName.split(" ")[0]+"! Reminder: your "+(s.type||"training")+" session is at "+fmtTimeStr(s.time)+" today. See you soon! \u2014 Coach Mike";
+      sendClientSMS(s.clientId,clientMsg);
+    }
+  });
+}
+function sendQuickSMS(clientId){
+  var c=clientById(clientId);if(!c){toast("Client not found");return;}
+  if(!c.phone){toast("No phone number for "+c.name);return;}
+  var msg=prompt("Send SMS to "+c.name+":\n(Their number: "+c.phone+")");
+  if(!msg)return;
+  sendClientSMS(clientId,msg).then(function(ok){if(ok)toast("\u2713 SMS sent to "+c.name);});
+}
+var _smsCheckInterval=null;
+function startSMSChecker(){
+  if(_smsCheckInterval)clearInterval(_smsCheckInterval);
+  checkAndSendReminders();
+  _smsCheckInterval=setInterval(checkAndSendReminders,60000);
+}
 // ── BOOT ──
 (function boot(){
   if(!clients.length){
@@ -1214,7 +1334,7 @@ function parseFrac(s){if(!s)return 0;s=String(s).trim();if(!isNaN(s))return pars
     save();
   }
   if(!isUnlocked()){showLockScreen();}
-  else{el("app").style.display="";el("qnoteFab").style.display="";render();}
+  else{el("app").style.display="";el("qnoteFab").style.display="";render();startSMSChecker();}
 })();
 </script>
 </body></html>
