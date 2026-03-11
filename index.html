@@ -79,8 +79,8 @@ button{font-family:var(--body);cursor:pointer;border:none;outline:none;transitio
 .set-badge{min-width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;font-family:var(--mono);flex-shrink:0;background:var(--accS);color:var(--acc);border:1px solid var(--accB)}
 .ex-summary{padding:12px 14px;background:rgba(200,160,40,.04);border-radius:10px;border:1px solid var(--borderS);margin-top:8px}
 .ex-summary-line{font-size:11px;color:var(--ow);font-family:var(--mono);line-height:1.9}
-.superset-card{border-left:3px solid #88ccdd;padding-left:14px}
-.giant-card{border-left:3px solid #cc88ee;padding-left:14px}
+.superset-card{border-left:3px solid #c8a050;padding-left:14px}
+.giant-card{border-left:3px solid #c87070;padding-left:14px}
 .desk-logo{display:none;align-items:center;gap:14px;padding:28px 24px 22px;border-bottom:1px solid rgba(212,168,48,.25);margin-bottom:8px}
 .timer-bar{position:fixed;top:0;left:0;right:0;height:2px;z-index:200;pointer-events:none;opacity:0;transition:opacity .3s}
 .timer-bar.active{opacity:1}
@@ -130,6 +130,18 @@ button{font-family:var(--body);cursor:pointer;border:none;outline:none;transitio
 
 @keyframes goldShimmer{0%{background-position:200% center}100%{background-position:-200% center}}
 @keyframes neonBreathe{0%,100%{box-shadow:0 0 10px rgba(212,168,48,.25),0 0 28px rgba(200,160,40,.12),0 0 55px rgba(190,150,35,.06),inset 0 0 15px rgba(200,160,40,.02);border-color:rgba(212,168,48,.45)}50%{box-shadow:0 0 18px rgba(212,168,48,.4),0 0 40px rgba(200,160,40,.2),0 0 70px rgba(190,150,35,.1),inset 0 0 25px rgba(200,160,40,.04);border-color:rgba(212,168,48,.6)}}
+body.theme-crimson{
+  --acc:#D03030;--accD:#A01818;--accDeep:#881818;--accVib:#F04040;--accBright:#F05050;
+  --accS:rgba(210,40,40,0.06);--accB:rgba(210,40,40,.45);--accM:rgba(210,40,40,0.30);
+  --accGlow:rgba(210,40,40,0.25);
+  --border:rgba(210,40,40,.28);--borderH:rgba(210,40,40,.35);--borderS:rgba(210,40,40,.15);
+  --goldGrad:linear-gradient(135deg,#8B1414,#C42828,#E84040,#C42828,#8B1414);
+}
+@media print{
+  body,body *{color-adjust:exact;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #app,.tabs,.hdr,.qnote-fab,#swFab,#qnoteModal,.timer-bar{display:none!important}
+  #pdfPrintArea{display:block!important}
+}
 </style>
 </head>
 <body>
@@ -167,7 +179,7 @@ button{font-family:var(--body);cursor:pointer;border:none;outline:none;transitio
   <button onclick="toggleStopwatch()" style="width:46px;height:46px;border-radius:50%;background:rgba(200,160,40,.08);border:1.5px solid rgba(212,168,48,.4);color:var(--acc);font-size:18px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.4);cursor:pointer" title="Stopwatch">&#9201;</button>
 </div>
 <script>
-var VERSION="5.0";
+var VERSION="5.1";
 var DN=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 var MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 var LS={get:function(k,d){try{var v=JSON.parse(localStorage.getItem("fm_"+k));return v!=null?v:d;}catch(e){return d;}},set:function(k,v){try{localStorage.setItem("fm_"+k,JSON.stringify(v));}catch(e){if(e.name==="QuotaExceededError"){toast("\u26a0 Storage full! Export backup now.",5000);}}},space:function(){try{var total=0;for(var k in localStorage){if(localStorage.hasOwnProperty(k))total+=localStorage[k].length;}return{used:Math.round(total/1024),max:5120,pct:Math.round((total/1024/5120)*100)};}catch(e){return{used:0,max:5120,pct:0};}}};
@@ -495,6 +507,7 @@ function renderClientDetail(){
   html+='</div>';
   html+='<div style="display:flex;gap:8px;margin-top:16px"><button class="btn" style="flex:1" onclick="navToLogFromClient(\''+c.id+'\',\''+c.rate+'\',\''+c.type+'\')">LOG SESSION</button><button class="btn2" style="flex:1" onclick="navToScheduleFromClient(\''+c.id+'\')">SCHEDULE</button></div>';
   if(c.phone)html+='<button class="btn2" style="width:100%;margin-top:8px" onclick="sendQuickSMS(\''+c.id+'\')">SEND SMS \u2192</button>';
+  html+='<button class="btn2" style="width:100%;margin-top:8px" onclick="generateFullPrepPDF('+idx+')">GENERATE FULL PREP PDF</button>';
   html+='<div style="margin-top:24px;border:1px solid rgba(216,120,120,.2);border-radius:10px;overflow:hidden"><div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display===\'none\'?\'block\':\'none\'" style="cursor:pointer;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;background:rgba(216,120,120,.03)"><span style="font-size:10px;font-weight:700;color:var(--danger);font-family:var(--mono);letter-spacing:.1em">DANGER ZONE</span><span style="font-size:10px;color:var(--dm)">\u25bc</span></div><div style="display:none;padding:16px"><div style="font-size:11px;color:var(--dm);margin-bottom:12px">This cannot be undone. Session history will be preserved.</div><button class="btn-danger" onclick="deleteClient('+idx+')">DELETE CLIENT</button></div></div>';
   return html;
 }
@@ -609,7 +622,7 @@ function renderLogSession(){
     +'<div><span class="lb">DURATION</span><div style="display:flex;gap:3px;flex-wrap:wrap">'+buildDurationChips(pfDur)+'</div><input type="hidden" id="sDu" value="'+pfDur+'"></div></div>'
     +'<div class="field"><span class="lb">PRICE ($)</span><input id="sR" type="number" min="0" value="'+rate+'"></div>'
     +'<div><span class="lb">STATUS</span><div style="display:flex;gap:4px;flex-wrap:wrap">'+stOpts+'</div><input type="hidden" id="sSt" value="complete"></div></div>';
-  html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-top:18px"><div style="display:flex;align-items:center;gap:8px"><div class="sl" style="margin:0">EXERCISES</div><span id="exCountBadge" style="font-size:9px;color:var(--dm);font-family:var(--mono)">0 exercises</span></div><div style="display:flex;gap:4px;flex-wrap:wrap"><button class="btn2" onclick="showTemplateLoader()" style="padding:6px 10px;font-size:8px;color:var(--accVib);border-color:var(--accB)">\u2b07 TEMPLATE</button><button class="btn2" onclick="addExercise(\'normal\')" style="padding:6px 10px;font-size:8px">+ EXERCISE</button><button class="btn2" onclick="addExercise(\'superset\')" style="padding:6px 10px;font-size:8px;color:#88ccdd;border-color:rgba(120,180,200,.3)">+ SUPERSET</button><button class="btn2" onclick="addExercise(\'giant\')" style="padding:6px 10px;font-size:8px;color:#cc88ee;border-color:rgba(180,120,200,.3)">+ GIANT SET</button></div></div>'
+  html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-top:18px"><div style="display:flex;align-items:center;gap:8px"><div class="sl" style="margin:0">EXERCISES</div><span id="exCountBadge" style="font-size:9px;color:var(--dm);font-family:var(--mono)">0 exercises</span></div><div style="display:flex;gap:4px;flex-wrap:wrap"><button class="btn2" onclick="showTemplateLoader()" style="padding:6px 10px;font-size:8px;color:var(--accVib);border-color:var(--accB)">\u2b07 TEMPLATE</button><button class="btn2" onclick="addExercise(\'normal\')" style="padding:6px 10px;font-size:8px">+ EXERCISE</button><button class="btn2" onclick="addExercise(\'superset\')" style="padding:6px 10px;font-size:8px;color:#c8a050;border-color:rgba(200,160,80,.3)">+ SUPERSET</button><button class="btn2" onclick="addExercise(\'giant\')" style="padding:6px 10px;font-size:8px;color:#c87070;border-color:rgba(200,112,112,.3)">+ GIANT SET</button></div></div>'
     +'<div id="templateLoader" style="display:none;margin-top:8px"></div>'
     +'<div id="exList" style="margin-top:8px"></div>';
   html+='<div class="sl" style="margin-top:22px">SESSION NOTES</div><div class="cd" style="padding:18px"><div class="field"><span class="lb">NOTES</span><textarea id="sN" rows="3" placeholder="Form notes, adjustments, observations..."></textarea></div><div class="field"><span class="lb">SESSION RATING (1\u201310)</span><div style="display:flex;gap:4px">'+dots+'</div></div><div><span class="lb">NEXT SESSION PLAN</span><textarea id="sNx" rows="2" placeholder="Focus areas, progressions, notes for next time..."></textarea></div></div>';
@@ -662,10 +675,10 @@ function ensureExerciseDatalist(){
 function addExercise(mode){
   mode=mode||"normal";_exCount++;ensureExerciseDatalist();
   var d=document.createElement("div");d.className="cd";d.id="ex"+_exCount;d.style.padding="16px";d.dataset.mode=mode;
-  var badge=mode==="superset"?'<span style="font-size:8px;color:#88ccdd;background:rgba(120,180,200,.1);border:1px solid rgba(120,180,200,.2);padding:2px 6px;border-radius:4px;font-family:var(--mono)">SUPERSET</span>':mode==="giant"?'<span style="font-size:8px;color:#cc88ee;background:rgba(180,120,200,.1);border:1px solid rgba(180,120,200,.2);padding:2px 6px;border-radius:4px;font-family:var(--mono)">GIANT SET</span>':'';
+  var badge=mode==="superset"?'<span style="font-size:8px;color:#c8a050;background:rgba(200,160,80,.1);border:1px solid rgba(200,160,80,.2);padding:2px 6px;border-radius:4px;font-family:var(--mono)">SUPERSET</span>':mode==="giant"?'<span style="font-size:8px;color:#c87070;background:rgba(200,112,112,.1);border:1px solid rgba(200,112,112,.2);padding:2px 6px;border-radius:4px;font-family:var(--mono)">GIANT SET</span>':'';
   var exInputs='<div class="exGroup"><input class="xN" list="exHistory" placeholder="Exercise name" style="margin-bottom:6px;font-weight:600"><div class="xSets"></div><button class="btn2" onclick="addSet(this.closest(\'.exGroup\'))" style="margin-top:4px;padding:4px 10px;font-size:8px">+ SET</button></div>';
   if(mode==="superset")exInputs='<div class="exGroup"><input class="xN" list="exHistory" placeholder="Exercise A" style="margin-bottom:6px;font-weight:600"><div class="xSets"></div><button class="btn2" onclick="addSet(this.closest(\'.exGroup\'))" style="margin-top:4px;padding:4px 10px;font-size:8px">+ SET</button></div><div style="text-align:center;font-size:9px;color:var(--dm);font-family:var(--mono);margin:8px 0;letter-spacing:.1em">PAIRED WITH</div><div class="exGroup"><input class="xN" list="exHistory" placeholder="Exercise B" style="margin-bottom:6px;font-weight:600"><div class="xSets"></div><button class="btn2" onclick="addSet(this.closest(\'.exGroup\'))" style="margin-top:4px;padding:4px 10px;font-size:8px">+ SET</button></div>';
-  if(mode==="giant")exInputs='<div class="exGroup"><input class="xN" list="exHistory" placeholder="Exercise A" style="margin-bottom:6px;font-weight:600"><div class="xSets"></div><button class="btn2" onclick="addSet(this.closest(\'.exGroup\'))" style="margin-top:4px;padding:4px 10px;font-size:8px">+ SET</button></div><div style="text-align:center;font-size:8px;color:var(--dm);font-family:var(--mono);margin:6px 0">\u2193</div><div class="exGroup"><input class="xN" list="exHistory" placeholder="Exercise B" style="margin-bottom:6px;font-weight:600"><div class="xSets"></div><button class="btn2" onclick="addSet(this.closest(\'.exGroup\'))" style="margin-top:4px;padding:4px 10px;font-size:8px">+ SET</button></div><div style="text-align:center;font-size:8px;color:var(--dm);font-family:var(--mono);margin:6px 0">\u2193</div><div class="exGroup"><input class="xN" list="exHistory" placeholder="Exercise C" style="margin-bottom:6px;font-weight:600"><div class="xSets"></div><button class="btn2" onclick="addSet(this.closest(\'.exGroup\'))" style="margin-top:4px;padding:4px 10px;font-size:8px">+ SET</button></div><button class="btn2" onclick="addGiantExercise(this)" style="margin-top:6px;padding:4px 10px;font-size:8px;color:#cc88ee;border-color:rgba(180,120,200,.2)">+ ADD EXERCISE TO SET</button>';
+  if(mode==="giant")exInputs='<div class="exGroup"><input class="xN" list="exHistory" placeholder="Exercise A" style="margin-bottom:6px;font-weight:600"><div class="xSets"></div><button class="btn2" onclick="addSet(this.closest(\'.exGroup\'))" style="margin-top:4px;padding:4px 10px;font-size:8px">+ SET</button></div><div style="text-align:center;font-size:8px;color:var(--dm);font-family:var(--mono);margin:6px 0">\u2193</div><div class="exGroup"><input class="xN" list="exHistory" placeholder="Exercise B" style="margin-bottom:6px;font-weight:600"><div class="xSets"></div><button class="btn2" onclick="addSet(this.closest(\'.exGroup\'))" style="margin-top:4px;padding:4px 10px;font-size:8px">+ SET</button></div><div style="text-align:center;font-size:8px;color:var(--dm);font-family:var(--mono);margin:6px 0">\u2193</div><div class="exGroup"><input class="xN" list="exHistory" placeholder="Exercise C" style="margin-bottom:6px;font-weight:600"><div class="xSets"></div><button class="btn2" onclick="addSet(this.closest(\'.exGroup\'))" style="margin-top:4px;padding:4px 10px;font-size:8px">+ SET</button></div><button class="btn2" onclick="addGiantExercise(this)" style="margin-top:6px;padding:4px 10px;font-size:8px;color:#c87070;border-color:rgba(200,112,112,.2)">+ ADD EXERCISE TO SET</button>';
   d.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:11px;font-weight:700;color:var(--acc);font-family:var(--mono)">EXERCISE '+_exCount+'</span>'+badge+'</div><span style="font-size:14px;color:var(--danger);cursor:pointer;padding:6px 10px" onclick="this.closest(\'.cd\').remove()">&#10005;</span></div>'+exInputs+'<div style="display:flex;gap:3px;margin-top:8px;flex-wrap:wrap"><div class="chip chip-tempo on" onclick="pickChip(this,\'\')">Normal</div><div class="chip chip-tempo" onclick="pickChip(this,\'\')">3s Ecc</div><div class="chip chip-tempo" onclick="pickChip(this,\'\')">Pause</div><div class="chip chip-tempo" onclick="pickChip(this,\'\')">Drop Set</div><div class="chip chip-tempo" onclick="pickChip(this,\'\')">Isometric</div></div><div style="display:flex;gap:6px;margin-top:10px"><input class="xNote" placeholder="Notes \u2014 cues, substitutions..." style="flex:1;font-size:12px"><input class="xRest" placeholder="Rest" style="width:70px;font-size:12px;text-align:center"></div>';
   el("exList").appendChild(d);
   d.querySelectorAll(".exGroup").forEach(function(g){addSet(g);});
@@ -758,7 +771,7 @@ function renderExerciseSummary(ex){
     var modeClass=ex.mode==="superset"?"superset-card":"giant-card";
     var modeLabel=ex.mode==="superset"?"SUPERSET":"GIANT SET";
     var groupNames=ex.grouped.map(function(g){return g.name||"";}).filter(function(n){return n;}).join(" + ");
-    var h='<div class="ex-summary '+modeClass+'"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:8px;font-weight:700;color:'+(ex.mode==="superset"?"#88ccdd":"#cc88ee")+';font-family:var(--mono);letter-spacing:.1em">'+modeLabel+'</span><span style="font-size:12px;font-weight:700;color:var(--wh)">'+esc(groupNames)+'</span></div>';
+    var h='<div class="ex-summary '+modeClass+'"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:8px;font-weight:700;color:'+(ex.mode==="superset"?"#c8a050":"#c87070")+';font-family:var(--mono);letter-spacing:.1em">'+modeLabel+'</span><span style="font-size:12px;font-weight:700;color:var(--wh)">'+esc(groupNames)+'</span></div>';
     for(var g=0;g<ex.grouped.length;g++){var grp=ex.grouped[g];h+='<div style="margin-top:4px"><div style="font-size:11px;font-weight:500;color:var(--wh)">'+esc(grp.name)+'</div>';var sts=grp.sets||[];for(var j=0;j<sts.length;j++)h+='<div class="ex-summary-line">S'+(j+1)+': '+(sts[j].w||"\u2014")+' lbs \u00d7 '+(sts[j].r||"\u2014")+' reps'+(sts[j].n?" \u00b7 "+esc(sts[j].n):"")+'</div>';h+='</div>';}
     if(ex.note)h+='<div style="font-size:10px;color:var(--mu);font-style:italic;margin-top:6px">'+esc(ex.note)+'</div>';
     return h+'</div>';
@@ -952,7 +965,7 @@ function renderSettings(){
     +'<button class="btn2" onclick="_doCloudSync();toast(\'Syncing...\')" style="width:100%;margin-top:8px">SYNC TO CLOUD NOW</button>'
     +'<input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)"></div>'
     +'<div class="sl" style="margin-top:18px">GYM SETTINGS</div><div class="cd" style="padding:16px"><div class="field"><span class="lb">GYM CUT (%)</span><div style="display:flex;gap:4px;flex-wrap:wrap">'+ph+'</div></div><div class="field"><span class="lb">DEFAULT SESSION RATE ($)</span><input id="defRate" type="number" min="0" value="'+LS.get("defaultRate","70")+'" onchange="LS.set(\'defaultRate\',this.value)"></div></div>'
-    +'<div class="sl" style="margin-top:18px">DISPLAY</div><div class="cd" style="padding:16px"><div class="field"><span class="lb">TIME FORMAT</span><div style="display:flex;gap:4px"><div class="chip'+(is24Hr()?"":" on")+'" onclick="LS.set(\'timeFormat\',\'12\');render()">12-Hour</div><div class="chip'+(is24Hr()?" on":"")+'" onclick="LS.set(\'timeFormat\',\'24\');render()">24-Hour</div></div></div><div><span class="lb">TIMER SOUND</span><div style="display:flex;gap:4px"><div class="chip'+(LS.get("timerSound",true)?" on":"")+'" onclick="LS.set(\'timerSound\',true);render()">ON</div><div class="chip'+(!LS.get("timerSound",true)?" on":"")+'" onclick="LS.set(\'timerSound\',false);render()">OFF</div></div></div></div>'
+    +'<div class="sl" style="margin-top:18px">DISPLAY</div><div class="cd" style="padding:16px"><div class="field"><span class="lb">COLOR THEME</span><div style="display:flex;gap:4px"><div class="chip'+(LS.get("theme","gold")==="gold"?" on":"")+'" onclick="setTheme(\'gold\')">GOLD</div><div class="chip'+(LS.get("theme","gold")==="crimson"?" on":"")+'" onclick="setTheme(\'crimson\')">CRIMSON</div></div></div><div class="field"><span class="lb">TIME FORMAT</span><div style="display:flex;gap:4px"><div class="chip'+(is24Hr()?"":" on")+'" onclick="LS.set(\'timeFormat\',\'12\');render()">12-Hour</div><div class="chip'+(is24Hr()?" on":"")+'" onclick="LS.set(\'timeFormat\',\'24\');render()">24-Hour</div></div></div><div><span class="lb">TIMER SOUND</span><div style="display:flex;gap:4px"><div class="chip'+(LS.get("timerSound",true)?" on":"")+'" onclick="LS.set(\'timerSound\',true);render()">ON</div><div class="chip'+(!LS.get("timerSound",true)?" on":"")+'" onclick="LS.set(\'timerSound\',false);render()">OFF</div></div></div></div>'
     +'<div class="sl" style="margin-top:18px">DANGER ZONE</div><div class="cd" style="padding:16px;border:1px solid rgba(216,120,120,.25)"><div style="font-size:11px;color:var(--danger);margin-bottom:12px">Cannot be undone. Export first.</div><div class="g2"><button class="btn-danger" onclick="if(confirm(\'Delete ALL sessions?\')&&confirm(\'Are you sure?\')){sessions=[];save();toast(\'Cleared\');render();}">CLEAR ALL SESSIONS</button><button class="btn-danger" onclick="if(confirm(\'RESET EVERYTHING?\')&&confirm(\'Last chance?\')){clients=[];sessions=[];schedule=[];save();toast(\'Reset\');render();}">FACTORY RESET</button></div></div>'
     +'<div class="cd" style="padding:16px;text-align:center;margin-top:10px;margin-bottom:16px"><button class="btn2" onclick="if(confirm(\'Sign out? Your data stays on this device.\')){var keys=Object.keys(localStorage).filter(function(k){return k.startsWith(\'fm_\');});keys.forEach(function(k){localStorage.removeItem(k);});sessionStorage.clear();location.reload();}" style="width:100%;color:var(--danger);border-color:rgba(216,120,120,.15)">SIGN OUT / RESET APP</button></div>'
     +'<div class="cd" style="padding:14px;margin-top:18px;text-align:center"><button class="btn2" onclick="sessionStorage.removeItem(\'fm_unlocked\');showLockScreen()" style="width:100%;padding:14px">LOCK & SIGN OUT</button></div>'
@@ -1228,7 +1241,7 @@ function renderMealPlanEdit(){
   function macroBar(pct,col){if(!pct)return"";var w=Math.min(pct,100);var over=pct>105;return '<div style="height:4px;background:var(--borderS);border-radius:2px;margin-top:4px;overflow:hidden"><div style="height:100%;width:'+w+'%;background:'+(over?"var(--danger)":col)+';border-radius:2px;transition:width .3s"></div></div>';}
   var html='<button class="btn2" onclick="_editMealPlan=null;render()" style="margin-bottom:14px">\u2039 Back</button>'
     +'<div class="cd" style="padding:14px;margin-bottom:14px"><div class="g2 field"><div><span class="lb">PLAN NAME</span><input id="mpN" value="'+esc(mp.name)+'" onchange="mpSet(\'name\',this.value)"></div><div><span class="lb">CLIENT</span><select onchange="mpSet(\'clientId\',this.value)">'+cOpts+'</select></div></div></div>'
-    +'<div class="cd" style="padding:14px;margin-bottom:14px;border:1px solid var(--accB)"><div style="display:flex;justify-content:space-around;text-align:center"><div style="flex:1"><div style="font-size:20px;font-weight:800;color:'+(tgt.cal>0&&calPct>105?"var(--danger)":"var(--acc)")+';font-family:var(--mono)">'+tot.cal+'</div>'+(tgt.cal>0?'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">/ '+tgt.cal+'</div>':'')+'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">CALORIES</div>'+macroBar(calPct,"var(--acc)")+'</div><div style="flex:1"><div style="font-size:18px;font-weight:700;color:'+(tgt.p>0&&pPct>105?"var(--danger)":"var(--success)")+';font-family:var(--mono)">'+tot.p+'g</div>'+(tgt.p>0?'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">/ '+tgt.p+'g</div>':'')+'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">PROTEIN</div>'+macroBar(pPct,"var(--success)")+'</div><div style="flex:1"><div style="font-size:18px;font-weight:700;color:'+(tgt.c>0&&cPct>105?"var(--danger)":"var(--warn)")+';font-family:var(--mono)">'+tot.c+'g</div>'+(tgt.c>0?'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">/ '+tgt.c+'g</div>':'')+'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">CARBS</div>'+macroBar(cPct,"var(--warn)")+'</div><div style="flex:1"><div style="font-size:18px;font-weight:700;color:'+(tgt.f>0&&fPct>105?"var(--danger)":"#cc88ee")+';font-family:var(--mono)">'+tot.f+'g</div>'+(tgt.f>0?'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">/ '+tgt.f+'g</div>':'')+'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">FAT</div>'+macroBar(fPct,"#cc88ee")+'</div></div></div>'
+    +'<div class="cd" style="padding:14px;margin-bottom:14px;border:1px solid var(--accB)"><div style="display:flex;justify-content:space-around;text-align:center"><div style="flex:1"><div style="font-size:20px;font-weight:800;color:'+(tgt.cal>0&&calPct>105?"var(--danger)":"var(--acc)")+';font-family:var(--mono)">'+tot.cal+'</div>'+(tgt.cal>0?'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">/ '+tgt.cal+'</div>':'')+'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">CALORIES</div>'+macroBar(calPct,"var(--acc)")+'</div><div style="flex:1"><div style="font-size:18px;font-weight:700;color:'+(tgt.p>0&&pPct>105?"var(--danger)":"var(--success)")+';font-family:var(--mono)">'+tot.p+'g</div>'+(tgt.p>0?'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">/ '+tgt.p+'g</div>':'')+'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">PROTEIN</div>'+macroBar(pPct,"var(--success)")+'</div><div style="flex:1"><div style="font-size:18px;font-weight:700;color:'+(tgt.c>0&&cPct>105?"var(--danger)":"var(--warn)")+';font-family:var(--mono)">'+tot.c+'g</div>'+(tgt.c>0?'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">/ '+tgt.c+'g</div>':'')+'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">CARBS</div>'+macroBar(cPct,"var(--warn)")+'</div><div style="flex:1"><div style="font-size:18px;font-weight:700;color:'+(tgt.f>0&&fPct>105?"var(--danger)":"#c87070")+';font-family:var(--mono)">'+tot.f+'g</div>'+(tgt.f>0?'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">/ '+tgt.f+'g</div>':'')+'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">FAT</div>'+macroBar(fPct,"#c87070")+'</div></div></div>'
     +'<div class="cd" style="padding:14px;margin-bottom:14px"><div onclick="var tf=document.getElementById(\'targetFields\');tf.style.display=tf.style.display===\'none\'?\'block\':\'none\'" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center"><span class="sl" style="margin:0">MACRO TARGETS</span><span style="font-size:10px;color:var(--dm)">\u25bc</span></div><div id="targetFields" style="display:'+(tgt.cal>0?"block":"none")+';margin-top:12px"><div class="g4"><div><span class="lb">CALORIES</span><input type="number" min="0" value="'+(tgt.cal||"")+'" onchange="mpSetTarget(\'cal\',this.value)" placeholder="\u2014" style="text-align:center;font-size:13px"></div><div><span class="lb">PROTEIN (g)</span><input type="number" min="0" value="'+(tgt.p||"")+'" onchange="mpSetTarget(\'p\',this.value)" placeholder="\u2014" style="text-align:center;font-size:13px"></div><div><span class="lb">CARBS (g)</span><input type="number" min="0" value="'+(tgt.c||"")+'" onchange="mpSetTarget(\'c\',this.value)" placeholder="\u2014" style="text-align:center;font-size:13px"></div><div><span class="lb">FAT (g)</span><input type="number" min="0" value="'+(tgt.f||"")+'" onchange="mpSetTarget(\'f\',this.value)" placeholder="\u2014" style="text-align:center;font-size:13px"></div></div><div style="display:flex;gap:4px;margin-top:8px;flex-wrap:wrap"><div class="chip" onclick="mpQuickTarget(2000,180,200,60)" style="font-size:9px">2000cal Cut</div><div class="chip" onclick="mpQuickTarget(2500,220,250,70)" style="font-size:9px">2500cal Maintain</div><div class="chip" onclick="mpQuickTarget(3000,250,320,80)" style="font-size:9px">3000cal Bulk</div><div class="chip" onclick="mpQuickTarget(3500,280,380,90)" style="font-size:9px">3500cal Mass</div></div></div></div>';
   for(var m=0;m<mp.meals.length;m++){var meal=mp.meals[m],mt=calcMealTotals(meal);
     html+='<div class="cd" style="padding:14px;margin-bottom:8px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><input value="'+esc(meal.name)+'" onchange="mealName('+m+',this.value)" style="font-size:14px;font-weight:700;border:none;background:none;color:var(--wh);padding:0;flex:1"><span style="font-size:9px;color:var(--acc);font-family:var(--mono)">'+mt.cal+'cal \u00b7 '+mt.p+'p</span><span style="font-size:14px;color:var(--danger);cursor:pointer;margin-left:8px" onclick="rmMeal('+m+')">\u2715</span></div>';
@@ -1239,7 +1252,8 @@ function renderMealPlanEdit(){
     for(var ci2=0;ci2<cats.length;ci2++){html+='<optgroup label="'+cats[ci2][1]+'">';for(var d=0;d<FOOD_DB.length;d++){if(FOOD_DB[d].cat===cats[ci2][0])html+='<option value="'+d+'">'+FOOD_DB[d].n+' ('+FOOD_DB[d].unit+(FOOD_DB[d].ck?' ck':'')+')</option>';}html+='</optgroup>';}
     html+='</select></div></div>';}
   html+='<button class="btn2" onclick="addMeal()" style="width:100%;margin-top:4px">+ ADD MEAL</button>'
-    +'<button class="btn-danger" style="margin-top:16px" onclick="delPlan()">DELETE PLAN</button>';
+    +'<button class="btn" style="margin-top:16px" onclick="generateMealPlanPDF(\''+mp.id+'\')">GENERATE PDF</button>'
+    +'<button class="btn-danger" style="margin-top:8px" onclick="delPlan()">DELETE PLAN</button>';
   return html;
 }
 function mpSet(k,v){var mp=mealPlans.find(function(p){return p.id===_editMealPlan;});if(mp){mp[k]=v;save();}}
@@ -1314,7 +1328,9 @@ var _clientFilter="All";
 function renderClientProgram(c,idx){
   if(!c.program)c.program={days:[]};
   var p=c.program;
-  var html='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><span class="sl" style="margin:0">TRAINING PROGRAM</span><button class="btn2" onclick="addProgDay('+idx+')" style="padding:5px 10px;font-size:8px">+ ADD DAY</button></div>';
+  var html='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><span class="sl" style="margin:0">TRAINING PROGRAM</span><div style="display:flex;gap:4px"><button class="btn2" onclick="addProgDay('+idx+')" style="padding:5px 10px;font-size:8px">+ ADD DAY</button>'+(p.days.length?'<button class="btn2" onclick="generateProgramPDF('+idx+')" style="padding:5px 10px;font-size:8px">PDF</button>':'')+'</div></div>';
+  // Duration & schedule info
+  html+='<div class="cd" style="padding:12px;margin-bottom:10px"><div class="g3"><div><span class="lb">START DATE</span><input type="date" value="'+(p.startDate||"")+'" onchange="setProgMeta('+idx+',\'startDate\',this.value)" style="font-size:11px;padding:6px"></div><div><span class="lb">WEEKS</span><input type="number" min="1" max="52" value="'+(p.weeks||"")+'" placeholder="—" onchange="setProgMeta('+idx+',\'weeks\',this.value)" style="font-size:11px;padding:6px;text-align:center"></div><div><span class="lb">SPLIT</span><select onchange="setProgMeta('+idx+',\'split\',this.value)" style="font-size:11px;padding:6px"><option value=""'+(!(p.split)?" selected":"")+'>—</option><option value="3-day"'+(p.split==="3-day"?" selected":"")+'>3-Day</option><option value="4-day"'+(p.split==="4-day"?" selected":"")+'>4-Day</option><option value="5-day"'+(p.split==="5-day"?" selected":"")+'>5-Day</option><option value="6-day"'+(p.split==="6-day"?" selected":"")+'>6-Day</option><option value="PPL"'+(p.split==="PPL"?" selected":"")+'>PPL</option><option value="Upper/Lower"'+(p.split==="Upper/Lower"?" selected":"")+'>Upper/Lower</option><option value="Bro Split"'+(p.split==="Bro Split"?" selected":"")+'>Bro Split</option></select></div></div></div>';
   if(!p.days.length)return html+'<div class="cd" style="padding:24px;text-align:center;border:1px dashed var(--border)"><div style="color:var(--dm);margin-bottom:8px">No program built yet</div><button class="btn2" onclick="addProgDay('+idx+')">BUILD PROGRAM</button></div>';
   for(var d=0;d<p.days.length;d++){
     var day=p.days[d];
@@ -1325,9 +1341,11 @@ function renderClientProgram(c,idx){
     }
     html+='<button class="btn2" onclick="addProgEx('+idx+','+d+')" style="margin-top:8px;width:100%;padding:6px;font-size:9px">+ ADD EXERCISE</button></div>';
   }
-  html+='<button class="btn" onclick="assignProgToSession('+idx+')" style="margin-top:12px">ASSIGN TO NEXT SESSION</button>';
+  html+='<button class="btn" onclick="assignProgToSession('+idx+')" style="margin-top:12px">ASSIGN TO NEXT SESSION</button>'
+    +'<button class="btn2" onclick="generateFullPrepPDF('+idx+')" style="margin-top:8px;width:100%">GENERATE FULL PREP PDF</button>';
   return html;
 }
+function setProgMeta(ci,key,val2){if(!clients[ci].program)clients[ci].program={days:[]};clients[ci].program[key]=val2;save();}
 function addProgDay(ci){var c2=clients[ci];if(!c2.program)c2.program={days:[]};c2.program.days.push({name:"Day "+(c2.program.days.length+1),exercises:[]});save();render();}
 function rmProgDay(ci,di){clients[ci].program.days.splice(di,1);save();render();}
 function progDayName(ci,di,n){clients[ci].program.days[di].name=n;save();}
@@ -1451,6 +1469,103 @@ function startSMSChecker(){
   if(_smsCheckInterval)clearInterval(_smsCheckInterval);
   checkAndSendReminders();
   _smsCheckInterval=setInterval(checkAndSendReminders,60000);
+}
+// ── THEME ──
+function setTheme(t){LS.set("theme",t);applyTheme();render();}
+function applyTheme(){var t=LS.get("theme","gold");if(t==="crimson")document.body.classList.add("theme-crimson");else document.body.classList.remove("theme-crimson");}
+applyTheme();
+// ── PDF GENERATION ──
+function generateMealPlanPDF(mpId){
+  var mp=mealPlans.find(function(p){return p.id===mpId;});if(!mp){toast("Plan not found");return;}
+  var cl=clientById(mp.clientId);var tot=calcPlanTotals(mp);var tgt=mp.targets||{cal:0,p:0,c:0,f:0};
+  var accent=LS.get("theme","gold")==="crimson"?"#D03030":"#D4A830";
+  var html=pdfShell(accent,"MEAL PLAN","Prepared for: "+(cl?cl.name:"Client"),mp.name,function(){
+    var body='<table style="width:100%;border-collapse:collapse;margin-bottom:24px"><tr style="background:'+accent+'22"><td style="padding:10px 14px;font-weight:700;color:'+accent+';font-size:14px">DAILY TOTALS</td><td style="padding:10px 14px;text-align:center"><div style="font-size:22px;font-weight:800;color:'+accent+'">'+tot.cal+'</div><div style="font-size:9px;color:#888">CALORIES'+(tgt.cal>0?" / "+tgt.cal:"")+'</div></td><td style="padding:10px 14px;text-align:center"><div style="font-size:18px;font-weight:700;color:#4a4">'+tot.p+'g</div><div style="font-size:9px;color:#888">PROTEIN</div></td><td style="padding:10px 14px;text-align:center"><div style="font-size:18px;font-weight:700;color:#b88030">'+tot.c+'g</div><div style="font-size:9px;color:#888">CARBS</div></td><td style="padding:10px 14px;text-align:center"><div style="font-size:18px;font-weight:700;color:#c87070">'+tot.f+'g</div><div style="font-size:9px;color:#888">FAT</div></td></tr></table>';
+    for(var m=0;m<mp.meals.length;m++){var meal=mp.meals[m],mt=calcMealTotals(meal);
+      body+='<div style="margin-bottom:20px"><div style="background:#111;border-left:3px solid '+accent+';padding:10px 14px;display:flex;justify-content:space-between;align-items:center"><span style="font-weight:700;font-size:14px;color:#fff">'+esc(meal.name)+'</span><span style="font-size:11px;color:'+accent+'">'+mt.cal+' cal &middot; '+mt.p+'p &middot; '+mt.c+'c &middot; '+mt.f+'f</span></div><table style="width:100%;border-collapse:collapse">';
+      for(var f=0;f<meal.foods.length;f++){var fd=meal.foods[f],db=FOOD_DB[fd.di]||{};var fcal=Math.round((db.cal||0)*(fd.qty/(db.per||1)));
+        body+='<tr style="border-bottom:1px solid #1a1a1a"><td style="padding:8px 14px;color:#ddd;font-size:12px">'+esc(fd.name)+'</td><td style="padding:8px 14px;text-align:right;color:#999;font-size:12px;font-family:monospace">'+fd.qty+' '+fd.unit+'</td><td style="padding:8px 14px;text-align:right;color:#aaa;font-size:12px;font-family:monospace">'+fcal+' cal</td></tr>';}
+      body+='</table></div>';}
+    if(cl&&cl.supplements&&cl.supplements.length){
+      body+='<div style="margin-top:24px;border-top:1px solid #222;padding-top:16px"><div style="font-size:11px;font-weight:700;color:'+accent+';letter-spacing:.15em;margin-bottom:10px">SUPPLEMENT PROTOCOL</div><table style="width:100%;border-collapse:collapse">';
+      for(var si=0;si<cl.supplements.length;si++){var sp=cl.supplements[si];body+='<tr style="border-bottom:1px solid #1a1a1a"><td style="padding:8px 14px;color:#ddd;font-size:12px">'+esc(sp.name)+'</td><td style="padding:8px;color:#999;font-size:11px">'+esc(sp.dose)+'</td><td style="padding:8px;color:#999;font-size:11px">'+esc(sp.timing)+'</td></tr>';}
+      body+='</table></div>';}
+    return body;
+  });
+  openPDF(html,(cl?cl.name.replace(/\s+/g,"_")+"_":"")+"Meal_Plan");
+}
+function generateProgramPDF(idx){
+  var c=clients[idx];if(!c||!c.program||!c.program.days.length){toast("Build program first");return;}
+  var p=c.program;var accent=LS.get("theme","gold")==="crimson"?"#D03030":"#D4A830";
+  var durInfo=p.startDate&&p.weeks?p.weeks+" Week Program &middot; Starting "+fmtDate(p.startDate):"Training Program";
+  var html=pdfShell(accent,"TRAINING PROGRAM","Prepared for: "+c.name,durInfo,function(){
+    var body='';
+    for(var d=0;d<p.days.length;d++){var day=p.days[d];
+      body+='<div style="margin-bottom:24px"><div style="background:#111;border-left:3px solid '+accent+';padding:10px 14px;margin-bottom:2px"><span style="font-weight:700;font-size:14px;color:#fff">'+esc(day.name)+'</span></div><table style="width:100%;border-collapse:collapse"><tr style="background:#0d0d0d"><th style="padding:8px 14px;text-align:left;color:'+accent+';font-size:10px;letter-spacing:.1em">EXERCISE</th><th style="padding:8px 14px;text-align:right;color:'+accent+';font-size:10px;letter-spacing:.1em">SETS x REPS</th></tr>';
+      for(var e=0;e<day.exercises.length;e++){var ex=day.exercises[e];
+        body+='<tr style="border-bottom:1px solid #1a1a1a"><td style="padding:10px 14px;color:#ddd;font-size:13px">'+esc(ex.name)+'</td><td style="padding:10px 14px;text-align:right;color:#ccc;font-size:13px;font-family:monospace">'+esc(ex.scheme)+'</td></tr>';}
+      body+='</table></div>';}
+    return body;
+  });
+  openPDF(html,c.name.replace(/\s+/g,"_")+"_Program");
+}
+function generateFullPrepPDF(idx){
+  var c=clients[idx];if(!c){toast("Client not found");return;}
+  var accent=LS.get("theme","gold")==="crimson"?"#D03030":"#D4A830";
+  var subtitle="Comprehensive Prep Package";
+  if(c.prepStart&&c.prepWeeks)subtitle=c.prepWeeks+" Week Prep &middot; Starting "+fmtDate(c.prepStart);
+  var html=pdfShell(accent,"FULL PREP PACKAGE","Prepared for: "+c.name,subtitle,function(){
+    var body='';
+    // Client info
+    var info=[["Phone",c.phone],["Email",c.email],["Goals",c.goals],["Level",c.level],["Injuries",c.injuries]].filter(function(r){return r[1];});
+    if(info.length){body+='<div style="margin-bottom:24px"><div style="font-size:11px;font-weight:700;color:'+accent+';letter-spacing:.15em;margin-bottom:10px">CLIENT INFO</div><table style="width:100%;border-collapse:collapse">';for(var i=0;i<info.length;i++)body+='<tr style="border-bottom:1px solid #1a1a1a"><td style="padding:8px 14px;color:#888;font-size:11px;width:100px">'+info[i][0]+'</td><td style="padding:8px 14px;color:#ddd;font-size:12px">'+esc(info[i][1])+'</td></tr>';body+='</table></div>';}
+    // Training program
+    var p=c.program;
+    if(p&&p.days.length){
+      body+='<div style="margin-bottom:24px;border-top:1px solid #222;padding-top:16px"><div style="font-size:11px;font-weight:700;color:'+accent+';letter-spacing:.15em;margin-bottom:12px">TRAINING PROGRAM'+(p.weeks?" &middot; "+p.weeks+" WEEKS":"")+'</div>';
+      for(var d=0;d<p.days.length;d++){var day=p.days[d];
+        body+='<div style="margin-bottom:16px"><div style="background:#111;border-left:3px solid '+accent+';padding:8px 14px;margin-bottom:2px;font-weight:700;font-size:13px;color:#fff">'+esc(day.name)+'</div><table style="width:100%;border-collapse:collapse">';
+        for(var e=0;e<day.exercises.length;e++){var ex=day.exercises[e];body+='<tr style="border-bottom:1px solid #1a1a1a"><td style="padding:7px 14px;color:#ddd;font-size:12px">'+esc(ex.name)+'</td><td style="padding:7px 14px;text-align:right;color:#ccc;font-size:12px;font-family:monospace">'+esc(ex.scheme)+'</td></tr>';}
+        body+='</table></div>';}
+      body+='</div>';}
+    // Meal plans
+    var cPlans=mealPlans.filter(function(mp){return mp.clientId===c.id;});
+    for(var pi=0;pi<cPlans.length;pi++){var mp=cPlans[pi],tot=calcPlanTotals(mp);
+      body+='<div style="margin-bottom:24px;border-top:1px solid #222;padding-top:16px"><div style="font-size:11px;font-weight:700;color:'+accent+';letter-spacing:.15em;margin-bottom:4px">MEAL PLAN: '+esc(mp.name).toUpperCase()+'</div><div style="font-size:11px;color:#888;margin-bottom:12px">'+tot.cal+' cal &middot; '+tot.p+'g protein &middot; '+tot.c+'g carbs &middot; '+tot.f+'g fat</div>';
+      for(var m=0;m<mp.meals.length;m++){var meal=mp.meals[m],mt=calcMealTotals(meal);
+        body+='<div style="margin-bottom:12px"><div style="background:#111;border-left:3px solid '+accent+';padding:8px 14px;display:flex;justify-content:space-between"><span style="font-weight:600;color:#fff;font-size:12px">'+esc(meal.name)+'</span><span style="font-size:10px;color:'+accent+'">'+mt.cal+' cal</span></div><table style="width:100%;border-collapse:collapse">';
+        for(var f=0;f<meal.foods.length;f++){var fd=meal.foods[f];body+='<tr style="border-bottom:1px solid #151515"><td style="padding:6px 14px;color:#ccc;font-size:11px">'+esc(fd.name)+'</td><td style="padding:6px 14px;text-align:right;color:#999;font-size:11px">'+fd.qty+' '+fd.unit+'</td></tr>';}
+        body+='</table></div>';}
+      body+='</div>';}
+    // Supplements
+    if(c.supplements&&c.supplements.length){
+      body+='<div style="margin-bottom:24px;border-top:1px solid #222;padding-top:16px"><div style="font-size:11px;font-weight:700;color:'+accent+';letter-spacing:.15em;margin-bottom:10px">SUPPLEMENT PROTOCOL</div><table style="width:100%;border-collapse:collapse">';
+      for(var si=0;si<c.supplements.length;si++){var sp=c.supplements[si];body+='<tr style="border-bottom:1px solid #1a1a1a"><td style="padding:8px 14px;color:#ddd;font-size:12px">'+esc(sp.name)+'</td><td style="padding:8px;color:#999;font-size:11px">'+esc(sp.dose)+'</td><td style="padding:8px;color:#999;font-size:11px">'+esc(sp.timing)+'</td></tr>';}
+      body+='</table></div>';}
+    return body;
+  });
+  openPDF(html,c.name.replace(/\s+/g,"_")+"_Full_Prep");
+}
+function pdfShell(accent,docType,forLine,subtitle,contentFn){
+  return '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>'+docType+' - Big Mike Ely Coaching</title><style>@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Rajdhani:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap");*{margin:0;padding:0;box-sizing:border-box}body{background:#060606;color:#e8e0d0;font-family:"Rajdhani",sans-serif;min-height:100vh}@media print{body{background:#060606!important}*{color-adjust:exact;-webkit-print-color-adjust:exact;print-color-adjust:exact}}</style></head><body><div style="max-width:700px;margin:0 auto;padding:40px 30px">'
+    +'<div style="text-align:center;margin-bottom:36px;padding-bottom:24px;border-bottom:1px solid #222">'
+    +'<div style="font-family:Cinzel,serif;font-size:42px;font-weight:900;letter-spacing:.08em;margin-bottom:4px"><span style="background:linear-gradient(135deg,'+accent+'80,'+accent+','+accent+'cc,'+accent+','+accent+'80);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">M</span></div>'
+    +'<div style="font-size:8px;font-weight:700;letter-spacing:.4em;color:'+accent+';font-family:IBM Plex Mono,monospace;margin-bottom:4px">IFBB PRO</div>'
+    +'<div style="font-family:Cinzel,serif;font-size:22px;font-weight:700;letter-spacing:.12em;color:#f0e8d0;margin-bottom:12px">BIG MIKE ELY</div>'
+    +'<div style="font-size:10px;font-weight:700;letter-spacing:.2em;color:'+accent+';font-family:IBM Plex Mono,monospace;margin-bottom:6px">'+docType+'</div>'
+    +'<div style="font-size:13px;color:#999;font-family:Rajdhani,sans-serif">'+forLine+'</div>'
+    +(subtitle?'<div style="font-size:11px;color:#666;font-family:IBM Plex Mono,monospace;margin-top:4px">'+subtitle+'</div>':'')
+    +'</div>'
+    +contentFn()
+    +'<div style="text-align:center;margin-top:40px;padding-top:20px;border-top:1px solid #222"><div style="font-size:8px;color:#444;font-family:IBM Plex Mono,monospace;letter-spacing:.3em">IFBB PRO BIG MIKE ELY\'S COACHING LAB</div><div style="font-size:8px;color:#333;font-family:IBM Plex Mono,monospace;margin-top:4px">Generated '+new Date().toLocaleDateString()+'</div></div>'
+    +'</div></body></html>';
+}
+function openPDF(html,filename){
+  var w=window.open("","_blank");
+  if(!w){toast("Enable popups to generate PDFs");return;}
+  w.document.write(html);w.document.close();
+  w.document.title=filename;
+  setTimeout(function(){w.print();},500);
 }
 // ── BOOT ──
 (function boot(){
