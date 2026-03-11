@@ -178,7 +178,7 @@ body.theme-crimson{
   <button onclick="toggleStopwatch()" style="width:46px;height:46px;border-radius:50%;background:var(--accS);border:1.5px solid var(--accB);color:var(--acc);font-size:18px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.4);cursor:pointer" title="Stopwatch">&#9201;</button>
 </div>
 <script>
-var VERSION="5.4";
+var VERSION="5.5";
 var DN=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 var MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 var LS={get:function(k,d){try{var v=JSON.parse(localStorage.getItem("fm_"+k));return v!=null?v:d;}catch(e){return d;}},set:function(k,v){try{localStorage.setItem("fm_"+k,JSON.stringify(v));}catch(e){if(e.name==="QuotaExceededError"){toast("\u26a0 Storage full! Export backup now.",5000);}}},space:function(){try{var total=0;for(var k in localStorage){if(localStorage.hasOwnProperty(k))total+=localStorage[k].length;}return{used:Math.round(total/1024),max:5120,pct:Math.round((total/1024/5120)*100)};}catch(e){return{used:0,max:5120,pct:0};}}};
@@ -258,6 +258,7 @@ function fmtDate(iso){if(!iso)return"\u2014";var d=new Date(iso+"T12:00:00");ret
 function is24Hr(){return LS.get("timeFormat","12")==="24";}
 function fmtTimeStr(t){if(!t)return"TBD";var p=t.split(":"),hr=parseInt(p[0]);if(is24Hr())return(hr<10?"0"+hr:hr)+":"+p[1];var ap=hr>=12?"PM":"AM",h12=hr===0?12:hr>12?hr-12:hr;return h12+":"+p[1]+" "+ap;}
 function todayISO(){return new Date().toISOString().split("T")[0];}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).substr(2,5);}
 function clientById(id){return clients.find(function(c){return c.id===id;});}
 function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
 function pickChip(el_,hiddenId){el_.parentElement.querySelectorAll(".chip").forEach(function(c){c.classList.remove("on");});el_.classList.add("on");if(hiddenId){var h=el(hiddenId);if(h)h.value=el_.textContent.trim();}}
@@ -290,7 +291,7 @@ function tryUnlock(){var inp=el("pinInput"),entered=inp?inp.value.trim():"";if(e
 function changePIN(){var cur=prompt("Current PIN:");if(cur!==getPIN()){toast("Incorrect");return;}var np=prompt("New PIN (4-8 digits):");if(!np||np.length<4||!/^\d+$/.test(np)){toast("Must be 4-8 digits");return;}var c2=prompt("Confirm:");if(c2!==np){toast("Mismatch");return;}setPIN(np);toast("\u2713 PIN updated");}
 function openQNote(){var m=el("qnoteModal");m.style.display="flex";var sel=el("qnoteClient");sel.innerHTML='<option value="">Select client...</option>';for(var i=0;i<clients.length;i++)sel.innerHTML+='<option value="'+clients[i].id+'">'+esc(clients[i].name)+'</option>';setTimeout(function(){var t=el("qnoteText");if(t)t.focus();},100);}
 function closeQNote(){el("qnoteModal").style.display="none";var t=el("qnoteText");if(t)t.value="";}
-function saveQNote(){var cId=val("qnoteClient"),txt=val("qnoteText");if(!txt){toast("Write something first");return;}if(!cId){toast("Select a client first");return;}var c=clientById(cId);if(!c){toast("Client not found");return;}var note={id:Date.now().toString(),text:txt,date:todayISO(),created_at:new Date().toISOString()};if(!c.quickNotes)c.quickNotes=[];c.quickNotes.push(note);save();closeQNote();toast("\u2713 Note saved for "+c.name);}
+function saveQNote(){var cId=val("qnoteClient"),txt=val("qnoteText");if(!txt){toast("Write something first");return;}if(!cId){toast("Select a client first");return;}var c=clientById(cId);if(!c){toast("Client not found");return;}var note={id:uid(),text:txt,date:todayISO(),created_at:new Date().toISOString()};if(!c.quickNotes)c.quickNotes=[];c.quickNotes.push(note);save();closeQNote();toast("\u2713 Note saved for "+c.name);}
 function openQNoteForClient(cid){openQNote();setTimeout(function(){var s=el("qnoteClient");if(s)s.value=cid;},50);}
 
 var TABS=[
@@ -480,7 +481,7 @@ function clientFormFields(c){
 function renderClientAdd(){return '<button class="btn2" onclick="pop()" style="margin-bottom:14px">\u2039 Back</button><div class="pt">New Client</div>'+clientFormFields()+'<button class="btn" style="margin-top:16px" onclick="saveNewClient()">SAVE CLIENT</button>';}
 function renderClientEdit(){var c=clients[currentView.data.clientIdx];if(!c){pop();return"";}return '<button class="btn2" onclick="pop()" style="margin-bottom:14px">\u2039 Back</button><div class="pt">Edit Client</div>'+clientFormFields(c)+'<button class="btn" style="margin-top:16px" onclick="saveEditClient()">UPDATE CLIENT</button>';}
 function readClientForm(){return{name:val("cN"),phone:val("cP"),email:val("cE"),clientType:val("cCTv"),services:val("cSv"),rate:val("cR"),age:val("cA"),weight:val("cWt"),height:val("cHt"),level:val("cLv"),duration:val("cDv"),billing:val("cBv"),billingAmt:val("cBA"),billingMonths:val("cBM"),prepWeeks:val("cPW"),prepStart:val("cPS"),goals:val("cG"),injuries:val("cI"),medical:val("cM"),notes:val("cO")};}
-function saveNewClient(){var data=readClientForm();if(!data.name){toast("Name is required");return;}data.id=Date.now().toString();data.created_at=new Date().toISOString();clients.push(data);save();toast("\u2713 "+data.name+" added");navStack=[];currentView={tab:"clients",view:"detail",data:{clientIdx:clients.length-1}};render();}
+function saveNewClient(){var data=readClientForm();if(!data.name){toast("Name is required");return;}data.id=uid();data.created_at=new Date().toISOString();clients.push(data);save();toast("\u2713 "+data.name+" added");navStack=[];currentView={tab:"clients",view:"detail",data:{clientIdx:clients.length-1}};render();}
 function saveEditClient(){var c=clients[currentView.data.clientIdx];if(!c)return;var data=readClientForm();if(!data.name){toast("Name is required");return;}Object.assign(c,data);save();toast("\u2713 Updated");pop();}
 
 function renderClientDetail(){
@@ -557,7 +558,7 @@ function renderClientProgress(c,idx){
   return html;
 }
 function toggleMeasForm(){var f=el("measForm");if(f)f.style.display=f.style.display==="none"?"block":"none";}
-function saveMeasurement(idx){var c=clients[idx];if(!c)return;var FIELDS=["Weight (lbs)","Body Fat %","Waist (in)","Hips (in)","Chest (in)","Left Arm (in)","Right Arm (in)","Left Thigh (in)","Right Thigh (in)"];var fields=[],hasAny=false;for(var i=0;i<FIELDS.length;i++){var v=(el("measF"+i)||{}).value||"";fields.push(v);if(v)hasAny=true;}if(!hasAny){toast("Enter at least one measurement");return;}if(!c.measurements)c.measurements=[];c.measurements.push({id:Date.now().toString(),date:val("measDate")||todayISO(),fields:fields});save();toast("\u2713 Measurements saved");renderClientDetailInPlace();}
+function saveMeasurement(idx){var c=clients[idx];if(!c)return;var FIELDS=["Weight (lbs)","Body Fat %","Waist (in)","Hips (in)","Chest (in)","Left Arm (in)","Right Arm (in)","Left Thigh (in)","Right Thigh (in)"];var fields=[],hasAny=false;for(var i=0;i<FIELDS.length;i++){var v=(el("measF"+i)||{}).value||"";fields.push(v);if(v)hasAny=true;}if(!hasAny){toast("Enter at least one measurement");return;}if(!c.measurements)c.measurements=[];c.measurements.push({id:uid(),date:val("measDate")||todayISO(),fields:fields});save();toast("\u2713 Measurements saved");renderClientDetailInPlace();}
 function deleteMeasurement(idx,mid){var c=clients[idx];if(!c||!c.measurements)return;c.measurements=c.measurements.filter(function(m){return m.id!==mid;});save();renderClientDetailInPlace();}
 function deleteQNote(cidx,nid){var c=clients[parseInt(cidx)];if(!c||!c.quickNotes)return;var removed=c.quickNotes.find(function(n){return n.id===nid;});c.quickNotes=c.quickNotes.filter(function(n){return n.id!==nid;});save();toast("Note deleted \u00b7 ",2600,function(){if(removed){c.quickNotes.push(removed);save();render();}});render();}
 function deleteClient(idx){var c=clients[idx];if(!c)return;if(!confirm("Delete "+c.name+"?\n\nSession history will be preserved but quick notes will be lost."))return;var id=c.id,name=c.name;clients=clients.filter(function(x){return x.id!==id;});sessions.forEach(function(s){if(s.clientId===id)s.clientName=name+" (removed)";});schedule.forEach(function(s){if(s.clientId===id){s.clientName=name+" (removed)";s.clientId="";}});save();toast("Client removed");navStack=[];currentView={tab:"clients",view:"main",data:{}};render();}
@@ -679,7 +680,8 @@ function addExercise(mode){
   if(mode==="superset")exInputs='<div class="exGroup"><input class="xN" list="exHistory" placeholder="Exercise A" style="margin-bottom:6px;font-weight:600"><div class="xSets"></div><button class="btn2" onclick="addSet(this.closest(\'.exGroup\'))" style="margin-top:4px;padding:4px 10px;font-size:8px">+ SET</button></div><div style="text-align:center;font-size:9px;color:var(--dm);font-family:var(--mono);margin:8px 0;letter-spacing:.1em">PAIRED WITH</div><div class="exGroup"><input class="xN" list="exHistory" placeholder="Exercise B" style="margin-bottom:6px;font-weight:600"><div class="xSets"></div><button class="btn2" onclick="addSet(this.closest(\'.exGroup\'))" style="margin-top:4px;padding:4px 10px;font-size:8px">+ SET</button></div>';
   if(mode==="giant")exInputs='<div class="exGroup"><input class="xN" list="exHistory" placeholder="Exercise A" style="margin-bottom:6px;font-weight:600"><div class="xSets"></div><button class="btn2" onclick="addSet(this.closest(\'.exGroup\'))" style="margin-top:4px;padding:4px 10px;font-size:8px">+ SET</button></div><div style="text-align:center;font-size:8px;color:var(--dm);font-family:var(--mono);margin:6px 0">\u2193</div><div class="exGroup"><input class="xN" list="exHistory" placeholder="Exercise B" style="margin-bottom:6px;font-weight:600"><div class="xSets"></div><button class="btn2" onclick="addSet(this.closest(\'.exGroup\'))" style="margin-top:4px;padding:4px 10px;font-size:8px">+ SET</button></div><div style="text-align:center;font-size:8px;color:var(--dm);font-family:var(--mono);margin:6px 0">\u2193</div><div class="exGroup"><input class="xN" list="exHistory" placeholder="Exercise C" style="margin-bottom:6px;font-weight:600"><div class="xSets"></div><button class="btn2" onclick="addSet(this.closest(\'.exGroup\'))" style="margin-top:4px;padding:4px 10px;font-size:8px">+ SET</button></div><button class="btn2" onclick="addGiantExercise(this)" style="margin-top:6px;padding:4px 10px;font-size:8px;color:#c87070;border-color:rgba(200,112,112,.2)">+ ADD EXERCISE TO SET</button>';
   d.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:11px;font-weight:700;color:var(--acc);font-family:var(--mono)">EXERCISE '+_exCount+'</span>'+badge+'</div><span style="font-size:14px;color:var(--danger);cursor:pointer;padding:6px 10px" onclick="this.closest(\'.cd\').remove()">&#10005;</span></div>'+exInputs+'<div style="display:flex;gap:3px;margin-top:8px;flex-wrap:wrap"><div class="chip chip-tempo on" onclick="pickChip(this,\'\')">Normal</div><div class="chip chip-tempo" onclick="pickChip(this,\'\')">3s Ecc</div><div class="chip chip-tempo" onclick="pickChip(this,\'\')">Pause</div><div class="chip chip-tempo" onclick="pickChip(this,\'\')">Drop Set</div><div class="chip chip-tempo" onclick="pickChip(this,\'\')">Isometric</div></div><div style="display:flex;gap:6px;margin-top:10px"><input class="xNote" placeholder="Notes \u2014 cues, substitutions..." style="flex:1;font-size:12px"><input class="xRest" placeholder="Rest" style="width:70px;font-size:12px;text-align:center"></div>';
-  el("exList").appendChild(d);
+  var exList=el("exList");if(!exList)return;
+  exList.appendChild(d);
   d.querySelectorAll(".exGroup").forEach(function(g){addSet(g);});
   updateExCount();
 }
@@ -756,7 +758,7 @@ function doSaveSession(quick){
   var status=val("sSt")||"complete";
   var exercises=quick?[]:collectExercises();
   if(!quick&&exercises.length){var unnamed=exercises.filter(function(e){return !e.name||e.name.trim()==="";});if(unnamed.length){toast("\u26a0 "+unnamed.length+" exercise"+(unnamed.length>1?"s":"")+" missing names - check your entries");return;}}
-  var session={id:Date.now().toString(),clientId:cId,clientName:cl?cl.name:"",date:val("sD")||todayISO(),type:val("sT")||"Training",duration:val("sDu")||"60",rate:rate,exercises:exercises,notes:val("sN"),energy:_sessionRating,nextPlan:val("sNx"),status:status,paid:false,created_at:new Date().toISOString()};
+  var session={id:uid(),clientId:cId,clientName:cl?cl.name:"",date:val("sD")||todayISO(),type:val("sT")||"Training",duration:val("sDu")||"60",rate:rate,exercises:exercises,notes:val("sN"),energy:_sessionRating,nextPlan:val("sNx"),status:status,paid:false,created_at:new Date().toISOString()};
   stopDraftTimer();clearDraft();
   sessions.push(session);
   var dl=el("exHistory");if(dl)dl.remove();
@@ -788,7 +790,7 @@ function renderExerciseSummary(ex){
 function saveAsTemplate(){
   var exercises=collectExercises();if(!exercises.length){toast("Add exercises first");return;}
   var name=prompt("Template name (e.g. 'Leg Day A', 'Upper Push'):");if(!name)return;
-  templates.push({id:Date.now().toString(),name:name,type:val("sT")||"Training",exercises:exercises,created_at:new Date().toISOString()});
+  templates.push({id:uid(),name:name,type:val("sT")||"Training",exercises:exercises,created_at:new Date().toISOString()});
   save();toast("\u2713 Template \u201c"+name+"\u201d saved");
 }
 function showTemplateLoader(){
@@ -924,7 +926,7 @@ function addToSchedule(){
   if(conflict&&!confirm("\u26a0 Time conflict: "+conflict.clientName+" is booked at "+fmtTimeStr(tyme)+" on "+dateStr+".\nDouble-book anyway?"))return;
   var totalWeeks=1,interval=1;if(rec==="Weekly"){totalWeeks=parseInt(val("schRecWeeks")||"4");interval=1;}else if(rec==="Biweekly"){totalWeeks=parseInt(val("schRecWeeks")||"8");interval=2;}
   var count=0;
-  for(var w=0;w<totalWeeks;w+=interval){var dd=new Date(baseDate);dd.setDate(dd.getDate()+(w*7));schedule.push({id:(Date.now()+w).toString(),clientId:cId,clientName:cl?cl.name:"",date:dd.toISOString().split("T")[0],time:tyme,type:val("schTy")||"Training",rate:val("schR")||(cl?cl.rate:"70"),status:"",created_at:new Date().toISOString()});count++;}
+  for(var w=0;w<totalWeeks;w+=interval){var dd=new Date(baseDate);dd.setDate(dd.getDate()+(w*7));schedule.push({id:uid(),clientId:cId,clientName:cl?cl.name:"",date:dd.toISOString().split("T")[0],time:tyme,type:val("schTy")||"Training",rate:val("schR")||(cl?cl.rate:"70"),status:"",created_at:new Date().toISOString()});count++;}
   save();toast("\u2713 "+count+" session"+(count>1?"s":"")+" scheduled");render();
 }
 function updateScheduled(id){var sched=schedule.find(function(s){return s.id===id;});if(!sched)return;var cId=val("schC"),c=clientById(cId);sched.clientId=cId;sched.clientName=c?c.name:sched.clientName;sched.date=val("schD")||sched.date;sched.time=val("schT")||sched.time;sched.type=val("schTy")||sched.type;sched.rate=val("schR")||sched.rate;save();toast("\u2713 Updated");pop();}
@@ -1226,7 +1228,7 @@ function renderMealPlans(){
     html+='<div class="cd cd-link" style="display:flex;align-items:center;gap:12px" onclick="_editMealPlan=\''+mp.id+'\';render()"><div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--wh)">'+esc(mp.name)+'</div><div style="font-size:10px;color:var(--dm);font-family:var(--mono)">'+(cl?esc(cl.name):"Unassigned")+' \u00b7 '+mp.meals.length+' meals</div><div style="font-size:10px;color:'+calColor+';font-family:var(--mono);margin-top:2px">'+tot.cal+' cal'+tgtStr+' \u00b7 '+tot.p+'p \u00b7 '+tot.c+'c \u00b7 '+tot.f+'f</div></div><div style="color:var(--dm)">\u203a</div></div>';}
   return html;
 }
-function newMealPlan(){var mp={id:Date.now().toString(),name:"New Meal Plan",clientId:"",meals:[],created_at:new Date().toISOString()};mealPlans.push(mp);save();_editMealPlan=mp.id;render();}
+function newMealPlan(){var mp={id:uid(),name:"New Meal Plan",clientId:"",meals:[],created_at:new Date().toISOString()};mealPlans.push(mp);save();_editMealPlan=mp.id;render();}
 function renderMealPlanEdit(){
   var mp=mealPlans.find(function(p){return p.id===_editMealPlan;});if(!mp){_editMealPlan=null;return renderMealPlans();}
   var tot=calcPlanTotals(mp);
