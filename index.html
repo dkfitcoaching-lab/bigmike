@@ -178,7 +178,7 @@ body.theme-crimson{
   <button onclick="toggleStopwatch()" style="width:46px;height:46px;border-radius:50%;background:var(--accS);border:1.5px solid var(--accB);color:var(--acc);font-size:18px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.4);cursor:pointer" title="Stopwatch">&#9201;</button>
 </div>
 <script>
-var VERSION="5.5";
+var VERSION="5.6";
 var DN=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 var MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 var LS={get:function(k,d){try{var v=JSON.parse(localStorage.getItem("fm_"+k));return v!=null?v:d;}catch(e){return d;}},set:function(k,v){try{localStorage.setItem("fm_"+k,JSON.stringify(v));}catch(e){if(e.name==="QuotaExceededError"){toast("\u26a0 Storage full! Export backup now.",5000);}}},space:function(){try{var total=0;for(var k in localStorage){if(localStorage.hasOwnProperty(k))total+=localStorage[k].length;}return{used:Math.round(total/1024),max:5120,pct:Math.round((total/1024/5120)*100)};}catch(e){return{used:0,max:5120,pct:0};}}};
@@ -197,14 +197,14 @@ function _doCloudSync(){
   function upsertAll(table,items){
     if(!items.length)return;
     var rows=items.map(function(item){return{id:item.id,data:item,updated_at:new Date().toISOString()};});
-    promises.push(sb.from(table).upsert(rows,{onConflict:"id"}).then(function(res){if(res.error)console.warn("Sync "+table+":",res.error.message);}));
+    promises.push(sb.from(table).upsert(rows,{onConflict:"id"}).then(function(res){if(res.error){console.warn("Sync "+table+":",res.error.message);return{failed:table};}}));
   }
   upsertAll("clients",clients);
   upsertAll("sessions",sessions);
   upsertAll("schedule",schedule);
   upsertAll("templates",templates);
   upsertAll("meal_plans",mealPlans);
-  if(promises.length)Promise.all(promises).then(function(){LS.set("lastSync",new Date().toISOString());}).catch(function(e){console.warn("Sync error:",e);});
+  if(promises.length)Promise.all(promises).then(function(results){var fails=results?results.filter(function(r){return r&&r.failed;}):[];if(fails.length)toast("\u26a0 Cloud sync partial failure",3000);else LS.set("lastSync",new Date().toISOString());}).catch(function(e){console.warn("Sync error:",e);toast("\u26a0 Cloud sync failed \u2014 data saved locally",3500);});
 }
 function cloudPull(callback){
   var sb=getSupabase();if(!sb){if(callback)callback();return;}
@@ -236,7 +236,7 @@ function push(view,data){data=data||{};navStack.push(JSON.parse(JSON.stringify(c
 function pop(){if(navStack.length)currentView=navStack.pop();else currentView={tab:currentView.tab,view:"main",data:{}};render();window.scrollTo({top:0,behavior:"smooth"});}
 function el(id){return document.getElementById(id);}
 function val(id){var e=el(id);return e?e.value.trim():"";}
-function toast(m,dur,undoFn){document.querySelectorAll(".toast").forEach(function(t){t.remove();});var d=document.createElement("div");d.className="toast";if(undoFn){d.innerHTML=m+' <span onclick="toastUndo()" style="color:var(--acc);cursor:pointer;margin-left:8px;text-decoration:underline">UNDO</span>';window._pendingUndo=undoFn;}else d.textContent=m;document.body.appendChild(d);setTimeout(function(){d.remove();window._pendingUndo=null;},dur||3500);}
+function numVal(id){var v=parseFloat(val(id));return isNaN(v)?0:v;}function toast(m,dur,undoFn){document.querySelectorAll(".toast").forEach(function(t){t.remove();});var d=document.createElement("div");d.className="toast";if(undoFn){d.innerHTML=m+' <span onclick="toastUndo()" style="color:var(--acc);cursor:pointer;margin-left:8px;text-decoration:underline">UNDO</span>';window._pendingUndo=undoFn;}else d.textContent=m;document.body.appendChild(d);setTimeout(function(){d.remove();window._pendingUndo=null;},dur||3500);}
 // ── SESSION DRAFT AUTO-SAVE ──
 function saveDraft(){
   if(currentView.tab!=="sessions"||currentView.view!=="new")return;
@@ -481,7 +481,7 @@ function clientFormFields(c){
 function renderClientAdd(){return '<button class="btn2" onclick="pop()" style="margin-bottom:14px">\u2039 Back</button><div class="pt">New Client</div>'+clientFormFields()+'<button class="btn" style="margin-top:16px" onclick="saveNewClient()">SAVE CLIENT</button>';}
 function renderClientEdit(){var c=clients[currentView.data.clientIdx];if(!c){pop();return"";}return '<button class="btn2" onclick="pop()" style="margin-bottom:14px">\u2039 Back</button><div class="pt">Edit Client</div>'+clientFormFields(c)+'<button class="btn" style="margin-top:16px" onclick="saveEditClient()">UPDATE CLIENT</button>';}
 function readClientForm(){return{name:val("cN"),phone:val("cP"),email:val("cE"),clientType:val("cCTv"),services:val("cSv"),rate:val("cR"),age:val("cA"),weight:val("cWt"),height:val("cHt"),level:val("cLv"),duration:val("cDv"),billing:val("cBv"),billingAmt:val("cBA"),billingMonths:val("cBM"),prepWeeks:val("cPW"),prepStart:val("cPS"),goals:val("cG"),injuries:val("cI"),medical:val("cM"),notes:val("cO")};}
-function saveNewClient(){var data=readClientForm();if(!data.name){toast("Name is required");return;}data.id=uid();data.created_at=new Date().toISOString();clients.push(data);save();toast("\u2713 "+data.name+" added");navStack=[];currentView={tab:"clients",view:"detail",data:{clientIdx:clients.length-1}};render();}
+function saveNewClient(){var data=readClientForm();if(!data.name){toast("Name is required");return;}if(data.rate){var r=parseFloat(data.rate);if(isNaN(r)||r<0){toast("Rate must be a valid number");return;}data.rate=String(r);}data.id=uid();data.created_at=new Date().toISOString();clients.push(data);save();toast("\u2713 "+data.name+" added");navStack=[];currentView={tab:"clients",view:"detail",data:{clientIdx:clients.length-1}};render();}
 function saveEditClient(){var c=clients[currentView.data.clientIdx];if(!c)return;var data=readClientForm();if(!data.name){toast("Name is required");return;}Object.assign(c,data);save();toast("\u2713 Updated");pop();}
 
 function renderClientDetail(){
@@ -755,6 +755,8 @@ function doSaveSession(quick){
   var rate=val("sR");
   if(!rate&&cl)rate=cl.rate;
   if(!rate||rate==="0"){toast("Enter a rate for this session");return;}
+  rate=String(parseFloat(rate)||0);
+  if(rate==="0"){toast("Rate must be a valid number");return;}
   var status=val("sSt")||"complete";
   var exercises=quick?[]:collectExercises();
   if(!quick&&exercises.length){var unnamed=exercises.filter(function(e){return !e.name||e.name.trim()==="";});if(unnamed.length){toast("\u26a0 "+unnamed.length+" exercise"+(unnamed.length>1?"s":"")+" missing names - check your entries");return;}}
@@ -1383,7 +1385,7 @@ function swStartStop(){if(_swRunning){_swRunning=false;_swElapsed+=Date.now()-_s
 function swReset(){_swRunning=false;_swElapsed=0;if(_swInterval){clearInterval(_swInterval);_swInterval=null;}swUpdateDisplay();var btn=el("swBtn");if(btn)btn.textContent="START";}
 function swUpdateDisplay(){var d=el("swDisplay");if(!d)return;var elapsed=_swElapsed+(_swRunning?Date.now()-_swStart:0);if(_swMode==="countdown"){var remain=Math.max(0,_swCountdown*1000-elapsed);var s=Math.ceil(remain/1000);var m=Math.floor(s/60);s=s%60;d.textContent=(m<10?"0":"")+m+":"+(s<10?"0":"")+s;d.style.color=remain<=0?"var(--danger)":"var(--wh)";if(remain<=0&&_swRunning){_swRunning=false;clearInterval(_swInterval);_swInterval=null;try{var ac=new(window.AudioContext||window.webkitAudioContext)();var o=ac.createOscillator();o.frequency.value=880;o.connect(ac.destination);o.start();o.stop(ac.currentTime+0.3);}catch(e){}var btn=el("swBtn");if(btn)btn.textContent="DONE";}}else{var ms=elapsed;var s2=Math.floor(ms/1000);var m2=Math.floor(s2/60);s2=s2%60;d.textContent=(m2<10?"0":"")+m2+":"+(s2<10?"0":"")+s2;d.style.color="var(--wh)";}}
 // ── HELPERS ──
-function addWeight(ci){var inp=el("wLogVal");if(!inp||!inp.value)return;var cl=clients[ci];if(!cl.weightLog)cl.weightLog=[];cl.weightLog.push({date:todayISO(),lbs:parseFloat(inp.value)});save();render();toast("\u2713 "+inp.value+" lbs logged");}
+function addWeight(ci){var inp=el("wLogVal");if(!inp||!inp.value)return;var lbs=parseFloat(inp.value);if(isNaN(lbs)||lbs<=0){toast("Enter a valid weight");return;}var cl=clients[ci];if(!cl.weightLog)cl.weightLog=[];cl.weightLog.push({date:todayISO(),lbs:lbs});save();render();toast("\u2713 "+lbs+" lbs logged");}
 function setMeasure(ci,key,val){if(!clients[ci].measurements)clients[ci].measurements={};clients[ci].measurements[key]=val?parseFloat(val):"";save();}
 function parseFrac(s){if(!s)return 0;s=String(s).trim();if(!isNaN(s))return parseFloat(s);var m=s.match(/^(\d+)\s+(\d+)\/(\d+)$/);if(m&&parseInt(m[3])!==0)return parseInt(m[1])+parseInt(m[2])/parseInt(m[3]);m=s.match(/^(\d+)\/(\d+)$/);if(m&&parseInt(m[2])!==0)return parseInt(m[1])/parseInt(m[2]);return parseFloat(s)||0;}
 // ── SMS SYSTEM ──
@@ -1506,6 +1508,8 @@ function _pdfContentPage(accent,rgb,sections,docType,pageLabel){
 }
 
 function _renderPDFToFile(pages,filename,docType,pageLabel){
+  if(!window.jspdf||!window.jspdf.jsPDF){toast("\u26a0 PDF library not loaded \u2014 check your internet connection",4000);return;}
+  if(!window.html2canvas){toast("\u26a0 PDF renderer not loaded \u2014 check your internet connection",4000);return;}
   toast("Generating PDF...");
   var accent=_pdfAccent(),rgb=_pdfAccentRGB();
   var container=document.createElement("div");
@@ -1653,6 +1657,9 @@ function generateFullPrepPDF(idx){
   for(var pi2=0;pi2<contentPages.length;pi2++)pages.push({content:contentPages[pi2]});
   _renderPDFToFile(pages,c.name.replace(/\s+/g,"_")+"_Full_Prep","Full Prep",c.name);
 }
+// ── OFFLINE DETECTION ──
+window.addEventListener("offline",function(){toast("\u26a0 You're offline \u2014 data saves locally",4000);});
+window.addEventListener("online",function(){toast("\u2713 Back online",2500);cloudSync();});
 // ── BOOT ──
 (function boot(){
   if(!clients.length){
