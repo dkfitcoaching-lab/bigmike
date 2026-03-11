@@ -11,6 +11,8 @@
 <meta name="theme-color" content="#08080a"/>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 :root{
   --bg:#020202;--bg2:#050505;--card:#0a0a0c;--cardH:#111114;
@@ -137,11 +139,6 @@ body.theme-crimson{
   --border:rgba(210,40,40,.28);--borderH:rgba(210,40,40,.35);--borderS:rgba(210,40,40,.15);
   --goldGrad:linear-gradient(135deg,#8B1414,#C42828,#E84040,#C42828,#8B1414);
 }
-@media print{
-  body,body *{color-adjust:exact;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  #app,.tabs,.hdr,.qnote-fab,#swFab,#qnoteModal,.timer-bar{display:none!important}
-  #pdfPrintArea{display:block!important}
-}
 </style>
 </head>
 <body>
@@ -179,7 +176,7 @@ body.theme-crimson{
   <button onclick="toggleStopwatch()" style="width:46px;height:46px;border-radius:50%;background:rgba(200,160,40,.08);border:1.5px solid rgba(212,168,48,.4);color:var(--acc);font-size:18px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.4);cursor:pointer" title="Stopwatch">&#9201;</button>
 </div>
 <script>
-var VERSION="5.1";
+var VERSION="5.2";
 var DN=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 var MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 var LS={get:function(k,d){try{var v=JSON.parse(localStorage.getItem("fm_"+k));return v!=null?v:d;}catch(e){return d;}},set:function(k,v){try{localStorage.setItem("fm_"+k,JSON.stringify(v));}catch(e){if(e.name==="QuotaExceededError"){toast("\u26a0 Storage full! Export backup now.",5000);}}},space:function(){try{var total=0;for(var k in localStorage){if(localStorage.hasOwnProperty(k))total+=localStorage[k].length;}return{used:Math.round(total/1024),max:5120,pct:Math.round((total/1024/5120)*100)};}catch(e){return{used:0,max:5120,pct:0};}}};
@@ -1330,7 +1327,7 @@ function renderClientProgram(c,idx){
   var p=c.program;
   var html='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><span class="sl" style="margin:0">TRAINING PROGRAM</span><div style="display:flex;gap:4px"><button class="btn2" onclick="addProgDay('+idx+')" style="padding:5px 10px;font-size:8px">+ ADD DAY</button>'+(p.days.length?'<button class="btn2" onclick="generateProgramPDF('+idx+')" style="padding:5px 10px;font-size:8px">PDF</button>':'')+'</div></div>';
   // Duration & schedule info
-  html+='<div class="cd" style="padding:12px;margin-bottom:10px"><div class="g3"><div><span class="lb">START DATE</span><input type="date" value="'+(p.startDate||"")+'" onchange="setProgMeta('+idx+',\'startDate\',this.value)" style="font-size:11px;padding:6px"></div><div><span class="lb">WEEKS</span><input type="number" min="1" max="52" value="'+(p.weeks||"")+'" placeholder="—" onchange="setProgMeta('+idx+',\'weeks\',this.value)" style="font-size:11px;padding:6px;text-align:center"></div><div><span class="lb">SPLIT</span><select onchange="setProgMeta('+idx+',\'split\',this.value)" style="font-size:11px;padding:6px"><option value=""'+(!(p.split)?" selected":"")+'>—</option><option value="3-day"'+(p.split==="3-day"?" selected":"")+'>3-Day</option><option value="4-day"'+(p.split==="4-day"?" selected":"")+'>4-Day</option><option value="5-day"'+(p.split==="5-day"?" selected":"")+'>5-Day</option><option value="6-day"'+(p.split==="6-day"?" selected":"")+'>6-Day</option><option value="PPL"'+(p.split==="PPL"?" selected":"")+'>PPL</option><option value="Upper/Lower"'+(p.split==="Upper/Lower"?" selected":"")+'>Upper/Lower</option><option value="Bro Split"'+(p.split==="Bro Split"?" selected":"")+'>Bro Split</option></select></div></div></div>';
+  html+='<div class="cd" style="padding:12px;margin-bottom:10px"><div class="g3"><div><span class="lb">START DATE</span><input type="date" value="'+(p.startDate||"")+'" onchange="setProgMeta('+idx+',\'startDate\',this.value)" style="font-size:11px;padding:6px"></div><div><span class="lb">WEEKS</span><input type="number" min="1" max="52" value="'+(p.weeks||"")+'" placeholder="—" onchange="setProgMeta('+idx+',\'weeks\',this.value)" style="font-size:11px;padding:6px;text-align:center"></div><div><span class="lb">SPLIT</span><select onchange="setProgMeta('+idx+',\'split\',this.value)" style="font-size:11px;padding:6px"><option value=""'+(!(p.split)?" selected":"")+'>—</option><option value="3-day"'+(p.split==="3-day"?" selected":"")+'>3-Day</option><option value="4-day"'+(p.split==="4-day"?" selected":"")+'>4-Day</option><option value="5-day"'+(p.split==="5-day"?" selected":"")+'>5-Day</option><option value="6-day"'+(p.split==="6-day"?" selected":"")+'>6-Day</option><option value="PPL"'+(p.split==="PPL"?" selected":"")+'>PPL</option><option value="Upper/Lower"'+(p.split==="Upper/Lower"?" selected":"")+'>Upper/Lower</option><option value="Bro Split"'+(p.split==="Bro Split"?" selected":"")+'>Bro Split</option><option value="Custom"'+(p.split==="Custom"?" selected":"")+'>Custom...</option>'+(p.split&&["","3-day","4-day","5-day","6-day","PPL","Upper/Lower","Bro Split","Custom"].indexOf(p.split)<0?'<option value="'+esc(p.split)+'" selected>'+esc(p.split)+'</option>':'')+'</select></div></div></div>';
   if(!p.days.length)return html+'<div class="cd" style="padding:24px;text-align:center;border:1px dashed var(--border)"><div style="color:var(--dm);margin-bottom:8px">No program built yet</div><button class="btn2" onclick="addProgDay('+idx+')">BUILD PROGRAM</button></div>';
   for(var d=0;d<p.days.length;d++){
     var day=p.days[d];
@@ -1345,7 +1342,7 @@ function renderClientProgram(c,idx){
     +'<button class="btn2" onclick="generateFullPrepPDF('+idx+')" style="margin-top:8px;width:100%">GENERATE FULL PREP PDF</button>';
   return html;
 }
-function setProgMeta(ci,key,val2){if(!clients[ci].program)clients[ci].program={days:[]};clients[ci].program[key]=val2;save();}
+function setProgMeta(ci,key,val2){if(!clients[ci].program)clients[ci].program={days:[]};if(key==="split"&&val2==="Custom"){var custom=prompt("Enter custom split name:");if(!custom)return;val2=custom;}clients[ci].program[key]=val2;save();render();}
 function addProgDay(ci){var c2=clients[ci];if(!c2.program)c2.program={days:[]};c2.program.days.push({name:"Day "+(c2.program.days.length+1),exercises:[]});save();render();}
 function rmProgDay(ci,di){clients[ci].program.days.splice(di,1);save();render();}
 function progDayName(ci,di,n){clients[ci].program.days[di].name=n;save();}
@@ -1475,97 +1472,185 @@ function setTheme(t){LS.set("theme",t);applyTheme();render();}
 function applyTheme(){var t=LS.get("theme","gold");if(t==="crimson")document.body.classList.add("theme-crimson");else document.body.classList.remove("theme-crimson");}
 applyTheme();
 // ── PDF GENERATION ──
+var _pdfAccent=function(){return LS.get("theme","gold")==="crimson"?"#D03030":"#D4A830";};
+var _pdfAccentRGB=function(){return LS.get("theme","gold")==="crimson"?"208,48,48":"212,168,48";};
+
+function _pdfCoverPage(accent,rgb,docType,clientName,subtitle){
+  return '<div style="width:100%;height:100%;background:#060606;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden">'
+    +'<div style="position:absolute;inset:8px;border:2px solid '+accent+';border-radius:4px;pointer-events:none"></div>'
+    +'<div style="position:absolute;top:0;left:50%;transform:translateX(-50%);width:60%;height:2px;background:linear-gradient(90deg,transparent,'+accent+',transparent)"></div>'
+    +'<div style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:60%;height:2px;background:linear-gradient(90deg,transparent,'+accent+',transparent)"></div>'
+    +'<div style="text-align:center;padding:0 40px">'
+    +'<div style="font-family:Cinzel,serif;font-size:72px;font-weight:900;letter-spacing:.08em;margin-bottom:8px;line-height:1"><span style="color:'+accent+'">M</span></div>'
+    +'<div style="font-family:Cinzel,serif;font-size:14px;font-weight:700;letter-spacing:.35em;color:#f0e8d0;margin-bottom:4px">BIG MIKE ELY</div>'
+    +'<div style="font-size:8px;font-weight:700;letter-spacing:.5em;color:'+accent+';font-family:IBM Plex Mono,monospace;margin-bottom:40px">IFBB PRO &middot; COACHING LAB</div>'
+    +'<div style="width:60px;height:2px;background:linear-gradient(90deg,transparent,'+accent+',transparent);margin:0 auto 40px"></div>'
+    +'<div style="font-family:Cinzel,serif;font-size:28px;font-weight:700;color:'+accent+';letter-spacing:.08em;margin-bottom:16px;line-height:1.3">'+docType+'</div>'
+    +'<div style="width:80px;height:1px;background:'+accent+';margin:0 auto 20px"></div>'
+    +'<div style="font-size:16px;color:#ccc;font-family:Rajdhani,sans-serif;margin-bottom:6px">Client: '+clientName+'</div>'
+    +(subtitle?'<div style="font-size:12px;color:#888;font-family:IBM Plex Mono,monospace;margin-bottom:4px">'+subtitle+'</div>':'')
+    +'<div style="font-size:11px;color:#555;font-family:IBM Plex Mono,monospace;margin-top:20px">Date: '+new Date().toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"})+'</div>'
+    +'</div>'
+    +'<div style="position:absolute;bottom:24px;left:0;right:0;text-align:center"><div style="font-size:7px;color:#333;font-family:IBM Plex Mono,monospace;letter-spacing:.35em">BIG MIKE ELY\'S COACHING LAB</div></div>'
+    +'</div>';
+}
+function _pdfContentPage(accent,rgb,sections,docType,pageLabel){
+  var hdr='<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 24px;border-bottom:1px solid #1a1a1a"><div style="font-family:Cinzel,serif;font-size:18px;font-weight:900;color:'+accent+'">M</div><div style="font-size:8px;color:#555;font-family:IBM Plex Mono,monospace;letter-spacing:.2em">BIG MIKE ELY &middot; '+docType+'</div></div>';
+  var ftr='<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 24px;border-top:1px solid #1a1a1a;position:absolute;bottom:0;left:0;right:0"><div style="font-size:7px;color:#444;font-family:IBM Plex Mono,monospace;letter-spacing:.2em">BIG MIKE ELY\'S COACHING LAB &middot; '+docType+(pageLabel?" &middot; "+pageLabel:"")+'</div><div style="font-size:7px;color:#444;font-family:IBM Plex Mono,monospace">Generated: '+new Date().toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"})+'</div></div>';
+  return '<div style="width:100%;height:100%;background:#060606;position:relative;overflow:hidden">'
+    +'<div style="position:absolute;inset:6px;border:2px solid '+accent+'40;border-radius:3px;pointer-events:none"></div>'
+    +hdr
+    +'<div style="padding:20px 28px 50px;overflow:hidden">'+sections+'</div>'
+    +ftr+'</div>';
+}
+
+function _renderPDFToFile(pages,filename,docType,pageLabel){
+  toast("Generating PDF...");
+  var accent=_pdfAccent(),rgb=_pdfAccentRGB();
+  var container=document.createElement("div");
+  container.id="_pdfRender";
+  container.style.cssText="position:fixed;left:-9999px;top:0;z-index:-1;";
+  document.body.appendChild(container);
+  var allHTML='';
+  for(var i=0;i<pages.length;i++){
+    allHTML+='<div class="_pdfPage" style="width:816px;height:1056px;overflow:hidden;margin-bottom:4px;font-family:Rajdhani,sans-serif">';
+    if(i===0)allHTML+=_pdfCoverPage(accent,rgb,pages[i].coverTitle||docType,pages[i].coverClient||"",pages[i].coverSub||"");
+    else allHTML+=_pdfContentPage(accent,rgb,pages[i].content||"",docType,pageLabel||"");
+    allHTML+='</div>';
+  }
+  container.innerHTML=allHTML;
+  var pageEls=container.querySelectorAll("._pdfPage");
+  var jsPDF=window.jspdf.jsPDF;
+  var pdf=new jsPDF({orientation:"portrait",unit:"pt",format:"letter"});
+  var done=0;
+  function capturePage(idx){
+    html2canvas(pageEls[idx],{backgroundColor:"#060606",scale:2,useCORS:true,logging:false}).then(function(canvas){
+      var imgData=canvas.toDataURL("image/jpeg",0.95);
+      if(idx>0)pdf.addPage("letter","portrait");
+      pdf.addImage(imgData,"JPEG",0,0,612,792);
+      done++;
+      if(done<pageEls.length)capturePage(idx+1);
+      else{
+        pdf.save(filename+".pdf");
+        container.remove();
+        toast("\u2713 PDF saved: "+filename+".pdf");
+      }
+    }).catch(function(e){console.error("PDF error:",e);container.remove();toast("\u2717 PDF generation failed");});
+  }
+  setTimeout(function(){capturePage(0);},200);
+}
+
+function _splitContentIntoPages(sectionsHTML,maxH){
+  maxH=maxH||880;
+  var temp=document.createElement("div");
+  temp.style.cssText="position:fixed;left:-9999px;top:0;width:760px;font-family:Rajdhani,sans-serif;font-size:13px;color:#ddd;line-height:1.5";
+  temp.innerHTML=sectionsHTML;
+  document.body.appendChild(temp);
+  var pages=[];var currentHTML="";var currentH=0;
+  var children=temp.children;
+  for(var i=0;i<children.length;i++){
+    var ch=children[i].offsetHeight+16;
+    if(currentH+ch>maxH&&currentHTML){pages.push(currentHTML);currentHTML="";currentH=0;}
+    currentHTML+=children[i].outerHTML;currentH+=ch;
+  }
+  if(currentHTML)pages.push(currentHTML);
+  temp.remove();
+  return pages;
+}
+
 function generateMealPlanPDF(mpId){
   var mp=mealPlans.find(function(p){return p.id===mpId;});if(!mp){toast("Plan not found");return;}
   var cl=clientById(mp.clientId);var tot=calcPlanTotals(mp);var tgt=mp.targets||{cal:0,p:0,c:0,f:0};
-  var accent=LS.get("theme","gold")==="crimson"?"#D03030":"#D4A830";
-  var html=pdfShell(accent,"MEAL PLAN","Prepared for: "+(cl?cl.name:"Client"),mp.name,function(){
-    var body='<table style="width:100%;border-collapse:collapse;margin-bottom:24px"><tr style="background:'+accent+'22"><td style="padding:10px 14px;font-weight:700;color:'+accent+';font-size:14px">DAILY TOTALS</td><td style="padding:10px 14px;text-align:center"><div style="font-size:22px;font-weight:800;color:'+accent+'">'+tot.cal+'</div><div style="font-size:9px;color:#888">CALORIES'+(tgt.cal>0?" / "+tgt.cal:"")+'</div></td><td style="padding:10px 14px;text-align:center"><div style="font-size:18px;font-weight:700;color:#4a4">'+tot.p+'g</div><div style="font-size:9px;color:#888">PROTEIN</div></td><td style="padding:10px 14px;text-align:center"><div style="font-size:18px;font-weight:700;color:#b88030">'+tot.c+'g</div><div style="font-size:9px;color:#888">CARBS</div></td><td style="padding:10px 14px;text-align:center"><div style="font-size:18px;font-weight:700;color:#c87070">'+tot.f+'g</div><div style="font-size:9px;color:#888">FAT</div></td></tr></table>';
-    for(var m=0;m<mp.meals.length;m++){var meal=mp.meals[m],mt=calcMealTotals(meal);
-      body+='<div style="margin-bottom:20px"><div style="background:#111;border-left:3px solid '+accent+';padding:10px 14px;display:flex;justify-content:space-between;align-items:center"><span style="font-weight:700;font-size:14px;color:#fff">'+esc(meal.name)+'</span><span style="font-size:11px;color:'+accent+'">'+mt.cal+' cal &middot; '+mt.p+'p &middot; '+mt.c+'c &middot; '+mt.f+'f</span></div><table style="width:100%;border-collapse:collapse">';
-      for(var f=0;f<meal.foods.length;f++){var fd=meal.foods[f],db=FOOD_DB[fd.di]||{};var fcal=Math.round((db.cal||0)*(fd.qty/(db.per||1)));
-        body+='<tr style="border-bottom:1px solid #1a1a1a"><td style="padding:8px 14px;color:#ddd;font-size:12px">'+esc(fd.name)+'</td><td style="padding:8px 14px;text-align:right;color:#999;font-size:12px;font-family:monospace">'+fd.qty+' '+fd.unit+'</td><td style="padding:8px 14px;text-align:right;color:#aaa;font-size:12px;font-family:monospace">'+fcal+' cal</td></tr>';}
-      body+='</table></div>';}
-    if(cl&&cl.supplements&&cl.supplements.length){
-      body+='<div style="margin-top:24px;border-top:1px solid #222;padding-top:16px"><div style="font-size:11px;font-weight:700;color:'+accent+';letter-spacing:.15em;margin-bottom:10px">SUPPLEMENT PROTOCOL</div><table style="width:100%;border-collapse:collapse">';
-      for(var si=0;si<cl.supplements.length;si++){var sp=cl.supplements[si];body+='<tr style="border-bottom:1px solid #1a1a1a"><td style="padding:8px 14px;color:#ddd;font-size:12px">'+esc(sp.name)+'</td><td style="padding:8px;color:#999;font-size:11px">'+esc(sp.dose)+'</td><td style="padding:8px;color:#999;font-size:11px">'+esc(sp.timing)+'</td></tr>';}
-      body+='</table></div>';}
-    return body;
-  });
-  openPDF(html,(cl?cl.name.replace(/\s+/g,"_")+"_":"")+"Meal_Plan");
+  var accent=_pdfAccent();
+  var clientName=cl?cl.name:"Client";
+
+  var body='<div style="margin-bottom:20px"><div style="font-size:11px;font-weight:700;color:'+accent+';letter-spacing:.2em;margin-bottom:12px">DAILY TOTALS</div>'
+    +'<div style="display:flex;gap:16px;padding:14px 18px;background:#0c0c0c;border:1px solid '+accent+'30;border-radius:6px">'
+    +'<div style="flex:1;text-align:center"><div style="font-size:26px;font-weight:800;color:'+accent+'">'+tot.cal+'</div><div style="font-size:8px;color:#666;letter-spacing:.15em;font-family:IBM Plex Mono,monospace">CALORIES'+(tgt.cal>0?" / "+tgt.cal:"")+'</div></div>'
+    +'<div style="flex:1;text-align:center"><div style="font-size:20px;font-weight:700;color:#5b5">'+tot.p+'g</div><div style="font-size:8px;color:#666;letter-spacing:.15em;font-family:IBM Plex Mono,monospace">PROTEIN</div></div>'
+    +'<div style="flex:1;text-align:center"><div style="font-size:20px;font-weight:700;color:#b88030">'+tot.c+'g</div><div style="font-size:8px;color:#666;letter-spacing:.15em;font-family:IBM Plex Mono,monospace">CARBS</div></div>'
+    +'<div style="flex:1;text-align:center"><div style="font-size:20px;font-weight:700;color:#c87070">'+tot.f+'g</div><div style="font-size:8px;color:#666;letter-spacing:.15em;font-family:IBM Plex Mono,monospace">FAT</div></div>'
+    +'</div></div>';
+
+  for(var m=0;m<mp.meals.length;m++){var meal=mp.meals[m],mt=calcMealTotals(meal);
+    body+='<div style="margin-bottom:18px"><div style="font-size:13px;font-weight:700;color:'+accent+';margin-bottom:6px">'+esc(meal.name).toUpperCase()+'</div>';
+    for(var f=0;f<meal.foods.length;f++){var fd=meal.foods[f],db=FOOD_DB[fd.di]||{};var fcal=Math.round((db.cal||0)*(fd.qty/(db.per||1)));
+      body+='<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #151515"><span style="color:#ccc;font-size:12px">&bull; '+esc(fd.name)+' &mdash; '+fd.qty+' '+fd.unit+'</span><span style="color:#888;font-size:11px;font-family:IBM Plex Mono,monospace">'+fcal+' cal</span></div>';}
+    body+='<div style="font-size:10px;color:#666;font-family:IBM Plex Mono,monospace;margin-top:4px">Calories: '+mt.cal+' | '+mt.p+'g P | '+mt.c+'g C | '+mt.f+'g F</div></div>';}
+
+  if(cl&&cl.supplements&&cl.supplements.length){
+    body+='<div style="margin-top:24px"><div style="font-size:13px;font-weight:700;color:'+accent+';margin-bottom:10px">SUPPLEMENTS</div><table style="width:100%;border-collapse:collapse"><tr style="background:'+accent+'18"><th style="padding:6px 12px;text-align:left;color:'+accent+';font-size:10px;letter-spacing:.1em">Supplement</th><th style="padding:6px 12px;text-align:left;color:'+accent+';font-size:10px;letter-spacing:.1em">Dose</th><th style="padding:6px 12px;text-align:left;color:'+accent+';font-size:10px;letter-spacing:.1em">Timing</th></tr>';
+    for(var si=0;si<cl.supplements.length;si++){var sp=cl.supplements[si];body+='<tr style="border-bottom:1px solid #1a1a1a;background:'+(si%2===0?"#0a0a0a":"#080808")+'"><td style="padding:7px 12px;color:#ddd;font-size:12px">'+esc(sp.name)+'</td><td style="padding:7px 12px;color:#aaa;font-size:11px">'+esc(sp.dose)+'</td><td style="padding:7px 12px;color:#aaa;font-size:11px">'+esc(sp.timing)+'</td></tr>';}
+    body+='</table></div>';}
+
+  var contentPages=_splitContentIntoPages(body);
+  var pages=[{coverTitle:"Meal Plan",coverClient:clientName,coverSub:mp.name}];
+  for(var pi=0;pi<contentPages.length;pi++)pages.push({content:contentPages[pi]});
+  _renderPDFToFile(pages,(cl?clientName.replace(/\s+/g,"_")+"_":"")+"Meal_Plan","Meal Plan",mp.name);
 }
+
 function generateProgramPDF(idx){
   var c=clients[idx];if(!c||!c.program||!c.program.days.length){toast("Build program first");return;}
-  var p=c.program;var accent=LS.get("theme","gold")==="crimson"?"#D03030":"#D4A830";
-  var durInfo=p.startDate&&p.weeks?p.weeks+" Week Program &middot; Starting "+fmtDate(p.startDate):"Training Program";
-  var html=pdfShell(accent,"TRAINING PROGRAM","Prepared for: "+c.name,durInfo,function(){
-    var body='';
-    for(var d=0;d<p.days.length;d++){var day=p.days[d];
-      body+='<div style="margin-bottom:24px"><div style="background:#111;border-left:3px solid '+accent+';padding:10px 14px;margin-bottom:2px"><span style="font-weight:700;font-size:14px;color:#fff">'+esc(day.name)+'</span></div><table style="width:100%;border-collapse:collapse"><tr style="background:#0d0d0d"><th style="padding:8px 14px;text-align:left;color:'+accent+';font-size:10px;letter-spacing:.1em">EXERCISE</th><th style="padding:8px 14px;text-align:right;color:'+accent+';font-size:10px;letter-spacing:.1em">SETS x REPS</th></tr>';
-      for(var e=0;e<day.exercises.length;e++){var ex=day.exercises[e];
-        body+='<tr style="border-bottom:1px solid #1a1a1a"><td style="padding:10px 14px;color:#ddd;font-size:13px">'+esc(ex.name)+'</td><td style="padding:10px 14px;text-align:right;color:#ccc;font-size:13px;font-family:monospace">'+esc(ex.scheme)+'</td></tr>';}
-      body+='</table></div>';}
-    return body;
-  });
-  openPDF(html,c.name.replace(/\s+/g,"_")+"_Program");
+  var p=c.program;var accent=_pdfAccent();
+  var durLabel=p.weeks?p.weeks+" Weeks":"";
+  var splitLabel=p.split||"";
+  var coverSub=[durLabel,splitLabel,p.startDate?"Starting "+fmtDate(p.startDate):""].filter(Boolean).join(" \u00b7 ");
+
+  var body='';
+  for(var d=0;d<p.days.length;d++){var day=p.days[d];
+    body+='<div style="margin-bottom:22px"><div style="font-size:15px;font-weight:700;color:'+accent+';margin-bottom:8px;padding-bottom:4px;border-bottom:2px solid '+accent+'40">'+esc(day.name).toUpperCase()+'</div>'
+      +'<table style="width:100%;border-collapse:collapse"><tr style="background:#0c0c0c"><th style="padding:7px 12px;text-align:left;color:'+accent+';font-size:9px;letter-spacing:.12em">EXERCISE</th><th style="padding:7px 12px;text-align:right;color:'+accent+';font-size:9px;letter-spacing:.12em">SETS x REPS</th></tr>';
+    for(var e=0;e<day.exercises.length;e++){var ex=day.exercises[e];
+      body+='<tr style="border-bottom:1px solid #161616;background:'+(e%2===0?"#0a0a0a":"#080808")+'"><td style="padding:9px 12px;color:#ddd;font-size:13px;font-weight:500">'+esc(ex.name)+'</td><td style="padding:9px 12px;text-align:right;color:#bbb;font-size:13px;font-family:IBM Plex Mono,monospace">'+esc(ex.scheme)+'</td></tr>';}
+    body+='</table></div>';}
+
+  var contentPages=_splitContentIntoPages(body);
+  var pages=[{coverTitle:"Training Program",coverClient:c.name,coverSub:coverSub||"Training Program"}];
+  for(var pi=0;pi<contentPages.length;pi++)pages.push({content:contentPages[pi]});
+  _renderPDFToFile(pages,c.name.replace(/\s+/g,"_")+"_Training_Program","Training Program",durLabel);
 }
+
 function generateFullPrepPDF(idx){
   var c=clients[idx];if(!c){toast("Client not found");return;}
-  var accent=LS.get("theme","gold")==="crimson"?"#D03030":"#D4A830";
-  var subtitle="Comprehensive Prep Package";
-  if(c.prepStart&&c.prepWeeks)subtitle=c.prepWeeks+" Week Prep &middot; Starting "+fmtDate(c.prepStart);
-  var html=pdfShell(accent,"FULL PREP PACKAGE","Prepared for: "+c.name,subtitle,function(){
-    var body='';
-    // Client info
-    var info=[["Phone",c.phone],["Email",c.email],["Goals",c.goals],["Level",c.level],["Injuries",c.injuries]].filter(function(r){return r[1];});
-    if(info.length){body+='<div style="margin-bottom:24px"><div style="font-size:11px;font-weight:700;color:'+accent+';letter-spacing:.15em;margin-bottom:10px">CLIENT INFO</div><table style="width:100%;border-collapse:collapse">';for(var i=0;i<info.length;i++)body+='<tr style="border-bottom:1px solid #1a1a1a"><td style="padding:8px 14px;color:#888;font-size:11px;width:100px">'+info[i][0]+'</td><td style="padding:8px 14px;color:#ddd;font-size:12px">'+esc(info[i][1])+'</td></tr>';body+='</table></div>';}
-    // Training program
-    var p=c.program;
-    if(p&&p.days.length){
-      body+='<div style="margin-bottom:24px;border-top:1px solid #222;padding-top:16px"><div style="font-size:11px;font-weight:700;color:'+accent+';letter-spacing:.15em;margin-bottom:12px">TRAINING PROGRAM'+(p.weeks?" &middot; "+p.weeks+" WEEKS":"")+'</div>';
-      for(var d=0;d<p.days.length;d++){var day=p.days[d];
-        body+='<div style="margin-bottom:16px"><div style="background:#111;border-left:3px solid '+accent+';padding:8px 14px;margin-bottom:2px;font-weight:700;font-size:13px;color:#fff">'+esc(day.name)+'</div><table style="width:100%;border-collapse:collapse">';
-        for(var e=0;e<day.exercises.length;e++){var ex=day.exercises[e];body+='<tr style="border-bottom:1px solid #1a1a1a"><td style="padding:7px 14px;color:#ddd;font-size:12px">'+esc(ex.name)+'</td><td style="padding:7px 14px;text-align:right;color:#ccc;font-size:12px;font-family:monospace">'+esc(ex.scheme)+'</td></tr>';}
-        body+='</table></div>';}
+  var accent=_pdfAccent();
+  var coverSub="Comprehensive Prep Package";
+  if(c.prepStart&&c.prepWeeks)coverSub=c.prepWeeks+" Week Prep \u00b7 Starting "+fmtDate(c.prepStart);
+
+  var body='';
+  // Client info
+  var info=[["Phone",c.phone],["Email",c.email],["Goals",c.goals],["Level",c.level],["Injuries",c.injuries]].filter(function(r){return r[1];});
+  if(info.length){body+='<div style="margin-bottom:22px"><div style="font-size:11px;font-weight:700;color:'+accent+';letter-spacing:.2em;margin-bottom:10px">CLIENT INFO</div><table style="width:100%;border-collapse:collapse">';for(var i=0;i<info.length;i++)body+='<tr style="border-bottom:1px solid #1a1a1a"><td style="padding:7px 12px;color:#777;font-size:11px;width:90px;font-family:IBM Plex Mono,monospace">'+info[i][0]+'</td><td style="padding:7px 12px;color:#ddd;font-size:12px">'+esc(info[i][1])+'</td></tr>';body+='</table></div>';}
+
+  // Training program
+  var p=c.program;
+  if(p&&p.days&&p.days.length){
+    body+='<div style="margin-bottom:22px"><div style="font-size:13px;font-weight:700;color:'+accent+';margin-bottom:10px">TRAINING PROGRAM'+(p.weeks?" \u00b7 "+p.weeks+" WEEKS":"")+(p.split?" \u00b7 "+p.split:"")+'</div>';
+    for(var d=0;d<p.days.length;d++){var day=p.days[d];
+      body+='<div style="margin-bottom:14px"><div style="font-size:12px;font-weight:700;color:'+accent+';margin-bottom:4px;padding-left:8px;border-left:3px solid '+accent+'">'+esc(day.name)+'</div>';
+      for(var e=0;e<day.exercises.length;e++){var ex=day.exercises[e];body+='<div style="display:flex;justify-content:space-between;padding:4px 0 4px 14px;border-bottom:1px solid #141414"><span style="color:#ccc;font-size:12px">'+esc(ex.name)+'</span><span style="color:#999;font-size:11px;font-family:IBM Plex Mono,monospace">'+esc(ex.scheme)+'</span></div>';}
       body+='</div>';}
-    // Meal plans
-    var cPlans=mealPlans.filter(function(mp){return mp.clientId===c.id;});
-    for(var pi=0;pi<cPlans.length;pi++){var mp=cPlans[pi],tot=calcPlanTotals(mp);
-      body+='<div style="margin-bottom:24px;border-top:1px solid #222;padding-top:16px"><div style="font-size:11px;font-weight:700;color:'+accent+';letter-spacing:.15em;margin-bottom:4px">MEAL PLAN: '+esc(mp.name).toUpperCase()+'</div><div style="font-size:11px;color:#888;margin-bottom:12px">'+tot.cal+' cal &middot; '+tot.p+'g protein &middot; '+tot.c+'g carbs &middot; '+tot.f+'g fat</div>';
-      for(var m=0;m<mp.meals.length;m++){var meal=mp.meals[m],mt=calcMealTotals(meal);
-        body+='<div style="margin-bottom:12px"><div style="background:#111;border-left:3px solid '+accent+';padding:8px 14px;display:flex;justify-content:space-between"><span style="font-weight:600;color:#fff;font-size:12px">'+esc(meal.name)+'</span><span style="font-size:10px;color:'+accent+'">'+mt.cal+' cal</span></div><table style="width:100%;border-collapse:collapse">';
-        for(var f=0;f<meal.foods.length;f++){var fd=meal.foods[f];body+='<tr style="border-bottom:1px solid #151515"><td style="padding:6px 14px;color:#ccc;font-size:11px">'+esc(fd.name)+'</td><td style="padding:6px 14px;text-align:right;color:#999;font-size:11px">'+fd.qty+' '+fd.unit+'</td></tr>';}
-        body+='</table></div>';}
-      body+='</div>';}
-    // Supplements
-    if(c.supplements&&c.supplements.length){
-      body+='<div style="margin-bottom:24px;border-top:1px solid #222;padding-top:16px"><div style="font-size:11px;font-weight:700;color:'+accent+';letter-spacing:.15em;margin-bottom:10px">SUPPLEMENT PROTOCOL</div><table style="width:100%;border-collapse:collapse">';
-      for(var si=0;si<c.supplements.length;si++){var sp=c.supplements[si];body+='<tr style="border-bottom:1px solid #1a1a1a"><td style="padding:8px 14px;color:#ddd;font-size:12px">'+esc(sp.name)+'</td><td style="padding:8px;color:#999;font-size:11px">'+esc(sp.dose)+'</td><td style="padding:8px;color:#999;font-size:11px">'+esc(sp.timing)+'</td></tr>';}
-      body+='</table></div>';}
-    return body;
-  });
-  openPDF(html,c.name.replace(/\s+/g,"_")+"_Full_Prep");
-}
-function pdfShell(accent,docType,forLine,subtitle,contentFn){
-  return '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>'+docType+' - Big Mike Ely Coaching</title><style>@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Rajdhani:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap");*{margin:0;padding:0;box-sizing:border-box}body{background:#060606;color:#e8e0d0;font-family:"Rajdhani",sans-serif;min-height:100vh}@media print{body{background:#060606!important}*{color-adjust:exact;-webkit-print-color-adjust:exact;print-color-adjust:exact}}</style></head><body><div style="max-width:700px;margin:0 auto;padding:40px 30px">'
-    +'<div style="text-align:center;margin-bottom:36px;padding-bottom:24px;border-bottom:1px solid #222">'
-    +'<div style="font-family:Cinzel,serif;font-size:42px;font-weight:900;letter-spacing:.08em;margin-bottom:4px"><span style="background:linear-gradient(135deg,'+accent+'80,'+accent+','+accent+'cc,'+accent+','+accent+'80);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">M</span></div>'
-    +'<div style="font-size:8px;font-weight:700;letter-spacing:.4em;color:'+accent+';font-family:IBM Plex Mono,monospace;margin-bottom:4px">IFBB PRO</div>'
-    +'<div style="font-family:Cinzel,serif;font-size:22px;font-weight:700;letter-spacing:.12em;color:#f0e8d0;margin-bottom:12px">BIG MIKE ELY</div>'
-    +'<div style="font-size:10px;font-weight:700;letter-spacing:.2em;color:'+accent+';font-family:IBM Plex Mono,monospace;margin-bottom:6px">'+docType+'</div>'
-    +'<div style="font-size:13px;color:#999;font-family:Rajdhani,sans-serif">'+forLine+'</div>'
-    +(subtitle?'<div style="font-size:11px;color:#666;font-family:IBM Plex Mono,monospace;margin-top:4px">'+subtitle+'</div>':'')
-    +'</div>'
-    +contentFn()
-    +'<div style="text-align:center;margin-top:40px;padding-top:20px;border-top:1px solid #222"><div style="font-size:8px;color:#444;font-family:IBM Plex Mono,monospace;letter-spacing:.3em">IFBB PRO BIG MIKE ELY\'S COACHING LAB</div><div style="font-size:8px;color:#333;font-family:IBM Plex Mono,monospace;margin-top:4px">Generated '+new Date().toLocaleDateString()+'</div></div>'
-    +'</div></body></html>';
-}
-function openPDF(html,filename){
-  var w=window.open("","_blank");
-  if(!w){toast("Enable popups to generate PDFs");return;}
-  w.document.write(html);w.document.close();
-  w.document.title=filename;
-  setTimeout(function(){w.print();},500);
+    body+='</div>';}
+
+  // Meal plans
+  var cPlans=mealPlans.filter(function(mp2){return mp2.clientId===c.id;});
+  for(var pi=0;pi<cPlans.length;pi++){var mp=cPlans[pi],tot=calcPlanTotals(mp);
+    body+='<div style="margin-bottom:22px"><div style="font-size:13px;font-weight:700;color:'+accent+';margin-bottom:2px">MEAL PLAN: '+esc(mp.name).toUpperCase()+'</div><div style="font-size:10px;color:#777;font-family:IBM Plex Mono,monospace;margin-bottom:10px">'+tot.cal+' cal \u00b7 '+tot.p+'g protein \u00b7 '+tot.c+'g carbs \u00b7 '+tot.f+'g fat</div>';
+    for(var m=0;m<mp.meals.length;m++){var meal=mp.meals[m],mt=calcMealTotals(meal);
+      body+='<div style="margin-bottom:10px"><div style="font-size:11px;font-weight:700;color:'+accent+';margin-bottom:3px">'+esc(meal.name).toUpperCase()+'</div>';
+      for(var f=0;f<meal.foods.length;f++){var fd=meal.foods[f];body+='<div style="padding:2px 0;color:#bbb;font-size:11px">&bull; '+esc(fd.name)+' &mdash; '+fd.qty+' '+fd.unit+'</div>';}
+      body+='<div style="font-size:9px;color:#666;font-family:IBM Plex Mono,monospace;margin-top:3px">Calories: '+mt.cal+' | '+mt.p+'g P | '+mt.c+'g C | '+mt.f+'g F</div></div>';}
+    body+='</div>';}
+
+  // Supplements
+  if(c.supplements&&c.supplements.length){
+    body+='<div style="margin-bottom:22px"><div style="font-size:13px;font-weight:700;color:'+accent+';margin-bottom:10px">SUPPLEMENTS</div><table style="width:100%;border-collapse:collapse"><tr style="background:'+accent+'18"><th style="padding:6px 12px;text-align:left;color:'+accent+';font-size:9px;letter-spacing:.1em">Supplement</th><th style="padding:6px 12px;text-align:left;color:'+accent+';font-size:9px;letter-spacing:.1em">Dose</th><th style="padding:6px 12px;text-align:left;color:'+accent+';font-size:9px;letter-spacing:.1em">Timing</th></tr>';
+    for(var si=0;si<c.supplements.length;si++){var sp=c.supplements[si];body+='<tr style="border-bottom:1px solid #1a1a1a;background:'+(si%2===0?"#0a0a0a":"#080808")+'"><td style="padding:7px 12px;color:#ddd;font-size:12px">'+esc(sp.name)+'</td><td style="padding:7px 12px;color:#aaa;font-size:11px">'+esc(sp.dose)+'</td><td style="padding:7px 12px;color:#aaa;font-size:11px">'+esc(sp.timing)+'</td></tr>';}
+    body+='</table></div>';}
+
+  var contentPages=_splitContentIntoPages(body);
+  var pages=[{coverTitle:"Full Prep Package",coverClient:c.name,coverSub:coverSub}];
+  for(var pi2=0;pi2<contentPages.length;pi2++)pages.push({content:contentPages[pi2]});
+  _renderPDFToFile(pages,c.name.replace(/\s+/g,"_")+"_Full_Prep","Full Prep",c.name);
 }
 // ── BOOT ──
 (function boot(){
