@@ -28,33 +28,33 @@
   --goldGrad:linear-gradient(135deg,#8B6914,#C49628,#E8C050,#C49628,#8B6914);
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{height:100%}
-body{background:var(--bg);color:var(--wh);font-family:var(--body);min-height:100vh;-webkit-font-smoothing:antialiased}
-input,textarea,select{font-family:var(--body);color:var(--wh);background:var(--glassB);border:1.5px solid var(--accB);border-radius:8px;padding:12px 14px;font-size:15px;outline:none;width:100%;box-sizing:border-box;-webkit-appearance:none;appearance:none;transition:border-color .2s,box-shadow .2s}
+html,body{height:100%;overscroll-behavior:none;overflow-x:hidden}
+body{background:var(--bg);color:var(--wh);font-family:var(--body);min-height:100vh;-webkit-font-smoothing:antialiased;touch-action:manipulation;overscroll-behavior-y:none}
+input,textarea,select{font-family:var(--body);color:var(--wh);background:var(--glassB);border:1.5px solid var(--borderH);border-radius:10px;padding:13px 16px;font-size:14px;outline:none;width:100%;box-sizing:border-box;-webkit-appearance:none;appearance:none;transition:border-color .2s,box-shadow .2s;min-height:46px}
 input:focus,textarea:focus,select:focus{border-color:var(--acc);box-shadow:0 0 0 3px var(--accGlow)}
-input::placeholder,textarea::placeholder{color:var(--dm)}
-select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23605848' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+input::placeholder,textarea::placeholder{color:var(--dm);opacity:.6;font-style:italic;font-size:13px}
+select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23605848' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;min-height:46px}
 select option{background:var(--card);color:var(--wh)}
 button{font-family:var(--body);cursor:pointer;border:none;outline:none;transition:all .18s ease}
-.btn{background:var(--goldGrad);background-size:200% 100%;color:#1a1408;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.12em;padding:14px 18px;border-radius:8px;width:100%;box-shadow:0 4px 24px var(--accM);text-transform:uppercase;animation:shimmer 3s ease-in-out infinite}
+.btn{background:var(--goldGrad);background-size:200% 100%;color:#1a1408;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.12em;padding:16px 20px;border-radius:12px;width:100%;box-shadow:0 4px 24px var(--accM);text-transform:uppercase;animation:shimmer 3s ease-in-out infinite;min-height:50px}
 .btn:hover{box-shadow:0 6px 32px var(--accB);transform:translateY(-1px)}
 .btn:active{transform:translateY(0)}
 .btn:disabled{opacity:.4;pointer-events:none;animation:none}
-.btn2{background:var(--accS);color:var(--acc);border:1.5px solid var(--accB);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;padding:8px 14px;border-radius:6px;text-transform:uppercase;transition:all .18s}
+.btn2{background:var(--accS);color:var(--acc);border:1.5px solid var(--borderH);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;padding:10px 16px;border-radius:10px;text-transform:uppercase;transition:all .18s}
 .btn2:hover{background:var(--accGlow);border-color:var(--acc);color:var(--accBright)}
 .btn2:active{transform:scale(.97)}
-.btn-danger{background:rgba(216,120,120,.05);border:1px solid rgba(216,120,120,.25);color:var(--danger);font-family:var(--mono);font-size:10px;font-weight:700;padding:12px;border-radius:8px;width:100%;letter-spacing:.08em}
+.btn-danger{background:rgba(216,120,120,.05);border:1.5px solid rgba(216,120,120,.25);color:var(--danger);font-family:var(--mono);font-size:10px;font-weight:700;padding:14px;border-radius:10px;width:100%;letter-spacing:.08em}
 .btn-danger:hover{background:rgba(216,120,120,.1);border-color:rgba(216,120,120,.3)}
-.btn-success{background:rgba(120,200,120,.08);border:1px solid rgba(120,200,120,.2);color:var(--success);font-family:var(--mono);font-size:10px;font-weight:700;padding:12px;border-radius:8px;width:100%;letter-spacing:.08em}
-.cd{background:linear-gradient(160deg,rgba(12,12,12,.99),rgba(6,6,6,.99));border:1.5px solid var(--borderS);border-radius:12px;padding:16px;margin-bottom:10px;transition:border-color .25s,box-shadow .25s;box-shadow:0 2px 8px rgba(0,0,0,.3),inset 0 1px 0 var(--glass)}
+.btn-success{background:rgba(120,200,120,.08);border:1.5px solid rgba(120,200,120,.2);color:var(--success);font-family:var(--mono);font-size:10px;font-weight:700;padding:14px;border-radius:10px;width:100%;letter-spacing:.08em}
+.cd{background:linear-gradient(160deg,rgba(12,12,12,.99),rgba(6,6,6,.99));border:1.5px solid var(--borderS);border-radius:14px;padding:16px;margin-bottom:10px;transition:border-color .25s,box-shadow .25s;box-shadow:0 2px 12px rgba(0,0,0,.3),inset 0 1px 0 var(--glass)}
 .cd-link{cursor:pointer}
 .cd-link:hover{border-color:var(--borderH);box-shadow:0 4px 28px rgba(0,0,0,.4),0 0 12px var(--glassB)}
 .cd-link:active{transform:scale(.995);border-color:var(--accB)}
 .gw{height:1px;background:linear-gradient(90deg,transparent,var(--accDeep),var(--acc),var(--accDeep),transparent);margin:28px 0}
 .sl{font-size:10px;font-weight:700;color:var(--acc);letter-spacing:.18em;font-family:var(--mono);margin-bottom:12px;text-transform:uppercase;line-height:1.4;text-shadow:0 0 20px var(--accGlow)}
 .pt{font-size:24px;font-weight:700;color:var(--ice);font-family:var(--display);letter-spacing:.04em;margin-bottom:20px;line-height:1.2}
-.lb{font-size:11px;font-weight:700;color:var(--mu);font-family:var(--mono);letter-spacing:.08em;display:block;margin-bottom:6px}
-.chip{display:inline-flex;padding:5px 12px;border-radius:6px;font-size:10px;font-weight:700;font-family:var(--mono);background:var(--accS);border:1.5px solid var(--accB);color:var(--ow);cursor:pointer;margin:2px;user-select:none;transition:all .15s;min-height:32px;align-items:center}
+.lb{font-size:10px;font-weight:700;color:var(--mu);font-family:var(--mono);letter-spacing:.1em;display:block;margin-bottom:8px;text-transform:uppercase}
+.chip{display:inline-flex;padding:6px 14px;border-radius:8px;font-size:10px;font-weight:700;font-family:var(--mono);background:var(--accS);border:1.5px solid var(--borderH);color:var(--ow);cursor:pointer;margin:2px;user-select:none;transition:all .15s;min-height:34px;align-items:center}
 .chip:hover{background:var(--accS);border-color:var(--dm);color:var(--wh)}
 .chip.on{background:var(--accGlow);border-color:var(--accB);color:var(--accVib);text-shadow:0 0 12px var(--accGlow)}
 .status-chip{display:inline-flex;padding:3px 8px;border-radius:4px;font-size:9px;font-weight:700;font-family:var(--mono);letter-spacing:.06em}
@@ -63,17 +63,17 @@ button{font-family:var(--body);cursor:pointer;border:none;outline:none;transitio
 .status-noshow{background:rgba(180,140,100,.08);border:1px solid rgba(180,140,100,.2);color:#c4a070}
 .status-latecancel{background:rgba(232,184,120,.08);border:1px solid rgba(232,184,120,.2);color:var(--warn)}
 #app{max-width:640px;margin:0 auto;min-height:100vh;position:relative;z-index:1}
-.hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 12px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(8,8,10,.95);backdrop-filter:blur(28px);z-index:10}
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 12px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(8,8,10,.97);backdrop-filter:blur(28px);z-index:10;-webkit-transform:translateZ(0);transform:translateZ(0)}
 .ct{padding:20px 16px 110px}
-.tabs{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:640px;background:rgba(8,8,10,.97);backdrop-filter:blur(28px);border-top:1px solid var(--borderS);display:flex;justify-content:space-around;padding:10px 0 max(10px,env(safe-area-inset-bottom));z-index:10}
+.tabs{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:640px;background:rgba(6,6,8,.98);backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);border-top:1px solid var(--borderS);display:flex;justify-content:space-around;padding:8px 0 max(8px,env(safe-area-inset-bottom));z-index:10}
 .ti{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:6px 10px;font-size:9px;font-weight:700;font-family:var(--mono);letter-spacing:.04em;color:var(--dm);position:relative;user-select:none;transition:color .2s;min-width:44px;min-height:44px;justify-content:center}
 .ti.on{color:var(--acc)}
 .ti.on::before{content:'';position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:24px;height:2px;border-radius:1px;background:var(--acc);box-shadow:0 0 12px var(--accGlow)}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
-.g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;padding-top:2px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding-top:2px}
 .field{margin-bottom:16px}
-.stat{padding:18px 10px;text-align:center;background:rgba(8,8,8,.98);border-radius:12px;border:1.5px solid var(--accB);box-shadow:0 0 6px var(--accS);transition:border-color .2s;overflow:visible}
+.stat{padding:18px 10px;text-align:center;background:rgba(8,8,8,.98);border-radius:12px;border:1.5px solid var(--borderH);box-shadow:0 0 6px var(--accS);transition:border-color .2s;overflow:visible;min-width:0}
 .stat:hover{border-color:var(--accB)}
 .stat b{font-size:26px;font-weight:600;font-family:var(--mono);display:block;line-height:1}
 .stat small{font-size:9px;color:var(--dm);letter-spacing:.14em;display:block;margin-top:6px;font-weight:500;font-family:var(--mono)}
@@ -88,7 +88,7 @@ button{font-family:var(--body);cursor:pointer;border:none;outline:none;transitio
 .timer-bar.active{opacity:1}
 .timer-bar-fill{height:100%;background:linear-gradient(90deg,var(--accDeep),var(--accBright));transition:width 1s linear}
 .toast{position:fixed;top:24px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,rgba(12,12,18,.99),rgba(8,8,14,.99));color:var(--accBright);border:1px solid var(--accB);font-family:var(--mono);font-size:11px;font-weight:700;padding:11px 28px;border-radius:10px;z-index:1000;animation:toastIn .3s ease;box-shadow:0 8px 32px rgba(0,0,0,.5);letter-spacing:.08em;pointer-events:none;white-space:nowrap}
-.search-bar{display:flex;align-items:center;gap:10px;background:var(--glassB);border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin-bottom:14px;transition:border-color .2s}
+.search-bar{display:flex;align-items:center;gap:10px;background:var(--glassB);border:1.5px solid var(--borderH);border-radius:12px;padding:12px 16px;margin-bottom:14px;transition:border-color .2s}
 .search-bar:focus-within{border-color:var(--accB)}
 .search-bar input{background:transparent;border:none;padding:0;font-size:13px;color:var(--wh);flex:1;box-shadow:none}
 .search-bar input:focus{box-shadow:none;border:none}
@@ -229,9 +229,9 @@ function cloudPull(callback){
   });
 }
 var navStack=[],currentView={tab:"home",view:"main",data:{}};
-var scheduleWeekOffset=0,_selectedDay=null,_guideSec=0,_guideExpanded=false;
+var scheduleWeekOffset=0,_selectedDay=null;
 var _clientSearch="",_sessionSearch="",_guideSearch="";
-function go(tab){if(currentView.view==="new"&&tab!==currentView.tab){var exCount=document.querySelectorAll("#exList .cd").length;var hasData=val("sC")||val("sN")||exCount>0;if(hasData&&!confirm("Leave session log?\nUnsaved data will be lost."))return;}navStack=[];if(tab!=="schedule")scheduleWeekOffset=0;_selectedDay=null;_guideExpanded=false;_guideSec=0;_clientSearch="";_sessionSearch="";_guideSearch="";currentView={tab:tab,view:"main",data:{}};render();window.scrollTo({top:0,behavior:"smooth"});}
+function go(tab){if(currentView.view==="new"&&tab!==currentView.tab){var exCount=document.querySelectorAll("#exList .cd").length;var hasData=val("sC")||val("sN")||exCount>0;if(hasData&&!confirm("Leave session log?\nUnsaved data will be lost."))return;}navStack=[];if(tab!=="schedule")scheduleWeekOffset=0;_selectedDay=null;_clientSearch="";_sessionSearch="";_guideSearch="";currentView={tab:tab,view:"main",data:{}};render();window.scrollTo({top:0,behavior:"smooth"});}
 function push(view,data){data=data||{};navStack.push(JSON.parse(JSON.stringify(currentView)));currentView={tab:currentView.tab,view:view,data:Object.assign({},currentView.data,data)};render();window.scrollTo({top:0,behavior:"smooth"});}
 function pop(){if(navStack.length)currentView=navStack.pop();else currentView={tab:currentView.tab,view:"main",data:{}};render();window.scrollTo({top:0,behavior:"smooth"});}
 function el(id){return document.getElementById(id);}
@@ -263,7 +263,7 @@ function clientById(id){return clients.find(function(c){return c.id===id;});}
 function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
 function pickChip(el_,hiddenId){el_.parentElement.querySelectorAll(".chip").forEach(function(c){c.classList.remove("on");});el_.classList.add("on");if(hiddenId){var h=el(hiddenId);if(h)h.value=el_.textContent.trim();}}
 function pickChipVal(el_,hiddenId){el_.parentElement.querySelectorAll(".chip").forEach(function(c){c.classList.remove("on");});el_.classList.add("on");var h=el(hiddenId);if(h)h.value=el_.dataset.val||el_.textContent.trim();}
-function clientColor(name){return getComputedStyle(document.body).getPropertyValue("--acc").trim()||"#D4A830";}
+function clientColor(name){var h=0;for(var i=0;i<(name||"").length;i++)h=name.charCodeAt(i)+((h<<5)-h);var hue=Math.abs(h%360);return"hsl("+hue+",50%,55%)";}
 function clientSessions(cid){return sessions.filter(function(s){return s.clientId===cid&&s.status!=="cancelled";});}
 function daysSinceLastSession(cid){var cs=clientSessions(cid);if(!cs.length)return null;var last=cs.slice(-1)[0];var d=new Date(todayISO())-new Date(last.date+"T12:00:00");return Math.floor(d/864e5);}
 function weekDiff(dateA,dateB){var msA=Date.UTC(dateA.getFullYear(),dateA.getMonth(),dateA.getDate());var msB=Date.UTC(dateB.getFullYear(),dateB.getMonth(),dateB.getDate());return Math.round((msA-msB)/(7*24*60*60*1000));}
@@ -286,7 +286,7 @@ function getPIN(){return localStorage.getItem(PIN_KEY)||"1234";}
 function setPIN(p){localStorage.setItem(PIN_KEY,p);}
 function isUnlocked(){return sessionStorage.getItem("fm_unlocked")==="true";}
 function unlock(){sessionStorage.setItem("fm_unlocked","true");}
-function showLockScreen(){el("app").style.display="none";el("qnoteFab").style.display="none";var ld=el("lockScreen");if(!ld){ld=document.createElement("div");ld.id="lockScreen";document.body.appendChild(ld);}ld.style.cssText="position:fixed;inset:0;z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg);padding:24px";var cs=getComputedStyle(document.body);var accVal=cs.getPropertyValue("--acc").trim();var accGlowVal=cs.getPropertyValue("--accGlow").trim();var accSVal=cs.getPropertyValue("--accS").trim();var accBVal=cs.getPropertyValue("--accB").trim();var accMVal=cs.getPropertyValue("--accM").trim();var gradVal=cs.getPropertyValue("--goldGrad").trim();ld.innerHTML='<div style="position:absolute;inset:0;overflow:hidden;pointer-events:none"><div style="position:absolute;top:20%;left:50%;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,'+accGlowVal+','+accSVal+' 45%,transparent 65%);transform:translate(-50%,-50%);animation:lockOrbFloat 8s ease-in-out infinite;filter:blur(60px)"></div><div style="position:absolute;top:40%;left:35%;width:250px;height:250px;border-radius:50%;background:radial-gradient(circle,'+accSVal+',transparent 55%);transform:translate(-50%,-50%);animation:lockOrb2 6s ease-in-out infinite 1s;filter:blur(45px)"></div></div><div style="position:relative;display:flex;flex-direction:column;align-items:center;width:100%;max-width:340px;animation:lockFadeIn .8s ease-out"><div style="width:112px;height:112px;border-radius:28px;background:linear-gradient(145deg,#0c0c0c,#060606);border:1.5px solid '+accBVal+';display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:54px;font-weight:900;position:relative;box-shadow:0 0 12px '+accMVal+',0 0 30px '+accGlowVal+',0 0 60px '+accSVal+',0 0 100px '+accSVal+',inset 0 0 20px '+accSVal+';animation:lockGlowRise .9s cubic-bezier(.34,1.56,.64,1) both,neonBreathe 4s ease-in-out 1s infinite;margin-bottom:44px"><span style="background:'+gradVal+';background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:goldShimmer 4s ease-in-out infinite;filter:drop-shadow(0 0 20px '+accMVal+')">M</span></div><div style="display:flex;align-items:center;gap:14px;animation:lockBadgeFade .6s ease-out .35s both;margin-bottom:20px"><div style="width:40px;height:1px;background:linear-gradient(90deg,transparent,'+accBVal+')"></div><span style="font-size:11px;font-weight:700;letter-spacing:.35em;background:'+gradVal+';background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-family:var(--mono);font-size:13px;letter-spacing:.45em;animation:goldShimmer 4s ease-in-out infinite .5s;filter:drop-shadow(0 0 12px '+accMVal+')">IFBB PRO</span><div style="width:40px;height:1px;background:linear-gradient(90deg,'+accBVal+',transparent)"></div></div><div style="font-family:var(--display);font-size:34px;font-weight:600;letter-spacing:.14em;margin-bottom:52px;animation:lockTextReveal .8s ease-out .5s both"><span style="background:linear-gradient(160deg,var(--ice),var(--wh),var(--ow));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 30px rgba(255,245,225,.08))">BIG MIKE</span></div><div style="width:100%;max-width:280px;animation:lockPinRise .6s ease-out .75s both"><input id="pinInput" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="8" placeholder="\u00b7 \u00b7 \u00b7 \u00b7" style="text-align:center;font-size:22px;letter-spacing:.6em;font-family:var(--mono);padding:18px;margin-bottom:16px;border-radius:12px;background:rgba(255,255,255,.015);border:1.5px solid var(--borderH);color:var(--ice);width:100%;box-sizing:border-box;outline:none;transition:border-color .2s"><button class="btn" onclick="tryUnlock()" style="margin-bottom:12px;border-radius:12px;padding:16px 18px">UNLOCK</button><div id="pinError" style="text-align:center;font-size:10px;color:var(--danger);font-family:var(--mono);min-height:18px"></div></div><div style="position:absolute;bottom:-60px;animation:lockBadgeFade .6s ease-out 1s both"><span style="font-size:7px;color:rgba(180,170,150,.25);font-family:var(--mono);letter-spacing:.35em">IFBB PRO BIG MIKE ELY\'S COACHING LAB</span></div></div>';setTimeout(function(){var inp=el("pinInput");if(inp){inp.focus();inp.addEventListener("keydown",function(e){if(e.key==="Enter")tryUnlock();});}},100);}
+function showLockScreen(){if(_smsCheckInterval){clearInterval(_smsCheckInterval);_smsCheckInterval=null;}el("app").style.display="none";el("qnoteFab").style.display="none";var ld=el("lockScreen");if(!ld){ld=document.createElement("div");ld.id="lockScreen";document.body.appendChild(ld);}ld.style.cssText="position:fixed;inset:0;z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg);padding:24px";var cs=getComputedStyle(document.body);var accVal=cs.getPropertyValue("--acc").trim();var accGlowVal=cs.getPropertyValue("--accGlow").trim();var accSVal=cs.getPropertyValue("--accS").trim();var accBVal=cs.getPropertyValue("--accB").trim();var accMVal=cs.getPropertyValue("--accM").trim();var gradVal=cs.getPropertyValue("--goldGrad").trim();ld.innerHTML='<div style="position:absolute;inset:0;overflow:hidden;pointer-events:none"><div style="position:absolute;top:20%;left:50%;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,'+accGlowVal+','+accSVal+' 45%,transparent 65%);transform:translate(-50%,-50%);animation:lockOrbFloat 8s ease-in-out infinite;filter:blur(60px)"></div><div style="position:absolute;top:40%;left:35%;width:250px;height:250px;border-radius:50%;background:radial-gradient(circle,'+accSVal+',transparent 55%);transform:translate(-50%,-50%);animation:lockOrb2 6s ease-in-out infinite 1s;filter:blur(45px)"></div></div><div style="position:relative;display:flex;flex-direction:column;align-items:center;width:100%;max-width:340px;animation:lockFadeIn .8s ease-out"><div style="width:112px;height:112px;border-radius:28px;background:linear-gradient(145deg,#0c0c0c,#060606);border:1.5px solid '+accBVal+';display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:54px;font-weight:900;position:relative;box-shadow:0 0 12px '+accMVal+',0 0 30px '+accGlowVal+',0 0 60px '+accSVal+',0 0 100px '+accSVal+',inset 0 0 20px '+accSVal+';animation:lockGlowRise .9s cubic-bezier(.34,1.56,.64,1) both,neonBreathe 4s ease-in-out 1s infinite;margin-bottom:44px"><span style="background:'+gradVal+';background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:goldShimmer 4s ease-in-out infinite;filter:drop-shadow(0 0 20px '+accMVal+')">M</span></div><div style="display:flex;align-items:center;gap:14px;animation:lockBadgeFade .6s ease-out .35s both;margin-bottom:20px"><div style="width:40px;height:1px;background:linear-gradient(90deg,transparent,'+accBVal+')"></div><span style="font-size:11px;font-weight:700;letter-spacing:.35em;background:'+gradVal+';background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-family:var(--mono);font-size:13px;letter-spacing:.45em;animation:goldShimmer 4s ease-in-out infinite .5s;filter:drop-shadow(0 0 12px '+accMVal+')">IFBB PRO</span><div style="width:40px;height:1px;background:linear-gradient(90deg,'+accBVal+',transparent)"></div></div><div style="font-family:var(--display);font-size:34px;font-weight:600;letter-spacing:.14em;margin-bottom:52px;animation:lockTextReveal .8s ease-out .5s both"><span style="background:linear-gradient(160deg,var(--ice),var(--wh),var(--ow));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 30px rgba(255,245,225,.08))">BIG MIKE</span></div><div style="width:100%;max-width:280px;animation:lockPinRise .6s ease-out .75s both"><input id="pinInput" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="8" placeholder="\u00b7 \u00b7 \u00b7 \u00b7" style="text-align:center;font-size:22px;letter-spacing:.6em;font-family:var(--mono);padding:18px;margin-bottom:16px;border-radius:12px;background:rgba(255,255,255,.015);border:1.5px solid var(--borderH);color:var(--ice);width:100%;box-sizing:border-box;outline:none;transition:border-color .2s"><button class="btn" onclick="tryUnlock()" style="margin-bottom:12px;border-radius:12px;padding:16px 18px">UNLOCK</button><div id="pinError" style="text-align:center;font-size:10px;color:var(--danger);font-family:var(--mono);min-height:18px"></div></div><div style="position:absolute;bottom:-60px;animation:lockBadgeFade .6s ease-out 1s both"><span style="font-size:7px;color:rgba(180,170,150,.25);font-family:var(--mono);letter-spacing:.35em">IFBB PRO BIG MIKE ELY\'S COACHING LAB</span></div></div>';setTimeout(function(){var inp=el("pinInput");if(inp){inp.focus();inp.addEventListener("keydown",function(e){if(e.key==="Enter")tryUnlock();});}},100);}
 function tryUnlock(){var inp=el("pinInput"),entered=inp?inp.value.trim():"";if(entered===getPIN()){unlock();var lk=el("lockScreen");if(lk)lk.remove();el("app").style.display="";el("qnoteFab").style.display="";render();}else{var err=el("pinError");if(err)err.textContent="Incorrect PIN";if(inp){inp.value="";inp.focus();}}}
 function changePIN(){var cur=prompt("Current PIN:");if(cur!==getPIN()){toast("Incorrect");return;}var np=prompt("New PIN (4-8 digits):");if(!np||np.length<4||!/^\d+$/.test(np)){toast("Must be 4-8 digits");return;}var c2=prompt("Confirm:");if(c2!==np){toast("Mismatch");return;}setPIN(np);toast("\u2713 PIN updated");}
 function openQNote(){var m=el("qnoteModal");m.style.display="flex";var sel=el("qnoteClient");sel.innerHTML='<option value="">Select client...</option>';for(var i=0;i<clients.length;i++)sel.innerHTML+='<option value="'+clients[i].id+'">'+esc(clients[i].name)+'</option>';setTimeout(function(){var t=el("qnoteText");if(t)t.focus();},100);}
@@ -349,7 +349,7 @@ function renderHome(){
       var cidx=clients.findIndex(function(cc){return cc.id===s.clientId;});
       html+='<div class="cd" style="display:flex;align-items:center;gap:14px;border-left:3px solid '+bc+'">'
         +'<div style="min-width:50px;font-family:var(--mono);font-size:13px;font-weight:700;color:'+(ic?"var(--success)":"var(--acc)")+'">'+fmtTimeStr(s.time)+'</div>'
-        +'<div style="flex:1;cursor:pointer" onclick="'+(cidx>=0?"navToClient("+cidx+")":"")+'"><div style="font-size:14px;font-weight:500;color:var(--wh)">'+esc(s.clientName)+'</div><div style="font-size:10px;color:var(--dm)">'+(s.type||"Training")+(ic?' \u00b7 <span class="status-chip status-complete">COMPLETED</span>':ix?' \u00b7 <span class="status-chip status-cancelled">CANCELLED</span>':"")+'</div></div>'
+        +'<div style="flex:1;cursor:'+(cidx>=0?"pointer":"default")+'" onclick="'+(cidx>=0?"navToClient("+cidx+")":"")+'"><div style="font-size:14px;font-weight:500;color:var(--wh)">'+esc(s.clientName||"Unknown")+'</div><div style="font-size:10px;color:var(--dm)">'+(s.type||"Training")+(ic?' \u00b7 <span class="status-chip status-complete">COMPLETED</span>':ix?' \u00b7 <span class="status-chip status-cancelled">CANCELLED</span>':"")+'</div></div>'
         +(!ic&&!ix?'<button class="btn2" onclick="completeScheduled(\''+s.id+'\')" style="padding:5px 10px;font-size:8px">LOG</button>':"")
         +'<div style="font-size:11px;color:var(--ow);font-family:var(--mono)">$'+(s.rate||70)+'</div></div>';
     }
@@ -362,8 +362,8 @@ function renderHome(){
     var rec=sessions.slice(-4).reverse();
     for(var i=0;i<rec.length;i++){var s=rec[i];var col=clientColor(s.clientName);html+='<div class="cd cd-link" style="display:flex;align-items:center;gap:12px" onclick="navToSession(\''+s.id+'\')"><div style="width:34px;height:34px;border-radius:8px;background:var(--accS);border:1.5px solid var(--accB);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;font-weight:700;color:'+col+';flex-shrink:0">'+(s.clientName||"?")[0]+'</div><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--wh)">'+esc(s.clientName)+'</div><div style="font-size:10px;color:var(--dm);font-family:var(--mono)">'+s.type+' \u00b7 '+fmtDate(s.date)+'</div></div><div style="font-size:10px;color:var(--ow);font-family:var(--mono)">$'+s.rate+'</div></div>';}
   }
-  html+='<div class="gw"></div><div style="display:flex;justify-content:center;gap:16px;padding:8px 0"><span onclick="go(\'settings\')" style="cursor:pointer;font-size:10px;color:var(--dm);font-family:var(--mono);letter-spacing:.06em">SETTINGS</span><span style="color:var(--borderS)">\u00b7</span><span onclick="exportData()" style="cursor:pointer;font-size:10px;color:var(--dm);font-family:var(--mono);letter-spacing:.06em">BACKUP</span></div>';
-  html+='<div style="text-align:center;padding:4px 0 8px"><div style="font-size:8px;color:var(--dmL);font-family:var(--mono)">v'+VERSION+' \u00b7 '+clients.length+' clients \u00b7 '+sessions.length+' sessions</div></div>';
+  html+='<div class="gw"></div>';
+  html+='<div style="text-align:center;padding:8px 0 12px"><div style="font-size:7px;color:var(--dmL);font-family:var(--mono);letter-spacing:.25em">IFBB PRO BIG MIKE ELY\'S COACHING LAB</div><div style="font-size:7px;color:var(--dmL);font-family:var(--mono);margin-top:4px">v'+VERSION+'</div></div>';
   return html;
 }
 function renderEarningsChart(){
@@ -445,10 +445,10 @@ function clientFormFields(c){
   var bills=["Per Session","Monthly","Prepaid"];
   var curSvcs=(c.services||"Training").split(",").map(function(s){return s.trim();});
   var html='<div class="cd" style="padding:18px">'
-    +'<div class="field"><span class="lb">NAME *</span><input id="cN" placeholder="Full name" value="'+esc(c.name||'')+'"></div>'
-    +'<div class="g2 field"><div><span class="lb">PHONE</span><input id="cP" type="tel" placeholder="(555) 123-4567" value="'+esc(c.phone||'')+'"></div><div><span class="lb">EMAIL</span><input id="cE" type="email" placeholder="email@..." value="'+esc(c.email||'')+'"></div></div>'
-    +'<div class="g2"><div><span class="lb">AGE</span><input id="cA" type="number" min="0" placeholder="\u2014" value="'+(c.age||'')+'"></div><div><span class="lb">RATE ($)</span><input id="cR" type="number" min="0" placeholder="\u2014" value="'+(c.rate||'')+'"></div></div>'
-    +'<div class="g2" style="margin-top:8px"><div><span class="lb">WEIGHT (lbs)</span><input id="cWt" type="number" min="0" placeholder="\u2014" value="'+(c.weight||'')+'"></div><div><span class="lb">HEIGHT</span><input id="cHt" placeholder="5\'10\"" value="'+esc(c.height||'')+'"></div></div></div>';
+    +'<div class="field"><span class="lb">NAME *</span><input id="cN" placeholder="Client full name" value="'+esc(c.name||'')+'"></div>'
+    +'<div class="g2 field"><div><span class="lb">PHONE</span><input id="cP" type="tel" placeholder="(555) 123-4567" value="'+esc(c.phone||'')+'"></div><div><span class="lb">EMAIL</span><input id="cE" type="email" placeholder="email@example.com" value="'+esc(c.email||'')+'"></div></div>'
+    +'<div class="g2"><div><span class="lb">AGE</span><input id="cA" type="number" min="0" placeholder="Age" value="'+(c.age||'')+'"></div><div><span class="lb">RATE ($/session)</span><input id="cR" type="number" min="0" placeholder="70" value="'+(c.rate||'')+'"></div></div>'
+    +'<div class="g2" style="margin-top:8px"><div><span class="lb">WEIGHT (lbs)</span><input id="cWt" type="number" min="0" placeholder="lbs" value="'+(c.weight||'')+'"></div><div><span class="lb">HEIGHT</span><input id="cHt" placeholder="5\'10&quot;" value="'+esc(c.height||'')+'"></div></div></div>';
   html+='<div class="sl" style="margin-top:14px">CLIENT TYPE</div><div class="cd" style="padding:14px"><div style="display:flex;gap:4px">';
   for(var i=0;i<cTypes.length;i++)html+='<div class="chip'+((c.clientType||"In-Person")===cTypes[i]?" on":"")+'" onclick="pickChip(this,\'cCTv\')">'+cTypes[i]+'</div>';
   html+='</div><input type="hidden" id="cCTv" value="'+(c.clientType||"In-Person")+'"></div>';
@@ -465,17 +465,17 @@ function clientFormFields(c){
   for(var i=0;i<bills.length;i++)html+='<div class="chip'+((c.billing||"Per Session")===bills[i]?" on":"")+'" onclick="pickChip(this,\'cBv\');toggleBillFields()">'+bills[i]+'</div>';
   html+='</div><input type="hidden" id="cBv" value="'+(c.billing||"Per Session")+'">';
   html+='<div id="billFields" style="display:'+((c.billing||"Per Session")!=="Per Session"?"block":"none")+'">';
-  html+='<div class="g2" style="margin-top:8px"><div><span class="lb">AMOUNT ($)</span><input id="cBA" type="number" min="0" placeholder="\u2014" value="'+(c.billingAmt||'')+'"></div><div id="prepMonthsWrap" style="display:'+((c.billing||"Per Session")==="Prepaid"?"block":"none")+'"><span class="lb">MONTHS PREPAID</span><input id="cBM" type="number" min="1" max="12" placeholder="3" value="'+(c.billingMonths||'')+'"></div></div></div></div>';
+  html+='<div class="g2" style="margin-top:8px"><div><span class="lb">AMOUNT ($)</span><input id="cBA" type="number" min="0" placeholder="Amount" value="'+(c.billingAmt||'')+'"></div><div id="prepMonthsWrap" style="display:'+((c.billing||"Per Session")==="Prepaid"?"block":"none")+'"><span class="lb">MONTHS PREPAID</span><input id="cBM" type="number" min="1" max="12" placeholder="3" value="'+(c.billingMonths||'')+'"></div></div></div></div>';
   if(curSvcs.indexOf("Contest Prep")>=0){
     html+='<div class="sl" style="margin-top:14px">CONTEST PREP</div><div class="cd" style="padding:14px"><div class="g2"><div><span class="lb">PREP LENGTH</span><select id="cPW" style="font-size:12px">';
     for(var w=2;w<=20;w++)html+='<option value="'+w+'"'+((parseInt(c.prepWeeks)||12)===w?' selected':'')+'>'+w+' weeks</option>';
     html+='</select></div><div><span class="lb">START DATE</span><input id="cPS" type="date" value="'+(c.prepStart||"")+'"></div></div></div>';
   }
   html+='<div class="sl" style="margin-top:14px">HEALTH &amp; NOTES</div><div class="cd" style="padding:18px">'
-    +'<div class="field"><span class="lb">GOALS</span><textarea id="cG" rows="2" placeholder="What do they want?">'+esc(c.goals||'')+'</textarea></div>'
-    +'<div class="field"><span class="lb">INJURIES / LIMITATIONS</span><textarea id="cI" rows="2" placeholder="Surgeries, joint issues...">'+esc(c.injuries||'')+'</textarea></div>'
-    +'<div class="field"><span class="lb">MEDICAL</span><textarea id="cM" rows="1" placeholder="Conditions, medications...">'+esc(c.medical||'')+'</textarea></div>'
-    +'<div><span class="lb">NOTES</span><textarea id="cO" rows="2" placeholder="Anything else...">'+esc(c.notes||'')+'</textarea></div></div>';
+    +'<div class="field"><span class="lb">GOALS</span><textarea id="cG" rows="2" placeholder="Competition prep, weight loss, muscle gain...">'+esc(c.goals||'')+'</textarea></div>'
+    +'<div class="field"><span class="lb">INJURIES / LIMITATIONS</span><textarea id="cI" rows="2" placeholder="Prior surgeries, joint issues, limitations...">'+esc(c.injuries||'')+'</textarea></div>'
+    +'<div class="field"><span class="lb">MEDICAL</span><textarea id="cM" rows="1" placeholder="Conditions, medications, allergies...">'+esc(c.medical||'')+'</textarea></div>'
+    +'<div><span class="lb">NOTES</span><textarea id="cO" rows="2" placeholder="Additional notes about this client...">'+esc(c.notes||'')+'</textarea></div></div>';
   return html;
 }
 function renderClientAdd(){return '<button class="btn2" onclick="pop()" style="margin-bottom:14px">\u2039 Back</button><div class="pt">New Client</div>'+clientFormFields()+'<button class="btn" style="margin-top:16px" onclick="saveNewClient()">SAVE CLIENT</button>';}
@@ -488,7 +488,7 @@ function renderClientDetail(){
   var idx=currentView.data.clientIdx,c=clients[idx];if(!c){pop();return"";}
   var col=clientColor(c.name);
   var cs=sessions.filter(function(x){return x.clientId===c.id;});
-  var rev=cs.filter(function(x){return x.status!=="cancelled";}).reduce(function(a,x){return a+parseFloat(x.rate||c.rate||70);},0);
+  var rev=cs.filter(function(x){return x.status!=="cancelled";}).reduce(function(a,x){return a+(parseFloat(x.rate)||parseFloat(c.rate)||70);},0);
   var info=[["Phone",c.phone],["Email",c.email],["Age",c.age],["Goals",c.goals],["Injuries",c.injuries],["Medical",c.medical],["Activity",c.activity],["Notes",c.notes]].filter(function(r){return r[1];});
   var st2=calcStreak(c.id),ds2=daysSinceLastSession(c.id);
   var html='<button class="btn2" onclick="pop()" style="margin-bottom:14px">\u2039 Back</button>'
@@ -505,8 +505,11 @@ function renderClientDetail(){
   html+='</div><div id="clientDetailBody">';
   html+=subTab==="progress"?renderClientProgress(c,idx):subTab==="notes"?renderClientNotes(c,idx):renderClientOverview(c,idx,cs,rev,info);
   html+='</div>';
-  html+='<div style="display:flex;gap:8px;margin-top:16px"><button class="btn" style="flex:1" onclick="navToLogFromClient(\''+c.id+'\',\''+c.rate+'\',\''+c.type+'\')">LOG SESSION</button><button class="btn2" style="flex:1" onclick="navToScheduleFromClient(\''+c.id+'\')">SCHEDULE</button></div>';
-  if(c.phone)html+='<button class="btn2" style="width:100%;margin-top:8px" onclick="sendQuickSMS(\''+c.id+'\')">SEND SMS \u2192</button>';
+  html+='<div style="display:flex;gap:8px;margin-top:16px"><button class="btn" style="flex:1" onclick="navToLogFromClient(\''+c.id+'\',\''+c.rate+'\',\''+c.clientType+'\')">LOG SESSION</button><button class="btn2" style="flex:1" onclick="navToScheduleFromClient(\''+c.id+'\')">SCHEDULE</button></div>';
+  html+='<div style="display:flex;gap:8px;margin-top:8px">';
+  if(c.phone)html+='<button class="btn2" style="flex:1" onclick="sendQuickSMS(\''+c.id+'\')">SEND SMS</button>';
+  if(c.phone)html+='<a href="tel:'+esc((c.phone||"").replace(/[^0-9+]/g,""))+'" style="flex:1"><button class="btn2" style="width:100%">CALL</button></a>';
+  html+='</div>';
   var hasProgram=c.program&&c.program.days&&c.program.days.length>0;var hasMealPlans=mealPlans.some(function(mp){return mp.clientId===c.id;});if(hasProgram||hasMealPlans)html+='<button class="btn2" style="width:100%;margin-top:8px" onclick="generateFullPrepPDF('+idx+')">GENERATE FULL PREP PDF</button>';
   html+='<div style="margin-top:24px;border:1px solid rgba(216,120,120,.2);border-radius:10px;overflow:hidden"><div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display===\'none\'?\'block\':\'none\'" style="cursor:pointer;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;background:rgba(216,120,120,.03)"><span style="font-size:10px;font-weight:700;color:var(--danger);font-family:var(--mono);letter-spacing:.1em">DANGER ZONE</span><span style="font-size:10px;color:var(--dm)">\u25bc</span></div><div style="display:none;padding:16px"><div style="font-size:11px;color:var(--dm);margin-bottom:12px">This cannot be undone. Session history will be preserved.</div><button class="btn-danger" onclick="deleteClient('+idx+')">DELETE CLIENT</button></div></div>';
   return html;
@@ -544,7 +547,7 @@ function renderClientProgress(c,idx){
   var FIELDS=["Weight (lbs)","Body Fat %","Waist (in)","Hips (in)","Chest (in)","Left Arm (in)","Right Arm (in)","Left Thigh (in)","Right Thigh (in)"];
   var html='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><span class="sl" style="margin:0">MEASUREMENTS</span><button class="btn2" onclick="toggleMeasForm()" style="padding:5px 10px;font-size:8px">+ LOG</button></div>';
   html+='<div id="measForm" style="display:none;margin-bottom:14px"><div class="cd" style="padding:16px"><div style="font-size:10px;color:var(--dm);font-family:var(--mono);margin-bottom:10px">DATE: <input id="measDate" type="date" value="'+todayISO()+'" style="width:auto;padding:4px 8px;font-size:11px;display:inline-block;width:140px"></div><div class="g2">';
-  for(var i=0;i<FIELDS.length;i++)html+='<div><span class="lb">'+FIELDS[i].toUpperCase()+'</span><input id="measF'+i+'" type="number" step="0.1" min="0" placeholder="\u2014" style="font-size:13px"></div>';
+  for(var i=0;i<FIELDS.length;i++)html+='<div><span class="lb">'+FIELDS[i].toUpperCase()+'</span><input id="measF'+i+'" type="number" step="0.1" min="0" placeholder="" style="font-size:13px"></div>';
   html+='</div><button class="btn" style="margin-top:14px" onclick="saveMeasurement('+idx+')">SAVE MEASUREMENTS</button></div></div>';
   if(!meas.length)return html+'<div style="text-align:center;padding:30px;color:var(--dm);font-family:var(--mono);font-size:11px">No measurements logged yet</div>';
   var latest=meas[meas.length-1],first=meas[0];
@@ -649,7 +652,7 @@ function renderLogSession(){
 function onClientSelect(){
   var cId=val("sC"),c=clientById(cId);if(!c)return;
   var r=el("sR");if(r&&c.rate){r.value=c.rate;toast("Rate set to $"+c.rate+" ("+c.name+"'s rate)");}
-  var t=el("sT");if(t&&c.type)for(var i=0;i<t.options.length;i++)if(t.options[i].text===c.type){t.selectedIndex=i;break;}
+  var t=el("sT");if(t&&c.clientType)for(var i=0;i<t.options.length;i++)if(t.options[i].text===c.clientType){t.selectedIndex=i;break;}
   currentView.data.prefillClientId=cId;
   var panel=el("lastSessPanel");if(panel){
     var lastSess2=sessions.filter(function(s){return s.clientId===cId&&s.status!=="cancelled";}).slice(-1)[0];
@@ -679,7 +682,7 @@ function addExercise(mode){
   var exInputs='<div class="exGroup"><input class="xN" list="exHistory" placeholder="Exercise name" style="margin-bottom:6px;font-weight:600"><div class="xSets"></div><button class="btn2" onclick="addSet(this.closest(\'.exGroup\'))" style="margin-top:4px;padding:4px 10px;font-size:8px">+ SET</button></div>';
   if(mode==="superset")exInputs='<div class="exGroup"><input class="xN" list="exHistory" placeholder="Exercise A" style="margin-bottom:6px;font-weight:600"><div class="xSets"></div><button class="btn2" onclick="addSet(this.closest(\'.exGroup\'))" style="margin-top:4px;padding:4px 10px;font-size:8px">+ SET</button></div><div style="text-align:center;font-size:9px;color:var(--dm);font-family:var(--mono);margin:8px 0;letter-spacing:.1em">PAIRED WITH</div><div class="exGroup"><input class="xN" list="exHistory" placeholder="Exercise B" style="margin-bottom:6px;font-weight:600"><div class="xSets"></div><button class="btn2" onclick="addSet(this.closest(\'.exGroup\'))" style="margin-top:4px;padding:4px 10px;font-size:8px">+ SET</button></div>';
   if(mode==="giant")exInputs='<div class="exGroup"><input class="xN" list="exHistory" placeholder="Exercise A" style="margin-bottom:6px;font-weight:600"><div class="xSets"></div><button class="btn2" onclick="addSet(this.closest(\'.exGroup\'))" style="margin-top:4px;padding:4px 10px;font-size:8px">+ SET</button></div><div style="text-align:center;font-size:8px;color:var(--dm);font-family:var(--mono);margin:6px 0">\u2193</div><div class="exGroup"><input class="xN" list="exHistory" placeholder="Exercise B" style="margin-bottom:6px;font-weight:600"><div class="xSets"></div><button class="btn2" onclick="addSet(this.closest(\'.exGroup\'))" style="margin-top:4px;padding:4px 10px;font-size:8px">+ SET</button></div><div style="text-align:center;font-size:8px;color:var(--dm);font-family:var(--mono);margin:6px 0">\u2193</div><div class="exGroup"><input class="xN" list="exHistory" placeholder="Exercise C" style="margin-bottom:6px;font-weight:600"><div class="xSets"></div><button class="btn2" onclick="addSet(this.closest(\'.exGroup\'))" style="margin-top:4px;padding:4px 10px;font-size:8px">+ SET</button></div><button class="btn2" onclick="addGiantExercise(this)" style="margin-top:6px;padding:4px 10px;font-size:8px;color:#c87070;border-color:rgba(200,112,112,.2)">+ ADD EXERCISE TO SET</button>';
-  d.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:11px;font-weight:700;color:var(--acc);font-family:var(--mono)">EXERCISE '+_exCount+'</span>'+badge+'</div><span style="font-size:14px;color:var(--danger);cursor:pointer;padding:6px 10px" onclick="this.closest(\'.cd\').remove()">&#10005;</span></div>'+exInputs+'<div style="display:flex;gap:3px;margin-top:8px;flex-wrap:wrap"><div class="chip chip-tempo on" onclick="pickChip(this,\'\')">Normal</div><div class="chip chip-tempo" onclick="pickChip(this,\'\')">3s Ecc</div><div class="chip chip-tempo" onclick="pickChip(this,\'\')">Pause</div><div class="chip chip-tempo" onclick="pickChip(this,\'\')">Drop Set</div><div class="chip chip-tempo" onclick="pickChip(this,\'\')">Isometric</div></div><div style="display:flex;gap:6px;margin-top:10px"><input class="xNote" placeholder="Notes \u2014 cues, substitutions..." style="flex:1;font-size:12px"><input class="xRest" placeholder="Rest" style="width:70px;font-size:12px;text-align:center"></div>';
+  d.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:11px;font-weight:700;color:var(--acc);font-family:var(--mono)">EXERCISE '+_exCount+'</span>'+badge+'</div><span style="font-size:14px;color:var(--danger);cursor:pointer;padding:6px 10px" onclick="this.closest(\'.cd\').remove()">&#10005;</span></div>'+exInputs+'<div style="display:flex;gap:3px;margin-top:8px;flex-wrap:wrap"><div class="chip chip-tempo on" onclick="pickChip(this,\'\')">Normal</div><div class="chip chip-tempo" onclick="pickChip(this,\'\')">3s Ecc</div><div class="chip chip-tempo" onclick="pickChip(this,\'\')">Pause</div><div class="chip chip-tempo" onclick="pickChip(this,\'\')">Drop Set</div><div class="chip chip-tempo" onclick="pickChip(this,\'\')">Isometric</div></div><div style="display:flex;gap:6px;margin-top:10px"><input class="xNote" placeholder="Notes, cues, substitutions..." style="flex:1;font-size:12px"><input class="xRest" placeholder="Rest" style="width:70px;font-size:12px;text-align:center"></div>';
   var exList=el("exList");if(!exList)return;
   exList.appendChild(d);
   d.querySelectorAll(".exGroup").forEach(function(g){addSet(g);});
@@ -909,14 +912,14 @@ function renderScheduleEdit(){
   var topts="";for(var i=0;i<stypes.length;i++)topts+='<option value="'+stypes[i]+'"'+(stypes[i]===(sched.type||"Training")?" selected":"")+'>'+stypes[i]+'</option>';
   return '<button class="btn2" onclick="pop()" style="margin-bottom:14px">\u2039 Back</button><div class="pt">Edit Session</div><div class="cd" style="padding:18px"><div class="field"><span class="lb">CLIENT</span><select id="schC" onchange="onScheduleClientSelect()">'+copts+'</select></div><div class="g2 field"><div><span class="lb">DATE</span><input id="schD" type="date" value="'+sched.date+'"></div><div><span class="lb">TIME</span><input id="schT" type="time" value="'+(sched.time||"10:00")+'"></div></div><div class="g2 field"><div><span class="lb">TYPE</span><select id="schTy">'+topts+'</select></div><div><span class="lb">RATE ($)</span><input id="schR" type="number" min="0" value="'+(sched.rate||70)+'"></div></div><button class="btn" onclick="updateScheduled(\''+sched.id+'\')">SAVE</button><div style="display:flex;gap:8px;margin-top:10px"><button class="btn-success" style="flex:1" onclick="completeScheduled(\''+sched.id+'\')">LOG SESSION</button><button class="btn-danger" style="flex:1" onclick="cancelScheduled(\''+sched.id+'\')">CANCEL</button></div></div>';
 }
-function getNextHourTime(){var now=new Date(),h=now.getHours()+1;return(h<10?"0"+h:h>23?"08":String(h))+":00";}
+function getNextHourTime(){var now=new Date(),h=(now.getHours()+1)%24;return(h<10?"0"+h:String(h))+":00";}
 function toggleRecurUI(){
   var f=el("schRec"),d=el("recurDuration");if(!f||!d)return;
   var activeChip=document.querySelector("#schForm .chip.on[data-rec]");
-  var val2=activeChip?activeChip.dataset.rec:(f.value||"One-Time");
+  var val2=(activeChip&&activeChip.dataset)?activeChip.dataset.rec:(f.value||"One-Time");
   d.style.display=(val2==="One-Time")?"none":"block";
 }
-function onScheduleClientSelect(){var cId=val("schC"),c=clientById(cId);if(!c)return;var r=el("schR");if(r)r.value=c.rate||"70";var t=el("schTy");if(t&&c.type)for(var i=0;i<t.options.length;i++)if(t.options[i].text===c.type){t.selectedIndex=i;break;}}
+function onScheduleClientSelect(){var cId=val("schC"),c=clientById(cId);if(!c)return;var r=el("schR");if(r)r.value=c.rate||"70";var t=el("schTy");if(t&&c.clientType)for(var i=0;i<t.options.length;i++)if(t.options[i].text===c.clientType){t.selectedIndex=i;break;}}
 function addToSchedule(){
   var cId=val("schC");if(!cId){toast("Select a client");return;}
   var cl=clientById(cId),rec=val("schRec")||"One-Time",baseDate=new Date((val("schD")||todayISO())+"T12:00:00");
@@ -997,7 +1000,7 @@ function renderClientProgression(cid){
     var avgFirst=first3.reduce(function(a,d){return a+totalsByDate[d];},0)/first3.length;
     var avgLast=last3.reduce(function(a,d){return a+totalsByDate[d];},0)/last3.length;
     var volChange=avgFirst>0?Math.round(((avgLast-avgFirst)/avgFirst)*100):0;
-    var freqWeeks=Math.max(1,Math.round((new Date(dates[dates.length-1]+"T12:00:00")-new Date(dates[0]+"T12:00:00"))/(7*864e5)));
+    var rawWeeks=(new Date(dates[dates.length-1]+"T12:00:00")-new Date(dates[0]+"T12:00:00"))/(7*864e5);var freqWeeks=Math.max(1,Math.round(rawWeeks)||1);
     var freqPerWk=Math.round((cs.length/freqWeeks)*10)/10;
     html+='<div style="display:flex;gap:8px;margin-bottom:14px"><div class="stat" style="flex:1;padding:10px 8px"><b style="font-size:16px;color:'+(volChange>=0?"var(--success)":"var(--danger)")+'">'+( volChange>0?"+":"")+volChange+'%</b><small>VOLUME TREND</small></div><div class="stat" style="flex:1;padding:10px 8px"><b style="font-size:16px;color:var(--acc)">'+freqPerWk+'</b><small>SESSIONS/WK</small></div><div class="stat" style="flex:1;padding:10px 8px"><b style="font-size:16px;color:var(--wh)">'+cs.length+'</b><small>TOTAL</small></div></div>';
   }
@@ -1080,8 +1083,9 @@ function checkExPR(oldPRs,name,sets,newPRs){
   });
 }
 function renderPRBadge(exerciseName,cid){
+  if(!exerciseName||!cid)return"";
   var prs=getClientPRs(cid);
-  var key=(exerciseName||"").toLowerCase().trim();
+  var key=exerciseName.toLowerCase().trim();
   if(!prs[key])return"";
   return ' <span style="font-size:7px;font-weight:700;color:var(--accBright);background:var(--accS);border:1.5px solid var(--accB);padding:1px 5px;border-radius:3px;font-family:var(--mono);vertical-align:middle">\u2605 PR '+prs[key].weight+' lbs</span>';
 }
@@ -1157,57 +1161,128 @@ function renderRetentionAlerts(){if(!LS.get("notif_retention",true))return"";
 
 
 // ── NUTRITION ──
+// tags: gf=gluten-free, df=dairy-free, lc=low-carb, hp=high-protein, kf=keto-friendly, lf=low-fat
 var FOOD_DB=[
 // PROTEINS (cat:"P")
-{n:"Chicken Breast",cal:165,p:31,c:0,f:3.6,unit:"oz",per:4,ck:1,cat:"P"},
-{n:"Ground Turkey 93/7",cal:170,p:21,c:0,f:9,unit:"oz",per:4,ck:1,cat:"P"},
-{n:"Tilapia",cal:128,p:26,c:0,f:2.7,unit:"oz",per:4,ck:1,cat:"P"},
-{n:"Cod",cal:105,p:23,c:0,f:0.9,unit:"oz",per:4,ck:1,cat:"P"},
-{n:"Salmon",cal:233,p:25,c:0,f:14,unit:"oz",per:4,ck:1,cat:"P"},
-{n:"Shrimp",cal:99,p:24,c:0,f:0.3,unit:"oz",per:4,ck:1,cat:"P"},
-{n:"Steak (Flank)",cal:192,p:29,c:0,f:8,unit:"oz",per:4,ck:1,cat:"P"},
-{n:"Steak (Sirloin)",cal:207,p:30,c:0,f:9,unit:"oz",per:4,ck:1,cat:"P"},
-{n:"Ground Beef 90/10",cal:196,p:27,c:0,f:9,unit:"oz",per:4,ck:1,cat:"P"},
-{n:"Bison",cal:143,p:28,c:0,f:2.4,unit:"oz",per:4,ck:1,cat:"P"},
-{n:"Egg Whites",cal:17,p:3.6,c:0.2,f:0,unit:"ea",per:1,ck:1,cat:"P"},
-{n:"Whole Egg",cal:72,p:6,c:0.4,f:5,unit:"ea",per:1,ck:1,cat:"P"},
-{n:"Whey Isolate",cal:110,p:25,c:2,f:0.5,unit:"scoop",per:1,ck:0,cat:"P"},
-{n:"Casein Protein",cal:120,p:24,c:3,f:1,unit:"scoop",per:1,ck:0,cat:"P"},
-{n:"Greek Yogurt 0%",cal:100,p:17,c:6,f:0.7,unit:"cup",per:1,ck:0,cat:"P"},
-{n:"Cottage Cheese 2%",cal:183,p:24,c:9.5,f:5,unit:"cup",per:1,ck:0,cat:"P"},
+{n:"Chicken Breast",cal:165,p:31,c:0,f:3.6,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp,lf"},
+{n:"Ground Turkey 93/7",cal:170,p:21,c:0,f:9,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp"},
+{n:"Ground Turkey 99/1",cal:120,p:26,c:0,f:1.5,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp,lf"},
+{n:"Turkey Breast (deli)",cal:60,p:12,c:2,f:0.5,unit:"oz",per:2,ck:0,cat:"P",tags:"gf,df,lc,hp,lf"},
+{n:"Tilapia",cal:128,p:26,c:0,f:2.7,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp,lf"},
+{n:"Cod",cal:105,p:23,c:0,f:0.9,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp,lf"},
+{n:"Salmon",cal:233,p:25,c:0,f:14,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp,kf"},
+{n:"Shrimp",cal:99,p:24,c:0,f:0.3,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp,lf"},
+{n:"Tuna (canned)",cal:100,p:22,c:0,f:1,unit:"can",per:1,ck:0,cat:"P",tags:"gf,df,lc,hp,lf"},
+{n:"Mahi Mahi",cal:108,p:23,c:0,f:1.2,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp,lf"},
+{n:"Steak (Flank)",cal:192,p:29,c:0,f:8,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp"},
+{n:"Steak (Sirloin)",cal:207,p:30,c:0,f:9,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp"},
+{n:"Steak (NY Strip)",cal:250,p:28,c:0,f:15,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp,kf"},
+{n:"Steak (Filet Mignon)",cal:198,p:30,c:0,f:8,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp"},
+{n:"Ground Beef 96/4",cal:155,p:24,c:0,f:6,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp,lf"},
+{n:"Ground Beef 90/10",cal:196,p:27,c:0,f:9,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp"},
+{n:"Ground Beef 80/20",cal:260,p:26,c:0,f:17,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,kf"},
+{n:"Bison",cal:143,p:28,c:0,f:2.4,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp,lf"},
+{n:"Venison",cal:136,p:26,c:0,f:2.7,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp,lf"},
+{n:"Pork Tenderloin",cal:143,p:26,c:0,f:3.5,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp,lf"},
+{n:"Pork Chop (boneless)",cal:187,p:28,c:0,f:8,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp"},
+{n:"Egg Whites",cal:17,p:3.6,c:0.2,f:0,unit:"ea",per:1,ck:1,cat:"P",tags:"gf,df,lc,hp,lf"},
+{n:"Whole Egg",cal:72,p:6,c:0.4,f:5,unit:"ea",per:1,ck:1,cat:"P",tags:"gf,df,lc,kf"},
+{n:"Whey Isolate",cal:110,p:25,c:2,f:0.5,unit:"scoop",per:1,ck:0,cat:"P",tags:"gf,lc,hp,lf"},
+{n:"Casein Protein",cal:120,p:24,c:3,f:1,unit:"scoop",per:1,ck:0,cat:"P",tags:"gf,lc,hp"},
+{n:"Plant Protein Blend",cal:120,p:22,c:4,f:2,unit:"scoop",per:1,ck:0,cat:"P",tags:"gf,df,hp"},
+{n:"Greek Yogurt 0%",cal:100,p:17,c:6,f:0.7,unit:"cup",per:1,ck:0,cat:"P",tags:"gf,lc,hp,lf"},
+{n:"Greek Yogurt 2%",cal:130,p:17,c:7,f:3.5,unit:"cup",per:1,ck:0,cat:"P",tags:"gf,hp"},
+{n:"Cottage Cheese 2%",cal:183,p:24,c:9.5,f:5,unit:"cup",per:1,ck:0,cat:"P",tags:"gf,hp"},
+{n:"Cottage Cheese 0%",cal:160,p:28,c:10,f:0,unit:"cup",per:1,ck:0,cat:"P",tags:"gf,hp,lf"},
 // CARBS (cat:"C")
-{n:"White Rice",cal:206,p:4.3,c:45,f:0.4,unit:"cup",per:1,ck:1,cat:"C"},
-{n:"Jasmine Rice",cal:205,p:4.2,c:45,f:0.4,unit:"cup",per:1,ck:1,cat:"C"},
-{n:"Brown Rice",cal:216,p:5,c:45,f:1.8,unit:"cup",per:1,ck:1,cat:"C"},
-{n:"Cream of Rice",cal:170,p:3,c:38,f:0.5,unit:"cup",per:0.25,ck:0,cat:"C"},
-{n:"Oats",cal:150,p:5,c:27,f:2.5,unit:"cup",per:0.5,ck:0,cat:"C"},
-{n:"Sweet Potato",cal:103,p:2.3,c:24,f:0.1,unit:"oz",per:4,ck:1,cat:"C"},
-{n:"Red Potato",cal:94,p:2.5,c:21,f:0.1,unit:"oz",per:4,ck:1,cat:"C"},
-{n:"Ezekiel Bread",cal:80,p:5,c:15,f:0.5,unit:"slice",per:1,ck:0,cat:"C"},
-{n:"Rice Cakes",cal:35,p:0.7,c:7.3,f:0.3,unit:"ea",per:1,ck:0,cat:"C"},
-{n:"Banana",cal:105,p:1.3,c:27,f:0.4,unit:"ea",per:1,ck:0,cat:"C"},
-{n:"Blueberries",cal:84,p:1.1,c:21,f:0.5,unit:"cup",per:1,ck:0,cat:"C"},
-{n:"Honey",cal:64,p:0,c:17,f:0,unit:"tbsp",per:1,ck:0,cat:"C"},
+{n:"White Rice",cal:206,p:4.3,c:45,f:0.4,unit:"cup",per:1,ck:1,cat:"C",tags:"gf,df,lf"},
+{n:"Jasmine Rice",cal:205,p:4.2,c:45,f:0.4,unit:"cup",per:1,ck:1,cat:"C",tags:"gf,df,lf"},
+{n:"Brown Rice",cal:216,p:5,c:45,f:1.8,unit:"cup",per:1,ck:1,cat:"C",tags:"gf,df,lf"},
+{n:"Basmati Rice",cal:210,p:4.4,c:46,f:0.5,unit:"cup",per:1,ck:1,cat:"C",tags:"gf,df,lf"},
+{n:"Cream of Rice",cal:170,p:3,c:38,f:0.5,unit:"cup",per:0.25,ck:0,cat:"C",tags:"gf,df,lf"},
+{n:"Oats (rolled)",cal:150,p:5,c:27,f:2.5,unit:"cup",per:0.5,ck:0,cat:"C",tags:"gf,df,lf"},
+{n:"Oats (steel cut)",cal:170,p:7,c:29,f:3,unit:"cup",per:0.25,ck:0,cat:"C",tags:"gf,df"},
+{n:"Sweet Potato",cal:103,p:2.3,c:24,f:0.1,unit:"oz",per:4,ck:1,cat:"C",tags:"gf,df,lf"},
+{n:"Red Potato",cal:94,p:2.5,c:21,f:0.1,unit:"oz",per:4,ck:1,cat:"C",tags:"gf,df,lf"},
+{n:"White Potato",cal:96,p:2.1,c:22,f:0.1,unit:"oz",per:4,ck:1,cat:"C",tags:"gf,df,lf"},
+{n:"Quinoa",cal:222,p:8,c:39,f:3.5,unit:"cup",per:1,ck:1,cat:"C",tags:"gf,df,hp"},
+{n:"Ezekiel Bread",cal:80,p:5,c:15,f:0.5,unit:"slice",per:1,ck:0,cat:"C",tags:"df"},
+{n:"GF Bread",cal:90,p:2,c:18,f:1.5,unit:"slice",per:1,ck:0,cat:"C",tags:"gf,df"},
+{n:"Rice Cakes",cal:35,p:0.7,c:7.3,f:0.3,unit:"ea",per:1,ck:0,cat:"C",tags:"gf,df,lf"},
+{n:"Rice Tortilla (GF)",cal:110,p:1,c:22,f:2.5,unit:"ea",per:1,ck:0,cat:"C",tags:"gf,df"},
+{n:"Banana",cal:105,p:1.3,c:27,f:0.4,unit:"ea",per:1,ck:0,cat:"C",tags:"gf,df,lf"},
+{n:"Blueberries",cal:84,p:1.1,c:21,f:0.5,unit:"cup",per:1,ck:0,cat:"C",tags:"gf,df,lf"},
+{n:"Strawberries",cal:49,p:1,c:12,f:0.5,unit:"cup",per:1,ck:0,cat:"C",tags:"gf,df,lf"},
+{n:"Apple",cal:95,p:0.5,c:25,f:0.3,unit:"ea",per:1,ck:0,cat:"C",tags:"gf,df,lf"},
+{n:"Orange",cal:62,p:1.2,c:15,f:0.2,unit:"ea",per:1,ck:0,cat:"C",tags:"gf,df,lf"},
+{n:"Cream of Wheat",cal:133,p:4,c:28,f:0.5,unit:"cup",per:0.25,ck:0,cat:"C",tags:"df,lf"},
+{n:"Pasta (GF rice)",cal:200,p:4,c:44,f:1,unit:"cup",per:1,ck:1,cat:"C",tags:"gf,df,lf"},
+{n:"Honey",cal:64,p:0,c:17,f:0,unit:"tbsp",per:1,ck:0,cat:"C",tags:"gf,df,lf"},
+{n:"Maple Syrup",cal:52,p:0,c:13,f:0,unit:"tbsp",per:1,ck:0,cat:"C",tags:"gf,df,lf"},
 // FATS (cat:"F")
-{n:"Avocado",cal:240,p:3,c:12,f:22,unit:"ea",per:1,ck:0,cat:"F"},
-{n:"Almond Butter",cal:98,p:3.4,c:3,f:9,unit:"tbsp",per:1,ck:0,cat:"F"},
-{n:"Peanut Butter",cal:94,p:4,c:3.5,f:8,unit:"tbsp",per:1,ck:0,cat:"F"},
-{n:"Almonds",cal:164,p:6,c:6,f:14,unit:"oz",per:1,ck:0,cat:"F"},
-{n:"Walnuts",cal:185,p:4.3,c:3.9,f:18.5,unit:"oz",per:1,ck:0,cat:"F"},
-{n:"Coconut Oil",cal:121,p:0,c:0,f:14,unit:"tbsp",per:1,ck:0,cat:"F"},
-{n:"Olive Oil",cal:119,p:0,c:0,f:14,unit:"tbsp",per:1,ck:0,cat:"F"},
-{n:"MCT Oil",cal:100,p:0,c:0,f:14,unit:"tbsp",per:1,ck:0,cat:"F"},
+{n:"Avocado",cal:240,p:3,c:12,f:22,unit:"ea",per:1,ck:0,cat:"F",tags:"gf,df,kf"},
+{n:"Almond Butter",cal:98,p:3.4,c:3,f:9,unit:"tbsp",per:1,ck:0,cat:"F",tags:"gf,df,lc,kf"},
+{n:"Peanut Butter",cal:94,p:4,c:3.5,f:8,unit:"tbsp",per:1,ck:0,cat:"F",tags:"gf,df,lc"},
+{n:"Peanut Butter (PB2 powder)",cal:45,p:5,c:3,f:1.5,unit:"tbsp",per:2,ck:0,cat:"F",tags:"gf,df,lf"},
+{n:"Almonds",cal:164,p:6,c:6,f:14,unit:"oz",per:1,ck:0,cat:"F",tags:"gf,df,lc,kf"},
+{n:"Walnuts",cal:185,p:4.3,c:3.9,f:18.5,unit:"oz",per:1,ck:0,cat:"F",tags:"gf,df,lc,kf"},
+{n:"Cashews",cal:157,p:5,c:9,f:12,unit:"oz",per:1,ck:0,cat:"F",tags:"gf,df"},
+{n:"Macadamia Nuts",cal:204,p:2.2,c:3.9,f:21.5,unit:"oz",per:1,ck:0,cat:"F",tags:"gf,df,lc,kf"},
+{n:"Coconut Oil",cal:121,p:0,c:0,f:14,unit:"tbsp",per:1,ck:0,cat:"F",tags:"gf,df,lc,kf"},
+{n:"Olive Oil",cal:119,p:0,c:0,f:14,unit:"tbsp",per:1,ck:0,cat:"F",tags:"gf,df,lc,kf"},
+{n:"MCT Oil",cal:100,p:0,c:0,f:14,unit:"tbsp",per:1,ck:0,cat:"F",tags:"gf,df,lc,kf"},
+{n:"Ghee",cal:112,p:0,c:0,f:13,unit:"tbsp",per:1,ck:0,cat:"F",tags:"gf,df,lc,kf"},
+{n:"Flax Seeds (ground)",cal:37,p:1.3,c:2,f:3,unit:"tbsp",per:1,ck:0,cat:"F",tags:"gf,df,lc,kf"},
+{n:"Chia Seeds",cal:58,p:2,c:5,f:3.7,unit:"tbsp",per:1,ck:0,cat:"F",tags:"gf,df,lc"},
+{n:"Hemp Seeds",cal:55,p:3.3,c:0.9,f:4.3,unit:"tbsp",per:1,ck:0,cat:"F",tags:"gf,df,lc,hp,kf"},
 // VEGGIES (cat:"V")
-{n:"Broccoli",cal:55,p:3.7,c:11,f:0.6,unit:"cup",per:1,ck:1,cat:"V"},
-{n:"Asparagus",cal:40,p:4.3,c:7.4,f:0.2,unit:"cup",per:1,ck:1,cat:"V"},
-{n:"Green Beans",cal:44,p:2.4,c:10,f:0.4,unit:"cup",per:1,ck:1,cat:"V"},
-{n:"Spinach",cal:41,p:5.3,c:6.8,f:0.5,unit:"cup",per:1,ck:1,cat:"V"},
-{n:"Cucumber",cal:16,p:0.6,c:3.1,f:0.2,unit:"cup",per:1,ck:0,cat:"V"},
-{n:"Bell Pepper",cal:30,p:1,c:7,f:0.3,unit:"ea",per:1,ck:0,cat:"V"}
+{n:"Broccoli",cal:55,p:3.7,c:11,f:0.6,unit:"cup",per:1,ck:1,cat:"V",tags:"gf,df,lc,lf"},
+{n:"Asparagus",cal:40,p:4.3,c:7.4,f:0.2,unit:"cup",per:1,ck:1,cat:"V",tags:"gf,df,lc,lf"},
+{n:"Green Beans",cal:44,p:2.4,c:10,f:0.4,unit:"cup",per:1,ck:1,cat:"V",tags:"gf,df,lc,lf"},
+{n:"Spinach",cal:41,p:5.3,c:6.8,f:0.5,unit:"cup",per:1,ck:1,cat:"V",tags:"gf,df,lc,lf,hp"},
+{n:"Kale",cal:33,p:2.9,c:6,f:0.6,unit:"cup",per:1,ck:1,cat:"V",tags:"gf,df,lc,lf"},
+{n:"Zucchini",cal:20,p:1.5,c:3.5,f:0.4,unit:"cup",per:1,ck:1,cat:"V",tags:"gf,df,lc,lf"},
+{n:"Brussels Sprouts",cal:56,p:4,c:11,f:0.8,unit:"cup",per:1,ck:1,cat:"V",tags:"gf,df,lc,lf"},
+{n:"Cauliflower",cal:27,p:2.1,c:5.3,f:0.3,unit:"cup",per:1,ck:1,cat:"V",tags:"gf,df,lc,lf,kf"},
+{n:"Cucumber",cal:16,p:0.6,c:3.1,f:0.2,unit:"cup",per:1,ck:0,cat:"V",tags:"gf,df,lc,lf"},
+{n:"Bell Pepper",cal:30,p:1,c:7,f:0.3,unit:"ea",per:1,ck:0,cat:"V",tags:"gf,df,lc,lf"},
+{n:"Mushrooms",cal:15,p:2.2,c:2.3,f:0.2,unit:"cup",per:1,ck:1,cat:"V",tags:"gf,df,lc,lf"},
+{n:"Onion (diced)",cal:46,p:1,c:11,f:0.1,unit:"cup",per:1,ck:1,cat:"V",tags:"gf,df,lf"},
+{n:"Tomato",cal:22,p:1.1,c:4.8,f:0.2,unit:"ea",per:1,ck:0,cat:"V",tags:"gf,df,lc,lf"},
+{n:"Mixed Greens",cal:10,p:1,c:2,f:0,unit:"cup",per:2,ck:0,cat:"V",tags:"gf,df,lc,lf,kf"}
 ];
 
+// Smart dietary detection - reads client medical/notes to auto-filter foods
+var DIET_KEYWORDS={
+  gf:["gluten","celiac","coeliac","wheat allergy","gluten-free","gluten free","gf"],
+  df:["dairy","lactose","milk allergy","dairy-free","dairy free","casein allergy"],
+  lc:["low carb","low-carb","keto","ketogenic"],
+  kf:["keto","ketogenic"]
+};
+function detectDietaryRestrictions(clientId){
+  var cl=clientById(clientId);if(!cl)return[];
+  var searchText=((cl.medical||"")+" "+(cl.injuries||"")+" "+(cl.notes||"")+" "+(cl.goals||"")).toLowerCase();
+  var restrictions=[];
+  Object.keys(DIET_KEYWORDS).forEach(function(tag){
+    DIET_KEYWORDS[tag].forEach(function(kw){
+      if(searchText.indexOf(kw)>=0&&restrictions.indexOf(tag)<0)restrictions.push(tag);
+    });
+  });
+  return restrictions;
+}
+function getFilteredFoodDB(clientId){
+  var restrictions=detectDietaryRestrictions(clientId);
+  if(!restrictions.length)return FOOD_DB;
+  return FOOD_DB.filter(function(fd){
+    var tags=(fd.tags||"").split(",");
+    for(var i=0;i<restrictions.length;i++){
+      if(tags.indexOf(restrictions[i])<0)return false;
+    }
+    return true;
+  });
+}
 var _nutView="plans",_nutClientId="",_editMealPlan=null;
-function calcMealTotals(meal){var t={cal:0,p:0,c:0,f:0};(meal.foods||[]).forEach(function(fd){var db=FOOD_DB[fd.di];if(!db)return;var m=fd.qty/db.per;t.cal+=Math.round(db.cal*m);t.p+=Math.round(db.p*m);t.c+=Math.round(db.c*m);t.f+=Math.round(db.f*m);});return t;}
+function calcMealTotals(meal){var t={cal:0,p:0,c:0,f:0};(meal.foods||[]).forEach(function(fd){var db=FOOD_DB[fd.di];if(!db||!db.per)return;var m=(fd.qty||0)/db.per;t.cal+=Math.round((db.cal||0)*m);t.p+=Math.round((db.p||0)*m);t.c+=Math.round((db.c||0)*m);t.f+=Math.round((db.f||0)*m);});return t;}
 function calcPlanTotals(mp){var t={cal:0,p:0,c:0,f:0};(mp.meals||[]).forEach(function(ml){var mt=calcMealTotals(ml);t.cal+=mt.cal;t.p+=mt.p;t.c+=mt.c;t.f+=mt.f;});return t;}
 function renderNutrition(){
   var html='<div class="pt">Nutrition</div>';
@@ -1224,10 +1299,10 @@ function renderMealPlans(){
   if(_editMealPlan)return renderMealPlanEdit();
   var html='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><span class="sl" style="margin:0">CLIENT MEAL PLANS</span><button class="btn2" onclick="newMealPlan()" style="padding:6px 10px;font-size:8px">+ NEW PLAN</button></div>';
   if(!mealPlans.length)return html+'<div class="cd" style="padding:24px;text-align:center;border:1px dashed var(--border)"><div style="color:var(--dm);margin-bottom:8px">No meal plans yet</div><button class="btn2" onclick="newMealPlan()">CREATE FIRST PLAN</button></div>';
-  for(var i=0;i<mealPlans.length;i++){var mp=mealPlans[i],tot=calcPlanTotals(mp),cl=clientById(mp.clientId);
+  for(var i=0;i<mealPlans.length;i++){var mp=mealPlans[i],tot=calcPlanTotals(mp),cl=mp.clientId?clientById(mp.clientId):null;
     var tgt2=mp.targets||{cal:0,p:0,c:0,f:0};var tgtStr=tgt2.cal>0?" / "+tgt2.cal+" target":"";
     var calColor=tgt2.cal>0&&tot.cal>tgt2.cal*1.05?"var(--danger)":"var(--acc)";
-    html+='<div class="cd cd-link" style="display:flex;align-items:center;gap:12px" onclick="_editMealPlan=\''+mp.id+'\';render()"><div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--wh)">'+esc(mp.name)+'</div><div style="font-size:10px;color:var(--dm);font-family:var(--mono)">'+(cl?esc(cl.name):"Unassigned")+' \u00b7 '+mp.meals.length+' meals</div><div style="font-size:10px;color:'+calColor+';font-family:var(--mono);margin-top:2px">'+tot.cal+' cal'+tgtStr+' \u00b7 '+tot.p+'p \u00b7 '+tot.c+'c \u00b7 '+tot.f+'f</div></div><div style="color:var(--dm)">\u203a</div></div>';}
+    html+='<div class="cd cd-link" style="display:flex;align-items:center;gap:12px" onclick="_editMealPlan=\''+mp.id+'\';render()"><div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--wh)">'+esc(mp.name||"Untitled Plan")+'</div><div style="font-size:10px;color:var(--dm);font-family:var(--mono)">'+(cl?esc(cl.name):"Unassigned")+' \u00b7 '+(mp.meals||[]).length+' meals</div><div style="font-size:10px;color:'+calColor+';font-family:var(--mono);margin-top:2px">'+tot.cal+' cal'+tgtStr+' \u00b7 '+tot.p+'p \u00b7 '+tot.c+'c \u00b7 '+tot.f+'f</div></div><div style="color:var(--dm)">\u203a</div></div>';}
   return html;
 }
 function newMealPlan(){var mp={id:uid(),name:"New Meal Plan",clientId:"",meals:[],created_at:new Date().toISOString()};mealPlans.push(mp);save();_editMealPlan=mp.id;render();}
@@ -1244,14 +1319,16 @@ function renderMealPlanEdit(){
   var html='<button class="btn2" onclick="_editMealPlan=null;render()" style="margin-bottom:14px">\u2039 Back</button>'
     +'<div class="cd" style="padding:14px;margin-bottom:14px"><div class="g2 field"><div><span class="lb">PLAN NAME</span><input id="mpN" value="'+esc(mp.name)+'" onchange="mpSet(\'name\',this.value)"></div><div><span class="lb">CLIENT</span><select onchange="mpSet(\'clientId\',this.value)">'+cOpts+'</select></div></div></div>'
     +'<div class="cd" style="padding:14px;margin-bottom:14px;border:1px solid var(--accB)"><div style="display:flex;justify-content:space-around;text-align:center"><div style="flex:1"><div style="font-size:20px;font-weight:800;color:'+(tgt.cal>0&&calPct>105?"var(--danger)":"var(--acc)")+';font-family:var(--mono)">'+tot.cal+'</div>'+(tgt.cal>0?'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">/ '+tgt.cal+'</div>':'')+'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">CALORIES</div>'+macroBar(calPct,"var(--acc)")+'</div><div style="flex:1"><div style="font-size:18px;font-weight:700;color:'+(tgt.p>0&&pPct>105?"var(--danger)":"var(--success)")+';font-family:var(--mono)">'+tot.p+'g</div>'+(tgt.p>0?'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">/ '+tgt.p+'g</div>':'')+'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">PROTEIN</div>'+macroBar(pPct,"var(--success)")+'</div><div style="flex:1"><div style="font-size:18px;font-weight:700;color:'+(tgt.c>0&&cPct>105?"var(--danger)":"var(--warn)")+';font-family:var(--mono)">'+tot.c+'g</div>'+(tgt.c>0?'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">/ '+tgt.c+'g</div>':'')+'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">CARBS</div>'+macroBar(cPct,"var(--warn)")+'</div><div style="flex:1"><div style="font-size:18px;font-weight:700;color:'+(tgt.f>0&&fPct>105?"var(--danger)":"var(--danger)")+';font-family:var(--mono)">'+tot.f+'g</div>'+(tgt.f>0?'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">/ '+tgt.f+'g</div>':'')+'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">FAT</div>'+macroBar(fPct,"var(--danger)")+'</div></div></div>'
-    +'<div class="cd" style="padding:14px;margin-bottom:14px"><div onclick="var tf=document.getElementById(\'targetFields\');tf.style.display=tf.style.display===\'none\'?\'block\':\'none\'" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center"><span class="sl" style="margin:0">MACRO TARGETS</span><span style="font-size:10px;color:var(--dm)">\u25bc</span></div><div id="targetFields" style="display:'+(tgt.cal>0?"block":"none")+';margin-top:12px"><div class="g4"><div><span class="lb">CALORIES</span><input type="number" min="0" value="'+(tgt.cal||"")+'" onchange="mpSetTarget(\'cal\',this.value)" placeholder="\u2014" style="text-align:center;font-size:13px"></div><div><span class="lb">PROTEIN (g)</span><input type="number" min="0" value="'+(tgt.p||"")+'" onchange="mpSetTarget(\'p\',this.value)" placeholder="\u2014" style="text-align:center;font-size:13px"></div><div><span class="lb">CARBS (g)</span><input type="number" min="0" value="'+(tgt.c||"")+'" onchange="mpSetTarget(\'c\',this.value)" placeholder="\u2014" style="text-align:center;font-size:13px"></div><div><span class="lb">FAT (g)</span><input type="number" min="0" value="'+(tgt.f||"")+'" onchange="mpSetTarget(\'f\',this.value)" placeholder="\u2014" style="text-align:center;font-size:13px"></div></div><div style="display:flex;gap:4px;margin-top:8px;flex-wrap:wrap"><div class="chip" onclick="mpQuickTarget(2000,180,200,60)" style="font-size:9px">2000cal Cut</div><div class="chip" onclick="mpQuickTarget(2500,220,250,70)" style="font-size:9px">2500cal Maintain</div><div class="chip" onclick="mpQuickTarget(3000,250,320,80)" style="font-size:9px">3000cal Bulk</div><div class="chip" onclick="mpQuickTarget(3500,280,380,90)" style="font-size:9px">3500cal Mass</div></div></div></div>';
+    +'<div class="cd" style="padding:14px;margin-bottom:14px"><div onclick="var tf=document.getElementById(\'targetFields\');tf.style.display=tf.style.display===\'none\'?\'block\':\'none\'" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center"><span class="sl" style="margin:0">MACRO TARGETS</span><span style="font-size:10px;color:var(--dm)">\u25bc</span></div><div id="targetFields" style="display:'+(tgt.cal>0?"block":"none")+';margin-top:12px"><div class="g4"><div><span class="lb">CALORIES</span><input type="number" min="0" value="'+(tgt.cal||"")+'" onchange="mpSetTarget(\'cal\',this.value)" placeholder="kcal" style="text-align:center;font-size:13px;padding:10px 6px"></div><div><span class="lb">PROTEIN (g)</span><input type="number" min="0" value="'+(tgt.p||"")+'" onchange="mpSetTarget(\'p\',this.value)" placeholder="g" style="text-align:center;font-size:13px;padding:10px 6px"></div><div><span class="lb">CARBS (g)</span><input type="number" min="0" value="'+(tgt.c||"")+'" onchange="mpSetTarget(\'c\',this.value)" placeholder="g" style="text-align:center;font-size:13px;padding:10px 6px"></div><div><span class="lb">FAT (g)</span><input type="number" min="0" value="'+(tgt.f||"")+'" onchange="mpSetTarget(\'f\',this.value)" placeholder="g" style="text-align:center;font-size:13px;padding:10px 6px"></div></div><div style="display:flex;gap:4px;margin-top:8px;flex-wrap:wrap"><div class="chip" onclick="mpQuickTarget(2000,180,200,60)" style="font-size:9px">2000cal Cut</div><div class="chip" onclick="mpQuickTarget(2500,220,250,70)" style="font-size:9px">2500cal Maintain</div><div class="chip" onclick="mpQuickTarget(3000,250,320,80)" style="font-size:9px">3000cal Bulk</div><div class="chip" onclick="mpQuickTarget(3500,280,380,90)" style="font-size:9px">3500cal Mass</div></div></div></div>';
   for(var m=0;m<mp.meals.length;m++){var meal=mp.meals[m],mt=calcMealTotals(meal);
     html+='<div class="cd" style="padding:14px;margin-bottom:8px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><input value="'+esc(meal.name)+'" onchange="mealName('+m+',this.value)" style="font-size:14px;font-weight:700;border:none;background:none;color:var(--wh);padding:0;flex:1"><span style="font-size:9px;color:var(--acc);font-family:var(--mono)">'+mt.cal+'cal \u00b7 '+mt.p+'p</span><span style="font-size:14px;color:var(--danger);cursor:pointer;margin-left:8px" onclick="rmMeal('+m+')">\u2715</span></div>';
     for(var f=0;f<meal.foods.length;f++){var fd=meal.foods[f],db=FOOD_DB[fd.di]||{};
       html+='<div style="display:flex;align-items:center;gap:6px;padding:6px 0;border-bottom:1px solid var(--borderS)"><span style="flex:1;font-size:11px;color:var(--ow)">'+esc(fd.name)+'</span><input type="number" value="'+fd.qty+'" onchange="fdQty('+m+','+f+',this.value)" style="width:42px;text-align:center;font-size:10px;padding:3px"><span style="font-size:9px;color:var(--dm);font-family:var(--mono);min-width:28px">'+fd.unit+'</span><span style="font-size:9px;color:var(--dm);font-family:var(--mono);min-width:38px;text-align:right">'+Math.round((db.cal||0)*(fd.qty/(db.per||1)))+'cal</span><span style="font-size:12px;color:var(--danger);cursor:pointer;padding:0 4px" onclick="rmFood('+m+','+f+')">\u2715</span></div>';}
-    html+='<div style="margin-top:8px"><select onchange="addFood('+m+',this.value);this.selectedIndex=0" style="font-size:11px;padding:6px"><option value="">+ Add food...</option>';
+    var dietRestrictions=detectDietaryRestrictions(mp.clientId);
+    var dietLabel=dietRestrictions.length?' <span style="font-size:8px;color:var(--success);font-family:var(--mono)">'+dietRestrictions.map(function(r){return r.toUpperCase();}).join(' ')+" FILTERED</span>":"";
+    html+='<div style="margin-top:8px"><select onchange="addFood('+m+',this.value);this.selectedIndex=0" style="font-size:12px;padding:8px"><option value="">+ Add food...'+dietLabel+'</option>';
     var cats=[["P","PROTEIN"],["C","CARBS"],["F","FATS"],["V","VEGGIES"]];
-    for(var ci2=0;ci2<cats.length;ci2++){html+='<optgroup label="'+cats[ci2][1]+'">';for(var d=0;d<FOOD_DB.length;d++){if(FOOD_DB[d].cat===cats[ci2][0])html+='<option value="'+d+'">'+FOOD_DB[d].n+' ('+FOOD_DB[d].unit+(FOOD_DB[d].ck?' ck':'')+')</option>';}html+='</optgroup>';}
+    for(var ci2=0;ci2<cats.length;ci2++){html+='<optgroup label="'+cats[ci2][1]+'">';for(var d=0;d<FOOD_DB.length;d++){if(FOOD_DB[d].cat!==cats[ci2][0])continue;if(dietRestrictions.length){var fdTags=(FOOD_DB[d].tags||"").split(",");var pass=true;for(var dr=0;dr<dietRestrictions.length;dr++){if(fdTags.indexOf(dietRestrictions[dr])<0){pass=false;break;}}if(!pass)continue;}html+='<option value="'+d+'">'+FOOD_DB[d].n+' ('+FOOD_DB[d].per+' '+FOOD_DB[d].unit+(FOOD_DB[d].ck?' cooked':'')+')</option>';}html+='</optgroup>';}
     html+='</select></div></div>';}
   html+='<button class="btn2" onclick="addMeal()" style="width:100%;margin-top:4px">+ ADD MEAL</button>'
     +'<button class="btn" style="margin-top:16px" onclick="generateMealPlanPDF(\''+mp.id+'\')">GENERATE PDF</button>'
@@ -1266,11 +1343,12 @@ function addMeal(){var mp=mealPlans.find(function(p){return p.id===_editMealPlan
 function rmMeal(mi){var mp=mealPlans.find(function(p){return p.id===_editMealPlan;});if(!mp)return;mp.meals.splice(mi,1);save();render();}
 function addFood(mi,di){if(di===""||di===undefined)return;var mp=mealPlans.find(function(p){return p.id===_editMealPlan;});if(!mp)return;var db=FOOD_DB[parseInt(di)];if(!db)return;mp.meals[mi].foods.push({name:db.n,qty:db.per,unit:db.unit,di:parseInt(di)});save();render();}
 function rmFood(mi,fi){var mp=mealPlans.find(function(p){return p.id===_editMealPlan;});if(!mp)return;mp.meals[mi].foods.splice(fi,1);save();render();}
-function fdQty(mi,fi,v){var mp=mealPlans.find(function(p){return p.id===_editMealPlan;});if(!mp)return;mp.meals[mi].foods[fi].qty=parseFrac(v);save();}
+function fdQty(mi,fi,v){var mp=mealPlans.find(function(p){return p.id===_editMealPlan;});if(!mp||!mp.meals[mi]||!mp.meals[mi].foods[fi])return;mp.meals[mi].foods[fi].qty=Math.max(0,parseFrac(v));save();}
 function delPlan(){if(!confirm("Delete this meal plan?"))return;mealPlans=mealPlans.filter(function(p){return p.id!==_editMealPlan;});save();_editMealPlan=null;render();}
 
 function renderSupplements(){
-  if(!_nutClientId&&clients.length)_nutClientId=clients[0].id;
+  if(!clients.length)return'<div class="cd" style="padding:24px;text-align:center;color:var(--dm)">Add a client first</div>';
+  if(!_nutClientId)_nutClientId=clients[0].id;
   var cl=clientById(_nutClientId);
   var html='<div style="margin-bottom:12px"><select onchange="_nutClientId=this.value;render()" style="font-size:12px">';
   for(var i=0;i<clients.length;i++)html+='<option value="'+clients[i].id+'"'+(_nutClientId===clients[i].id?" selected":"")+'>'+esc(clients[i].name)+'</option>';
@@ -1296,7 +1374,8 @@ function rmClientSupp(idx,i){var cl=clients[idx];if(!cl)return;cl.supplements.sp
 function addSupp(){var cl=clientById(_nutClientId);if(!cl)return;var n=prompt("Supplement name:");if(!n)return;var d=prompt("Dose (e.g. 5g, 1 cap):")||"";var t=prompt("Timing (e.g. morning, pre-workout):")||"";if(!cl.supplements)cl.supplements=[];cl.supplements.push({name:n,dose:d,timing:t});save();render();}
 function rmSupp(i){var cl=clientById(_nutClientId);if(!cl)return;cl.supplements.splice(i,1);save();render();}
 function renderWaterTracker(){
-  if(!_nutClientId&&clients.length)_nutClientId=clients[0].id;
+  if(!clients.length)return'<div class="cd" style="padding:24px;text-align:center;color:var(--dm)">Add a client first</div>';
+  if(!_nutClientId)_nutClientId=clients[0].id;
   var cl=clientById(_nutClientId);
   var html='<div style="margin-bottom:12px"><select onchange="_nutClientId=this.value;render()" style="font-size:12px">';
   for(var i=0;i<clients.length;i++)html+='<option value="'+clients[i].id+'"'+(_nutClientId===clients[i].id?" selected":"")+'>'+esc(clients[i].name)+'</option>';
@@ -1359,7 +1438,7 @@ function assignProgToSession(ci){
   var di=parseInt(pick)-1;if(isNaN(di)||di<0||di>=c2.program.days.length){toast("Invalid day");return;}
   var day=c2.program.days[di];
   var prefill=day.exercises.map(function(ex){
-    var parts=ex.scheme.match(/(\d+)\s*[xX]\s*(\d+)/);
+    var parts=(ex.scheme||"").match(/(\d+)\s*[xX]\s*(\d+)/);
     var sets=[];var numSets=parts?parseInt(parts[1]):4;var reps=parts?parts[2]:"";
     for(var s=0;s<numSets;s++)sets.push({w:"",r:reps,n:""});
     return{name:ex.name,sets:sets,mode:"normal",tempo:"Normal",rest:"",note:ex.scheme};
@@ -1436,8 +1515,8 @@ function checkAndSendReminders(){
     if(s.date!==today||s.status==="complete"||s.status==="cancelled")return false;
     if(!s.time)return false;
     if(sent[s.id])return false;
-    var parts=s.time.split(":");
-    var sessTime=new Date(now.getFullYear(),now.getMonth(),now.getDate(),parseInt(parts[0]),parseInt(parts[1]));
+    var parts=(s.time||"").split(":");if(parts.length<2)return false;
+    var sessTime=new Date(now.getFullYear(),now.getMonth(),now.getDate(),parseInt(parts[0])||0,parseInt(parts[1])||0);
     var diff=(sessTime-now)/(1000*60);
     return diff>0&&diff<=leadMin;
   });
@@ -1668,8 +1747,9 @@ window.addEventListener("online",function(){toast("\u2713 Back online",2500);clo
   if(!isUnlocked()){showLockScreen();}
   else{
     el("app").style.display="";el("qnoteFab").style.display="";
-    cloudPull(function(){render();startSMSChecker();});
-    render();startSMSChecker();
+    render();
+    cloudPull(function(){render();});
+    startSMSChecker();
   }
 })();
 </script>
