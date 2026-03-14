@@ -2,7 +2,8 @@
   "name": "Big Mike Ely Coaching Lab",
   "short_name": "Coaching Lab",
   "description": "IFBB Pro Big Mike Ely's premium coaching management platform",
-  "start_url": "./index.html",
+  "id": "/",
+  "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#020202",
@@ -13,7 +14,13 @@
       "src": "icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
