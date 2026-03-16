@@ -626,14 +626,12 @@ function renderClients(){
   var html='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><div class="pt" style="margin-bottom:0">Clients</div><button class="btn2" onclick="push(\'add\')" style="display:flex;align-items:center;gap:5px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>ADD CLIENT</button></div>'
     +'<div style="height:1px;background:linear-gradient(90deg,transparent,var(--accDeep),var(--acc),var(--accDeep),transparent);margin-bottom:12px"></div>';
   html+='<div style="display:flex;gap:10px;margin-bottom:14px;font-family:var(--mono);font-size:10px"><span style="color:var(--dm)">'+clients.length+' total</span><span style="color:var(--borderH)">\u00b7</span><span style="color:var(--success)">'+activeCount2+' active</span></div>';
-  html+='<div style="display:flex;gap:3px;margin-bottom:10px;flex-wrap:wrap">';
-  ["All","Active","In-Person","Online","Competitor","Prospect"].forEach(function(f){html+='<div class="chip'+(_clientFilter===f?" on":"")+'" onclick="_clientFilter=\''+f+'\';render()" style="font-size:9px;padding:4px 8px">'+f+'</div>';});
-  html+='</div>';
-    if(clients.length>3){html+='<div class="search-bar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--dm);flex-shrink:0"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input placeholder="Search clients..." value="'+esc(_clientSearch)+'" oninput="_clientSearch=this.value;renderInPlace()" id="clientSearchInput"></div>';}
+  html+='<div class="search-bar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--dm);flex-shrink:0"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input placeholder="Search clients..." value="'+esc(_clientSearch)+'" oninput="_clientSearch=this.value;renderInPlace()" id="clientSearchInput"></div>';
   if(!filtered.length&&_clientSearch)return html+'<div style="text-align:center;padding:40px 20px;color:var(--dm);font-family:var(--mono);font-size:11px">No clients match "'+esc(_clientSearch)+'"</div>';
   if(!clients.length)return html+'<div style="text-align:center;padding:44px 24px"><div style="width:56px;height:56px;border-radius:16px;background:linear-gradient(145deg,#0c0c0c,#060606);border:2px solid var(--accB);display:inline-flex;align-items:center;justify-content:center;margin-bottom:16px;box-shadow:0 0 20px var(--accS)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div><div style="color:var(--dm);font-family:var(--mono);font-size:12px;margin-bottom:16px">No clients</div><button class="btn" onclick="push(\'add\')" style="max-width:200px;margin:0 auto">+ ADD CLIENT</button></div>';
-  for(var i=0;i<clients.length;i++){var c2=clients[i];if(_clientFilter!=="All"){if(_clientFilter==="Competitor"&&!c2.isCompetitor&&(c2.services||"").indexOf("Contest Prep")<0)continue;if(_clientFilter==="Active"&&(daysSinceLastSession(c2.id)===null||daysSinceLastSession(c2.id)>14))continue;if(_clientFilter==="Prospect"&&sessions.filter(function(s){return s.clientId===c2.id&&s.status!=="cancelled";}).length>0)continue;if(_clientFilter==="In-Person"&&(c2.clientType||"In-Person")!=="In-Person")continue;if(_clientFilter==="Online"&&(c2.clientType||"")!=="Online")continue;}
-    var c=clients[i];
+  var sorted=clients.slice().sort(function(a,b){return(a.name||"").toLowerCase().localeCompare((b.name||"").toLowerCase());});
+  for(var si2=0;si2<sorted.length;si2++){
+    var c=sorted[si2];var i=clients.indexOf(c);
     if(_clientSearch&&c.name.toLowerCase().indexOf(_clientSearch.toLowerCase())<0)continue;
     var count=sessions.filter(function(x){return x.clientId===c.id;}).length;
     var col=clientColor(c.name);
@@ -661,7 +659,7 @@ function clientFormFields(c){
   var cTypes=["In-Person","Online","Hybrid"];
   var svcs=["Training","Nutrition","Contest Prep","Posing","Full Coaching","Group"];
   var durs=["30 min","45 min","60 min","90 min"];
-  var bills=["Per Session","Monthly","Prepaid"];
+  var bills=["Per Session","Weekly","Bi-Weekly","Monthly","Prepaid"];
   var curSvcs=(c.services||"Training").split(",").map(function(s){return s.trim();});
   var html='<div class="cd" style="padding:18px">'
     +'<div class="field"><span class="lb">NAME *</span><input id="cN" placeholder="Client full name" value="'+esc(c.name||'')+'"></div>'
