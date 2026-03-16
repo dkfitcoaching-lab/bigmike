@@ -85,6 +85,22 @@ This is a birthday gift coaching platform app for IFBB Pro Big Mike Ely. It is d
 ### Low Priority
 - Remove duplicate items from ANABOLICS_DB "Ancillaries" that are now in "Fat Loss/GLPs"
 
+## Naming Convention for Compounds
+ALL compounds in ANABOLICS_DB, Fat Loss/GLPs, and Peptides MUST follow this format:
+**"Pharmaceutical Name / Brand or Common Name"** (pharma first, common second)
+
+Examples:
+- `Oxandrolone / Anavar` (NOT "Anavar / Oxandrolone")
+- `Testosterone Cypionate / Test C` (NOT "Test C / Testosterone Cypionate")
+- `Trenbolone Acetate / Tren A`
+- `Nandrolone Decanoate / Deca`
+- `Methandrostenolone / Dianabol`
+- `Anastrozole / Arimidex`
+- `Semaglutide / Ozempic / Wegovy`
+- `Tirzepatide / Mounjaro / Zepbound`
+
+This applies to every single entry. If a compound has multiple brand names, include them all separated by `/`.
+
 ## Testing Checklist
 After any changes, always:
 1. Extract JS and validate: `sed -n '/<script>/,/<\/script>/p' index.html | sed '1d;$d' > /tmp/bigmike_js.js && node -c /tmp/bigmike_js.js`
