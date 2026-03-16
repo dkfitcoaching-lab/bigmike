@@ -35,7 +35,8 @@
   --goldGrad:linear-gradient(135deg,#8B6914,#C49628,#E8C050,#C49628,#8B6914);
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;overscroll-behavior:none;overflow-x:hidden}
+html{height:100%;overflow-x:hidden}
+body{min-height:100%;overflow-x:hidden}
 body{background:var(--bg);color:var(--wh);font-family:var(--body);min-height:100vh;-webkit-font-smoothing:antialiased;touch-action:manipulation;overscroll-behavior-y:none}
 input,textarea,select{font-family:var(--body);color:var(--wh);background:var(--glassB);border:1.5px solid var(--borderH);border-radius:10px;padding:13px 16px;font-size:14px;outline:none;width:100%;box-sizing:border-box;-webkit-appearance:none;appearance:none;transition:border-color .2s,box-shadow .2s;min-height:46px}
 input:focus,textarea:focus,select:focus{border-color:var(--acc);box-shadow:0 0 0 3px var(--accGlow)}
@@ -365,6 +366,22 @@ var _draftTimer=null;
 function startDraftTimer(){if(_draftTimer)clearInterval(_draftTimer);_draftTimer=setInterval(saveDraft,10000);}
 function stopDraftTimer(){if(_draftTimer){clearInterval(_draftTimer);_draftTimer=null;}}
 function toastUndo(){if(window._pendingUndo){window._pendingUndo();window._pendingUndo=null;}document.querySelectorAll(".toast").forEach(function(t){t.remove();});toast("Restored");}
+// ── iOS KEYBOARD SCROLL FIX ──
+(function(){
+  var isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(/Macintosh/.test(navigator.userAgent)&&"ontouchend" in document);
+  if(!isIOS)return;
+  document.addEventListener("focusout",function(e){
+    if(e.target&&(e.target.tagName==="INPUT"||e.target.tagName==="TEXTAREA"||e.target.tagName==="SELECT")){
+      setTimeout(function(){window.scrollTo(0,window.scrollY);document.body.style.height="100%";setTimeout(function(){document.body.style.height="";},1);},120);
+    }
+  });
+  if(window.visualViewport){
+    window.visualViewport.addEventListener("resize",function(){
+      document.documentElement.style.height=window.visualViewport.height+"px";
+      setTimeout(function(){document.documentElement.style.height="";},300);
+    });
+  }
+})();
 // ── HAPTIC FEEDBACK ──
 function haptic(pattern){if(!navigator.vibrate)return;var patterns={tap:[10],success:[10,30,10],warning:[30,20,30],error:[50,30,50,30,50],heavy:[80]};var p=patterns[pattern]||patterns.tap;try{navigator.vibrate(p);}catch(e){}}
 // ── CUSTOM MODAL SYSTEM ──
