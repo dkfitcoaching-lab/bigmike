@@ -1,4 +1,4 @@
-var CACHE_NAME = 'bigmike-v10';
+var CACHE_NAME = 'bigmike-v11';
 var APP_SHELL = [
   './',
   './index.html',
