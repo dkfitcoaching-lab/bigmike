@@ -36,7 +36,7 @@ Transforming his coaching app into the most complete IFBB Pro coaching platform 
 - [x] Removed "Protect your data" from PIN Lock section
 - [x] Removed ALL hardcoded $70 defaults (~16 locations): schedule form, home dashboard, session list, settings, client detail, SMS reminders, projected revenue — all now blank or 0 when no rate set
 
-### Wave 2: Databases ⏳ IN PROGRESS
+### Wave 2: Databases ✅ COMPLETE
 - [x] ANABOLICS_DB — Comprehensive database with 8 categories:
   - Anabolic Steroids (25 compounds: Test C/E/P, Sustanon, Tren A/E/Hex, NPP, Deca, EQ, Primo injectable+oral, Masteron P/E, Anavar, Dbol, Anadrol, Winstrol, Halotestin, Proviron, Superdrol, Turinabol, DHB, MENT, Cheque Drops)
   - AI/Aromatase Inhibitors (Arimidex, Aromasin, Letrozole)
@@ -50,14 +50,23 @@ Transforming his coaching app into the most complete IFBB Pro coaching platform 
 
 ## REMAINING WAVES
 
-### Wave 3: Feature Build (NEXT)
-- [ ] Rename Nutrition tab → "Programs" tab in bottom nav
-- [ ] Replace `_nutView` with `_progView` state variable
-- [ ] Add 5 sub-tabs: Training, Nutrition, Anabolics, Supplements, Water
-- [ ] Build workout builder UI (exercise picker modal, sets/reps/rest/notes per exercise, no forced defaults)
-- [ ] Build anabolics protocol UI (picker modal with search, dose/freq/route chips, client assignment)
+### Wave 3: Feature Build ⏳ PARTIALLY DONE
+**DONE:**
+- [x] Renamed Nutrition tab display label → "Programs" (key stays "nutrition")
+- [x] Changed default _nutView to "training"
+- [x] Added 5 sub-tabs: Training, Nutrition, Anabolics, Supplements, Water
+- [x] Updated routing in renderNutrition() to call renderWorkoutBuilder(), renderAnabolics() etc.
+
+**STILL NEEDS TO BE DONE (agent was working on this):**
+- [ ] Insert ALL the function bodies for: renderWorkoutBuilder, newWorkout, saveWorkouts, renderWorkoutEdit, wkSet, setWkEx, rmWkEx, moveWkEx, setWkCardio, rmWkCardio, duplicateWorkout, deleteWorkout, assignWorkoutToProgram, showExercisePicker, filterExPickerModal, pickExerciseForWorkout, pickExerciseCustom, showCardioPicker, pickCardioForWorkout, pickCardioCustom, generateWorkoutPDF
+- [ ] Insert ALL anabolics UI functions: renderAnabolics, addAnabolic, rmAnabolic, setAnabolicNotes, showAnabolicPicker, filterAnaPicker, pickAnabolicItem, confirmAnabolic, pickAnaCustom, generateAnabolicsPDF
+- [ ] Insert generateCompleteProgramPDF function
+- [ ] Add `var _workouts=LS.get("workouts",[]),_editWorkout=null;` state variables
 - [ ] Add food search to meal plan editor
 - [ ] Add oz/grams toggle for food quantities
+- [ ] Update generateFullPrepPDF to include anabolics section
+
+**WHERE TO INSERT:** All new functions go after the existing renderWaterTracker/logH2O/setH2OGoal functions (around line 1920-1930 area), BEFORE the toggleSvcChip function. The full function code is in the plan file at /root/.claude/plans/witty-bubbling-pixel.md (though that plan file may not persist across sessions - the Wave 3 agent prompt above has ALL the complete code).
 
 ### Wave 4: PDF Generation
 - [ ] `generateAnabolicsPDF(clientIdx)` — protocol table by category

@@ -707,7 +707,7 @@ function renderClientDetail(){
   if(c.phone)html+='<button class="btn2" style="flex:1" onclick="sendQuickSMS(\''+c.id+'\')">SEND SMS</button>';
   if(c.phone)html+='<a href="tel:'+esc((c.phone||"").replace(/[^0-9+]/g,""))+'" style="flex:1"><button class="btn2" style="width:100%">CALL</button></a>';
   html+='</div>';
-  var hasProgram=c.program&&c.program.days&&c.program.days.length>0;var hasMealPlans=mealPlans.some(function(mp){return mp.clientId===c.id;});if(hasProgram||hasMealPlans)html+='<button class="btn2" style="width:100%;margin-top:8px" onclick="generateFullPrepPDF('+idx+')">GENERATE FULL PREP PDF</button>';
+  var hasProgram=c.program&&c.program.days&&c.program.days.length>0;var hasMealPlans=mealPlans.some(function(mp){return mp.clientId===c.id;});var hasAnabolics=c.anabolics&&c.anabolics.length>0;var hasSupps=c.supplements&&c.supplements.length>0;if(hasProgram||hasMealPlans)html+='<button class="btn2" style="width:100%;margin-top:8px" onclick="generateFullPrepPDF('+idx+')">GENERATE FULL PREP PDF</button>';if(hasProgram||hasMealPlans||hasAnabolics||hasSupps)html+='<button class="btn2" style="width:100%;margin-top:8px" onclick="generateCompleteProgramPDF('+idx+')">COMPLETE PROGRAM PDF</button>';
   html+='<div style="margin-top:24px;border:1px solid rgba(216,120,120,.2);border-radius:10px;overflow:hidden"><div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display===\'none\'?\'block\':\'none\'" style="cursor:pointer;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;background:rgba(216,120,120,.03)"><span style="font-size:10px;font-weight:700;color:var(--danger);font-family:var(--mono);letter-spacing:.1em">DANGER ZONE</span><span style="font-size:10px;color:var(--dm)">\u25bc</span></div><div style="display:none;padding:16px"><div style="font-size:11px;color:var(--dm);margin-bottom:12px">This cannot be undone. Session history will be preserved.</div><button class="btn-danger" onclick="deleteClient('+idx+')">DELETE CLIENT</button></div></div>';
   return html;
 }
@@ -1849,7 +1849,7 @@ var ANABOLICS_DB=[
 ]}
 ];
 
-var _nutView="training",_nutClientId="",_editMealPlan=null;
+var _nutView="training",_nutClientId="",_editMealPlan=null,_foodUnitG=LS.get("foodUnitG",false);
 var _workouts=LS.get("workouts",[]),_editWorkout=null;
 function calcMealTotals(meal){var t={cal:0,p:0,c:0,f:0};(meal.foods||[]).forEach(function(fd){var db=FOOD_DB[fd.di];if(!db)return;var per=db.per||1;var m=(fd.qty||0)/per;t.cal+=Math.round((db.cal||0)*m);t.p+=Math.round((db.p||0)*m);t.c+=Math.round((db.c||0)*m);t.f+=Math.round((db.f||0)*m);});return t;}
 function calcPlanTotals(mp){var t={cal:0,p:0,c:0,f:0};(mp.meals||[]).forEach(function(ml){var mt=calcMealTotals(ml);t.cal+=mt.cal;t.p+=mt.p;t.c+=mt.c;t.f+=mt.f;});return t;}
@@ -1888,7 +1888,7 @@ function renderMealPlanEdit(){
   var cPct=tgt.c>0?Math.round((tot.c/tgt.c)*100):0;
   var fPct=tgt.f>0?Math.round((tot.f/tgt.f)*100):0;
   function macroBar(pct,col){if(!pct)return"";var w=Math.min(pct,100);var over=pct>105;return '<div style="height:4px;background:var(--borderS);border-radius:2px;margin-top:4px;overflow:hidden"><div style="height:100%;width:'+w+'%;background:'+(over?"var(--danger)":col)+';border-radius:2px;transition:width .3s"></div></div>';}
-  var html='<button class="btn2" onclick="_editMealPlan=null;render()" style="margin-bottom:14px">\u2039 Back</button>'
+  var html='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><button class="btn2" onclick="_editMealPlan=null;render()">\u2039 Back</button><button class="btn2" onclick="_foodUnitG=!_foodUnitG;LS.set(\'foodUnitG\',_foodUnitG);render()" style="padding:4px 10px;font-size:9px;font-family:var(--mono)">'+(_foodUnitG?"GRAMS":"OZ")+'</button></div>'
     +'<div class="cd" style="padding:14px;margin-bottom:14px"><div class="g2 field"><div><span class="lb">PLAN NAME</span><input id="mpN" value="'+esc(mp.name)+'" onchange="mpSet(\'name\',this.value)"></div><div><span class="lb">CLIENT</span><select onchange="mpSet(\'clientId\',this.value)">'+cOpts+'</select></div></div></div>'
     +'<div class="cd" style="padding:14px;margin-bottom:14px;border:1px solid var(--accB)"><div style="display:flex;justify-content:space-around;text-align:center"><div style="flex:1"><div style="font-size:20px;font-weight:800;color:'+(tgt.cal>0&&calPct>105?"var(--danger)":"var(--acc)")+';font-family:var(--mono)">'+tot.cal+'</div>'+(tgt.cal>0?'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">/ '+tgt.cal+'</div>':'')+'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">CALORIES</div>'+macroBar(calPct,"var(--acc)")+'</div><div style="flex:1"><div style="font-size:18px;font-weight:700;color:'+(tgt.p>0&&pPct>105?"var(--danger)":"var(--success)")+';font-family:var(--mono)">'+tot.p+'g</div>'+(tgt.p>0?'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">/ '+tgt.p+'g</div>':'')+'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">PROTEIN</div>'+macroBar(pPct,"var(--success)")+'</div><div style="flex:1"><div style="font-size:18px;font-weight:700;color:'+(tgt.c>0&&cPct>105?"var(--danger)":"var(--warn)")+';font-family:var(--mono)">'+tot.c+'g</div>'+(tgt.c>0?'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">/ '+tgt.c+'g</div>':'')+'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">CARBS</div>'+macroBar(cPct,"var(--warn)")+'</div><div style="flex:1"><div style="font-size:18px;font-weight:700;color:'+(tgt.f>0&&fPct>105?"var(--danger)":"#c87070")+';font-family:var(--mono)">'+tot.f+'g</div>'+(tgt.f>0?'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">/ '+tgt.f+'g</div>':'')+'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">FAT</div>'+macroBar(fPct,"var(--danger)")+'</div></div></div>'
     +'<div class="cd" style="padding:14px;margin-bottom:14px"><div onclick="var tf=document.getElementById(\'targetFields\');tf.style.display=tf.style.display===\'none\'?\'block\':\'none\'" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center"><span class="sl" style="margin:0">MACRO TARGETS</span><span style="font-size:10px;color:var(--dm)">\u25bc</span></div><div id="targetFields" style="display:'+(tgt.cal>0?"block":"none")+';margin-top:12px"><div class="g4"><div><span class="lb">CALORIES</span><input type="number" min="0" value="'+(tgt.cal||"")+'" onchange="mpSetTarget(\'cal\',this.value)" placeholder="kcal" style="text-align:center;font-size:13px;padding:10px 6px"></div><div><span class="lb">PROTEIN (g)</span><input type="number" min="0" value="'+(tgt.p||"")+'" onchange="mpSetTarget(\'p\',this.value)" placeholder="g" style="text-align:center;font-size:13px;padding:10px 6px"></div><div><span class="lb">CARBS (g)</span><input type="number" min="0" value="'+(tgt.c||"")+'" onchange="mpSetTarget(\'c\',this.value)" placeholder="g" style="text-align:center;font-size:13px;padding:10px 6px"></div><div><span class="lb">FAT (g)</span><input type="number" min="0" value="'+(tgt.f||"")+'" onchange="mpSetTarget(\'f\',this.value)" placeholder="g" style="text-align:center;font-size:13px;padding:10px 6px"></div></div><div style="font-size:9px;color:var(--dm);font-family:var(--mono);margin-top:8px">Set custom targets based on client needs. Adjust as protocol changes.</div></div></div>';
@@ -1897,13 +1897,11 @@ function renderMealPlanEdit(){
     +'<div style="margin-bottom:6px"><input value="'+esc(meal.time||"")+'" onchange="mealTime('+m+',this.value)" placeholder="Timing (e.g. 7:00 AM, Pre-Workout, Post-Training)" style="font-size:10px;padding:6px 10px;color:var(--mu);border:1px solid var(--borderS);background:var(--glass)"></div>';
     html+='<input value="'+esc(meal.notes||"")+'" onchange="mealNote('+m+',this.value)" placeholder="Meal notes (e.g. pre-workout, post-training, before bed...)" style="font-size:9px;padding:4px 8px;color:var(--mu);margin-bottom:6px;width:100%;box-sizing:border-box;border:1px solid var(--borderS);background:var(--glass)">';
     for(var f=0;f<meal.foods.length;f++){var fd=meal.foods[f],db=FOOD_DB[fd.di]||{};
-      html+='<div style="display:flex;align-items:center;gap:4px;padding:6px 0;border-bottom:1px solid var(--borderS)"><div style="display:flex;flex-direction:column;gap:1px;flex-shrink:0">'+(f>0?'<span style="cursor:pointer;font-size:7px;color:var(--dm);line-height:1" onclick="moveFood('+m+','+f+',-1)">\u25b2</span>':'<span style="font-size:7px;visibility:hidden">\u25b2</span>')+(f<meal.foods.length-1?'<span style="cursor:pointer;font-size:7px;color:var(--dm);line-height:1" onclick="moveFood('+m+','+f+',1)">\u25bc</span>':'<span style="font-size:7px;visibility:hidden">\u25bc</span>')+'</div><span style="flex:1;font-size:11px;color:var(--ow)">'+esc(fd.name)+'</span><input type="number" value="'+fd.qty+'" onchange="fdQty('+m+','+f+',this.value)" style="width:42px;text-align:center;font-size:10px;padding:3px"><span style="font-size:9px;color:var(--dm);font-family:var(--mono);min-width:28px">'+fd.unit+'</span><span style="font-size:9px;color:var(--dm);font-family:var(--mono);min-width:38px;text-align:right">'+Math.round((db.cal||0)*(fd.qty/(db.per||1)))+'cal</span><span style="font-size:12px;color:var(--danger);cursor:pointer;padding:0 4px" onclick="rmFood('+m+','+f+')">\u2715</span></div>';}
+      var dispQty=fd.qty,dispUnit=fd.unit;if(_foodUnitG&&(fd.unit==="oz"||fd.unit==="g")){dispQty=fd.unit==="oz"?Math.round(fd.qty*28.35):fd.qty;dispUnit="g";}
+      html+='<div style="display:flex;align-items:center;gap:4px;padding:6px 0;border-bottom:1px solid var(--borderS)"><div style="display:flex;flex-direction:column;gap:1px;flex-shrink:0">'+(f>0?'<span style="cursor:pointer;font-size:7px;color:var(--dm);line-height:1" onclick="moveFood('+m+','+f+',-1)">\u25b2</span>':'<span style="font-size:7px;visibility:hidden">\u25b2</span>')+(f<meal.foods.length-1?'<span style="cursor:pointer;font-size:7px;color:var(--dm);line-height:1" onclick="moveFood('+m+','+f+',1)">\u25bc</span>':'<span style="font-size:7px;visibility:hidden">\u25bc</span>')+'</div><span style="flex:1;font-size:11px;color:var(--ow)">'+esc(fd.name)+'</span><input type="number" value="'+dispQty+'" onchange="fdQty('+m+','+f+',this.value'+(_foodUnitG&&fd.unit==="oz"?'/28.35':'')+')\" style="width:42px;text-align:center;font-size:10px;padding:3px"><span style="font-size:9px;color:var(--dm);font-family:var(--mono);min-width:28px">'+dispUnit+'</span><span style="font-size:9px;color:var(--dm);font-family:var(--mono);min-width:38px;text-align:right">'+Math.round((db.cal||0)*(fd.qty/(db.per||1)))+'cal</span><span style="font-size:12px;color:var(--danger);cursor:pointer;padding:0 4px" onclick="rmFood('+m+','+f+')">\u2715</span></div>';}
     var dietRestrictions=detectDietaryRestrictions(mp.clientId);
     var dietLabel=dietRestrictions.length?' <span style="font-size:8px;color:var(--success);font-family:var(--mono)">'+dietRestrictions.map(function(r){return r.toUpperCase();}).join(' ')+" FILTERED</span>":"";
-    html+='<div style="margin-top:8px"><select onchange="addFood('+m+',this.value);this.selectedIndex=0" style="font-size:12px;padding:8px"><option value="">+ Add food...'+dietLabel+'</option>';
-    var cats=[["P","PROTEIN"],["C","CARBS"],["F","FATS"],["V","VEGGIES"]];
-    for(var ci2=0;ci2<cats.length;ci2++){html+='<optgroup label="'+cats[ci2][1]+'">';for(var d=0;d<FOOD_DB.length;d++){if(FOOD_DB[d].cat!==cats[ci2][0])continue;if(dietRestrictions.length){var fdTags=(FOOD_DB[d].tags||"").split(",");var pass=true;for(var dr=0;dr<dietRestrictions.length;dr++){if(fdTags.indexOf(dietRestrictions[dr])<0){pass=false;break;}}if(!pass)continue;}html+='<option value="'+d+'">'+FOOD_DB[d].n+' ('+FOOD_DB[d].per+' '+FOOD_DB[d].unit+(FOOD_DB[d].ck?' cooked':'')+')</option>';}html+='</optgroup>';}
-    html+='</select></div></div>';}
+    html+='<div style="margin-top:8px"><button class="btn2" onclick="showFoodPicker('+m+')" style="width:100%;padding:8px;font-size:11px">+ ADD FOOD'+dietLabel+'</button></div></div>';}
   html+='<button class="btn2" onclick="addMeal()" style="width:100%;margin-top:4px">+ ADD MEAL</button>'
     +'<div style="display:flex;gap:8px;margin-top:16px"><button class="btn" style="flex:1" onclick="generateMealPlanPDF(\''+mp.id+'\')">GENERATE PDF</button><button class="btn2" style="flex:1" onclick="duplicatePlan(\''+mp.id+'\')">DUPLICATE</button></div>'
     +'<button class="btn-danger" style="margin-top:8px" onclick="delPlan()">DELETE PLAN</button>';
@@ -1922,12 +1920,250 @@ function rmFood(mi,fi){var mp=mealPlans.find(function(p){return p.id===_editMeal
 function fdQty(mi,fi,v){var mp=mealPlans.find(function(p){return p.id===_editMealPlan;});if(!mp||!mp.meals[mi]||!mp.meals[mi].foods[fi])return;mp.meals[mi].foods[fi].qty=Math.max(0,parseFrac(v));save();render();}
 function moveFood(mi,fi,dir){var mp=mealPlans.find(function(p){return p.id===_editMealPlan;});if(!mp||!mp.meals[mi])return;var foods=mp.meals[mi].foods;var ni=fi+dir;if(ni<0||ni>=foods.length)return;var tmp=foods[fi];foods[fi]=foods[ni];foods[ni]=tmp;save();render();}
 function moveMeal(mi,dir){var mp=mealPlans.find(function(p){return p.id===_editMealPlan;});if(!mp)return;var ni=mi+dir;if(ni<0||ni>=mp.meals.length)return;var tmp=mp.meals[mi];mp.meals[mi]=mp.meals[ni];mp.meals[ni]=tmp;save();render();}
+var _foodPickerMealIdx=0;
+function showFoodPicker(mealIdx){
+  _foodPickerMealIdx=mealIdx;
+  var mp=mealPlans.find(function(p){return p.id===_editMealPlan;});
+  var dietR=mp?detectDietaryRestrictions(mp.clientId):[];
+  var cats=[["P","PROTEIN"],["C","CARBS"],["F","FATS"],["V","VEGGIES"]];
+  var content='<div style="max-height:60vh;overflow-y:auto">';
+  content+='<div style="margin-bottom:10px"><input id="foodPickSearch" placeholder="Search foods..." oninput="filterFoodPicker()" style="font-size:13px;padding:10px 14px"></div>';
+  content+='<div id="foodPickList">';
+  for(var ci2=0;ci2<cats.length;ci2++){
+    var catKey=cats[ci2][0],catName=cats[ci2][1],items=[];
+    for(var d=0;d<FOOD_DB.length;d++){if(FOOD_DB[d].cat!==catKey)continue;if(dietR.length){var fdTags=(FOOD_DB[d].tags||"").split(",");var pass=true;for(var dr=0;dr<dietR.length;dr++){if(fdTags.indexOf(dietR[dr])<0){pass=false;break;}}if(!pass)continue;}items.push(d);}
+    if(!items.length)continue;
+    content+='<div class="foodPickCat"><div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display===\'none\'?\'block\':\'none\'" style="cursor:pointer;padding:10px 0;border-bottom:1px solid var(--borderS);display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;font-weight:700;color:var(--acc);letter-spacing:.1em;font-family:var(--mono)">'+catName+'</span><span style="font-size:9px;color:var(--dm)">'+items.length+' \u25bc</span></div><div class="foodPickItems" style="display:none">';
+    for(var ii=0;ii<items.length;ii++){var fd=FOOD_DB[items[ii]];
+      content+='<div class="foodPickItem" data-idx="'+items[ii]+'" onclick="pickFoodForMeal('+items[ii]+')" style="padding:8px 12px;cursor:pointer;border-bottom:1px solid var(--borderS);transition:background .15s" onmouseover="this.style.background=\'var(--accS)\'" onmouseout="this.style.background=\'none\'"><div style="display:flex;justify-content:space-between"><span style="font-size:12px;color:var(--wh)">'+esc(fd.n)+'</span><span style="font-size:9px;color:var(--dm);font-family:var(--mono)">'+fd.cal+' cal/'+fd.per+fd.unit+'</span></div><div style="font-size:9px;color:var(--dm);font-family:var(--mono)">'+fd.p+'p \u00b7 '+fd.c+'c \u00b7 '+fd.f+'f'+(fd.ck?' \u00b7 cooked':'')+'</div></div>';}
+    content+='</div></div>';
+  }
+  content+='</div>';
+  content+='<div style="border-top:1px solid var(--borderS);padding-top:12px;margin-top:10px"><div style="font-size:10px;color:var(--dm);font-family:var(--mono);margin-bottom:6px">CUSTOM FOOD</div><div style="display:flex;gap:6px"><input id="customFoodName" placeholder="Food name" style="flex:1;font-size:12px;padding:8px"><button class="btn2" onclick="pickFoodCustom()" style="padding:6px 12px;font-size:9px">ADD</button></div></div></div>';
+  showModal("ADD FOOD",content);
+  setTimeout(function(){var s=el("foodPickSearch");if(s)s.focus();},100);
+}
+function filterFoodPicker(){var q=(el("foodPickSearch")||{}).value||"";q=q.toLowerCase();var cats=document.querySelectorAll(".foodPickCat");cats.forEach(function(c){var items=c.querySelectorAll(".foodPickItem");var anyMatch=false;items.forEach(function(it){var match=it.textContent.toLowerCase().indexOf(q)>=0;it.style.display=match?"":"none";if(match)anyMatch=true;});c.style.display=anyMatch||!q?"":"none";if(q&&anyMatch){var itemsDiv=c.querySelector(".foodPickItems");if(itemsDiv)itemsDiv.style.display="block";}});}
+function pickFoodForMeal(di){var mp=mealPlans.find(function(p){return p.id===_editMealPlan;});if(!mp)return;var db=FOOD_DB[di];if(!db)return;mp.meals[_foodPickerMealIdx].foods.push({name:db.n,qty:db.per,unit:db.unit,di:di});save();closeModal();render();}
+function pickFoodCustom(){var n=val("customFoodName");if(!n){toast("Enter food name");return;}var mp=mealPlans.find(function(p){return p.id===_editMealPlan;});if(!mp)return;mp.meals[_foodPickerMealIdx].foods.push({name:n,qty:1,unit:"oz",di:-1});save();closeModal();render();}
 function delPlan(){showDoubleConfirm("Delete Meal Plan","This will permanently delete this meal plan.").then(function(ok){if(!ok)return;mealPlans=mealPlans.filter(function(p){return p.id!==_editMealPlan;});save();_editMealPlan=null;render();});}
 function duplicatePlan(mpId){
   var orig=mealPlans.find(function(p){return p.id===mpId;});if(!orig)return;
   var clone=JSON.parse(JSON.stringify(orig));
   clone.id=uid();clone.name=orig.name+" (Copy)";clone.created_at=new Date().toISOString();
   mealPlans.push(clone);save();_editMealPlan=clone.id;render();toast("\u2713 Plan duplicated");
+}
+
+// ── WORKOUT BUILDER ──
+function renderWorkoutBuilder(){
+  if(_editWorkout)return renderWorkoutEdit();
+  var html='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><span class="sl" style="margin:0">WORKOUTS</span><button class="btn2" onclick="newWorkout()" style="padding:6px 10px;font-size:8px">+ NEW WORKOUT</button></div>';
+  if(!_workouts.length)return html+'<div class="cd" style="padding:24px;text-align:center;border:1px dashed var(--border)"><div style="color:var(--dm);margin-bottom:8px">No workouts</div><button class="btn2" onclick="newWorkout()">BUILD FIRST WORKOUT</button></div>';
+  for(var i=0;i<_workouts.length;i++){var w=_workouts[i],cl=w.clientId?clientById(w.clientId):null;
+    var exCount=(w.exercises||[]).length,cardCount=(w.cardio||[]).length;
+    html+='<div class="cd cd-link" style="display:flex;align-items:center;gap:12px" onclick="_editWorkout=\''+w.id+'\';render()"><div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--wh)">'+esc(w.name||"Untitled")+'</div><div style="font-size:10px;color:var(--dm);font-family:var(--mono)">'+(cl?esc(cl.name):"Unassigned")+' \u00b7 '+exCount+' exercise'+(exCount!==1?'s':'')+(cardCount?' \u00b7 '+cardCount+' cardio':'')+'</div></div><div style="color:var(--dm)">\u203a</div></div>';}
+  return html;
+}
+function newWorkout(){var w={id:uid(),name:"New Workout",clientId:"",exercises:[],cardio:[],notes:"",created_at:new Date().toISOString()};_workouts.push(w);LS.set("workouts",_workouts);_editWorkout=w.id;render();}
+function saveWorkouts(){LS.set("workouts",_workouts);}
+function renderWorkoutEdit(){
+  var w=_workouts.find(function(x){return x.id===_editWorkout;});if(!w){_editWorkout=null;return renderWorkoutBuilder();}
+  var cOpts='<option value="">Unassigned</option>';for(var i=0;i<clients.length;i++)cOpts+='<option value="'+clients[i].id+'"'+(w.clientId===clients[i].id?' selected':'')+'>'+esc(clients[i].name)+'</option>';
+  var html='<button class="btn2" onclick="_editWorkout=null;render()" style="margin-bottom:14px">\u2039 Back</button>'
+    +'<div class="cd" style="padding:14px;margin-bottom:14px"><div class="g2 field"><div><span class="lb">WORKOUT NAME</span><input value="'+esc(w.name)+'" onchange="wkSet(\'name\',this.value)"></div><div><span class="lb">CLIENT</span><select onchange="wkSet(\'clientId\',this.value)">'+cOpts+'</select></div></div></div>';
+  // Exercises
+  html+='<div class="sl">EXERCISES</div>';
+  for(var e=0;e<w.exercises.length;e++){var ex=w.exercises[e];
+    html+='<div class="cd" style="padding:12px;margin-bottom:6px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><div style="display:flex;flex-direction:column;gap:1px;margin-right:6px;flex-shrink:0">'+(e>0?'<span style="cursor:pointer;font-size:9px;color:var(--dm);line-height:1" onclick="moveWkEx('+e+',-1)">\u25b2</span>':'')+(e<w.exercises.length-1?'<span style="cursor:pointer;font-size:9px;color:var(--dm);line-height:1" onclick="moveWkEx('+e+',1)">\u25bc</span>':'')+'</div><div style="flex:1;font-size:13px;font-weight:600;color:var(--wh)">'+esc(ex.name)+'</div><span style="font-size:8px;color:var(--acc);font-family:var(--mono);background:var(--accS);padding:2px 6px;border-radius:6px">'+esc(ex.group||"")+'</span><span style="font-size:12px;color:var(--danger);cursor:pointer;margin-left:8px;padding:2px 6px" onclick="rmWkEx('+e+')">\u2715</span></div>'
+      +'<div style="display:flex;gap:6px;flex-wrap:wrap"><div style="flex:1;min-width:60px"><span class="lb" style="font-size:8px">SETS</span><input type="number" min="1" value="'+(ex.sets||"")+'" placeholder="\u2014" onchange="setWkEx('+e+',\'sets\',this.value)" style="text-align:center;font-size:12px;padding:6px"></div><div style="flex:1;min-width:60px"><span class="lb" style="font-size:8px">REPS</span><input value="'+(ex.reps||"")+'" placeholder="\u2014" onchange="setWkEx('+e+',\'reps\',this.value)" style="text-align:center;font-size:12px;padding:6px"></div><div style="flex:1;min-width:60px"><span class="lb" style="font-size:8px">REST (sec)</span><input type="number" min="0" value="'+(ex.rest||"")+'" placeholder="\u2014" onchange="setWkEx('+e+',\'rest\',this.value)" style="text-align:center;font-size:12px;padding:6px"></div></div>'
+      +'<div style="margin-top:6px"><span class="lb" style="font-size:8px">NOTES</span><input value="'+esc(ex.notes||"")+'" placeholder="Form cues, tempo, etc." onchange="setWkEx('+e+',\'notes\',this.value)" style="font-size:10px;padding:6px"></div></div>';
+  }
+  html+='<button class="btn2" onclick="showExercisePicker()" style="width:100%;margin-top:4px;margin-bottom:14px">+ ADD EXERCISE</button>';
+  // Cardio
+  html+='<div class="sl">CARDIO</div>';
+  for(var ci=0;ci<w.cardio.length;ci++){var cd=w.cardio[ci];
+    html+='<div class="cd" style="padding:12px;margin-bottom:6px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><div style="flex:1;font-size:13px;font-weight:600;color:var(--wh)">'+esc(cd.name)+'</div><span style="font-size:12px;color:var(--danger);cursor:pointer;padding:2px 6px" onclick="rmWkCardio('+ci+')">\u2715</span></div>'
+      +'<div style="display:flex;gap:6px"><div style="flex:1"><span class="lb" style="font-size:8px">DURATION (min)</span><input type="number" min="1" value="'+(cd.duration||"")+'" placeholder="\u2014" onchange="setWkCardio('+ci+',\'duration\',this.value)" style="text-align:center;font-size:12px;padding:6px"></div><div style="flex:1"><span class="lb" style="font-size:8px">MODE</span><select onchange="setWkCardio('+ci+',\'mode\',this.value)" style="font-size:11px;padding:6px"><option value="Steady State"'+(cd.mode==="Steady State"?" selected":"")+'>Steady State</option><option value="HIIT"'+(cd.mode==="HIIT"?" selected":"")+'>HIIT</option><option value="Intervals"'+(cd.mode==="Intervals"?" selected":"")+'>Intervals</option></select></div></div>'
+      +'<div style="margin-top:6px"><span class="lb" style="font-size:8px">NOTES</span><input value="'+esc(cd.notes||"")+'" placeholder="HR zone, incline, etc." onchange="setWkCardio('+ci+',\'notes\',this.value)" style="font-size:10px;padding:6px"></div></div>';
+  }
+  html+='<button class="btn2" onclick="showCardioPicker()" style="width:100%;margin-top:4px;margin-bottom:14px">+ ADD CARDIO</button>';
+  // Notes
+  html+='<div class="sl">NOTES</div><div class="cd" style="padding:12px;margin-bottom:14px"><textarea rows="2" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" placeholder="Overall workout notes..." onchange="wkSet(\'notes\',this.value)">'+esc(w.notes||"")+'</textarea></div>';
+  // Actions
+  html+='<div style="display:flex;gap:8px"><button class="btn" style="flex:1" onclick="generateWorkoutPDF()">GENERATE PDF</button><button class="btn2" style="flex:1" onclick="duplicateWorkout()">DUPLICATE</button></div>'
+    +'<div style="display:flex;gap:8px;margin-top:8px">'+(w.clientId?'<button class="btn2" style="flex:1" onclick="assignWorkoutToProgram()">ASSIGN TO PROGRAM</button>':'')+'<button class="btn-danger" style="flex:1" onclick="deleteWorkout()">DELETE</button></div>';
+  return html;
+}
+function wkSet(k,v){var w=_workouts.find(function(x){return x.id===_editWorkout;});if(w){w[k]=v;saveWorkouts();}}
+function setWkEx(i,k,v){var w=_workouts.find(function(x){return x.id===_editWorkout;});if(w&&w.exercises[i]){w.exercises[i][k]=v;saveWorkouts();}}
+function rmWkEx(i){var w=_workouts.find(function(x){return x.id===_editWorkout;});if(!w)return;w.exercises.splice(i,1);saveWorkouts();render();}
+function moveWkEx(i,dir){var w=_workouts.find(function(x){return x.id===_editWorkout;});if(!w)return;var ni=i+dir;if(ni<0||ni>=w.exercises.length)return;var tmp=w.exercises[i];w.exercises[i]=w.exercises[ni];w.exercises[ni]=tmp;saveWorkouts();render();}
+function setWkCardio(i,k,v){var w=_workouts.find(function(x){return x.id===_editWorkout;});if(w&&w.cardio[i]){w.cardio[i][k]=v;saveWorkouts();}}
+function rmWkCardio(i){var w=_workouts.find(function(x){return x.id===_editWorkout;});if(!w)return;w.cardio.splice(i,1);saveWorkouts();render();}
+function duplicateWorkout(){var w=_workouts.find(function(x){return x.id===_editWorkout;});if(!w)return;var c=JSON.parse(JSON.stringify(w));c.id=uid();c.name=w.name+" (Copy)";c.created_at=new Date().toISOString();_workouts.push(c);saveWorkouts();_editWorkout=c.id;render();toast("\u2713 Duplicated");}
+function deleteWorkout(){showDoubleConfirm("Delete Workout","Permanently delete this workout?").then(function(ok){if(!ok)return;_workouts=_workouts.filter(function(x){return x.id!==_editWorkout;});saveWorkouts();_editWorkout=null;render();});}
+function assignWorkoutToProgram(){var w=_workouts.find(function(x){return x.id===_editWorkout;});if(!w||!w.clientId)return;var ci=clients.findIndex(function(c){return c.id===w.clientId;});if(ci<0)return;var c=clients[ci];if(!c.program)c.program={days:[]};var day={name:w.name,exercises:[]};for(var i=0;i<w.exercises.length;i++){var ex=w.exercises[i];day.exercises.push({name:ex.name,scheme:(ex.sets||"")+"x"+(ex.reps||""),type:"resistance"});}for(var j=0;j<w.cardio.length;j++){var cd=w.cardio[j];day.exercises.push({name:cd.name,scheme:(cd.duration||"")+" min "+(cd.mode||""),type:"cardio",cardioDur:parseInt(cd.duration)||0,cardioTiming:""});}c.program.days.push(day);save();toast("\u2713 Added to "+c.name+"'s program");}
+function showExercisePicker(){
+  var content='<div style="max-height:60vh;overflow-y:auto">';
+  content+='<div style="margin-bottom:10px"><input id="exPickSearch" placeholder="Search exercises..." oninput="filterExPickerModal()" style="font-size:13px;padding:10px 14px"></div>';
+  content+='<div id="exPickList">';
+  var groups=Object.keys(EXERCISE_DB);
+  for(var g=0;g<groups.length;g++){
+    var grp=groups[g],exs=EXERCISE_DB[grp];
+    content+='<div class="exPickCat"><div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display===\'none\'?\'block\':\'none\'" style="cursor:pointer;padding:10px 0;border-bottom:1px solid var(--borderS);display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;font-weight:700;color:var(--acc);letter-spacing:.1em;font-family:var(--mono)">'+grp.toUpperCase()+'</span><span style="font-size:9px;color:var(--dm)">'+exs.length+' \u25bc</span></div><div class="exPickItems" style="display:none">';
+    for(var e=0;e<exs.length;e++){
+      content+='<div class="exPickItem" onclick="pickExerciseForWorkout(\''+esc(grp)+'\',\''+esc(exs[e].replace(/'/g,"\\'"))+'\')" style="padding:8px 12px;cursor:pointer;border-bottom:1px solid var(--borderS);transition:background .15s" onmouseover="this.style.background=\'var(--accS)\'" onmouseout="this.style.background=\'none\'"><div style="font-size:12px;color:var(--wh)">'+esc(exs[e])+'</div></div>';
+    }
+    content+='</div></div>';
+  }
+  content+='</div>';
+  content+='<div style="border-top:1px solid var(--borderS);padding-top:12px;margin-top:10px"><div style="font-size:10px;color:var(--dm);font-family:var(--mono);margin-bottom:6px">CUSTOM EXERCISE</div><div style="display:flex;gap:6px"><input id="exCustomName" placeholder="Exercise name" style="flex:1;font-size:12px;padding:8px"><select id="exCustomGroup" style="font-size:11px;padding:8px;width:auto">';
+  for(var g2=0;g2<groups.length;g2++)content+='<option>'+groups[g2]+'</option>';
+  content+='</select><button class="btn2" onclick="pickExerciseCustom()" style="padding:6px 12px;font-size:9px">ADD</button></div></div></div>';
+  showModal("ADD EXERCISE",content);
+  setTimeout(function(){var s=el("exPickSearch");if(s)s.focus();},100);
+}
+function filterExPickerModal(){var q=(el("exPickSearch")||{}).value||"";q=q.toLowerCase();var cats=document.querySelectorAll(".exPickCat");cats.forEach(function(c){var items=c.querySelectorAll(".exPickItem");var anyMatch=false;items.forEach(function(it){var match=it.textContent.toLowerCase().indexOf(q)>=0;it.style.display=match?"":"none";if(match)anyMatch=true;});c.style.display=anyMatch||!q?"":"none";if(q&&anyMatch){var itemsDiv=c.querySelector(".exPickItems");if(itemsDiv)itemsDiv.style.display="block";}});}
+function pickExerciseForWorkout(group,name){var w=_workouts.find(function(x){return x.id===_editWorkout;});if(!w)return;w.exercises.push({name:name,group:group,sets:"",reps:"",rest:"",notes:""});saveWorkouts();closeModal();render();}
+function pickExerciseCustom(){var n=val("exCustomName"),g=val("exCustomGroup");if(!n){toast("Enter exercise name");return;}var w=_workouts.find(function(x){return x.id===_editWorkout;});if(!w)return;w.exercises.push({name:n,group:g||"Custom",sets:"",reps:"",rest:"",notes:""});saveWorkouts();closeModal();render();}
+function showCardioPicker(){
+  var content='<div style="max-height:60vh;overflow-y:auto">';
+  for(var i=0;i<CARDIO_DB.length;i++){var cd=CARDIO_DB[i];
+    content+='<div onclick="pickCardioForWorkout(\''+esc(cd.name.replace(/'/g,"\\'"))+'\')" style="padding:10px 12px;cursor:pointer;border-bottom:1px solid var(--borderS);transition:background .15s" onmouseover="this.style.background=\'var(--accS)\'" onmouseout="this.style.background=\'none\'"><div style="font-size:13px;color:var(--wh)">'+esc(cd.name)+'</div><div style="font-size:9px;color:var(--dm);font-family:var(--mono)">'+cd.modes.join(" \u00b7 ")+'</div></div>';
+  }
+  content+='<div style="border-top:1px solid var(--borderS);padding-top:12px;margin-top:10px"><div style="display:flex;gap:6px"><input id="cardioCustom" placeholder="Custom cardio name" style="flex:1;font-size:12px;padding:8px"><button class="btn2" onclick="pickCardioCustom()" style="padding:6px 12px;font-size:9px">ADD</button></div></div></div>';
+  showModal("ADD CARDIO",content);
+}
+function pickCardioForWorkout(name){var w=_workouts.find(function(x){return x.id===_editWorkout;});if(!w)return;w.cardio.push({name:name,duration:"",mode:"Steady State",notes:""});saveWorkouts();closeModal();render();}
+function pickCardioCustom(){var n=val("cardioCustom");if(!n){toast("Enter cardio name");return;}var w=_workouts.find(function(x){return x.id===_editWorkout;});if(!w)return;w.cardio.push({name:n,duration:"",mode:"Steady State",notes:""});saveWorkouts();closeModal();render();}
+function generateWorkoutPDF(){
+  var w=_workouts.find(function(x){return x.id===_editWorkout;});if(!w||(!w.exercises.length&&!w.cardio.length)){toast("Add exercises first");return;}
+  var cl=w.clientId?clientById(w.clientId):null;var accent=_pdfAccent();
+  var body='';
+  if(w.exercises.length){
+    body+='<div style="margin-bottom:22px"><div style="font-size:11px;font-weight:700;color:'+accent+';letter-spacing:.2em;margin-bottom:12px">EXERCISES</div>'
+      +'<table style="width:100%;border-collapse:collapse"><tr style="background:'+accent+'18"><th style="padding:7px 12px;text-align:left;color:'+accent+';font-size:9px;letter-spacing:.12em">EXERCISE</th><th style="padding:7px 12px;text-align:center;color:'+accent+';font-size:9px;letter-spacing:.12em">SETS</th><th style="padding:7px 12px;text-align:center;color:'+accent+';font-size:9px;letter-spacing:.12em">REPS</th><th style="padding:7px 12px;text-align:center;color:'+accent+';font-size:9px;letter-spacing:.12em">REST</th><th style="padding:7px 12px;text-align:left;color:'+accent+';font-size:9px;letter-spacing:.12em">NOTES</th></tr>';
+    for(var i=0;i<w.exercises.length;i++){var ex=w.exercises[i];
+      body+='<tr style="border-bottom:1px solid #161616;background:'+(i%2===0?"#0a0a0a":"#080808")+'"><td style="padding:9px 12px;color:#ddd;font-size:13px;font-weight:500">'+esc(ex.name)+'</td><td style="padding:9px 12px;text-align:center;color:#bbb;font-size:13px;font-family:IBM Plex Mono,monospace">'+(ex.sets||"\u2014")+'</td><td style="padding:9px 12px;text-align:center;color:#bbb;font-size:13px;font-family:IBM Plex Mono,monospace">'+(ex.reps||"\u2014")+'</td><td style="padding:9px 12px;text-align:center;color:#999;font-size:11px;font-family:IBM Plex Mono,monospace">'+(ex.rest?ex.rest+"s":"\u2014")+'</td><td style="padding:9px 12px;color:#888;font-size:11px">'+(ex.notes?esc(ex.notes):"")+'</td></tr>';}
+    body+='</table></div>';
+  }
+  if(w.cardio.length){
+    body+='<div style="margin-bottom:22px"><div style="font-size:11px;font-weight:700;color:#5b5;letter-spacing:.2em;margin-bottom:12px">CARDIO</div>';
+    for(var j=0;j<w.cardio.length;j++){var cd=w.cardio[j];
+      body+='<div style="display:flex;justify-content:space-between;padding:8px 12px;border-bottom:1px solid #161616;background:'+(j%2===0?"#0a0a0a":"#080808")+'"><span style="color:#ccc;font-size:13px">\u2022 '+esc(cd.name)+'</span><span style="color:#999;font-size:11px;font-family:IBM Plex Mono,monospace">'+(cd.duration?cd.duration+' min':'')+(cd.mode?' \u00b7 '+cd.mode:'')+'</span></div>';}
+    body+='</div>';
+  }
+  if(w.notes)body+='<div style="margin-top:16px;padding:14px;background:#0c0c0c;border:1px solid '+accent+'30;border-radius:6px"><div style="font-size:10px;color:'+accent+';font-family:IBM Plex Mono,monospace;margin-bottom:6px">NOTES</div><div style="font-size:12px;color:#ccc;line-height:1.6">'+esc(w.notes)+'</div></div>';
+  var contentPages=_splitContentIntoPages(body);
+  var pages=[{coverTitle:"Workout",coverClient:cl?cl.name:"",coverSub:w.name}];
+  for(var pi=0;pi<contentPages.length;pi++)pages.push({content:contentPages[pi]});
+  _renderPDFToFile(pages,(cl?cl.name.replace(/\s+/g,"_")+"_":"")+"Workout","Workout",w.name);
+}
+
+// ── ANABOLICS PROTOCOL ──
+function renderAnabolics(){
+  if(!clients.length)return'<div class="cd" style="padding:24px;text-align:center;color:var(--dm)">Add a client first</div>';
+  if(!_nutClientId)_nutClientId=clients[0].id;
+  var cl=clientById(_nutClientId);
+  var html='<div style="margin-bottom:12px"><select onchange="_nutClientId=this.value;render()" style="font-size:12px">';
+  for(var i=0;i<clients.length;i++)html+='<option value="'+clients[i].id+'"'+(_nutClientId===clients[i].id?" selected":"")+'>'+esc(clients[i].name)+'</option>';
+  html+='</select></div>';
+  if(!cl)return html+'<div class="cd" style="padding:20px;text-align:center;color:var(--dm)">Select a client</div>';
+  if(!cl.anabolics)cl.anabolics=[];
+  html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><span class="sl" style="margin:0">PROTOCOL</span><div style="display:flex;gap:4px"><button class="btn2" onclick="addAnabolic()" style="padding:5px 10px;font-size:8px">+ ADD</button>'+(cl.anabolics.length?'<button class="btn2" onclick="generateAnabolicsPDF()" style="padding:5px 10px;font-size:8px">PDF</button>':'')+'</div></div>';
+  if(!cl.anabolics.length)return html+'<div class="cd" style="padding:20px;text-align:center;color:var(--dm);font-size:11px">No protocol</div>';
+  // Group by category
+  var grouped={};cl.anabolics.forEach(function(a,idx){
+    var cat=a.cat||"Uncategorized";if(!grouped[cat])grouped[cat]=[];grouped[cat].push({item:a,idx:idx});
+  });
+  var catOrder=["Anabolic Steroids","AI / Aromatase Inhibitors","SERMs","Prolactin / Progesterone Support","Peptides","SARMs","Ancillaries & Health","Uncategorized"];
+  for(var ci2=0;ci2<catOrder.length;ci2++){
+    var catName=catOrder[ci2];if(!grouped[catName])continue;
+    html+='<div style="font-size:9px;color:var(--acc);font-family:var(--mono);letter-spacing:.1em;font-weight:700;margin:12px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--borderS)">'+catName.toUpperCase()+'</div>';
+    grouped[catName].forEach(function(entry){var a=entry.item,idx=entry.idx;
+      html+='<div class="cd" style="display:flex;align-items:center;gap:10px;padding:12px 14px"><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--wh)">'+esc(a.name)+'</div><div style="font-size:10px;color:var(--dm);font-family:var(--mono)">'+esc(a.dose||"")+' \u00b7 '+esc(a.freq||"")+' \u00b7 '+esc(a.route||"")+'</div>'+(a.notes?'<div style="font-size:9px;color:var(--mu);margin-top:2px">'+esc(a.notes)+'</div>':'')+'</div><span style="font-size:12px;color:var(--danger);cursor:pointer;padding:2px 6px" onclick="rmAnabolic('+idx+')">\u2715</span></div>';
+    });
+  }
+  // Notes
+  html+='<div style="margin-top:14px"><span class="lb">PROTOCOL NOTES</span><textarea rows="2" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" placeholder="Cycle notes, bloodwork schedule, etc." onchange="setAnabolicNotes(this.value)">'+(cl.anabolicNotes?esc(cl.anabolicNotes):"")+'</textarea></div>';
+  return html;
+}
+function addAnabolic(){showAnabolicPicker();}
+function rmAnabolic(i){var cl=clientById(_nutClientId);if(!cl)return;cl.anabolics.splice(i,1);save();render();}
+function setAnabolicNotes(v){var cl=clientById(_nutClientId);if(!cl)return;cl.anabolicNotes=v;save();}
+function showAnabolicPicker(){
+  var content='<div style="max-height:60vh;overflow-y:auto">';
+  content+='<div style="margin-bottom:10px"><input id="anaPickSearch" placeholder="Search compounds..." oninput="filterAnaPicker()" style="font-size:13px;padding:10px 14px"></div>';
+  content+='<div id="anaPickList">';
+  for(var c2=0;c2<ANABOLICS_DB.length;c2++){
+    var cat=ANABOLICS_DB[c2];
+    content+='<div class="anaPickCat"><div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display===\'none\'?\'block\':\'none\'" style="cursor:pointer;padding:10px 0;border-bottom:1px solid var(--borderS);display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;font-weight:700;color:var(--acc);letter-spacing:.1em;font-family:var(--mono)">'+cat.cat.toUpperCase()+'</span><span style="font-size:9px;color:var(--dm)">'+cat.items.length+' \u25bc</span></div><div class="anaPickItems" style="display:'+(c2===0?'block':'none')+'">';
+    for(var s=0;s<cat.items.length;s++){
+      var item=cat.items[s];
+      content+='<div class="anaPickItem" data-cat="'+esc(cat.cat)+'" data-idx="'+c2+'" data-sidx="'+s+'" onclick="pickAnabolicItem('+c2+','+s+')" style="padding:8px 12px;cursor:pointer;border-bottom:1px solid var(--borderS);transition:background .15s" onmouseover="this.style.background=\'var(--accS)\'" onmouseout="this.style.background=\'none\'"><div style="font-size:12px;color:var(--wh)">'+esc(item.name)+'</div><div style="font-size:9px;color:var(--dm);font-family:var(--mono)">'+item.doses.join(" | ")+'</div></div>';
+    }
+    content+='</div></div>';
+  }
+  content+='</div>';
+  content+='<div style="border-top:1px solid var(--borderS);padding-top:12px;margin-top:10px"><div style="font-size:10px;color:var(--dm);font-family:var(--mono);margin-bottom:6px">CUSTOM COMPOUND</div><div style="display:flex;flex-direction:column;gap:6px"><input id="anaCustomN" placeholder="Compound name" style="font-size:12px;padding:8px"><div style="display:flex;gap:6px"><input id="anaCustomD" placeholder="Dose" style="flex:1;font-size:12px;padding:8px"><input id="anaCustomF" placeholder="Frequency" style="flex:1;font-size:12px;padding:8px"></div><div style="display:flex;gap:6px"><input id="anaCustomR" placeholder="Route" style="flex:1;font-size:12px;padding:8px"><select id="anaCustomCat" style="flex:1;font-size:11px;padding:8px">';
+  for(var cc=0;cc<ANABOLICS_DB.length;cc++)content+='<option>'+ANABOLICS_DB[cc].cat+'</option>';
+  content+='</select></div><button class="btn2" onclick="pickAnaCustom()" style="padding:6px 12px;font-size:9px">ADD CUSTOM</button></div></div></div>';
+  showModal("ADD COMPOUND",content);
+  setTimeout(function(){var s=el("anaPickSearch");if(s)s.focus();},100);
+}
+function filterAnaPicker(){var q=(el("anaPickSearch")||{}).value||"";q=q.toLowerCase();var cats=document.querySelectorAll(".anaPickCat");cats.forEach(function(c){var items=c.querySelectorAll(".anaPickItem");var anyMatch=false;items.forEach(function(it){var match=it.textContent.toLowerCase().indexOf(q)>=0;it.style.display=match?"":"none";if(match)anyMatch=true;});c.style.display=anyMatch||!q?"":"none";if(q&&anyMatch){var itemsDiv=c.querySelector(".anaPickItems");if(itemsDiv)itemsDiv.style.display="block";}});}
+function pickAnabolicItem(catIdx,itemIdx){
+  var cat=ANABOLICS_DB[catIdx],item=cat.items[itemIdx];
+  closeModal();
+  // Build dose/freq/route picker
+  var content2='<div style="margin-bottom:16px"><div style="font-size:14px;font-weight:600;color:var(--wh);margin-bottom:12px">'+esc(item.name)+'</div>';
+  content2+='<div style="margin-bottom:12px"><span class="lb">DOSE</span><div style="display:flex;flex-wrap:wrap;gap:4px">';
+  for(var d=0;d<item.doses.length;d++)content2+='<div class="chip'+(d===0?" on":"")+'" onclick="pickChip(this,\'anaDose\')">'+item.doses[d]+'</div>';
+  content2+='</div><input type="hidden" id="anaDose" value="'+item.doses[0]+'"></div>';
+  content2+='<div style="margin-bottom:12px"><span class="lb">FREQUENCY</span><div style="display:flex;flex-wrap:wrap;gap:4px">';
+  for(var f=0;f<item.freqs.length;f++)content2+='<div class="chip'+(f===0?" on":"")+'" onclick="pickChip(this,\'anaFreq\')">'+item.freqs[f]+'</div>';
+  content2+='</div><input type="hidden" id="anaFreq" value="'+item.freqs[0]+'"></div>';
+  content2+='<div style="margin-bottom:12px"><span class="lb">ROUTE</span><div style="display:flex;flex-wrap:wrap;gap:4px">';
+  for(var r=0;r<item.routes.length;r++)content2+='<div class="chip'+(r===0?" on":"")+'" onclick="pickChip(this,\'anaRoute\')">'+item.routes[r]+'</div>';
+  content2+='</div><input type="hidden" id="anaRoute" value="'+item.routes[0]+'"></div>';
+  content2+='<div style="margin-bottom:12px"><span class="lb">NOTES (optional)</span><input id="anaNotes" placeholder="Specific instructions..." style="font-size:12px;padding:8px"></div>';
+  content2+='<button class="btn" onclick="confirmAnabolic(\''+esc(item.name.replace(/'/g,"\\'"))+'\',\''+esc(cat.cat.replace(/'/g,"\\'"))+'\')" style="width:100%">ADD TO PROTOCOL</button></div>';
+  showModal("CONFIGURE",content2);
+  // Auto-select first dose chip
+  setTimeout(function(){var chips=document.querySelectorAll("#modal-body .chip");if(chips.length)chips[0].classList.add("on");},50);
+}
+function confirmAnabolic(name,cat){
+  var dose=val("anaDose"),freq=val("anaFreq"),route=val("anaRoute"),notes=val("anaNotes")||"";
+  var cl=clientById(_nutClientId);if(!cl)return;if(!cl.anabolics)cl.anabolics=[];
+  cl.anabolics.push({name:name,dose:dose,freq:freq,route:route,notes:notes,cat:cat});
+  save();closeModal();render();toast("\u2713 Added "+name);
+}
+function pickAnaCustom(){
+  var n=val("anaCustomN"),d=val("anaCustomD")||"",f=val("anaCustomF")||"",r=val("anaCustomR")||"",cat=val("anaCustomCat")||"Uncategorized";
+  if(!n){toast("Enter compound name");return;}
+  var cl=clientById(_nutClientId);if(!cl)return;if(!cl.anabolics)cl.anabolics=[];
+  cl.anabolics.push({name:n,dose:d,freq:f,route:r,notes:"",cat:cat});
+  save();closeModal();render();toast("\u2713 Added "+n);
+}
+function generateAnabolicsPDF(){
+  var cl=clientById(_nutClientId);if(!cl||!cl.anabolics||!cl.anabolics.length){toast("No protocol to export");return;}
+  var accent=_pdfAccent();
+  var grouped={};cl.anabolics.forEach(function(a){var cat=a.cat||"Uncategorized";if(!grouped[cat])grouped[cat]=[];grouped[cat].push(a);});
+  var catOrder=["Anabolic Steroids","AI / Aromatase Inhibitors","SERMs","Prolactin / Progesterone Support","Peptides","SARMs","Ancillaries & Health","Uncategorized"];
+  var body='';
+  for(var ci=0;ci<catOrder.length;ci++){
+    var catName=catOrder[ci];if(!grouped[catName])continue;var items=grouped[catName];
+    body+='<div style="margin-bottom:20px"><div style="font-size:13px;font-weight:700;color:'+accent+';margin-bottom:8px;padding-bottom:4px;border-bottom:2px solid '+accent+'40">'+catName.toUpperCase()+'</div>'
+      +'<table style="width:100%;border-collapse:collapse"><tr style="background:'+accent+'18"><th style="padding:6px 10px;text-align:left;color:'+accent+';font-size:9px;letter-spacing:.1em">COMPOUND</th><th style="padding:6px 10px;text-align:center;color:'+accent+';font-size:9px;letter-spacing:.1em">DOSE</th><th style="padding:6px 10px;text-align:center;color:'+accent+';font-size:9px;letter-spacing:.1em">FREQUENCY</th><th style="padding:6px 10px;text-align:left;color:'+accent+';font-size:9px;letter-spacing:.1em">ROUTE</th></tr>';
+    for(var j=0;j<items.length;j++){var a=items[j];
+      body+='<tr style="border-bottom:1px solid #1a1a1a;background:'+(j%2===0?"#0a0a0a":"#080808")+'"><td style="padding:8px 10px;color:#ddd;font-size:12px;font-weight:500">'+esc(a.name)+'</td><td style="padding:8px 10px;text-align:center;color:#bbb;font-size:12px;font-family:IBM Plex Mono,monospace">'+esc(a.dose)+'</td><td style="padding:8px 10px;text-align:center;color:#bbb;font-size:11px;font-family:IBM Plex Mono,monospace">'+esc(a.freq)+'</td><td style="padding:8px 10px;color:#aaa;font-size:11px">'+esc(a.route)+'</td></tr>';}
+    body+='</table></div>';
+  }
+  if(cl.anabolicNotes)body+='<div style="margin-top:16px;padding:14px;background:#0c0c0c;border:1px solid '+accent+'30;border-radius:6px"><div style="font-size:10px;color:'+accent+';font-family:IBM Plex Mono,monospace;margin-bottom:6px">PROTOCOL NOTES</div><div style="font-size:12px;color:#ccc;line-height:1.6">'+esc(cl.anabolicNotes)+'</div></div>';
+  var contentPages=_splitContentIntoPages(body);
+  var pages=[{coverTitle:"Protocol",coverClient:cl.name,coverSub:"Anabolics & Peptides Protocol"}];
+  for(var pi=0;pi<contentPages.length;pi++)pages.push({content:contentPages[pi]});
+  _renderPDFToFile(pages,cl.name.replace(/\s+/g,"_")+"_Protocol","Protocol",cl.name);
 }
 
 function renderSupplements(){
@@ -2543,11 +2779,76 @@ function generateFullPrepPDF(idx){
     for(var si=0;si<c.supplements.length;si++){var sp=c.supplements[si];body+='<tr style="border-bottom:1px solid #1a1a1a;background:'+(si%2===0?"#0a0a0a":"#080808")+'"><td style="padding:7px 12px;color:#ddd;font-size:12px">'+esc(sp.name)+'</td><td style="padding:7px 12px;color:#aaa;font-size:11px">'+esc(sp.dose)+'</td><td style="padding:7px 12px;color:#aaa;font-size:11px">'+esc(sp.timing)+'</td></tr>';}
     body+='</table></div>';}
 
+  // Anabolics
+  if(c.anabolics&&c.anabolics.length){
+    var grouped3={};c.anabolics.forEach(function(a){var cat=a.cat||"Uncategorized";if(!grouped3[cat])grouped3[cat]=[];grouped3[cat].push(a);});
+    body+='<div style="margin-bottom:22px"><div style="font-size:13px;font-weight:700;color:'+accent+';margin-bottom:10px">ANABOLICS & PEPTIDES PROTOCOL</div>';
+    var catOrder3=["Anabolic Steroids","AI / Aromatase Inhibitors","SERMs","Prolactin / Progesterone Support","Peptides","SARMs","Ancillaries & Health","Uncategorized"];
+    for(var ci3=0;ci3<catOrder3.length;ci3++){var cn3=catOrder3[ci3];if(!grouped3[cn3])continue;
+      body+='<div style="font-size:10px;font-weight:700;color:'+accent+';letter-spacing:.15em;margin:8px 0 4px">'+cn3.toUpperCase()+'</div>';
+      grouped3[cn3].forEach(function(a){body+='<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #161616"><span style="color:#ccc;font-size:12px">&bull; '+esc(a.name)+'</span><span style="color:#999;font-size:11px;font-family:IBM Plex Mono,monospace">'+esc(a.dose)+' &middot; '+esc(a.freq)+' &middot; '+esc(a.route)+'</span></div>';});
+    }
+    if(c.anabolicNotes)body+='<div style="margin-top:8px;font-size:11px;color:#999;font-style:italic">'+esc(c.anabolicNotes)+'</div>';
+    body+='</div>';}
+
   var contentPages=_splitContentIntoPages(body);
   var pages=[{coverTitle:"Full Prep Package",coverClient:c.name,coverSub:coverSub}];
   for(var pi2=0;pi2<contentPages.length;pi2++)pages.push({content:contentPages[pi2]});
   _renderPDFToFile(pages,c.name.replace(/\s+/g,"_")+"_Full_Prep","Full Prep",c.name);
 }
+
+// ── COMPLETE PROGRAM PDF ──
+function generateCompleteProgramPDF(idx){
+  var c=clients[idx];if(!c){toast("Client not found");return;}
+  var accent=_pdfAccent();var hasAnything=false;
+  var body='';
+  // 1. Training Program
+  var p=c.program;
+  if(p&&p.days&&p.days.length){hasAnything=true;
+    body+='<div style="margin-bottom:24px"><div style="font-size:15px;font-weight:800;color:'+accent+';margin-bottom:4px">TRAINING PROGRAM</div>'+(p.weeks||p.split?'<div style="font-size:10px;color:#777;font-family:IBM Plex Mono,monospace;margin-bottom:12px">'+(p.weeks?p.weeks+" weeks":"")+(p.split?" \u00b7 "+p.split:"")+'</div>':'');
+    for(var d=0;d<p.days.length;d++){var day=p.days[d];
+      body+='<div style="margin-bottom:14px"><div style="font-size:12px;font-weight:700;color:'+accent+';margin-bottom:4px;padding-left:8px;border-left:3px solid '+accent+'">'+esc(day.name)+'</div>';
+      for(var e=0;e<day.exercises.length;e++){var ex=day.exercises[e];body+='<div style="display:flex;justify-content:space-between;padding:4px 0 4px 14px;border-bottom:1px solid #141414"><span style="color:#ccc;font-size:12px">'+esc(ex.name)+'</span><span style="color:#999;font-size:11px;font-family:IBM Plex Mono,monospace">'+esc(ex.scheme||"")+'</span></div>';}
+      body+='</div>';}
+    body+='</div>';
+  }
+  // 2. Nutrition
+  var cPlans=mealPlans.filter(function(mp2){return mp2.clientId===c.id;});
+  if(cPlans.length){hasAnything=true;
+    for(var pi=0;pi<cPlans.length;pi++){var mp=cPlans[pi],tot=calcPlanTotals(mp);
+      body+='<div style="margin-bottom:24px"><div style="font-size:15px;font-weight:800;color:'+accent+';margin-bottom:2px">NUTRITION: '+esc(mp.name).toUpperCase()+'</div><div style="font-size:10px;color:#777;font-family:IBM Plex Mono,monospace;margin-bottom:12px">'+tot.cal+' cal \u00b7 '+tot.p+'g protein \u00b7 '+tot.c+'g carbs \u00b7 '+tot.f+'g fat</div>';
+      for(var m=0;m<mp.meals.length;m++){var meal=mp.meals[m],mt=calcMealTotals(meal);
+        body+='<div style="margin-bottom:10px"><div style="font-size:11px;font-weight:700;color:'+accent+';margin-bottom:3px">'+esc(meal.name).toUpperCase()+'</div>';
+        for(var f=0;f<meal.foods.length;f++){var fd=meal.foods[f];body+='<div style="padding:2px 0;color:#bbb;font-size:11px">\u2022 '+esc(fd.name)+' \u2014 '+fd.qty+' '+fd.unit+'</div>';}
+        body+='<div style="font-size:9px;color:#666;font-family:IBM Plex Mono,monospace;margin-top:3px">'+mt.cal+' cal | '+mt.p+'g P | '+mt.c+'g C | '+mt.f+'g F</div></div>';}
+      body+='</div>';
+    }
+  }
+  // 3. Anabolics
+  if(c.anabolics&&c.anabolics.length){hasAnything=true;
+    var grouped2={};c.anabolics.forEach(function(a){var cat=a.cat||"Uncategorized";if(!grouped2[cat])grouped2[cat]=[];grouped2[cat].push(a);});
+    body+='<div style="margin-bottom:24px"><div style="font-size:15px;font-weight:800;color:'+accent+';margin-bottom:12px">ANABOLICS & PEPTIDES PROTOCOL</div>';
+    var catOrder2=["Anabolic Steroids","AI / Aromatase Inhibitors","SERMs","Prolactin / Progesterone Support","Peptides","SARMs","Ancillaries & Health","Uncategorized"];
+    for(var ci3=0;ci3<catOrder2.length;ci3++){var cn=catOrder2[ci3];if(!grouped2[cn])continue;
+      body+='<div style="font-size:10px;font-weight:700;color:'+accent+';letter-spacing:.15em;margin:8px 0 4px">'+cn.toUpperCase()+'</div>';
+      grouped2[cn].forEach(function(a){body+='<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #161616"><span style="color:#ccc;font-size:12px">\u2022 '+esc(a.name)+'</span><span style="color:#999;font-size:11px;font-family:IBM Plex Mono,monospace">'+esc(a.dose)+' \u00b7 '+esc(a.freq)+' \u00b7 '+esc(a.route)+'</span></div>';});
+    }
+    if(c.anabolicNotes)body+='<div style="margin-top:8px;font-size:11px;color:#999;font-style:italic">'+esc(c.anabolicNotes)+'</div>';
+    body+='</div>';
+  }
+  // 4. Supplements
+  if(c.supplements&&c.supplements.length){hasAnything=true;
+    body+='<div style="margin-bottom:24px"><div style="font-size:15px;font-weight:800;color:'+accent+';margin-bottom:10px">SUPPLEMENTS</div><table style="width:100%;border-collapse:collapse"><tr style="background:'+accent+'18"><th style="padding:6px 12px;text-align:left;color:'+accent+';font-size:9px;letter-spacing:.1em">Supplement</th><th style="padding:6px 12px;text-align:left;color:'+accent+';font-size:9px;letter-spacing:.1em">Dose</th><th style="padding:6px 12px;text-align:left;color:'+accent+';font-size:9px;letter-spacing:.1em">Timing</th></tr>';
+    for(var si=0;si<c.supplements.length;si++){var sp=c.supplements[si];body+='<tr style="border-bottom:1px solid #1a1a1a;background:'+(si%2===0?"#0a0a0a":"#080808")+'"><td style="padding:7px 12px;color:#ddd;font-size:12px">'+esc(sp.name)+'</td><td style="padding:7px 12px;color:#aaa;font-size:11px">'+esc(sp.dose)+'</td><td style="padding:7px 12px;color:#aaa;font-size:11px">'+esc(sp.timing)+'</td></tr>';}
+    body+='</table></div>';
+  }
+  if(!hasAnything){toast("No data to export");return;}
+  var contentPages=_splitContentIntoPages(body);
+  var pages=[{coverTitle:"Complete Program",coverClient:c.name,coverSub:"Training \u00b7 Nutrition \u00b7 Protocol"}];
+  for(var pi2=0;pi2<contentPages.length;pi2++)pages.push({content:contentPages[pi2]});
+  _renderPDFToFile(pages,c.name.replace(/\s+/g,"_")+"_Complete_Program","Complete Program",c.name);
+}
+
 // ── PEAK WEEK PROTOCOL ──
 function renderPeakWeek(c,idx){
   if(!c.peakWeek)c.peakWeek={days:[]};
