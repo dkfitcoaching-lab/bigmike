@@ -148,16 +148,28 @@ button{font-family:var(--body);cursor:pointer;border:none;outline:none;transitio
 @media(min-width:900px){
   #app{max-width:100%}
   .hdr{display:none}
-  .tabs{position:fixed;left:0;top:0;bottom:0;width:var(--sidebar);max-width:var(--sidebar);flex-direction:column;justify-content:flex-start;padding:0;border-top:none;border-right:1px solid var(--border);background:rgba(10,9,12,.99);transform:none}
-  .ti{flex-direction:row;justify-content:flex-start;gap:14px;padding:14px 26px;font-size:12px;letter-spacing:.08em;width:100%;border-radius:0;min-height:48px}
+  .tabs{position:fixed;left:0;top:0;bottom:0;width:var(--sidebar);max-width:var(--sidebar);flex-direction:column;justify-content:flex-start;padding:0;border-top:none;border-right:1px solid var(--border);background:rgba(10,9,12,.99);transform:none;backdrop-filter:blur(40px)}
+  .ti{flex-direction:row;justify-content:flex-start;gap:14px;padding:14px 26px;font-size:12px;letter-spacing:.08em;width:100%;border-radius:0;min-height:48px;transition:all .2s}
   .ti:hover{color:var(--ow);background:var(--glassB)}
   .ti.on{color:var(--acc);background:var(--accS)}
   .ti.on::before{top:50%;left:0;transform:translateY(-50%);width:3px;height:60%;border-radius:0 3px 3px 0}
   .ct{margin-left:var(--sidebar);padding:44px 60px 60px;min-height:100vh;max-width:1100px}
   .desk-logo{display:flex!important}
   .timer-bar{left:var(--sidebar)}
-  .pt{font-size:30px}.stat b{font-size:32px}.stat{padding:24px 14px;border-radius:14px}.cd{padding:20px;border-radius:14px}.g2{gap:14px}.field{margin-bottom:20px}
+  .pt{font-size:30px}.stat b{font-size:32px}.stat{padding:24px 14px;border-radius:14px}.cd{padding:20px;border-radius:16px;transition:border-color .2s,box-shadow .2s,transform .15s}.cd-link:hover{transform:translateY(-1px)}.g2{gap:14px}.g3{gap:12px}.g4{gap:10px}.field{margin-bottom:20px}
   .qnote-fab{right:40px;bottom:40px}
+  .btn{padding:18px 24px;font-size:12px;border-radius:14px}
+  .btn2{padding:12px 18px;font-size:11px;border-radius:12px}
+  .chip{padding:8px 16px;font-size:11px;border-radius:10px}
+  .search-bar{padding:14px 18px;border-radius:14px}
+  .search-bar input{font-size:14px}
+  input,textarea,select{font-size:15px;padding:14px 18px;border-radius:12px;min-height:48px}
+  .modal-box{max-width:520px;padding:32px 28px 26px;border-radius:20px}
+  .set-row{padding:8px 12px;border-radius:8px}
+}
+@media(min-width:1200px){
+  .ct{padding:48px 80px 60px;max-width:1200px}
+  .g4{grid-template-columns:repeat(4,1fr);gap:14px}
 }
 
 @keyframes goldShimmer{0%{background-position:200% center}100%{background-position:-200% center}}
@@ -280,7 +292,7 @@ var MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","D
 var LS={get:function(k,d){try{var v=JSON.parse(localStorage.getItem("fm_"+k));return v!=null?v:d;}catch(e){return d;}},set:function(k,v){try{localStorage.setItem("fm_"+k,JSON.stringify(v));}catch(e){if(e.name==="QuotaExceededError"){toast("\u26a0 Storage full! Export backup now.",5000);}}},space:function(){try{var total=0;for(var k in localStorage){if(localStorage.hasOwnProperty(k))total+=localStorage[k].length;}return{used:Math.round(total/1024),max:5120,pct:Math.round((total/1024/5120)*100)};}catch(e){return{used:0,max:5120,pct:0};}}};
 var clients=LS.get("clients",[]),sessions=LS.get("sessions",[]),schedule=LS.get("schedule",[]),templates=LS.get("templates",[]),mealPlans=LS.get("mealPlans",[]);
 function getGymCut(){return LS.get("gymCut",20)/100;}
-function save(){LS.set("clients",clients);LS.set("sessions",sessions);LS.set("schedule",schedule);LS.set("templates",templates);LS.set("mealPlans",mealPlans);cloudSync();}
+function save(){LS.set("clients",clients);LS.set("sessions",sessions);LS.set("schedule",schedule);LS.set("templates",templates);LS.set("mealPlans",mealPlans);LS.set("programs",_programs);LS.set("workouts",_workouts);cloudSync();}
 // ── CLOUD SYNC ──
 var _syncDebounce=null;
 function cloudSync(){
@@ -301,17 +313,19 @@ function _doCloudSync(){
   upsertAll("schedule",schedule);
   upsertAll("templates",templates);
   upsertAll("meal_plans",mealPlans);
+  upsertAll("programs",_programs);
+  upsertAll("workouts",_workouts);
   if(promises.length)Promise.all(promises).then(function(results){var fails=results?results.filter(function(r){return r&&r.failed;}):[];if(fails.length){updateSyncBadge("error");toast("\u26a0 Cloud sync partial failure",3000);}else{updateSyncBadge("synced");LS.set("lastSync",new Date().toISOString());}}).catch(function(e){console.warn("Sync error:",e);updateSyncBadge("error");toast("\u26a0 Cloud sync failed \u2014 data saved locally",3500);});
 }
 function cloudPull(callback){
   var sb=getSupabase();if(!sb){if(callback)callback();return;}
-  var tables=[{name:"clients",arr:"clients"},{name:"sessions",arr:"sessions"},{name:"schedule",arr:"schedule"},{name:"templates",arr:"templates"},{name:"meal_plans",arr:"mealPlans"}];
+  var tables=[{name:"clients",arr:"clients"},{name:"sessions",arr:"sessions"},{name:"schedule",arr:"schedule"},{name:"templates",arr:"templates"},{name:"meal_plans",arr:"mealPlans"},{name:"programs",arr:"programs"},{name:"workouts",arr:"workouts"}];
   var remaining=tables.length;
   tables.forEach(function(t){
     sb.from(t.name).select("data").then(function(res){
       if(!res.error&&res.data&&res.data.length){
         var cloudItems=res.data.map(function(r){return r.data;});
-        var localItems=t.arr==="clients"?clients:t.arr==="sessions"?sessions:t.arr==="schedule"?schedule:t.arr==="templates"?templates:mealPlans;
+        var localItems=t.arr==="clients"?clients:t.arr==="sessions"?sessions:t.arr==="schedule"?schedule:t.arr==="templates"?templates:t.arr==="programs"?_programs:t.arr==="workouts"?_workouts:mealPlans;
         var localIds={};localItems.forEach(function(item){localIds[item.id]=true;});
         var merged=false;
         cloudItems.forEach(function(ci){
@@ -430,7 +444,7 @@ function setPIN(p){localStorage.setItem(PIN_KEY,p);}
 function isUnlocked(){return sessionStorage.getItem("fm_unlocked")==="true";}
 function unlock(){sessionStorage.setItem("fm_unlocked","true");}
 function showLockScreen(){if(_smsCheckInterval){clearInterval(_smsCheckInterval);_smsCheckInterval=null;}el("app").style.display="none";el("qnoteFab").style.display="none";var ld=el("lockScreen");if(!ld){ld=document.createElement("div");ld.id="lockScreen";document.body.appendChild(ld);}ld.style.cssText="position:fixed;inset:0;z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg);padding:24px";var cs=getComputedStyle(document.body);var accVal=cs.getPropertyValue("--acc").trim();var accGlowVal=cs.getPropertyValue("--accGlow").trim();var accSVal=cs.getPropertyValue("--accS").trim();var accBVal=cs.getPropertyValue("--accB").trim();var accMVal=cs.getPropertyValue("--accM").trim();var gradVal=cs.getPropertyValue("--goldGrad").trim();ld.innerHTML='<div style="position:absolute;inset:0;overflow:hidden;pointer-events:none"><div style="position:absolute;top:20%;left:50%;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,'+accGlowVal+','+accSVal+' 45%,transparent 65%);transform:translate(-50%,-50%);animation:lockOrbFloat 8s ease-in-out infinite;filter:blur(60px)"></div><div style="position:absolute;top:40%;left:35%;width:250px;height:250px;border-radius:50%;background:radial-gradient(circle,'+accSVal+',transparent 55%);transform:translate(-50%,-50%);animation:lockOrb2 6s ease-in-out infinite 1s;filter:blur(45px)"></div></div><div style="position:relative;display:flex;flex-direction:column;align-items:center;width:100%;max-width:340px;animation:lockFadeIn .8s ease-out"><div style="width:112px;height:112px;border-radius:28px;background:linear-gradient(145deg,#0c0c0c,#060606);border:1.5px solid '+accBVal+';display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:54px;font-weight:900;position:relative;box-shadow:0 0 12px '+accMVal+',0 0 30px '+accGlowVal+',0 0 60px '+accSVal+',0 0 100px '+accSVal+',inset 0 0 20px '+accSVal+';animation:lockGlowRise .9s cubic-bezier(.34,1.56,.64,1) both,neonBreathe 4s ease-in-out 1s infinite;margin-bottom:44px"><span style="background:'+gradVal+';background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:goldShimmer 4s ease-in-out infinite;filter:drop-shadow(0 0 20px '+accMVal+')">M</span></div><div style="display:flex;align-items:center;gap:14px;animation:lockBadgeFade .6s ease-out .35s both;margin-bottom:20px"><div style="width:40px;height:1px;background:linear-gradient(90deg,transparent,'+accBVal+')"></div><span style="font-size:11px;font-weight:700;letter-spacing:.35em;background:'+gradVal+';background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-family:var(--mono);font-size:13px;letter-spacing:.45em;animation:goldShimmer 4s ease-in-out infinite .5s;filter:drop-shadow(0 0 12px '+accMVal+')">IFBB PRO</span><div style="width:40px;height:1px;background:linear-gradient(90deg,'+accBVal+',transparent)"></div></div><div style="font-family:var(--display);font-size:34px;font-weight:600;letter-spacing:.14em;margin-bottom:52px;animation:lockTextReveal .8s ease-out .5s both"><span style="background:linear-gradient(160deg,var(--ice),var(--wh),var(--ow));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 30px rgba(255,245,225,.08))">BIG MIKE</span></div><div style="width:100%;max-width:280px;animation:lockPinRise .6s ease-out .75s both"><input id="pinInput" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="8" placeholder="\u00b7 \u00b7 \u00b7 \u00b7" style="text-align:center;font-size:22px;letter-spacing:.6em;font-family:var(--mono);padding:18px;margin-bottom:16px;border-radius:12px;background:rgba(255,255,255,.015);border:1.5px solid var(--borderH);color:var(--ice);width:100%;box-sizing:border-box;outline:none;transition:border-color .2s"><button class="btn" onclick="tryUnlock()" style="margin-bottom:12px;border-radius:12px;padding:16px 18px">UNLOCK</button><div id="pinError" style="text-align:center;font-size:10px;color:var(--danger);font-family:var(--mono);min-height:18px"></div></div><div style="position:absolute;bottom:-60px;animation:lockBadgeFade .6s ease-out 1s both"><span style="font-size:7px;color:rgba(180,170,150,.25);font-family:var(--mono);letter-spacing:.35em">IFBB PRO BIG MIKE ELY\'S COACHING LAB</span></div></div>';setTimeout(function(){var inp=el("pinInput");if(inp){inp.focus();inp.addEventListener("keydown",function(e){if(e.key==="Enter")tryUnlock();});}},100);}
-function tryUnlock(){var inp=el("pinInput"),entered=inp?inp.value.trim():"";if(entered===getPIN()){haptic("success");unlock();var lk=el("lockScreen");if(lk)lk.remove();el("app").style.display="";el("qnoteFab").style.display="";render();showTutorial();startSMSChecker();}else{haptic("error");var err=el("pinError");if(err)err.textContent="Incorrect PIN";if(inp){inp.value="";inp.focus();}}}
+function tryUnlock(){var inp=el("pinInput"),entered=inp?inp.value.trim():"";if(entered===getPIN()){haptic("success");unlock();var lk=el("lockScreen");if(lk)lk.remove();el("app").style.display="";el("qnoteFab").style.display="";render();showTutorial();startSMSChecker();requestNotifPermission();}else{haptic("error");var err=el("pinError");if(err)err.textContent="Incorrect PIN";if(inp){inp.value="";inp.focus();}}}
 function changePIN(){showPrompt("Change PIN","Enter your current PIN:","","Current PIN").then(function(cur){if(cur===null)return;if(cur!==getPIN()){toast("Incorrect");return;}showPrompt("New PIN","Enter new PIN (4-8 digits):","","New PIN").then(function(np){if(!np||np.length<4||!/^\d+$/.test(np)){toast("Must be 4-8 digits");return;}showPrompt("Confirm PIN","Re-enter new PIN to confirm:","","Confirm PIN").then(function(c2){if(c2!==np){toast("Mismatch");return;}setPIN(np);toast("\u2713 PIN updated");});});});}
 function openQNote(){var m=el("qnoteModal");m.style.display="flex";var sel=el("qnoteClient");sel.innerHTML='<option value="">Select client...</option>';for(var i=0;i<clients.length;i++)sel.innerHTML+='<option value="'+clients[i].id+'">'+esc(clients[i].name)+'</option>';setTimeout(function(){var t=el("qnoteText");if(t)t.focus();},100);}
 function closeQNote(){el("qnoteModal").style.display="none";var t=el("qnoteText");if(t)t.value="";}
@@ -586,7 +600,9 @@ function importData(event){var file=event.target.files[0];if(!file)return;var re
   info+="Sessions: "+(d.sessions?d.sessions.length:0)+" (current: "+sessions.length+")\n";
   info+="Schedule: "+(d.schedule?d.schedule.length:0)+" (current: "+schedule.length+")\n";
   info+="Templates: "+(d.templates?d.templates.length:0)+"\n";
-  info+="Meal Plans: "+(d.mealPlans?d.mealPlans.length:0)+"\n\n";
+  info+="Meal Plans: "+(d.mealPlans?d.mealPlans.length:0)+"\n";
+  info+="Programs: "+(d.programs?d.programs.length:0)+"\n";
+  info+="Workouts: "+(d.workouts?d.workouts.length:0)+"\n\n";
   info+="Choose action:\nOK = MERGE (add new, keep existing)\nCancel = abort import";
   showConfirm("Import Data",info,"Merge").then(function(ok){if(!ok){event.target.value="";return;}
   var merged={c:0,s:0,sc:0};
@@ -733,7 +749,7 @@ function renderClientDetail(){
   if(c.phone)html+='<button class="btn2" style="flex:1" onclick="sendQuickSMS(\''+c.id+'\')">SEND SMS</button>';
   if(c.phone)html+='<a href="tel:'+esc((c.phone||"").replace(/[^0-9+]/g,""))+'" style="flex:1"><button class="btn2" style="width:100%">CALL</button></a>';
   html+='</div>';
-  var hasProgram=c.program&&c.program.days&&c.program.days.length>0;var hasMealPlans=mealPlans.some(function(mp){return mp.clientId===c.id;});var hasAnabolics=c.anabolics&&c.anabolics.length>0;var hasSupps=c.supplements&&c.supplements.length>0;if(hasProgram||hasMealPlans)html+='<button class="btn2" style="width:100%;margin-top:8px" onclick="generateFullPrepPDF('+idx+')">GENERATE FULL PREP PDF</button>';if(hasProgram||hasMealPlans||hasAnabolics||hasSupps)html+='<button class="btn2" style="width:100%;margin-top:8px" onclick="generateCompleteProgramPDF('+idx+')">COMPLETE PROGRAM PDF</button>';
+  html+='<button class="btn2" style="width:100%;margin-top:8px;border-color:var(--accB)" onclick="showPDFBuilder('+idx+')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>BUILD & EXPORT PDF</button>';
   html+='<div style="margin-top:24px;border:1px solid rgba(216,120,120,.2);border-radius:10px;overflow:hidden"><div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display===\'none\'?\'block\':\'none\'" style="cursor:pointer;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;background:rgba(216,120,120,.03)"><span style="font-size:10px;font-weight:700;color:var(--danger);font-family:var(--mono);letter-spacing:.1em">DANGER ZONE</span><span style="font-size:10px;color:var(--dm)">\u25bc</span></div><div style="display:none;padding:16px"><div style="font-size:11px;color:var(--dm);margin-bottom:12px">This cannot be undone. Session history will be preserved.</div><button class="btn-danger" onclick="deleteClient('+idx+')">DELETE CLIENT</button></div></div>';
   return html;
 }
@@ -1205,7 +1221,8 @@ function renderSettings(){
     +'<div class="sl" style="margin-top:18px">SECURITY</div><div class="cd" style="padding:16px"><div style="margin-bottom:12px"><div style="font-size:13px;font-weight:500;color:var(--wh)">PIN Lock</div></div><button class="btn2" onclick="changePIN()" style="width:100%;margin-bottom:8px">CHANGE PIN</button><button class="btn2" onclick="LS.set(\'tutorialDone\',false);showTutorial()" style="width:100%">REPLAY TUTORIAL</button></div>'
     +'<div class="sl" style="margin-top:18px">ALERTS & NOTIFICATIONS</div><div class="cd" style="padding:16px">'
     +(function(){var nRet=LS.get("notif_retention",true),nSched=LS.get("notif_schedule",true);return '<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--borderS)"><div><div style="font-size:13px;font-weight:500;color:var(--wh)">PR Celebrations</div><div style="font-size:10px;color:var(--dm)">Toast when a client hits a new weight record</div></div><div class="chip'+(nPR?" on":"")+'" onclick="toggleNotif(\'notif_pr\',this)" style="min-width:40px;text-align:center">'+(nPR?"ON":"OFF")+'</div></div><div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--borderS)"><div><div style="font-size:13px;font-weight:500;color:var(--wh)">Retention Warnings</div><div style="font-size:10px;color:var(--dm)">Flag clients inactive 7+ days</div></div><div class="chip'+(nRet?" on":"")+'" onclick="toggleNotif(\'notif_retention\',this)" style="min-width:40px;text-align:center">'+(nRet?"ON":"OFF")+'</div></div><div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0"><div><div style="font-size:13px;font-weight:500;color:var(--wh)">Schedule Reminders</div><div style="font-size:10px;color:var(--dm)">Show upcoming sessions on home</div></div><div class="chip'+(nSched?" on":"")+'" onclick="toggleNotif(\'notif_schedule\',this)" style="min-width:40px;text-align:center">'+(nSched?"ON":"OFF")+'</div></div>'
-    +'<div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--borderS)"><div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:12px;font-weight:500;color:var(--wh)">Reminder Lead Time</div><div style="font-size:9px;color:var(--dm)">How early before sessions</div></div><select onchange="LS.set(\'reminderMin\',this.value)" style="font-size:11px;padding:4px 8px;width:auto"><option value="15"'+(LS.get("reminderMin","30")==="15"?" selected":"")+'>15 min</option><option value="30"'+(LS.get("reminderMin","30")==="30"?" selected":"")+'>30 min</option><option value="60"'+(LS.get("reminderMin","30")==="60"?" selected":"")+'>1 hour</option><option value="120"'+(LS.get("reminderMin","30")==="120"?" selected":"")+'>2 hours</option></select></div></div>';}())
+    +'<div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--borderS)"><div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:12px;font-weight:500;color:var(--wh)">Reminder Lead Time</div><div style="font-size:9px;color:var(--dm)">How early before sessions</div></div><select onchange="LS.set(\'reminderMin\',this.value)" style="font-size:11px;padding:4px 8px;width:auto"><option value="15"'+(LS.get("reminderMin","30")==="15"?" selected":"")+'>15 min</option><option value="30"'+(LS.get("reminderMin","30")==="30"?" selected":"")+'>30 min</option><option value="60"'+(LS.get("reminderMin","30")==="60"?" selected":"")+'>1 hour</option><option value="120"'+(LS.get("reminderMin","30")==="120"?" selected":"")+'>2 hours</option></select></div></div>'
+    +'<div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--borderS)"><div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:12px;font-weight:500;color:var(--wh)">Push Notifications</div><div style="font-size:9px;color:var(--dm)">Get notified on your phone before sessions</div></div><button class="btn2" onclick="requestNotifPermission();toast(Notification.permission===\'granted\'?\'\\u2713 Notifications enabled\':\'Enable in browser settings\')" style="padding:5px 10px;font-size:8px">'+(typeof Notification!=="undefined"&&Notification.permission==="granted"?"ENABLED":"ENABLE")+'</button></div></div>';}())
     +'</div>'
     +'<div class="sl" style="margin-top:18px">SMS REMINDERS</div><div class="cd" style="padding:16px">'
     +'<div style="font-size:11px;color:var(--mu);margin-bottom:14px;line-height:1.6">Send SMS reminders to your phone before sessions. Requires Supabase project + Twilio credentials configured as Edge Function secrets.</div>'
@@ -1228,7 +1245,7 @@ function renderSettings(){
 function toggleNotif(key,el_){var def=key.indexOf("sms")>=0?false:true;var cur=LS.get(key,def);LS.set(key,!cur);el_.textContent=!cur?"ON":"OFF";if(!cur)el_.classList.add("on");else el_.classList.remove("on");}
 function setGymCut(p){LS.set("gymCut",p);toast("\u2713 Gym cut "+p+"%");render();}
 function clearAllSessions(){showDoubleConfirm("Clear All Sessions","This will permanently delete ALL session history.").then(function(ok){if(!ok)return;sessions=[];save();toast("Cleared");render();});}
-function factoryReset(){showDoubleConfirm("Factory Reset","This will delete ALL clients, sessions, and scheduled sessions.").then(function(ok){if(!ok)return;clients=[];sessions=[];schedule=[];save();toast("Reset");render();});}
+function factoryReset(){showDoubleConfirm("Factory Reset","This will delete ALL data: clients, sessions, schedule, templates, meal plans, programs, and workouts.").then(function(ok){if(!ok)return;clients=[];sessions=[];schedule=[];templates=[];mealPlans=[];_programs=[];_workouts=[];savePrograms();saveWorkouts();save();toast("Reset");render();});}
 function signOut(){showConfirm("Sign Out","Sign out? Your data stays on this device.","Sign Out").then(function(ok){if(!ok)return;var keys=Object.keys(localStorage).filter(function(k){return k.startsWith("fm_");});keys.forEach(function(k){localStorage.removeItem(k);});sessionStorage.clear();location.reload();});}
 
 // ── CLIENT PROGRESSION ──
@@ -1973,7 +1990,7 @@ function renderProgramBuilder(){
     var ciIdx=clients.findIndex(function(c){return c.id===pg.clientId;});
     if(ciIdx>=0){
       html+='<div style="height:1px;background:linear-gradient(90deg,transparent,var(--accDeep),var(--acc),var(--accDeep),transparent);margin:20px 0"></div>'
-        +'<div style="display:flex;gap:8px"><button class="btn" style="flex:1" onclick="generateCompleteProgramPDF('+ciIdx+')">EXPORT COMPLETE PDF</button><button class="btn2" style="flex:1" onclick="generateFullPrepPDF('+ciIdx+')">FULL PREP PDF</button></div>';
+        +'<button class="btn" style="width:100%" onclick="showPDFBuilder('+ciIdx+')">BUILD & EXPORT PDF</button>';
     }
   }
   // Duplicate & Delete
@@ -2275,13 +2292,13 @@ function showExercisePicker(){
   content+='</div>';
   content+='<div style="border-top:1px solid var(--borderS);padding-top:12px;margin-top:10px"><div style="font-size:10px;color:var(--dm);font-family:var(--mono);margin-bottom:6px">CUSTOM EXERCISE</div><div style="display:flex;gap:6px"><input id="exCustomName" placeholder="Exercise name" style="flex:1;font-size:12px;padding:8px"><select id="exCustomGroup" style="font-size:11px;padding:8px;width:auto">';
   for(var g2=0;g2<groups.length;g2++)content+='<option>'+groups[g2]+'</option>';
-  content+='</select><button class="btn2" onclick="pickExerciseCustom()" style="padding:6px 12px;font-size:9px">ADD</button></div></div></div>';
+  content+='</select><button class="btn2" onclick="pickWkExCustom()" style="padding:6px 12px;font-size:9px">ADD</button></div></div></div>';
   showModal("ADD EXERCISE",content);
   setTimeout(function(){var s=el("exPickSearch");if(s)s.focus();},100);
 }
+function pickWkExCustom(){var n=val("exCustomName"),g=val("exCustomGroup");if(!n){toast("Enter exercise name");return;}var w=_workouts.find(function(x){return x.id===_editWorkout;});if(!w)return;w.exercises.push({name:n,group:g||"Custom",sets:"",reps:"",rest:"",notes:""});saveWorkouts();closeModal();render();}
 function filterExPickerModal(){var q=(el("exPickSearch")||{}).value||"";q=q.toLowerCase();var cats=document.querySelectorAll(".exPickCat");cats.forEach(function(c){var items=c.querySelectorAll(".exPickItem");var anyMatch=false;items.forEach(function(it){var match=it.textContent.toLowerCase().indexOf(q)>=0;it.style.display=match?"":"none";if(match)anyMatch=true;});c.style.display=anyMatch||!q?"":"none";if(q&&anyMatch){var itemsDiv=c.querySelector(".exPickItems");if(itemsDiv)itemsDiv.style.display="block";}});}
 function pickExerciseForWorkout(group,name){var w=_workouts.find(function(x){return x.id===_editWorkout;});if(!w)return;w.exercises.push({name:name,group:group,sets:"",reps:"",rest:"",notes:""});saveWorkouts();closeModal();render();}
-function pickExerciseCustom(){var n=val("exCustomName"),g=val("exCustomGroup");if(!n){toast("Enter exercise name");return;}var w=_workouts.find(function(x){return x.id===_editWorkout;});if(!w)return;w.exercises.push({name:n,group:g||"Custom",sets:"",reps:"",rest:"",notes:""});saveWorkouts();closeModal();render();}
 function showCardioPicker(){
   var content='<div style="max-height:60vh;overflow-y:auto">';
   for(var i=0;i<CARDIO_DB.length;i++){var cd=CARDIO_DB[i];
@@ -2855,7 +2872,39 @@ var _smsCheckInterval=null;
 function startSMSChecker(){
   if(_smsCheckInterval)clearInterval(_smsCheckInterval);
   checkAndSendReminders();
-  _smsCheckInterval=setInterval(checkAndSendReminders,60000);
+  checkBrowserNotifications();
+  _smsCheckInterval=setInterval(function(){checkAndSendReminders();checkBrowserNotifications();},60000);
+}
+function requestNotifPermission(){
+  if(!("Notification" in window))return;
+  if(Notification.permission==="default"){Notification.requestPermission();}
+}
+function checkBrowserNotifications(){
+  if(!("Notification" in window)||Notification.permission!=="granted")return;
+  if(!LS.get("notif_schedule",true))return;
+  var now=new Date(),today=todayISO();
+  var leadMin=parseInt(LS.get("reminderMin","30"))||30;
+  var notified=LS.get("notif_sent_"+today,{});
+  var upcoming=schedule.filter(function(s){
+    if(s.date!==today||s.status==="complete"||s.status==="cancelled")return false;
+    if(!s.time||notified[s.id])return false;
+    var parts=(s.time||"").split(":");if(parts.length<2)return false;
+    var sessTime=new Date(now.getFullYear(),now.getMonth(),now.getDate(),parseInt(parts[0])||0,parseInt(parts[1])||0);
+    var diff=(sessTime-now)/(1000*60);
+    return diff>0&&diff<=leadMin;
+  });
+  upcoming.forEach(function(s){
+    var cl=clientById(s.clientId);
+    var clientName=cl?cl.name:s.clientName||"Client";
+    var title=(s.type||"Training")+" Session";
+    var body2=clientName+" at "+fmtTimeStr(s.time)+(s.rate?" \u00b7 $"+s.rate:"");
+    try{
+      var n=new Notification(title,{body:body2,icon:window._themeIcons&&window._themeIcons[192]?window._themeIcons[192]:"icons/icon-192.png",badge:"icons/icon-192.png",tag:"session-"+s.id,requireInteraction:true});
+      n.onclick=function(){window.focus();};
+    }catch(e){}
+    notified[s.id]=true;
+    LS.set("notif_sent_"+today,notified);
+  });
 }
 // ── THEME ──
 function setTheme(t){LS.set("theme",t);applyTheme();render();}
@@ -2894,9 +2943,35 @@ function generateThemeIcon(theme){
         var links=document.querySelectorAll('link[rel*="icon"][sizes="'+size+'x'+size+'"],link[rel="apple-touch-icon"][sizes="'+size+'x'+size+'"]');
         links.forEach(function(l){l.href=url;});
         if(size===180){var atLinks=document.querySelectorAll('link[rel="apple-touch-icon"]:not([sizes])');atLinks.forEach(function(l){l.href=url;});}
+        // Store for manifest update
+        if(!window._themeIcons)window._themeIcons={};
+        window._themeIcons[size]=url;
       })(sizes[si]);
     }
+    // Update manifest dynamically for PWA
+    _updateManifestIcons();
   }catch(e){/* font may not load for canvas, graceful fallback */}
+}
+function _updateManifestIcons(){
+  try{
+    if(!window._themeIcons)return;
+    var icons=[];
+    var sizes2=[192,512];
+    for(var i=0;i<sizes2.length;i++){
+      var s=sizes2[i];
+      if(window._themeIcons[s]){
+        icons.push({src:window._themeIcons[s],sizes:s+"x"+s,type:"image/png",purpose:"any"});
+        icons.push({src:window._themeIcons[s],sizes:s+"x"+s,type:"image/png",purpose:"maskable"});
+      }
+    }
+    if(icons.length){
+      var manifest={name:"Big Mike Ely Coaching Lab",short_name:"Coaching Lab",description:"IFBB Pro Big Mike Ely's coaching management platform",id:"/",start_url:"/",display:"standalone",orientation:"portrait",background_color:"#020202",theme_color:"#020202",categories:["fitness","health","productivity"],icons:icons};
+      var blob=new Blob([JSON.stringify(manifest)],{type:"application/json"});
+      var url=URL.createObjectURL(blob);
+      var link=document.querySelector('link[rel="manifest"]');
+      if(link)link.href=url;
+    }
+  }catch(e){}
 }
 applyTheme();
 // ── PDF GENERATION ──
@@ -3051,6 +3126,239 @@ function generateProgramPDF(idx){
   var pages=[{coverTitle:"Training Program",coverClient:c.name,coverSub:coverSub||"Training Program"}];
   for(var pi=0;pi<contentPages.length;pi++)pages.push({content:contentPages[pi]});
   _renderPDFToFile(pages,c.name.replace(/\s+/g,"_")+"_Training_Program","Training Program",durLabel);
+}
+
+// ── PDF BUILDER ──
+var _pdfBuilderTheme="";
+function showPDFBuilder(idx){
+  var c=clients[idx];if(!c){toast("Client not found");return;}
+  _pdfBuilderTheme=LS.get("theme","crimson");
+  var isComp=c.isCompetitor||(c.services||"").indexOf("Contest Prep")>=0;
+  var hasProg=c.program&&c.program.days&&c.program.days.length;
+  var hasMeals=mealPlans.some(function(mp){return mp.clientId===c.id;});
+  var hasAna=c.anabolics&&c.anabolics.length;
+  var hasPep=c.peptides&&c.peptides.length;
+  var hasSupp=c.supplements&&c.supplements.length;
+  var hasWater=c.water&&c.water.goal;
+  var hasWk=_workouts.some(function(w){return w.clientId===c.id;});
+  var content='<div style="max-height:70vh;overflow-y:auto">';
+  // Color theme
+  content+='<div style="margin-bottom:14px"><span class="lb">PDF COLOR THEME</span><div style="display:flex;gap:6px">'
+    +'<div class="chip'+(_pdfBuilderTheme==="crimson"?" on":"")+'" onclick="_pdfBuilderTheme=\'crimson\';pickChip(this,null)" style="flex:1;text-align:center;justify-content:center"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#D03030;margin-right:6px;vertical-align:middle"></span>CRIMSON</div>'
+    +'<div class="chip'+(_pdfBuilderTheme==="gold"?" on":"")+'" onclick="_pdfBuilderTheme=\'gold\';pickChip(this,null)" style="flex:1;text-align:center;justify-content:center"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#D4A830;margin-right:6px;vertical-align:middle"></span>GOLD</div>'
+    +'</div></div>';
+  // Section checkboxes
+  content+='<div class="sl" style="margin-bottom:8px">INCLUDE SECTIONS</div>';
+  var secs=[
+    {k:"info",l:"Client Info",d:"Contact, goals, level",has:true},
+    {k:"training",l:"Training Program",d:"Training days & exercises",has:hasProg},
+    {k:"workouts",l:"Standalone Workouts",d:"Individual workout templates",has:hasWk},
+    {k:"nutrition",l:"Nutrition / Meal Plans",d:"Meals, macros & daily totals",has:hasMeals},
+    {k:"anabolics",l:"Anabolics Protocol",d:"PED compounds & cycle details",has:hasAna},
+    {k:"peptides",l:"Peptide Protocol",d:"BPC-157, TB-500, CJC, etc.",has:hasPep},
+    {k:"supplements",l:"Supplement Stack",d:"Supplements, doses & timing",has:hasSupp},
+    {k:"water",l:"Water Intake",d:"Hydration goal & recent tracking",has:hasWater},
+    {k:"cardio",l:"Cardio Program",d:"Cardio from training days",has:hasProg}
+  ];
+  if(isComp)secs.push({k:"show",l:"Show Details",d:"Show name, date, division, federation",has:true});
+  secs.push({k:"notes",l:"Program Notes",d:"Custom notes section",has:true});
+  for(var i=0;i<secs.length;i++){var s=secs[i];
+    content+='<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--borderS);cursor:pointer" onclick="var cb=this.querySelector(\'input\');cb.checked=!cb.checked">'
+      +'<input type="checkbox" id="pdfSec_'+s.k+'" '+(s.has?'checked':'')+' onclick="event.stopPropagation()" style="width:18px;height:18px;accent-color:var(--acc);cursor:pointer;flex-shrink:0">'
+      +'<div style="flex:1"><div style="font-size:12px;font-weight:600;color:var(--wh)">'+s.l+'</div><div style="font-size:9px;color:var(--dm);font-family:var(--mono)">'+s.d+'</div></div>'
+      +(s.has?'<span style="font-size:8px;color:var(--success);font-family:var(--mono)">HAS DATA</span>':'<span style="font-size:8px;color:var(--dm);font-family:var(--mono)">EMPTY</span>')
+      +'</div>';
+  }
+  // Custom notes
+  content+='<div style="margin-top:12px"><span class="lb">COVER SUBTITLE (optional)</span><input id="pdfCoverSub" placeholder="e.g. 12-Week Prep Protocol, Off-Season Program..." style="font-size:12px;padding:8px"></div>';
+  content+='<div style="margin-top:16px"><button class="btn" onclick="buildCustomPDF('+idx+')" style="width:100%">GENERATE PDF</button></div>';
+  content+='</div>';
+  showModal("BUILD PDF \u2014 "+c.name.toUpperCase(),content);
+}
+function buildCustomPDF(idx){
+  var c=clients[idx];if(!c)return;
+  var accent=_pdfBuilderTheme==="crimson"?"#D03030":"#D4A830";
+  var rgb=_pdfBuilderTheme==="crimson"?"208,48,48":"212,168,48";
+  // Read checkboxes
+  function isChecked(k){var cb=el("pdfSec_"+k);return cb&&cb.checked;}
+  var coverSub=val("pdfCoverSub")||"";
+  closeModal();
+  var body='';var hasAnything=false;
+  // Client info
+  if(isChecked("info")){
+    var info=[["Phone",c.phone],["Email",c.email],["Age",c.age],["Weight",c.weight?c.weight+" lbs":""],["Height",c.height],["Level",c.level],["Type",c.clientType],["Goals",c.goals],["Injuries",c.injuries],["Medical",c.medical]].filter(function(r){return r[1];});
+    if(info.length){hasAnything=true;
+      body+='<div style="margin-bottom:24px"><div style="font-size:14px;font-weight:800;color:'+accent+';letter-spacing:.2em;margin-bottom:14px;padding-bottom:6px;border-bottom:2px solid '+accent+'40">CLIENT PROFILE</div><table style="width:100%;border-collapse:collapse">';
+      for(var i=0;i<info.length;i++)body+='<tr style="border-bottom:1px solid #1a1a1a"><td style="padding:8px 14px;color:'+accent+';font-size:10px;width:100px;font-family:IBM Plex Mono,monospace;letter-spacing:.08em;font-weight:600">'+info[i][0].toUpperCase()+'</td><td style="padding:8px 14px;color:#ddd;font-size:13px">'+esc(info[i][1])+'</td></tr>';
+      body+='</table></div>';
+    }
+  }
+  // Show details (competitor)
+  if(isChecked("show")){
+    var showInfo=[["Show Name",c.showName],["Division",c.showDivision],["Show Date",c.showDate?fmtDate(c.showDate):""],["Location",c.showLocation],["Federation",c.federation],["Prep Weeks",c.prepWeeks],["Prep Start",c.prepStart?fmtDate(c.prepStart):""],["Status",c.compStatus?c.compStatus.charAt(0).toUpperCase()+c.compStatus.slice(1):""]].filter(function(r){return r[1];});
+    if(showInfo.length){hasAnything=true;
+      body+='<div style="margin-bottom:24px"><div style="font-size:14px;font-weight:800;color:'+accent+';letter-spacing:.2em;margin-bottom:14px;padding-bottom:6px;border-bottom:2px solid '+accent+'40">COMPETITION DETAILS</div>';
+      body+='<div style="display:flex;flex-wrap:wrap;gap:8px">';
+      for(var si2=0;si2<showInfo.length;si2++){body+='<div style="flex:1;min-width:180px;padding:12px 16px;background:#0a0a0a;border:1px solid '+accent+'20;border-radius:6px"><div style="font-size:8px;color:'+accent+';font-family:IBM Plex Mono,monospace;letter-spacing:.15em;margin-bottom:4px">'+showInfo[si2][0].toUpperCase()+'</div><div style="font-size:14px;font-weight:600;color:#ddd">'+esc(String(showInfo[si2][1]))+'</div></div>';}
+      body+='</div></div>';
+    }
+  }
+  // Training program
+  if(isChecked("training")){
+    var p=c.program;
+    if(p&&p.days&&p.days.length){hasAnything=true;
+      body+='<div style="margin-bottom:24px"><div style="font-size:14px;font-weight:800;color:'+accent+';letter-spacing:.2em;margin-bottom:4px;padding-bottom:6px;border-bottom:2px solid '+accent+'40">TRAINING PROGRAM</div>'+(p.weeks||p.split?'<div style="font-size:10px;color:#777;font-family:IBM Plex Mono,monospace;margin-bottom:14px">'+(p.weeks?p.weeks+" Weeks":"")+(p.split?" \u00b7 "+p.split:"")+'</div>':'');
+      for(var d=0;d<p.days.length;d++){var day=p.days[d];
+        var resist=[],card2=[];
+        (day.exercises||[]).forEach(function(ex){if(ex.type==="cardio")card2.push(ex);else resist.push(ex);});
+        body+='<div style="margin-bottom:16px"><div style="font-size:13px;font-weight:700;color:'+accent+';margin-bottom:6px;padding:6px 12px;background:'+accent+'10;border-left:3px solid '+accent+';border-radius:0 4px 4px 0">'+esc(day.name).toUpperCase()+'</div>';
+        if(resist.length){
+          body+='<table style="width:100%;border-collapse:collapse"><tr style="background:'+accent+'12"><th style="padding:6px 12px;text-align:left;color:'+accent+';font-size:9px;letter-spacing:.1em;font-family:IBM Plex Mono,monospace">EXERCISE</th><th style="padding:6px 12px;text-align:right;color:'+accent+';font-size:9px;letter-spacing:.1em;font-family:IBM Plex Mono,monospace">SCHEME</th></tr>';
+          for(var e=0;e<resist.length;e++){var ex=resist[e];body+='<tr style="border-bottom:1px solid #161616;background:'+(e%2===0?"#0a0a0a":"#080808")+'"><td style="padding:8px 12px;color:#ddd;font-size:12px;font-weight:500">'+esc(ex.name)+'</td><td style="padding:8px 12px;text-align:right;color:#bbb;font-size:12px;font-family:IBM Plex Mono,monospace">'+esc(ex.scheme||"")+'</td></tr>';}
+          body+='</table>';
+        }
+        if(card2.length){
+          body+='<div style="margin-top:6px;padding:8px 12px;background:rgba(120,200,120,.04);border-left:2px solid #5b5"><div style="font-size:8px;color:#5b5;font-family:IBM Plex Mono,monospace;letter-spacing:.12em;margin-bottom:4px">CARDIO</div>';
+          for(var ec=0;ec<card2.length;ec++){var cx=card2[ec];body+='<div style="display:flex;justify-content:space-between;padding:3px 0;color:#bbb;font-size:11px"><span>\u2022 '+esc(cx.name)+'</span><span style="color:#999;font-family:IBM Plex Mono,monospace;font-size:10px">'+esc(cx.scheme||"")+(cx.cardioTiming?" \u00b7 "+esc(cx.cardioTiming):"")+'</span></div>';}
+          body+='</div>';
+        }
+        body+='</div>';
+      }
+      body+='</div>';
+    }
+  }
+  // Standalone workouts
+  if(isChecked("workouts")){
+    var cWks=_workouts.filter(function(w){return w.clientId===c.id;});
+    if(cWks.length){hasAnything=true;
+      body+='<div style="margin-bottom:24px"><div style="font-size:14px;font-weight:800;color:'+accent+';letter-spacing:.2em;margin-bottom:14px;padding-bottom:6px;border-bottom:2px solid '+accent+'40">WORKOUTS</div>';
+      for(var wi=0;wi<cWks.length;wi++){var w=cWks[wi];
+        body+='<div style="margin-bottom:16px"><div style="font-size:13px;font-weight:700;color:'+accent+';margin-bottom:6px;padding:6px 12px;background:'+accent+'10;border-left:3px solid '+accent+';border-radius:0 4px 4px 0">'+esc(w.name).toUpperCase()+'</div>';
+        if(w.exercises.length){
+          body+='<table style="width:100%;border-collapse:collapse"><tr style="background:'+accent+'12"><th style="padding:6px 12px;text-align:left;color:'+accent+';font-size:9px;letter-spacing:.1em">EXERCISE</th><th style="padding:6px 10px;text-align:center;color:'+accent+';font-size:9px">SETS</th><th style="padding:6px 10px;text-align:center;color:'+accent+';font-size:9px">REPS</th><th style="padding:6px 10px;text-align:center;color:'+accent+';font-size:9px">REST</th></tr>';
+          for(var we=0;we<w.exercises.length;we++){var wex=w.exercises[we];body+='<tr style="border-bottom:1px solid #161616;background:'+(we%2===0?"#0a0a0a":"#080808")+'"><td style="padding:7px 12px;color:#ddd;font-size:12px">'+esc(wex.name)+'</td><td style="padding:7px 10px;text-align:center;color:#bbb;font-size:11px;font-family:IBM Plex Mono,monospace">'+(wex.sets||"\u2014")+'</td><td style="padding:7px 10px;text-align:center;color:#bbb;font-size:11px;font-family:IBM Plex Mono,monospace">'+(wex.reps||"\u2014")+'</td><td style="padding:7px 10px;text-align:center;color:#999;font-size:10px;font-family:IBM Plex Mono,monospace">'+(wex.rest?wex.rest+"s":"\u2014")+'</td></tr>';}
+          body+='</table>';
+        }
+        if(w.cardio.length){
+          body+='<div style="margin-top:6px;padding:8px 12px;background:rgba(120,200,120,.04);border-left:2px solid #5b5">';
+          for(var wc=0;wc<w.cardio.length;wc++){var wcd=w.cardio[wc];body+='<div style="display:flex;justify-content:space-between;padding:3px 0;color:#bbb;font-size:11px"><span>\u2022 '+esc(wcd.name)+'</span><span style="color:#999;font-size:10px;font-family:IBM Plex Mono,monospace">'+(wcd.duration?wcd.duration+"min":"")+(wcd.mode?" \u00b7 "+wcd.mode:"")+'</span></div>';}
+          body+='</div>';
+        }
+        if(w.notes)body+='<div style="margin-top:6px;padding:8px 12px;color:#999;font-size:11px;font-style:italic;border-left:2px solid '+accent+'30">'+esc(w.notes)+'</div>';
+        body+='</div>';
+      }
+      body+='</div>';
+    }
+  }
+  // Nutrition
+  if(isChecked("nutrition")){
+    var cPlans=mealPlans.filter(function(mp2){return mp2.clientId===c.id;});
+    if(cPlans.length){hasAnything=true;
+      for(var pi=0;pi<cPlans.length;pi++){var mp=cPlans[pi],tot=calcPlanTotals(mp),tgt=mp.targets||{cal:0,p:0,c:0,f:0};
+        body+='<div style="margin-bottom:24px"><div style="font-size:14px;font-weight:800;color:'+accent+';letter-spacing:.2em;margin-bottom:2px;padding-bottom:6px;border-bottom:2px solid '+accent+'40">NUTRITION: '+esc(mp.name).toUpperCase()+'</div>'
+          +'<div style="display:flex;gap:12px;padding:14px 16px;background:#0a0a0a;border:1px solid '+accent+'20;border-radius:6px;margin-bottom:14px">'
+          +'<div style="flex:1;text-align:center"><div style="font-size:24px;font-weight:800;color:'+accent+';font-family:IBM Plex Mono,monospace">'+tot.cal+'</div>'+(tgt.cal>0?'<div style="font-size:8px;color:#555;font-family:IBM Plex Mono,monospace">/ '+tgt.cal+'</div>':'')+'<div style="font-size:8px;color:#666;letter-spacing:.15em;font-family:IBM Plex Mono,monospace">CALORIES</div></div>'
+          +'<div style="flex:1;text-align:center"><div style="font-size:18px;font-weight:700;color:#5b5;font-family:IBM Plex Mono,monospace">'+tot.p+'g</div><div style="font-size:8px;color:#666;letter-spacing:.15em;font-family:IBM Plex Mono,monospace">PROTEIN</div></div>'
+          +'<div style="flex:1;text-align:center"><div style="font-size:18px;font-weight:700;color:#b88030;font-family:IBM Plex Mono,monospace">'+tot.c+'g</div><div style="font-size:8px;color:#666;letter-spacing:.15em;font-family:IBM Plex Mono,monospace">CARBS</div></div>'
+          +'<div style="flex:1;text-align:center"><div style="font-size:18px;font-weight:700;color:#d87878;font-family:IBM Plex Mono,monospace">'+tot.f+'g</div><div style="font-size:8px;color:#666;letter-spacing:.15em;font-family:IBM Plex Mono,monospace">FAT</div></div></div>';
+        for(var m=0;m<mp.meals.length;m++){var meal=mp.meals[m],mt=calcMealTotals(meal);
+          body+='<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px"><div style="font-size:12px;font-weight:700;color:'+accent+'">'+esc(meal.name).toUpperCase()+'</div>'+(meal.time?'<div style="font-size:9px;color:#777;font-family:IBM Plex Mono,monospace">'+esc(meal.time)+'</div>':'')+'</div>';
+          for(var f=0;f<meal.foods.length;f++){var fd=meal.foods[f],db=FOOD_DB[fd.di]||{};var fcal=Math.round((db.cal||0)*(fd.qty/(db.per||1)));
+            body+='<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #141414"><span style="color:#ccc;font-size:11px">\u2022 '+esc(fd.name)+' \u2014 '+fd.qty+' '+fd.unit+'</span><span style="color:#888;font-size:10px;font-family:IBM Plex Mono,monospace">'+fcal+' cal</span></div>';}
+          body+='<div style="font-size:9px;color:#666;font-family:IBM Plex Mono,monospace;margin-top:3px">'+mt.cal+' cal | '+mt.p+'g P | '+mt.c+'g C | '+mt.f+'g F</div></div>';}
+        body+='</div>';
+      }
+    }
+  }
+  // Cardio summary
+  if(isChecked("cardio")){
+    var p2=c.program;
+    if(p2&&p2.days){
+      var cardioItems=[];
+      p2.days.forEach(function(day){(day.exercises||[]).forEach(function(ex){if(ex.type==="cardio")cardioItems.push({day:day.name,name:ex.name,scheme:ex.scheme||"",timing:ex.cardioTiming||""});});});
+      if(cardioItems.length){hasAnything=true;
+        body+='<div style="margin-bottom:24px"><div style="font-size:14px;font-weight:800;color:#5b5;letter-spacing:.2em;margin-bottom:14px;padding-bottom:6px;border-bottom:2px solid rgba(91,187,91,.4)">CARDIO PROGRAM</div>'
+          +'<table style="width:100%;border-collapse:collapse"><tr style="background:rgba(91,187,91,.08)"><th style="padding:6px 12px;text-align:left;color:#5b5;font-size:9px;letter-spacing:.1em">DAY</th><th style="padding:6px 12px;text-align:left;color:#5b5;font-size:9px;letter-spacing:.1em">TYPE</th><th style="padding:6px 12px;text-align:left;color:#5b5;font-size:9px;letter-spacing:.1em">DETAILS</th><th style="padding:6px 12px;text-align:left;color:#5b5;font-size:9px;letter-spacing:.1em">TIMING</th></tr>';
+        for(var ci4=0;ci4<cardioItems.length;ci4++){var cd4=cardioItems[ci4];
+          body+='<tr style="border-bottom:1px solid #161616;background:'+(ci4%2===0?"#0a0a0a":"#080808")+'"><td style="padding:7px 12px;color:#aaa;font-size:11px">'+esc(cd4.day)+'</td><td style="padding:7px 12px;color:#ddd;font-size:12px">'+esc(cd4.name)+'</td><td style="padding:7px 12px;color:#bbb;font-size:11px;font-family:IBM Plex Mono,monospace">'+esc(cd4.scheme)+'</td><td style="padding:7px 12px;color:#999;font-size:10px">'+esc(cd4.timing)+'</td></tr>';}
+        body+='</table></div>';
+      }
+    }
+  }
+  // Anabolics
+  if(isChecked("anabolics")&&c.anabolics&&c.anabolics.length){hasAnything=true;
+    var grouped2={};c.anabolics.forEach(function(a){var cat=a.cat||"Uncategorized";if(cat==="Peptides")return;if(!grouped2[cat])grouped2[cat]=[];grouped2[cat].push(a);});
+    var hasCats=Object.keys(grouped2).length>0;
+    if(hasCats){
+      body+='<div style="margin-bottom:24px"><div style="font-size:14px;font-weight:800;color:'+accent+';letter-spacing:.2em;margin-bottom:14px;padding-bottom:6px;border-bottom:2px solid '+accent+'40">ANABOLICS PROTOCOL</div>';
+      var catOrder2=["Anabolic Steroids","AI / Aromatase Inhibitors","SERMs","Prolactin / Progesterone Support","SARMs","Ancillaries & Health","Uncategorized"];
+      for(var ci5=0;ci5<catOrder2.length;ci5++){var cn2=catOrder2[ci5];if(!grouped2[cn2])continue;
+        body+='<div style="font-size:10px;font-weight:700;color:'+accent+';letter-spacing:.15em;margin:10px 0 6px;padding-bottom:3px;border-bottom:1px solid '+accent+'30">'+cn2.toUpperCase()+'</div>'
+          +'<table style="width:100%;border-collapse:collapse"><tr style="background:'+accent+'10"><th style="padding:5px 12px;text-align:left;color:'+accent+';font-size:8px;letter-spacing:.1em">COMPOUND</th><th style="padding:5px 10px;text-align:center;color:'+accent+';font-size:8px;letter-spacing:.1em">DOSE</th><th style="padding:5px 10px;text-align:center;color:'+accent+';font-size:8px;letter-spacing:.1em">FREQ</th><th style="padding:5px 10px;text-align:left;color:'+accent+';font-size:8px;letter-spacing:.1em">ROUTE</th></tr>';
+        grouped2[cn2].forEach(function(a,ai){body+='<tr style="border-bottom:1px solid #161616;background:'+(ai%2===0?"#0a0a0a":"#080808")+'"><td style="padding:7px 12px;color:#ddd;font-size:12px;font-weight:500">'+esc(a.name)+'</td><td style="padding:7px 10px;text-align:center;color:#bbb;font-size:11px;font-family:IBM Plex Mono,monospace">'+esc(a.dose)+'</td><td style="padding:7px 10px;text-align:center;color:#bbb;font-size:11px;font-family:IBM Plex Mono,monospace">'+esc(a.freq)+'</td><td style="padding:7px 10px;color:#aaa;font-size:11px">'+esc(a.route)+'</td></tr>';});
+        body+='</table>';
+      }
+      if(c.anabolicNotes)body+='<div style="margin-top:10px;padding:10px 14px;background:#0c0c0c;border:1px solid '+accent+'20;border-radius:4px;color:#999;font-size:11px;font-style:italic">'+esc(c.anabolicNotes)+'</div>';
+      body+='</div>';
+    }
+  }
+  // Peptides
+  if(isChecked("peptides")){
+    var pepItems=c.peptides&&c.peptides.length?c.peptides:[];
+    // Also grab peptides from anabolics
+    if(c.anabolics){c.anabolics.forEach(function(a){if(a.cat==="Peptides")pepItems.push(a);});}
+    if(pepItems.length){hasAnything=true;
+      body+='<div style="margin-bottom:24px"><div style="font-size:14px;font-weight:800;color:'+accent+';letter-spacing:.2em;margin-bottom:14px;padding-bottom:6px;border-bottom:2px solid '+accent+'40">PEPTIDE PROTOCOL</div>'
+        +'<table style="width:100%;border-collapse:collapse"><tr style="background:'+accent+'10"><th style="padding:6px 12px;text-align:left;color:'+accent+';font-size:9px;letter-spacing:.1em">PEPTIDE</th><th style="padding:6px 10px;text-align:center;color:'+accent+';font-size:9px;letter-spacing:.1em">DOSE</th><th style="padding:6px 10px;text-align:center;color:'+accent+';font-size:9px;letter-spacing:.1em">FREQUENCY</th><th style="padding:6px 10px;text-align:left;color:'+accent+';font-size:9px;letter-spacing:.1em">ROUTE</th></tr>';
+      for(var pi3=0;pi3<pepItems.length;pi3++){var pp=pepItems[pi3];
+        body+='<tr style="border-bottom:1px solid #161616;background:'+(pi3%2===0?"#0a0a0a":"#080808")+'"><td style="padding:7px 12px;color:#ddd;font-size:12px;font-weight:500">'+esc(pp.name)+'</td><td style="padding:7px 10px;text-align:center;color:#bbb;font-size:11px;font-family:IBM Plex Mono,monospace">'+esc(pp.dose)+'</td><td style="padding:7px 10px;text-align:center;color:#bbb;font-size:11px;font-family:IBM Plex Mono,monospace">'+esc(pp.freq)+'</td><td style="padding:7px 10px;color:#aaa;font-size:11px">'+esc(pp.route)+'</td></tr>';}
+      body+='</table>';
+      if(c.peptideNotes)body+='<div style="margin-top:10px;padding:10px 14px;background:#0c0c0c;border:1px solid '+accent+'20;border-radius:4px;color:#999;font-size:11px;font-style:italic">'+esc(c.peptideNotes)+'</div>';
+      body+='</div>';
+    }
+  }
+  // Supplements
+  if(isChecked("supplements")&&c.supplements&&c.supplements.length){hasAnything=true;
+    body+='<div style="margin-bottom:24px"><div style="font-size:14px;font-weight:800;color:'+accent+';letter-spacing:.2em;margin-bottom:14px;padding-bottom:6px;border-bottom:2px solid '+accent+'40">SUPPLEMENT STACK</div>'
+      +'<table style="width:100%;border-collapse:collapse"><tr style="background:'+accent+'10"><th style="padding:6px 12px;text-align:left;color:'+accent+';font-size:9px;letter-spacing:.1em">SUPPLEMENT</th><th style="padding:6px 12px;text-align:center;color:'+accent+';font-size:9px;letter-spacing:.1em">DOSE</th><th style="padding:6px 12px;text-align:left;color:'+accent+';font-size:9px;letter-spacing:.1em">TIMING</th></tr>';
+    for(var si3=0;si3<c.supplements.length;si3++){var sp2=c.supplements[si3];
+      body+='<tr style="border-bottom:1px solid #1a1a1a;background:'+(si3%2===0?"#0a0a0a":"#080808")+'"><td style="padding:8px 12px;color:#ddd;font-size:12px;font-weight:500">'+esc(sp2.name)+'</td><td style="padding:8px 12px;text-align:center;color:#bbb;font-size:11px;font-family:IBM Plex Mono,monospace">'+esc(sp2.dose)+'</td><td style="padding:8px 12px;color:#aaa;font-size:11px">'+esc(sp2.timing)+'</td></tr>';}
+    body+='</table></div>';
+  }
+  // Water
+  if(isChecked("water")&&c.water){hasAnything=true;
+    var wGoal=c.water.goal||128;var wToday=c.water.logs[todayISO()]||0;
+    body+='<div style="margin-bottom:24px"><div style="font-size:14px;font-weight:800;color:#4488dd;letter-spacing:.2em;margin-bottom:14px;padding-bottom:6px;border-bottom:2px solid rgba(68,136,221,.4)">WATER INTAKE</div>'
+      +'<div style="display:flex;gap:16px;padding:14px 18px;background:#0a0a0a;border:1px solid rgba(68,136,221,.2);border-radius:6px"><div style="flex:1;text-align:center"><div style="font-size:28px;font-weight:800;color:#4488dd;font-family:IBM Plex Mono,monospace">'+wGoal+'</div><div style="font-size:8px;color:#666;letter-spacing:.15em;font-family:IBM Plex Mono,monospace">OZ DAILY GOAL</div></div></div></div>';
+  }
+  // Notes
+  if(isChecked("notes")){hasAnything=true;
+    var pgForClient=_programs.find(function(p){return p.clientId===c.id;});
+    var noteText=(pgForClient&&pgForClient.protocolNotes)||c.notes||"";
+    if(noteText){
+      body+='<div style="margin-bottom:24px"><div style="font-size:14px;font-weight:800;color:'+accent+';letter-spacing:.2em;margin-bottom:14px;padding-bottom:6px;border-bottom:2px solid '+accent+'40">PROGRAM NOTES</div>'
+        +'<div style="padding:16px 18px;background:#0a0a0a;border:1px solid '+accent+'20;border-radius:6px;color:#ccc;font-size:13px;line-height:1.8">'+esc(noteText).replace(/\n/g,"<br>")+'</div></div>';
+    }
+  }
+  if(!hasAnything){toast("No data to export");return;}
+  // Build subtitle
+  if(!coverSub){
+    var parts=[];
+    if(isChecked("training"))parts.push("Training");
+    if(isChecked("nutrition"))parts.push("Nutrition");
+    if(isChecked("anabolics")||isChecked("peptides"))parts.push("Protocol");
+    if(isChecked("supplements"))parts.push("Supplements");
+    coverSub=parts.join(" \u00b7 ")||"Complete Program";
+  }
+  // Override accent for PDF rendering
+  var origAccent=_pdfAccent;var origRGB=_pdfAccentRGB;
+  _pdfAccent=function(){return accent;};_pdfAccentRGB=function(){return rgb;};
+  var contentPages=_splitContentIntoPages(body);
+  var pages=[{coverTitle:"Complete Program",coverClient:c.name,coverSub:coverSub}];
+  for(var pi4=0;pi4<contentPages.length;pi4++)pages.push({content:contentPages[pi4]});
+  _renderPDFToFile(pages,c.name.replace(/\s+/g,"_")+"_Program","Complete Program",c.name);
+  // Restore
+  _pdfAccent=origAccent;_pdfAccentRGB=origRGB;
 }
 
 function generateFullPrepPDF(idx){
@@ -3276,9 +3584,10 @@ function showTutorial(){
 function finishTutorial(){LS.set("tutorialDone",true);var ov=el("tutOverlay");if(ov)ov.remove();document.querySelectorAll(".ti").forEach(function(t){t.style.outline="";t.style.outlineOffset="";t.style.zIndex="";});_doGoTab("home");}
 // ── BIRTHDAY GIFT UNWRAP ──
 var _bdayLaunch=1773705600000;
+var _bdayExpiry=1773936000000;
 function showBirthdayPopup(){
   var now=Date.now();
-  if(now>_bdayLaunch+48*60*60*1000)return;
+  if(now>_bdayExpiry)return;
   if(LS.get("bdayDismissed",false))return;
   // Hide the app while unwrapping
   el("app").style.display="none";
@@ -3368,7 +3677,7 @@ function dismissBdayMsg(){var m=el("bdayMsg");if(m){m.style.transition="opacity 
 // ── BOOT ──
 (function boot(){
   var now=Date.now();
-  var bdayActive=now<=_bdayLaunch+48*60*60*1000&&!LS.get("bdayDismissed",false);
+  var bdayActive=now<=_bdayExpiry&&!LS.get("bdayDismissed",false);
   if(bdayActive){
     showBirthdayPopup();
   }else if(!isUnlocked()){showLockScreen();}
