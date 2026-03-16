@@ -2517,11 +2517,6 @@ function renderCoachTools(){
     +'<div class="g2" style="margin-bottom:8px"><div class="field" style="margin-bottom:8px"><span class="lb">CALORIES</span><input id="macCal" type="number" placeholder="auto" oninput="calcMacros()"></div><div class="field" style="margin-bottom:8px"><span class="lb">PROTEIN (g/lb LBM)</span><input id="macPR" type="number" step="0.1" placeholder="1.0" oninput="calcMacros()"></div></div>'
     +'<div class="field" style="margin-bottom:8px"><span class="lb">GOAL</span><div style="display:flex;gap:4px"><div class="chip on" data-val="cut" onclick="pickChipVal(this,\'macGoal\');calcMacros()">CUT</div><div class="chip" data-val="maintain" onclick="pickChipVal(this,\'macGoal\');calcMacros()">MAINTAIN</div><div class="chip" data-val="bulk" onclick="pickChipVal(this,\'macGoal\');calcMacros()">BULK</div><div class="chip" data-val="aggbulk" onclick="pickChipVal(this,\'macGoal\');calcMacros()">HARD BULK</div></div><input type="hidden" id="macGoal" value="cut"></div>'
     +'<div id="macResult" style="display:none"></div></div>';
-  // Plate Calculator
-  html+='<div class="cd" style="padding:18px"><div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="1.5"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 6v12M18 6v12M2 12h20"/></svg><div style="font-size:14px;font-weight:700;color:var(--ice)">Plate Calculator</div></div>'
-    +'<div class="field" style="margin-bottom:10px"><span class="lb">TARGET WEIGHT (LBS)</span><input id="plateW" type="number" placeholder="315" oninput="calcPlates()"></div>'
-    +'<div class="field" style="margin-bottom:0"><span class="lb">BAR WEIGHT</span><div style="display:flex;gap:4px"><div class="chip on" data-val="45" onclick="pickChipVal(this,\'plateBar\');calcPlates()">45 LB</div><div class="chip" data-val="35" onclick="pickChipVal(this,\'plateBar\');calcPlates()">35 LB</div><div class="chip" data-val="15" onclick="pickChipVal(this,\'plateBar\');calcPlates()">15 LB</div></div><input type="hidden" id="plateBar" value="45"></div>'
-    +'<div id="plateResult" style="display:none"></div></div>';
   return html;
 }
 function calcMacros(){
@@ -2539,28 +2534,6 @@ function calcMacros(){
   d.style.display="block";
   d.innerHTML='<div style="margin-top:12px"><div style="font-size:11px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.12em;margin-bottom:10px">DAILY TARGETS'+(bf>0?' (LBM: '+Math.round(lbm)+' lbs)':'')+'</div>'
     +'<div class="g4"><div style="text-align:center;padding:12px 8px;background:var(--glass);border-radius:8px;border:1px solid var(--borderS)"><div style="font-size:20px;font-weight:800;color:var(--acc);font-family:var(--mono)">'+cal+'</div><div style="font-size:8px;color:var(--dm);font-family:var(--mono);letter-spacing:.08em">CALORIES</div></div><div style="text-align:center;padding:12px 8px;background:var(--glass);border-radius:8px;border:1px solid var(--borderS)"><div style="font-size:20px;font-weight:800;color:#5b5;font-family:var(--mono)">'+prot+'g</div><div style="font-size:8px;color:var(--dm);font-family:var(--mono);letter-spacing:.08em">PROTEIN</div></div><div style="text-align:center;padding:12px 8px;background:var(--glass);border-radius:8px;border:1px solid var(--borderS)"><div style="font-size:20px;font-weight:800;color:#b88030;font-family:var(--mono)">'+carb+'g</div><div style="font-size:8px;color:var(--dm);font-family:var(--mono);letter-spacing:.08em">CARBS</div></div><div style="text-align:center;padding:12px 8px;background:var(--glass);border-radius:8px;border:1px solid var(--borderS)"><div style="font-size:20px;font-weight:800;color:#d87878;font-family:var(--mono)">'+fat+'g</div><div style="font-size:8px;color:var(--dm);font-family:var(--mono);letter-spacing:.08em">FAT</div></div></div></div>';
-}
-function calcPlates(){
-  var tw=numVal("plateW"),bw=parseInt(val("plateBar"))||45,d=el("plateResult");if(!d)return;
-  if(tw<=bw){d.style.display="none";return;}
-  var perSide=(tw-bw)/2;var plates=[45,35,25,10,5,2.5];var loaded=[];var rem=perSide;
-  for(var i=0;i<plates.length;i++){var count=Math.floor(rem/plates[i]);if(count>0){loaded.push(count+"x "+plates[i]);rem-=count*plates[i];}}
-  if(rem>0.1)loaded.push("(+"+Math.round(rem*10)/10+" lbs unmatched)");
-  d.style.display="block";
-  // Visual plate representation
-  var vis='<div style="display:flex;align-items:center;justify-content:center;gap:2px;margin-bottom:10px;padding:12px 0">';
-  var plateColors={"45":"#c44","35":"#47c","25":"#4a4","10":"#cc4","5":"#aaa","2.5":"#888"};
-  var plateH={"45":"60px","35":"52px","25":"44px","10":"36px","5":"28px","2.5":"22px"};
-  rem=perSide;var plateList=[];
-  for(var i=0;i<plates.length;i++){var count=Math.floor(rem/plates[i]);for(var j=0;j<count;j++)plateList.push(plates[i]);rem-=count*plates[i];}
-  // Left side plates (reversed)
-  for(var i=plateList.length-1;i>=0;i--)vis+='<div style="width:8px;height:'+plateH[plateList[i]]+';background:'+plateColors[plateList[i]]+';border-radius:2px;opacity:.8" title="'+plateList[i]+' lb"></div>';
-  // Bar
-  vis+='<div style="width:60px;height:10px;background:linear-gradient(180deg,#888,#555);border-radius:2px;margin:0 2px"></div>';
-  // Right side
-  for(var i=0;i<plateList.length;i++)vis+='<div style="width:8px;height:'+plateH[plateList[i]]+';background:'+plateColors[plateList[i]]+';border-radius:2px;opacity:.8" title="'+plateList[i]+' lb"></div>';
-  vis+='</div>';
-  d.innerHTML='<div style="margin-top:12px"><div style="font-size:11px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.12em;margin-bottom:6px">EACH SIDE: '+Math.round(perSide*10)/10+' LBS</div>'+vis+'<div style="font-size:13px;color:var(--wh);font-family:var(--mono);text-align:center">'+loaded.join(' + ')+'</div></div>';
 }
 // ── DATA MIGRATION ──
 (function(){var lv=LS.get("_appVersion","");if(lv!==VERSION){
