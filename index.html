@@ -1760,57 +1760,7 @@ var CARDIO_DB=[
 ];
 
 // ── SUPPLEMENT DATABASE ──
-var SUPPLEMENT_DB=[
-{cat:"Essential",items:[
-{name:"Whey Protein Isolate",doses:["25g","30g","40g","50g"],timings:["Post-Workout","Morning","Between Meals"]},
-{name:"Casein Protein",doses:["25g","30g","40g"],timings:["Before Bed","Between Meals"]},
-{name:"Creatine Monohydrate",doses:["3g","5g"],timings:["Post-Workout","Morning","Any Time"]},
-{name:"Multivitamin",doses:["1 cap","2 caps"],timings:["With Breakfast","Morning"]},
-{name:"Fish Oil / Omega-3",doses:["1g","2g","3g","4g"],timings:["With Meals","Morning","Divided AM/PM"]},
-{name:"Vitamin D3",doses:["2000 IU","5000 IU","10000 IU"],timings:["Morning","With Meals"]}
-]},
-{cat:"Pre-Workout",items:[
-{name:"Pre-Workout (Stimulant)",doses:["1/2 scoop","1 scoop","1.5 scoops"],timings:["30min Pre-Workout"]},
-{name:"Pre-Workout (Non-Stim)",doses:["1 scoop"],timings:["30min Pre-Workout"]},
-{name:"Citrulline Malate",doses:["6g","8g","10g"],timings:["30min Pre-Workout"]},
-{name:"Beta-Alanine",doses:["2g","3.2g","4g"],timings:["Pre-Workout","Split AM/PM"]},
-{name:"Caffeine",doses:["100mg","200mg","300mg","400mg"],timings:["30-45min Pre-Workout","Morning"]},
-{name:"Pump Formula",doses:["1 scoop"],timings:["15-30min Pre-Workout"]}
-]},
-{cat:"Intra-Workout",items:[
-{name:"EAAs (Essential Amino Acids)",doses:["10g","15g","20g"],timings:["During Training"]},
-{name:"BCAAs",doses:["5g","10g"],timings:["During Training","Between Meals"]},
-{name:"Highly Branched Cyclic Dextrin",doses:["25g","50g","75g"],timings:["During Training"]},
-{name:"Gatorade / Electrolytes",doses:["16oz","32oz"],timings:["During Training"]},
-{name:"Intra-Workout Carb Powder",doses:["25g","50g"],timings:["During Training"]}
-]},
-{cat:"Post-Workout",items:[
-{name:"Post-Workout Shake",doses:["1 scoop","2 scoops"],timings:["Immediately Post-Workout"]},
-{name:"Glutamine",doses:["5g","10g"],timings:["Post-Workout","Before Bed"]},
-{name:"Dextrose / Fast Carbs",doses:["25g","50g","75g"],timings:["Immediately Post-Workout"]}
-]},
-{cat:"Health & Recovery",items:[
-{name:"Magnesium Glycinate",doses:["200mg","400mg","600mg"],timings:["Before Bed","Evening"]},
-{name:"Zinc",doses:["15mg","30mg","50mg"],timings:["Before Bed","Evening"]},
-{name:"ZMA",doses:["1 serving","2 servings"],timings:["Before Bed"]},
-{name:"Ashwagandha (KSM-66)",doses:["300mg","600mg"],timings:["Morning","Before Bed"]},
-{name:"Melatonin",doses:["1mg","3mg","5mg"],timings:["30min Before Bed"]},
-{name:"Digestive Enzymes",doses:["1 cap","2 caps"],timings:["With Meals"]},
-{name:"Probiotics",doses:["1 cap"],timings:["Morning Empty Stomach","Before Bed"]},
-{name:"Tudca / Liver Support",doses:["250mg","500mg"],timings:["With Meals"]},
-{name:"CoQ10",doses:["100mg","200mg"],timings:["Morning","With Meals"]},
-{name:"Vitamin C",doses:["500mg","1000mg","2000mg"],timings:["Morning","Split AM/PM"]},
-{name:"Potassium",doses:["99mg","200mg"],timings:["With Meals"]},
-{name:"Collagen Peptides",doses:["10g","20g"],timings:["Morning","Any Time"]}
-]},
-{cat:"Contest Prep",items:[
-{name:"Dandelion Root",doses:["500mg","1000mg"],timings:["Morning","Split AM/PM"]},
-{name:"Glycerol",doses:["25ml","50ml"],timings:["Pre-Show","Peak Week"]},
-{name:"Vitamin E",doses:["400 IU"],timings:["With Meals"]},
-{name:"MCT Oil",doses:["1 tbsp","2 tbsp"],timings:["Morning","Pre-Workout"]},
-{name:"Apple Cider Vinegar",doses:["1 tbsp","2 tbsp"],timings:["Morning","Before Meals"]}
-]}
-];
+// SUPPLEMENT_DB moved after ANABOLICS_DB as SUPP_DB
 
 var ANABOLICS_DB=[
 {cat:"Anabolic Steroids",items:[
@@ -1920,6 +1870,25 @@ var ANABOLICS_DB=[
 {name:"Ezetimibe (Zetia)",doses:["10mg"],routes:["Oral"],freqs:["ED"]},
 {name:"Telmisartan",doses:["20mg","40mg","80mg"],routes:["Oral"],freqs:["ED"]},
 {name:"Nebivolol",doses:["2.5mg","5mg","10mg"],routes:["Oral"],freqs:["ED"]}
+]},
+{cat:"Fat Loss / GLPs",items:[
+{name:"Semaglutide (Ozempic/Wegovy)",doses:["0.25mg","0.5mg","1mg","1.7mg","2.4mg"],routes:["SubQ Injection"],freqs:["1x/week"]},
+{name:"Tirzepatide (Mounjaro/Zepbound)",doses:["2.5mg","5mg","7.5mg","10mg","12.5mg","15mg"],routes:["SubQ Injection"],freqs:["1x/week"]},
+{name:"Retatrutide",doses:["1mg","2mg","4mg","8mg","12mg"],routes:["SubQ Injection"],freqs:["1x/week"]},
+{name:"Liraglutide (Saxenda/Victoza)",doses:["0.6mg","1.2mg","1.8mg","2.4mg","3mg"],routes:["SubQ Injection"],freqs:["1x/day"]},
+{name:"Injectable L-Carnitine",doses:["200mg","400mg","500mg","600mg","1000mg"],routes:["IM Injection","SubQ Injection"],freqs:["ED","5x/week","Pre-workout"]},
+{name:"Tesofensine",doses:["0.25mg","0.5mg","1mg"],routes:["Oral"],freqs:["1x/day"]},
+{name:"5-Amino-1MQ",doses:["50mg","100mg","150mg"],routes:["Oral"],freqs:["1x/day","2x/day"]},
+{name:"AOD-9604",doses:["250mcg","300mcg","500mcg"],routes:["SubQ Injection"],freqs:["1x/day","2x/day"]},
+{name:"Fragment 176-191",doses:["250mcg","500mcg"],routes:["SubQ Injection"],freqs:["1x/day","2x/day"]},
+{name:"MOTS-c",doses:["5mg","10mg"],routes:["SubQ Injection"],freqs:["1x/week","3x/week"]},
+{name:"Clenbuterol",doses:["20mcg","40mcg","60mcg","80mcg","100mcg","120mcg","140mcg","160mcg"],routes:["Oral"],freqs:["ED","2 weeks on/2 off","Titrate up"]},
+{name:"Albuterol / Salbutamol",doses:["2mg","4mg","8mg","12mg","16mg"],routes:["Oral"],freqs:["3x/day","2x/day"]},
+{name:"Ephedrine",doses:["12.5mg","25mg"],routes:["Oral"],freqs:["1-3x/day","EC Stack"]},
+{name:"Yohimbine HCL",doses:["2.5mg","5mg","10mg","15mg","20mg"],routes:["Oral"],freqs:["Pre-fasted cardio","1-2x/day"]},
+{name:"DNP / 2,4-Dinitrophenol",doses:["100mg","125mg","200mg","250mg"],routes:["Oral"],freqs:["ED"]},
+{name:"T3 / Liothyronine (Cytomel)",doses:["12.5mcg","25mcg","37.5mcg","50mcg","75mcg","100mcg"],routes:["Oral"],freqs:["ED","Split AM/PM"]},
+{name:"T4 / Levothyroxine (Synthroid)",doses:["25mcg","50mcg","75mcg","100mcg","150mcg","200mcg"],routes:["Oral"],freqs:["ED"]}
 ]}
 ];
 
@@ -1975,7 +1944,7 @@ function renderProgramBuilder(){
   var html='<button class="btn2" onclick="_editProgram=null;render()" style="margin-bottom:14px">\u2039 Back</button>'
     +'<div class="cd" style="padding:14px;margin-bottom:14px"><div class="g2 field"><div><span class="lb">PROGRAM NAME</span><input value="'+esc(pg.name)+'" onchange="progSet(\'name\',this.value)"></div><div><span class="lb">CLIENT</span><select onchange="progSet(\'clientId\',this.value)">'+cOpts+'</select></div></div></div>';
   // Sections
-  var SECTION_TYPES=[["training","Training"],["nutrition","Nutrition"],["anabolics","Anabolics"],["peptides","Peptides"],["supplements","Supplements"],["water","Water"],["protocol","Protocol"]];
+  var SECTION_TYPES=[["training","Training"],["nutrition","Nutrition"],["anabolics","Anabolics"],["peptides","Peptides"],["fatloss","Fat Loss / GLPs"],["supplements","Supplements"],["water","Water"],["protocol","Protocol"]];
   for(var si=0;si<pg.sections.length;si++){
     var sType=pg.sections[si];
     var sLabel=SECTION_TYPES.reduce(function(a,t){return t[0]===sType?t[1]:a;},sType);
@@ -1992,6 +1961,7 @@ function renderProgramBuilder(){
       else if(sType==="nutrition")html+=renderProgramNutritionSection(pg);
       else if(sType==="anabolics")html+=renderProgramAnabolicsSection(pg);
       else if(sType==="peptides")html+=renderProgramPeptidesSection(pg);
+      else if(sType==="fatloss")html+=renderProgramFatlossSection(pg);
       else if(sType==="supplements")html+=renderProgramSupplementsSection(pg);
       else if(sType==="water")html+=renderProgramWaterSection(pg);
       else if(sType==="protocol")html+=renderProgramProtocolSection(pg);
@@ -2018,7 +1988,7 @@ function renderProgramBuilder(){
 }
 function showAddSectionMenu(){
   var pg=_programs.find(function(x){return x.id===_editProgram;});if(!pg)return;
-  var SECTION_TYPES=[["training","Training","Workouts, exercises & cardio"],["nutrition","Nutrition","Meal plans & macros"],["anabolics","Anabolics","PED protocols"],["peptides","Peptides","BPC-157, TB-500, CJC, growth peptides"],["supplements","Supplements","Supplement stack"],["water","Water","Hydration tracking"],["protocol","Protocol","Notes & instructions"]];
+  var SECTION_TYPES=[["training","Training","Workouts, exercises & cardio"],["nutrition","Nutrition","Meal plans & macros"],["anabolics","Anabolics","PED protocols"],["peptides","Peptides","BPC-157, TB-500, CJC, growth peptides"],["fatloss","Fat Loss / GLPs","Semaglutide, Retatrutide, L-Carnitine, thermogenics"],["supplements","Supplements","Supplement stack"],["water","Water","Hydration tracking"],["protocol","Protocol","Notes & instructions"]];
   var avail=SECTION_TYPES.filter(function(t){return pg.sections.indexOf(t[0])<0;});
   if(!avail.length){toast("All sections added");return;}
   var content='<div>';
