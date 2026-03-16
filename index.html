@@ -103,7 +103,7 @@ button{font-family:var(--body);cursor:pointer;border:none;outline:none;transitio
 .chart-bar{flex:1;border-radius:4px 4px 0 0;background:linear-gradient(180deg,var(--accVib),var(--accDeep));min-width:0;transition:height .4s ease;cursor:default;position:relative}
 .chart-bar:hover .chart-tooltip{opacity:1;transform:translateY(-4px)}
 .chart-tooltip{position:absolute;top:-28px;left:50%;transform:translateX(-50%);background:rgba(8,8,8,.98);border:1px solid var(--accB);border-radius:4px;padding:2px 6px;font-size:8px;font-family:var(--mono);color:var(--accBright);white-space:nowrap;opacity:0;transition:all .15s;pointer-events:none}
-.qnote-fab{position:fixed;bottom:80px;right:16px;z-index:9}
+.qnote-fab{position:fixed;bottom:80px;right:16px;z-index:11}
 @keyframes shimmer{0%{background-position:100% 50%}50%{background-position:0% 50%}100%{background-position:100% 50%}}
 @keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(-10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 @keyframes breathe{0%,100%{box-shadow:0 4px 30px rgba(0,0,0,.5),0 0 30px var(--accGlow)}50%{box-shadow:0 4px 30px rgba(0,0,0,.5),0 0 50px var(--accM)}}
@@ -270,7 +270,7 @@ body.theme-crimson{
 <div class="qnote-fab" id="qnoteFab" style="display:none">
   <button onclick="openQNote()" style="width:52px;height:52px;border-radius:50%;background:var(--goldGrad);background-size:200% 100%;color:#1a1408;font-size:22px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px var(--accM);border:none;cursor:pointer;animation:shimmer 3s ease-in-out infinite" title="Quick Note">&#9998;</button>
 </div>
-<div id="swFab" style="display:none;position:fixed;bottom:80px;right:76px;z-index:9">
+<div id="swFab" style="display:none;position:fixed;bottom:80px;right:76px;z-index:11">
   <button onclick="toggleStopwatch()" style="width:52px;height:52px;border-radius:50%;background:linear-gradient(145deg,rgba(12,12,14,.98),rgba(6,6,8,.98));border:2px solid var(--accB);color:var(--acc);font-size:20px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px var(--accM),0 0 15px var(--accS);cursor:pointer;animation:neonBreathe 4s ease-in-out infinite" title="Stopwatch">&#9201;</button>
 </div>
 <script>
