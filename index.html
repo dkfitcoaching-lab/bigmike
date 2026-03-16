@@ -437,7 +437,7 @@ var TABS=[
 {k:"clients",l:"Clients",svg:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>'},
 {k:"schedule",l:"Schedule",svg:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>'},
 {k:"sessions",l:"Log",svg:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>'},
-{k:"nutrition",l:"Nutrition",svg:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8zM6 1v3M10 1v3M14 1v3"/></svg>'}
+{k:"nutrition",l:"Programs",svg:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8zM6 1v3M10 1v3M14 1v3"/></svg>'}
 ];
 function render(){
   var tabsEl=el("tabs");
@@ -475,7 +475,7 @@ function renderHome(){
     +'<div style="font-size:32px;font-weight:800;line-height:1.15;font-family:var(--display);animation:glowPulse 6s ease-in-out infinite"><span style="background:var(--goldGrad);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:goldShimmer 4s ease-in-out infinite;filter:drop-shadow(0 0 8px var(--accGlow))">Coach</span></div>'
     +(todaySched.length?'<div style="margin-top:12px;font-size:11px;color:var(--mu);font-family:var(--mono);letter-spacing:.06em">'+todaySched.filter(function(s){return s.status!=="cancelled";}).length+' session'+(todaySched.filter(function(s){return s.status!=="cancelled";}).length!==1?'s':'')+' on deck today</div>':'<div style="margin-top:12px;font-size:11px;color:var(--dm);font-family:var(--mono);letter-spacing:.06em">No sessions today \u2014 rest or hustle?</div>')+'</div></div>';
   var projSched=schedule.filter(function(s){var d=new Date(s.date+"T12:00:00");return d.getMonth()===mo&&d.getFullYear()===yr&&s.status!=="cancelled"&&s.status!=="complete";});
-  var projected=projSched.reduce(function(a,s){return a+parseFloat(s.rate||70);},0);
+  var projected=projSched.reduce(function(a,s){return a+parseFloat(s.rate||0);},0);
   html+='<div style="display:flex;align-items:baseline;gap:0;margin-bottom:6px;margin-top:20px"><div class="sl" style="margin:0">'+t.toLocaleDateString("en-US",{month:"long"}).toUpperCase()+' EARNINGS</div>'+deltaHTML+'</div>';
   html+='<div class="g4" style="margin-top:4px;margin-bottom:'+(projected>0?8:20)+'px"><div class="stat stat-highlight"><b style="color:var(--acc)">'+moS.length+'</b><small>SESSIONS</small></div><div class="stat stat-highlight"><b style="color:var(--ow)">$'+gross+'</b><small>GROSS</small></div><div class="stat stat-highlight"><b style="color:var(--dm)"><span style="font-size:50%;vertical-align:super;opacity:.5;margin-right:1px">-</span>$'+cut+'</b><small>GYM '+Math.round(getGymCut()*100)+'%</small></div><div class="stat stat-highlight" style="border-color:var(--accB);box-shadow:0 0 12px var(--accS)"><b style="color:var(--accVib)">$'+take+'</b><small>YOUR TAKE</small></div></div>';
   if(projected>0)html+='<div style="display:flex;align-items:center;gap:10px;padding:9px 14px;border-radius:8px;background:var(--glassB);border:1px solid var(--borderS);margin-bottom:16px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--acc);flex-shrink:0"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span style="font-size:11px;color:var(--mu);font-family:var(--mono)">+$'+projected+' projected from '+projSched.length+' upcoming session'+(projSched.length!==1?"s":"")+'</span></div>';
@@ -494,7 +494,7 @@ function renderHome(){
   if(todaySched.length){
     var completedToday=todaySched.filter(function(s){return s.status==="complete";}).length;
     var pendingToday=todaySched.filter(function(s){return s.status!=="complete"&&s.status!=="cancelled";}).length;
-    var todayRev=todaySched.filter(function(s){return s.status!=="cancelled";}).reduce(function(a,s){return a+parseFloat(s.rate||70);},0);
+    var todayRev=todaySched.filter(function(s){return s.status!=="cancelled";}).reduce(function(a,s){return a+parseFloat(s.rate||0);},0);
     html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-top:24px"><div class="sl" style="margin:0">TODAY\'S SCHEDULE</div><div style="display:flex;gap:8px;align-items:center">'
       +(completedToday?'<span class="premium-badge" style="background:rgba(120,200,120,.08);border-color:rgba(120,200,120,.2);color:var(--success)">'+completedToday+' DONE</span>':'')
       +(pendingToday?'<span class="premium-badge">'+pendingToday+' PENDING</span>':'')
@@ -507,7 +507,7 @@ function renderHome(){
         +'<div style="min-width:50px;font-family:var(--mono);font-size:13px;font-weight:700;color:'+(ic?"var(--success)":"var(--acc)")+'">'+fmtTimeStr(s.time)+'</div>'
         +'<div style="flex:1;cursor:'+(cidx>=0?"pointer":"default")+'" onclick="'+(cidx>=0?"navToClient("+cidx+")":"")+'"><div style="font-size:14px;font-weight:500;color:var(--wh)">'+esc(s.clientName||"Unknown")+'</div><div style="font-size:10px;color:var(--dm)">'+(s.type||"Training")+' \u00b7 '+(s.duration||60)+'min'+(ic?' \u00b7 <span class="status-chip status-complete">COMPLETED</span>':ix?' \u00b7 <span class="status-chip status-cancelled">CANCELLED</span>':"")+'</div></div>'
         +(!ic&&!ix?'<button class="btn2" onclick="completeScheduled(\''+s.id+'\')" style="padding:5px 10px;font-size:8px">LOG</button>':"")
-        +'<div style="font-size:11px;color:var(--ow);font-family:var(--mono)">$'+(s.rate||70)+'</div></div>';
+        +(s.rate?'<div style="font-size:11px;color:var(--ow);font-family:var(--mono)">$'+s.rate+'</div>':'')+'</div>';
     }
   }else{
     html+='<div class="cd" style="text-align:center;padding:30px 20px;margin-top:24px;border:1px dashed var(--border);background:linear-gradient(160deg,rgba(12,12,12,.5),rgba(6,6,6,.5))"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--dm)" stroke-width="1.5" style="margin-bottom:10px;opacity:.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><div style="color:var(--dm);margin-bottom:12px;font-size:13px">No sessions scheduled today</div><button class="btn2" onclick="go(\'schedule\')" style="padding:10px 20px">+ SCHEDULE A SESSION</button></div>';
@@ -605,7 +605,7 @@ function renderClients(){
   html+='</div>';
     if(clients.length>3){html+='<div class="search-bar"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--dm);flex-shrink:0"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input placeholder="Search clients..." value="'+esc(_clientSearch)+'" oninput="_clientSearch=this.value;renderInPlace()" id="clientSearchInput"></div>';}
   if(!filtered.length&&_clientSearch)return html+'<div style="text-align:center;padding:40px 20px;color:var(--dm);font-family:var(--mono);font-size:11px">No clients match "'+esc(_clientSearch)+'"</div>';
-  if(!clients.length)return html+'<div style="text-align:center;padding:44px 24px"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--dm)" stroke-width="1.2" style="margin-bottom:12px;opacity:.4"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg><div style="color:var(--dm);font-family:var(--mono);font-size:12px;margin-bottom:14px">No clients yet</div><div style="color:var(--dmL);font-size:10px;margin-bottom:16px;line-height:1.6">Add your first client to start tracking sessions,<br>building programs, and growing your business.</div><button class="btn" onclick="push(\'add\')" style="max-width:200px;margin:0 auto">+ ADD FIRST CLIENT</button></div>';
+  if(!clients.length)return html+'<div style="text-align:center;padding:44px 24px"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--dm)" stroke-width="1.2" style="margin-bottom:12px;opacity:.4"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg><div style="color:var(--dm);font-family:var(--mono);font-size:12px;margin-bottom:14px">No clients yet</div><button class="btn" onclick="push(\'add\')" style="max-width:200px;margin:0 auto">+ ADD FIRST CLIENT</button></div>';
   for(var i=0;i<clients.length;i++){var c2=clients[i];if(_clientFilter!=="All"){if(_clientFilter==="Competitor"&&(c2.services||"").indexOf("Contest Prep")<0)continue;if(_clientFilter==="Active"&&(daysSinceLastSession(c2.id)===null||daysSinceLastSession(c2.id)>14))continue;if(_clientFilter==="Prospect"&&sessions.filter(function(s){return s.clientId===c2.id&&s.status!=="cancelled";}).length>0)continue;if(_clientFilter==="In-Person"&&(c2.clientType||"In-Person")!=="In-Person")continue;if(_clientFilter==="Online"&&(c2.clientType||"")!=="Online")continue;}
     var c=clients[i];
     if(_clientSearch&&c.name.toLowerCase().indexOf(_clientSearch.toLowerCase())<0)continue;
@@ -613,18 +613,18 @@ function renderClients(){
     var col=clientColor(c.name);
     var ds=daysSinceLastSession(c.id),st=calcStreak(c.id);
     var dsBadge="";
-    if(ds===null)dsBadge='<span style="font-size:9px;font-family:var(--mono);color:var(--dm)">No sessions yet</span>';
-    else if(ds===0)dsBadge='<span style="font-size:9px;font-family:var(--mono);color:var(--success)">Trained today</span>';
-    else if(ds<=3)dsBadge='<span style="font-size:9px;font-family:var(--mono);color:var(--success)">'+(ds<=0?'today':ds+'d ago')+'</span>';
-    else if(ds<=10)dsBadge='<span style="font-size:9px;font-family:var(--mono);color:var(--warn)">'+(ds<=0?'today':ds+'d ago')+'</span>';
-    else dsBadge='<span style="font-size:9px;font-family:var(--mono);color:var(--danger)">'+ds+'d ago \u00b7 follow up?</span>';
-    var stBadge=st>=2?'<span style="font-size:9px;font-family:var(--mono);color:var(--acc);margin-left:4px">'+st+'wk</span>':"";
-    html+='<div class="cd cd-link" style="display:flex;align-items:center;gap:14px" onclick="push(\'detail\',{clientIdx:'+i+'})">'
-      +'<div style="width:42px;height:42px;border-radius:10px;background:var(--accS);border:2px solid '+col+'40;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:16px;font-weight:700;color:'+col+';flex-shrink:0">'+(c.name||"?")[0].toUpperCase()+'</div>'
-      +'<div style="flex:1"><div style="font-size:14px;font-weight:500;color:var(--wh)">'+esc(c.name)+'</div>'
-      +'<div style="font-size:10px;color:var(--dm);font-family:var(--mono)">'+(c.services||"Training")+' \u00b7 '+(c.clientType||"In-Person")+' \u00b7 '+count+' session'+(count!==1?"s":"")+'</div>'
+    if(ds===null)dsBadge='<span style="font-size:9px;font-family:var(--mono);color:var(--dm);background:rgba(120,120,120,.08);padding:2px 8px;border-radius:10px">No sessions yet</span>';
+    else if(ds===0)dsBadge='<span style="font-size:9px;font-family:var(--mono);color:var(--success);background:rgba(120,200,120,.08);padding:2px 8px;border-radius:10px">Trained today</span>';
+    else if(ds<=3)dsBadge='<span style="font-size:9px;font-family:var(--mono);color:var(--success);background:rgba(120,200,120,.08);padding:2px 8px;border-radius:10px">'+(ds<=0?'today':ds+'d ago')+'</span>';
+    else if(ds<=10)dsBadge='<span style="font-size:9px;font-family:var(--mono);color:var(--warn);background:rgba(200,180,80,.08);padding:2px 8px;border-radius:10px">'+(ds<=0?'today':ds+'d ago')+'</span>';
+    else dsBadge='<span style="font-size:9px;font-family:var(--mono);color:var(--danger);background:rgba(200,100,100,.08);padding:2px 8px;border-radius:10px">'+ds+'d ago</span>';
+    var stBadge=st>=2?'<span style="font-size:9px;font-family:var(--mono);color:var(--acc);margin-left:4px;background:var(--accS);border:1px solid var(--accB);padding:2px 8px;border-radius:10px">'+st+'wk</span>':"";
+    html+='<div class="cd cd-link" style="display:flex;align-items:center;gap:14px;border-left:3px solid var(--accGlow);padding:14px 16px" onclick="push(\'detail\',{clientIdx:'+i+'})">'
+      +'<div style="width:52px;height:52px;border-radius:14px;background:var(--goldGrad);animation:shimmer 3s ease-in-out infinite;box-shadow:0 2px 12px var(--accGlow);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:20px;font-weight:900;color:#1a1000;flex-shrink:0">'+(c.name||"?")[0].toUpperCase()+'</div>'
+      +'<div style="flex:1"><div style="font-family:var(--display);font-size:15px;font-weight:700;color:var(--wh)">'+esc(c.name)+'</div>'
+      +'<div style="font-size:11px;color:var(--dm);font-family:var(--mono)">'+(c.services||"Training")+' \u00b7 '+(c.clientType||"In-Person")+' \u00b7 '+count+' session'+(count!==1?"s":"")+'</div>'
       +'<div style="margin-top:3px">'+dsBadge+stBadge+'</div></div>'
-      +'<div style="color:var(--dm);font-size:14px">\u203a</div></div>';
+      +'<div style="color:var(--acc);font-size:16px">\u203a</div></div>';
   }
   return html;
 }
@@ -640,7 +640,7 @@ function clientFormFields(c){
   var html='<div class="cd" style="padding:18px">'
     +'<div class="field"><span class="lb">NAME *</span><input id="cN" placeholder="Client full name" value="'+esc(c.name||'')+'"></div>'
     +'<div class="g2 field"><div><span class="lb">PHONE</span><input id="cP" type="tel" placeholder="(555) 123-4567" value="'+esc(c.phone||'')+'"></div><div><span class="lb">EMAIL</span><input id="cE" type="email" placeholder="email@example.com" value="'+esc(c.email||'')+'"></div></div>'
-    +'<div class="g2"><div><span class="lb">AGE</span><input id="cA" type="number" min="0" placeholder="Age" value="'+(c.age||'')+'"></div><div><span class="lb">RATE ($/session)</span><input id="cR" type="number" min="0" placeholder="70" value="'+(c.rate||'')+'"></div></div>'
+    +'<div class="g2"><div><span class="lb">AGE</span><input id="cA" type="number" min="0" placeholder="Age" value="'+(c.age||'')+'"></div><div><span class="lb">RATE ($/session)</span><input id="cR" type="number" min="0" placeholder="\u2014" value="'+(c.rate||'')+'"></div></div>'
     +'<div class="g2" style="margin-top:8px"><div><span class="lb">WEIGHT (lbs)</span><input id="cWt" type="number" min="0" placeholder="lbs" value="'+(c.weight||'')+'"></div><div><span class="lb">HEIGHT</span><input id="cHt" placeholder="5\'10&quot;" value="'+esc(c.height||'')+'"></div></div></div>';
   html+='<div class="sl" style="margin-top:14px">CLIENT TYPE</div><div class="cd" style="padding:14px"><div style="display:flex;gap:4px">';
   for(var i=0;i<cTypes.length;i++)html+='<div class="chip'+((c.clientType||"In-Person")===cTypes[i]?" on":"")+'" onclick="pickChip(this,\'cCTv\')">'+cTypes[i]+'</div>';
@@ -682,14 +682,14 @@ function renderClientDetail(){
   var idx=currentView.data.clientIdx,c=clients[idx];if(!c){pop();return"";}
   var col=clientColor(c.name);
   var cs=sessions.filter(function(x){return x.clientId===c.id;});
-  var rev=cs.filter(function(x){return x.status!=="cancelled";}).reduce(function(a,x){var r=parseFloat(x.rate);return a+(isNaN(r)?parseFloat(c.rate)||70:r);},0);
+  var rev=cs.filter(function(x){return x.status!=="cancelled";}).reduce(function(a,x){var r=parseFloat(x.rate);return a+(isNaN(r)?parseFloat(c.rate)||0:r);},0);
   var info=[["Phone",c.phone],["Email",c.email],["Age",c.age],["Goals",c.goals],["Injuries",c.injuries],["Medical",c.medical],["Activity",c.activity],["Notes",c.notes]].filter(function(r){return r[1];});
   var st2=calcStreak(c.id),ds2=daysSinceLastSession(c.id);
   var html='<button class="btn2" onclick="pop()" style="margin-bottom:14px">\u2039 Back</button>'
     +'<div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">'
     +'<div style="width:58px;height:58px;border-radius:14px;background:var(--accS);border:2px solid '+col+'60;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;color:'+col+';font-family:var(--mono)">'+(c.name||"?")[0].toUpperCase()+'</div>'
     +'<div style="flex:1"><div style="font-size:20px;font-weight:800;font-family:var(--display)">'+esc(c.name)+'</div>'
-    +'<div style="font-size:11px;color:var(--acc);font-weight:600;margin-top:2px">'+(c.clientType||'In-Person')+' \u00b7 '+(c.services||"Training")+' \u00b7 $'+(c.rate||"70")+'/session</div>'
+    +'<div style="font-size:11px;color:var(--acc);font-weight:600;margin-top:2px">'+(c.clientType||'In-Person')+' \u00b7 '+(c.services||"Training")+(c.rate?' \u00b7 $'+c.rate+'/session':'')+'</div>'
     +'<div style="font-size:10px;color:var(--dm);margin-top:2px">'+(c.level||"Beginner")+(c.age?" \u00b7 "+c.age+"yo":"")+(c.weight?" \u00b7 "+c.weight+"lbs":"")+(c.height?" \u00b7 "+esc(c.height):"")+'</div>'
     +(st2>=2||ds2!==null?'<div style="margin-top:4px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">'+(st2>=2?'<span style="font-size:9px;font-family:var(--mono);color:var(--acc);padding:2px 6px;background:var(--accS);border-radius:4px;border:1px solid var(--borderS)"> '+st2+'-WK STREAK</span>':'')+((ds2!==null&&ds2>0)?'<span style="font-size:9px;font-family:var(--mono);color:'+(ds2<=3?"var(--success)":ds2<=10?"var(--warn)":"var(--danger)")+'">Last: '+ds2+'d ago</span>':'')+(ds2===0?'<span style="font-size:9px;font-family:var(--mono);color:var(--success)">Trained today</span>':'')+'</div>':'')
     +'</div>'
@@ -711,7 +711,7 @@ function renderClientDetail(){
   html+='<div style="margin-top:24px;border:1px solid rgba(216,120,120,.2);border-radius:10px;overflow:hidden"><div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display===\'none\'?\'block\':\'none\'" style="cursor:pointer;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;background:rgba(216,120,120,.03)"><span style="font-size:10px;font-weight:700;color:var(--danger);font-family:var(--mono);letter-spacing:.1em">DANGER ZONE</span><span style="font-size:10px;color:var(--dm)">\u25bc</span></div><div style="display:none;padding:16px"><div style="font-size:11px;color:var(--dm);margin-bottom:12px">This cannot be undone. Session history will be preserved.</div><button class="btn-danger" onclick="deleteClient('+idx+')">DELETE CLIENT</button></div></div>';
   return html;
 }
-function renderClientDetailInPlace(){var b=el("clientDetailBody");if(!b)return;var idx=currentView.data.clientIdx,c=clients[idx];if(!c)return;var cs=sessions.filter(function(x){return x.clientId===c.id;});var rev=cs.filter(function(x){return x.status!=="cancelled";}).reduce(function(a,x){var r=parseFloat(x.rate);return a+(isNaN(r)?parseFloat(c.rate)||70:r);},0);var info=[["Phone",c.phone],["Email",c.email],["Age",c.age],["Goals",c.goals],["Injuries",c.injuries],["Medical",c.medical],["Activity",c.activity],["Notes",c.notes]].filter(function(r){return r[1];});var subTab=(currentView.data||{}).clientSubTab||"overview";b.innerHTML=subTab==="progress"?renderClientProgress(c,idx):subTab==="notes"?renderClientNotes(c,idx):subTab==="program"?renderClientProgram(c,idx):subTab==="checkins"?renderClientCheckins(c,idx):subTab==="peakweek"?renderPeakWeek(c,idx):renderClientOverview(c,idx,cs,rev,info);}
+function renderClientDetailInPlace(){var b=el("clientDetailBody");if(!b)return;var idx=currentView.data.clientIdx,c=clients[idx];if(!c)return;var cs=sessions.filter(function(x){return x.clientId===c.id;});var rev=cs.filter(function(x){return x.status!=="cancelled";}).reduce(function(a,x){var r=parseFloat(x.rate);return a+(isNaN(r)?parseFloat(c.rate)||0:r);},0);var info=[["Phone",c.phone],["Email",c.email],["Age",c.age],["Goals",c.goals],["Injuries",c.injuries],["Medical",c.medical],["Activity",c.activity],["Notes",c.notes]].filter(function(r){return r[1];});var subTab=(currentView.data||{}).clientSubTab||"overview";b.innerHTML=subTab==="progress"?renderClientProgress(c,idx):subTab==="notes"?renderClientNotes(c,idx):subTab==="program"?renderClientProgram(c,idx):subTab==="checkins"?renderClientCheckins(c,idx):subTab==="peakweek"?renderPeakWeek(c,idx):renderClientOverview(c,idx,cs,rev,info);}
 function renderClientOverview(c,idx,cs,rev,info){
   var html='<div class="g3" style="margin-bottom:22px"><div class="stat"><b style="color:var(--acc)">'+cs.length+'</b><small>SESSIONS</small></div><div class="stat"><b style="color:var(--ow)">$'+rev+'</b><small>GROSS</small></div><div class="stat"><b style="color:var(--accVib)">$'+Math.round(rev*(1-getGymCut()))+'</b><small>YOUR CUT</small></div></div>';
   if(info.length){html+='<div class="sl">INFO</div><div class="cd" style="padding:4px 16px">';for(var i=0;i<info.length;i++){var infoVal=esc(info[i][1]);if(info[i][0]==="Phone"&&info[i][1])infoVal='<span onclick="window.location.href=\'tel:'+esc(info[i][1]).replace(/[^0-9+]/g,"")+'\'" style="color:var(--acc);cursor:pointer">'+esc(info[i][1])+' <span style=\"font-size:9px;color:var(--dm)\">→</span></span>';if(info[i][0]==="Email"&&info[i][1])infoVal='<span onclick="window.location.href=\'mailto:'+esc(info[i][1])+'\'" style="color:var(--acc);cursor:pointer">'+esc(info[i][1])+' <span style=\"font-size:9px;color:var(--dm)\">→</span></span>';html+='<div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:'+(i<info.length-1?"1px solid var(--borderS)":"none")+';gap:14px"><span style="font-size:11px;color:var(--dm);font-weight:600;min-width:55px">'+info[i][0]+'</span><span style="font-size:12px;color:var(--ow);text-align:right;word-break:break-word;flex:1">'+infoVal+'</span></div>';}html+='</div>';}
@@ -804,7 +804,7 @@ function renderLogSession(){
   var opts="";for(var i=0;i<clients.length;i++){var c=clients[i];opts+='<option value="'+c.id+'"'+(pfId===c.id?" selected":"")+'>'+esc(c.name)+'</option>';}
   var STATUS_OPTS=[{v:"complete",l:"Complete"},{v:"latecancel",l:"Late Cancel (Charged)"},{v:"cancelled",l:"Cancelled (No Charge)"},{v:"noshow",l:"No-Show (Charged)"}];
   var stOpts="";for(var i=0;i<STATUS_OPTS.length;i++)stOpts+='<div class="chip'+(i===0?" on":"")+'" data-val="'+STATUS_OPTS[i].v+'" onclick="pickChipVal(this,\'sSt\')">'+STATUS_OPTS[i].l+'</div>';
-  var sc=pfId?clientById(pfId):null,rate=pfR||(sc?sc.rate:"70");
+  var sc=pfId?clientById(pfId):null,rate=pfR||(sc?sc.rate:"")||LS.get("defaultRate","");
   var lastSess=pfId?sessions.filter(function(s){return s.clientId===pfId&&s.status!=="cancelled";}).slice(-1)[0]:null;
   var lastSessHTML="";
   if(lastSess){
@@ -1070,7 +1070,7 @@ function renderSchedule(){
   var now=new Date(),startDay=new Date(now);startDay.setDate(now.getDate()-3+(scheduleWeekOffset*7));startDay.setHours(0,0,0,0);
   var days=[];for(var i=0;i<7;i++){var d=new Date(startDay);d.setDate(startDay.getDate()+i);days.push(d);}
   var wl=days[0].toLocaleDateString("en-US",{month:"short",day:"numeric"})+" \u2014 "+days[6].toLocaleDateString("en-US",{month:"short",day:"numeric"});
-  var ws=0,wr=0;for(var di=0;di<days.length;di++){var dayIso=days[di].toISOString().split("T")[0];schedule.filter(function(s){return s.date===dayIso&&s.status!=="cancelled";}).forEach(function(s){ws++;wr+=parseFloat(s.rate||70);});}
+  var ws=0,wr=0;for(var di=0;di<days.length;di++){var dayIso=days[di].toISOString().split("T")[0];schedule.filter(function(s){return s.date===dayIso&&s.status!=="cancelled";}).forEach(function(s){ws++;wr+=parseFloat(s.rate||0);});}
   var completedWeek=0;for(var di2=0;di2<days.length;di2++){var di2Iso=days[di2].toISOString().split("T")[0];schedule.filter(function(s){return s.date===di2Iso&&s.status==="complete";}).forEach(function(){completedWeek++;});}
   var html='<div style="display:flex;justify-content:space-between;align-items:center"><div class="pt" style="margin-bottom:0">Schedule</div><button class="btn2" onclick="var f=document.getElementById(\'schForm\');if(f){f.style.display=\'block\';f.scrollIntoView({behavior:\'smooth\'});}" style="display:flex;align-items:center;gap:5px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>ADD</button></div>';
   if(ws)html+='<div style="display:flex;gap:8px;align-items:center;margin-bottom:14px;font-family:var(--mono);font-size:10px"><span style="color:var(--mu)">'+ws+' session'+(ws!==1?"s":"")+'</span><span style="color:var(--borderH)">\u00b7</span><span style="color:var(--acc)">$'+wr+'</span>'+(completedWeek?'<span style="color:var(--borderH)">\u00b7</span><span style="color:var(--success)">'+completedWeek+' completed</span>':'')+'</div>';
@@ -1093,7 +1093,7 @@ function renderSchedule(){
         var s=ds[j],ic=s.status==="complete",ix=s.status==="cancelled",bc=ic?"var(--success)":ix?"var(--danger)":"var(--acc)";
         html+='<div class="cd" style="display:flex;align-items:center;gap:12px;border-left:3px solid '+bc+'">'
           +'<div style="min-width:48px;font-family:var(--mono);font-size:12px;font-weight:700;color:'+(ic?"var(--success)":"var(--acc)")+'">'+fmtTimeStr(s.time)+'</div>'
-          +'<div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--wh)">'+esc(s.clientName)+'</div><div style="font-size:10px;color:var(--dm)">'+(s.type||"Training")+' \u00b7 $'+(s.rate||70)+(ic?' \u00b7 <span class="status-chip status-complete">COMPLETED</span>':ix?' \u00b7 <span class="status-chip status-cancelled">CANCELLED</span>':"")+'</div></div>'
+          +'<div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--wh)">'+esc(s.clientName)+'</div><div style="font-size:10px;color:var(--dm)">'+(s.type||"Training")+(s.rate?' \u00b7 $'+s.rate:'')+(ic?' \u00b7 <span class="status-chip status-complete">COMPLETED</span>':ix?' \u00b7 <span class="status-chip status-cancelled">CANCELLED</span>':"")+'</div></div>'
           +(!ic&&!ix?'<button class="btn2" onclick="completeScheduled(\''+s.id+'\')" style="padding:4px 8px;font-size:8px">LOG</button><button class="btn2" onclick="push(\'edit\',{schedId:\''+s.id+'\'})" style="padding:4px 8px;font-size:8px">EDIT</button>':"")
           +'<span style="font-size:13px;color:var(--danger);cursor:pointer;padding:4px" onclick="deleteScheduled(\''+s.id+'\')">&#10005;</span></div>';
       }
@@ -1106,10 +1106,10 @@ function renderSchedule(){
     +'<div class="cd" style="padding:18px"><div class="sl" style="margin-bottom:10px">ADD TO SCHEDULE</div>'
     +'<div class="field"><span class="lb">CLIENT *</span><select id="schC" onchange="onScheduleClientSelect()"><option value="">Select\u2026</option>'+copts+'</select></div>'
     +'<div class="g2 field"><div><span class="lb">DATE</span><input id="schD" type="date" value="'+(_selectedDay||todayISO())+'"></div><div><span class="lb">TIME</span><input id="schT" type="time" value="'+getNextHourTime()+'"></div></div>'
-    +'<div class="g2 field"><div><span class="lb">TYPE</span><select id="schTy"><option>Training</option><option>Posing</option><option>Group Session</option><option>Contest Prep</option><option>Nutrition Check-In</option><option>Phone Consult</option><option>Assessment</option></select></div><div><span class="lb">RATE ($)</span><input id="schR" type="number" min="0" value="70"></div></div>'
+    +'<div class="g2 field"><div><span class="lb">TYPE</span><select id="schTy"><option>Training</option><option>Posing</option><option>Group Session</option><option>Contest Prep</option><option>Nutrition Check-In</option><option>Phone Consult</option><option>Assessment</option></select></div><div><span class="lb">RATE ($)</span><input id="schR" type="number" min="0" value="" placeholder="\u2014"></div></div>'
     +'<div class="field"><span class="lb">RECURRING</span><div style="display:flex;gap:4px;margin-bottom:8px"><div class="chip on" data-rec="One-Time" onclick="pickChip(this,\'schRec\');toggleRecurUI()">One-Time</div><div class="chip" data-rec="Weekly" onclick="pickChip(this,\'schRec\');toggleRecurUI()">Weekly</div><div class="chip" data-rec="Biweekly" onclick="pickChip(this,\'schRec\');toggleRecurUI()">Biweekly</div></div><input type="hidden" id="schRec" value="One-Time"><div id="recurDuration" style="display:none;margin-top:6px"><span class="lb">FOR HOW LONG?</span><select id="schRecWeeks"><option value="4" selected>4 weeks</option><option value="6">6 weeks</option><option value="8">8 weeks</option><option value="12">12 weeks</option><option value="16">16 weeks</option><option value="26">26 weeks</option></select></div></div>'
     +'<button class="btn" onclick="addToSchedule()">ADD TO SCHEDULE</button></div></div>';
-  setTimeout(function(){var t=el("day-"+todayISO());if(t&&!_selectedDay)t.scrollIntoView({behavior:"smooth",block:"center"});},100);
+  setTimeout(function(){var ct=el("ct");if(ct)ct.scrollTop=0;},50);
   return html;
 }
 function renderScheduleEdit(){
@@ -1117,7 +1117,7 @@ function renderScheduleEdit(){
   var copts="";for(var i=0;i<clients.length;i++){var c=clients[i];copts+='<option value="'+c.id+'"'+(c.id===sched.clientId?" selected":"")+'>'+esc(c.name)+'</option>';}
   var stypes=["Training","Posing","Group Session","Contest Prep","Nutrition Check-In","Phone Consult","Assessment"];
   var topts="";for(var i=0;i<stypes.length;i++)topts+='<option value="'+stypes[i]+'"'+(stypes[i]===(sched.type||"Training")?" selected":"")+'>'+stypes[i]+'</option>';
-  return '<button class="btn2" onclick="pop()" style="margin-bottom:14px">\u2039 Back</button><div class="pt">Edit Session</div><div class="cd" style="padding:18px"><div class="field"><span class="lb">CLIENT</span><select id="schC" onchange="onScheduleClientSelect()">'+copts+'</select></div><div class="g2 field"><div><span class="lb">DATE</span><input id="schD" type="date" value="'+sched.date+'"></div><div><span class="lb">TIME</span><input id="schT" type="time" value="'+(sched.time||"10:00")+'"></div></div><div class="g2 field"><div><span class="lb">TYPE</span><select id="schTy">'+topts+'</select></div><div><span class="lb">RATE ($)</span><input id="schR" type="number" min="0" value="'+(sched.rate||70)+'"></div></div><button class="btn" onclick="updateScheduled(\''+sched.id+'\')">SAVE</button><div style="display:flex;gap:8px;margin-top:10px"><button class="btn-success" style="flex:1" onclick="completeScheduled(\''+sched.id+'\')">LOG SESSION</button><button class="btn-danger" style="flex:1" onclick="cancelScheduled(\''+sched.id+'\')">CANCEL</button></div></div>';
+  return '<button class="btn2" onclick="pop()" style="margin-bottom:14px">\u2039 Back</button><div class="pt">Edit Session</div><div class="cd" style="padding:18px"><div class="field"><span class="lb">CLIENT</span><select id="schC" onchange="onScheduleClientSelect()">'+copts+'</select></div><div class="g2 field"><div><span class="lb">DATE</span><input id="schD" type="date" value="'+sched.date+'"></div><div><span class="lb">TIME</span><input id="schT" type="time" value="'+(sched.time||"10:00")+'"></div></div><div class="g2 field"><div><span class="lb">TYPE</span><select id="schTy">'+topts+'</select></div><div><span class="lb">RATE ($)</span><input id="schR" type="number" min="0" value="'+(sched.rate||"")+'" placeholder="\u2014"></div></div><button class="btn" onclick="updateScheduled(\''+sched.id+'\')">SAVE</button><div style="display:flex;gap:8px;margin-top:10px"><button class="btn-success" style="flex:1" onclick="completeScheduled(\''+sched.id+'\')">LOG SESSION</button><button class="btn-danger" style="flex:1" onclick="cancelScheduled(\''+sched.id+'\')">CANCEL</button></div></div>';
 }
 function getNextHourTime(){var now=new Date(),h=(now.getHours()+1)%24;return(h<10?"0"+h:String(h))+":00";}
 function toggleRecurUI(){
@@ -1126,7 +1126,7 @@ function toggleRecurUI(){
   var val2=(activeChip&&activeChip.dataset)?activeChip.dataset.rec:(f.value||"One-Time");
   d.style.display=(val2==="One-Time")?"none":"block";
 }
-function onScheduleClientSelect(){var cId=val("schC"),c=clientById(cId);if(!c)return;var r=el("schR");if(r)r.value=c.rate||"70";var t=el("schTy");if(t){var svcs=(c.services||"Training");var bestType="Training";if(svcs.indexOf("Contest Prep")>=0)bestType="Contest Prep";else if(svcs.indexOf("Nutrition")>=0)bestType="Nutrition Check-In";else if(svcs.indexOf("Posing")>=0)bestType="Posing";else if(svcs.indexOf("Group")>=0)bestType="Group Session";for(var i=0;i<t.options.length;i++)if(t.options[i].text===bestType){t.selectedIndex=i;break;}}}
+function onScheduleClientSelect(){var cId=val("schC"),c=clientById(cId);if(!c)return;var r=el("schR");if(r)r.value=c.rate||LS.get("defaultRate","")||"";var t=el("schTy");if(t){var svcs=(c.services||"Training");var bestType="Training";if(svcs.indexOf("Contest Prep")>=0)bestType="Contest Prep";else if(svcs.indexOf("Nutrition")>=0)bestType="Nutrition Check-In";else if(svcs.indexOf("Posing")>=0)bestType="Posing";else if(svcs.indexOf("Group")>=0)bestType="Group Session";for(var i=0;i<t.options.length;i++)if(t.options[i].text===bestType){t.selectedIndex=i;break;}}}
 function addToSchedule(){
   var cId=val("schC");if(!cId){toast("Select a client");return;}
   var cl=clientById(cId),rec=val("schRec")||"One-Time",baseDate=new Date((val("schD")||todayISO())+"T12:00:00");
@@ -1134,7 +1134,7 @@ function addToSchedule(){
   var dateStr=baseDate.toISOString().split("T")[0];
   var dup=schedule.find(function(s){return s.clientId===cId&&s.date===dateStr&&s.time===tyme&&s.status!=="cancelled";});
   var conflict=schedule.find(function(s){return s.date===dateStr&&s.time===tyme&&s.status!=="cancelled"&&s.clientId!==cId;});
-  function _doAddSchedule(){var totalWeeks=1,interval=1;if(rec==="Weekly"){totalWeeks=parseInt(val("schRecWeeks")||"4");interval=1;}else if(rec==="Biweekly"){totalWeeks=parseInt(val("schRecWeeks")||"8");interval=2;}var count=0;for(var w=0;w<totalWeeks;w+=interval){var dd=new Date(baseDate);dd.setDate(dd.getDate()+(w*7));schedule.push({id:uid(),clientId:cId,clientName:cl?cl.name:"",date:dd.toISOString().split("T")[0],time:tyme,type:val("schTy")||"Training",rate:val("schR")||(cl?cl.rate:"70"),status:"pending",created_at:new Date().toISOString()});count++;}save();toast("\u2713 "+count+" session"+(count>1?"s":"")+" scheduled");render();}
+  function _doAddSchedule(){var totalWeeks=1,interval=1;if(rec==="Weekly"){totalWeeks=parseInt(val("schRecWeeks")||"4");interval=1;}else if(rec==="Biweekly"){totalWeeks=parseInt(val("schRecWeeks")||"8");interval=2;}var count=0;for(var w=0;w<totalWeeks;w+=interval){var dd=new Date(baseDate);dd.setDate(dd.getDate()+(w*7));schedule.push({id:uid(),clientId:cId,clientName:cl?cl.name:"",date:dd.toISOString().split("T")[0],time:tyme,type:val("schTy")||"Training",rate:val("schR")||(cl?cl.rate:""),status:"pending",created_at:new Date().toISOString()});count++;}save();toast("\u2713 "+count+" session"+(count>1?"s":"")+" scheduled");render();}
   function _checkConflict(){if(conflict){showConfirm("Time Conflict","\u26a0 "+(conflict.clientName||"Another client")+" is booked at "+fmtTimeStr(tyme)+" on "+dateStr+".\nDouble-book anyway?","Add Anyway").then(function(ok){if(ok)_doAddSchedule();});}else{_doAddSchedule();}}
   if(dup){showConfirm("Duplicate",(cl?cl.name:"Client")+" is already scheduled at "+fmtTimeStr(tyme)+" on that date.\nAdd anyway?","Add Anyway").then(function(ok){if(ok)_checkConflict();});}else{_checkConflict();}
 }
@@ -1156,12 +1156,12 @@ function renderSettings(){
   var totalClients=clients.length,totalSess=sessions.filter(function(s){return s.status!=="cancelled";}).length;
   var memberSince=sessions.length?sessions.reduce(function(a,s){return s.date<a?s.date:a;},sessions[0].date):"";
   return '<button class="btn2" onclick="go(\'home\')" style="margin-bottom:12px">\u2039 BACK</button><div class="pt">Settings</div>'
-    +'<div class="sl">PROFILE</div><div class="cd" style="padding:20px"><div style="display:flex;align-items:center;gap:16px;margin-bottom:16px"><div style="width:56px;height:56px;border-radius:16px;background:var(--goldGrad);background-size:200% 100%;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:26px;font-weight:900;color:#1a1000;animation:shimmer 3s ease-in-out infinite;box-shadow:0 4px 20px var(--accM)">M</div><div><div style="font-size:17px;font-weight:700;color:var(--wh);font-family:var(--display)">Big Mike Ely</div><div style="display:flex;gap:6px;align-items:center;margin-top:3px"><span class="premium-badge">IFBB PRO</span><span style="font-size:9px;color:var(--dm);font-family:var(--mono)">COACH</span></div></div></div>'
+    +'<div class="sl">PROFILE</div><div class="cd" style="padding:20px"><div style="display:flex;align-items:center;gap:16px;margin-bottom:16px"><div style="width:56px;height:56px;border-radius:16px;background:var(--goldGrad);background-size:200% 100%;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:26px;font-weight:900;color:#1a1000;animation:shimmer 3s ease-in-out infinite;box-shadow:0 4px 20px var(--accM)">M</div><div><div style="font-size:17px;font-weight:700;color:var(--wh);font-family:var(--display)">Big Mike Ely</div><div style="display:flex;gap:6px;align-items:center;margin-top:3px"><span class="premium-badge">IFBB PRO</span></div></div></div>'
     +'<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px"><div style="text-align:center;padding:10px 6px;background:var(--glass);border-radius:8px;border:1px solid var(--borderS)"><div style="font-size:18px;font-weight:700;color:var(--acc);font-family:var(--mono)">'+totalClients+'</div><div style="font-size:8px;color:var(--dm);font-family:var(--mono);letter-spacing:.08em">CLIENTS</div></div><div style="text-align:center;padding:10px 6px;background:var(--glass);border-radius:8px;border:1px solid var(--borderS)"><div style="font-size:18px;font-weight:700;color:var(--wh);font-family:var(--mono)">'+totalSess+'</div><div style="font-size:8px;color:var(--dm);font-family:var(--mono);letter-spacing:.08em">SESSIONS</div></div><div style="text-align:center;padding:10px 6px;background:var(--glass);border-radius:8px;border:1px solid var(--borderS)"><div style="font-size:18px;font-weight:700;color:var(--accVib);font-family:var(--mono)">$'+tr+'</div><div style="font-size:8px;color:var(--dm);font-family:var(--mono);letter-spacing:.08em">REVENUE</div></div></div>'
     +(memberSince?'<div style="margin-top:10px;font-size:9px;color:var(--dm);font-family:var(--mono);text-align:center">Tracking since '+fmtDate(memberSince)+'</div>':'')+'</div>'
-    +'<div class="sl" style="margin-top:18px">GYM SETTINGS</div><div class="cd" style="padding:16px"><div class="field"><span class="lb">GYM CUT (%)</span><div style="display:flex;gap:4px;flex-wrap:wrap">'+ph+'</div></div><div class="field"><span class="lb">DEFAULT SESSION RATE ($)</span><input id="defRate" type="number" min="0" value="'+LS.get("defaultRate","70")+'" onchange="LS.set(\'defaultRate\',this.value)"></div></div>'
+    +'<div class="sl" style="margin-top:18px">GYM SETTINGS</div><div class="cd" style="padding:16px"><div class="field"><span class="lb">GYM CUT (%)</span><div style="display:flex;gap:4px;flex-wrap:wrap">'+ph+'</div></div><div class="field"><span class="lb">DEFAULT SESSION RATE ($)</span><input id="defRate" type="number" min="0" value="'+LS.get("defaultRate","")+'" onchange="LS.set(\'defaultRate\',this.value)"></div></div>'
     +'<div class="sl" style="margin-top:18px">DISPLAY</div><div class="cd" style="padding:16px"><div class="field"><span class="lb">COLOR THEME</span><div style="display:flex;gap:4px"><div class="chip'+(LS.get("theme","gold")==="gold"?" on":"")+'" onclick="setTheme(\'gold\')">GOLD</div><div class="chip'+(LS.get("theme","gold")==="crimson"?" on":"")+'" onclick="setTheme(\'crimson\')">CRIMSON</div></div></div><div class="field"><span class="lb">TIME FORMAT</span><div style="display:flex;gap:4px"><div class="chip'+(is24Hr()?"":" on")+'" onclick="LS.set(\'timeFormat\',\'12\');render()">12-Hour</div><div class="chip'+(is24Hr()?" on":"")+'" onclick="LS.set(\'timeFormat\',\'24\');render()">24-Hour</div></div></div><div><span class="lb">TIMER SOUND</span><div style="display:flex;gap:4px"><div class="chip'+(LS.get("timerSound",true)?" on":"")+'" onclick="LS.set(\'timerSound\',true);render()">ON</div><div class="chip'+(!LS.get("timerSound",true)?" on":"")+'" onclick="LS.set(\'timerSound\',false);render()">OFF</div></div></div></div>'
-    +'<div class="sl" style="margin-top:18px">SECURITY</div><div class="cd" style="padding:16px"><div style="margin-bottom:12px"><div style="font-size:13px;font-weight:500;color:var(--wh)">PIN Lock</div><div style="font-size:10px;color:var(--dm)">Protect your data</div></div><button class="btn2" onclick="changePIN()" style="width:100%">CHANGE PIN</button></div>'
+    +'<div class="sl" style="margin-top:18px">SECURITY</div><div class="cd" style="padding:16px"><div style="margin-bottom:12px"><div style="font-size:13px;font-weight:500;color:var(--wh)">PIN Lock</div></div><button class="btn2" onclick="changePIN()" style="width:100%">CHANGE PIN</button></div>'
     +'<div class="sl" style="margin-top:18px">ALERTS & NOTIFICATIONS</div><div class="cd" style="padding:16px">'
     +(function(){var nRet=LS.get("notif_retention",true),nSched=LS.get("notif_schedule",true);return '<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--borderS)"><div><div style="font-size:13px;font-weight:500;color:var(--wh)">PR Celebrations</div><div style="font-size:10px;color:var(--dm)">Toast when a client hits a new weight record</div></div><div class="chip'+(nPR?" on":"")+'" onclick="toggleNotif(\'notif_pr\',this)" style="min-width:40px;text-align:center">'+(nPR?"ON":"OFF")+'</div></div><div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--borderS)"><div><div style="font-size:13px;font-weight:500;color:var(--wh)">Retention Warnings</div><div style="font-size:10px;color:var(--dm)">Flag clients inactive 7+ days</div></div><div class="chip'+(nRet?" on":"")+'" onclick="toggleNotif(\'notif_retention\',this)" style="min-width:40px;text-align:center">'+(nRet?"ON":"OFF")+'</div></div><div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0"><div><div style="font-size:13px;font-weight:500;color:var(--wh)">Schedule Reminders</div><div style="font-size:10px;color:var(--dm)">Show upcoming sessions on home</div></div><div class="chip'+(nSched?" on":"")+'" onclick="toggleNotif(\'notif_schedule\',this)" style="min-width:40px;text-align:center">'+(nSched?"ON":"OFF")+'</div></div>'
     +'<div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--borderS)"><div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:12px;font-weight:500;color:var(--wh)">Reminder Lead Time</div><div style="font-size:9px;color:var(--dm)">How early before sessions</div></div><select onchange="LS.set(\'reminderMin\',this.value)" style="font-size:11px;padding:4px 8px;width:auto"><option value="15"'+(LS.get("reminderMin","30")==="15"?" selected":"")+'>15 min</option><option value="30"'+(LS.get("reminderMin","30")==="30"?" selected":"")+'>30 min</option><option value="60"'+(LS.get("reminderMin","30")==="60"?" selected":"")+'>1 hour</option><option value="120"'+(LS.get("reminderMin","30")==="120"?" selected":"")+'>2 hours</option></select></div></div>';}())
@@ -1513,7 +1513,39 @@ var FOOD_DB=[
 {n:"Coconut Aminos",cal:5,p:0,c:1,f:0,unit:"tbsp",per:1,ck:0,cat:"V",tags:"gf,df,lc,lf"},
 {n:"Lemon Juice",cal:3,p:0.1,c:1,f:0,unit:"tbsp",per:1,ck:0,cat:"V",tags:"gf,df,lc,lf,kf"},
 {n:"Kimchi",cal:10,p:1,c:2,f:0,unit:"cup",per:0.5,ck:0,cat:"V",tags:"gf,df,lc,lf"},
-{n:"Sauerkraut",cal:13,p:0.6,c:3,f:0.1,unit:"cup",per:0.5,ck:0,cat:"V",tags:"gf,df,lc,lf"}
+{n:"Sauerkraut",cal:13,p:0.6,c:3,f:0.1,unit:"cup",per:0.5,ck:0,cat:"V",tags:"gf,df,lc,lf"},
+{n:"Chicken Thigh (boneless)",cal:209,p:26,c:0,f:11,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc"},
+{n:"Chicken Thigh (bone-in)",cal:230,p:24,c:0,f:14,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc"},
+{n:"Chicken Drumstick",cal:172,p:28,c:0,f:6,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp"},
+{n:"Chicken Wings",cal:203,p:30,c:0,f:8,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc"},
+{n:"Turkey Breast (whole)",cal:135,p:30,c:0,f:1,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp,lf"},
+{n:"Turkey Leg",cal:170,p:28,c:0,f:6,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc"},
+{n:"Ground Lamb",cal:283,p:24,c:0,f:20,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc"},
+{n:"Lamb Rack",cal:260,p:25,c:0,f:17,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc"},
+{n:"Lamb Leg",cal:190,p:29,c:0,f:8,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc"},
+{n:"Duck Breast",cal:200,p:24,c:0,f:11,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc"},
+{n:"Steak (Ribeye)",cal:291,p:27,c:0,f:19,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,kf"},
+{n:"Steak (Tri-Tip)",cal:189,p:29,c:0,f:7.5,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp"},
+{n:"Steak (Top Round / London Broil)",cal:168,p:30,c:0,f:5,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp,lf"},
+{n:"Steak (Chuck Roast)",cal:235,p:27,c:0,f:13,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc"},
+{n:"Steak (Skirt)",cal:220,p:27,c:0,f:12,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc"},
+{n:"Steak (Flat Iron)",cal:195,p:29,c:0,f:8,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp"},
+{n:"Ground Pork",cal:252,p:22,c:0,f:18,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc"},
+{n:"Bacon",cal:541,p:37,c:1,f:42,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,kf"},
+{n:"Turkey Bacon",cal:218,p:29,c:2,f:10,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc"},
+{n:"Canadian Bacon",cal:157,p:24,c:2,f:6,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp"},
+{n:"Chicken Sausage",cal:170,p:20,c:4,f:8,unit:"link",per:1,ck:1,cat:"P",tags:"gf,df"},
+{n:"Turkey Sausage",cal:150,p:20,c:1,f:7,unit:"link",per:1,ck:1,cat:"P",tags:"gf,df"},
+{n:"Sardines (canned)",cal:208,p:25,c:0,f:11,unit:"can",per:1,ck:0,cat:"P",tags:"gf,df,lc,hp"},
+{n:"Sea Bass",cal:124,p:24,c:0,f:2.6,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp,lf"},
+{n:"Halibut",cal:140,p:27,c:0,f:3,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp,lf"},
+{n:"Swordfish",cal:172,p:28,c:0,f:6,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp"},
+{n:"Scallops",cal:111,p:21,c:5,f:0.8,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp,lf"},
+{n:"Crab Meat",cal:97,p:21,c:0,f:1.2,unit:"oz",per:4,ck:0,cat:"P",tags:"gf,df,lc,hp,lf"},
+{n:"Lobster Tail",cal:128,p:27,c:0,f:1.3,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp,lf"},
+{n:"Oysters",cal:81,p:9,c:5,f:2.3,unit:"oz",per:4,ck:0,cat:"P",tags:"gf,df,lc"},
+{n:"Elk",cal:134,p:27,c:0,f:1.9,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp,lf"},
+{n:"Goat Meat",cal:143,p:27,c:0,f:3,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp,lf"}
 ];
 
 // Smart dietary detection - reads client medical/notes to auto-filter foods
@@ -1706,17 +1738,131 @@ var SUPPLEMENT_DB=[
 ]}
 ];
 
-var _nutView="plans",_nutClientId="",_editMealPlan=null;
+var ANABOLICS_DB=[
+{cat:"Anabolic Steroids",items:[
+{name:"Test C / Testosterone Cypionate",doses:["100mg","125mg","150mg","200mg","250mg","300mg","400mg","500mg"],routes:["IM Injection","SubQ Injection"],freqs:["2x/week","1x/week","EOD","E3D"]},
+{name:"Test E / Testosterone Enanthate",doses:["100mg","125mg","150mg","200mg","250mg","300mg","400mg","500mg"],routes:["IM Injection","SubQ Injection"],freqs:["2x/week","1x/week","EOD","E3D"]},
+{name:"Test P / Testosterone Propionate",doses:["25mg","50mg","75mg","100mg","150mg","200mg"],routes:["IM Injection","SubQ Injection"],freqs:["EOD","ED","3x/week"]},
+{name:"Sustanon 250 / Testosterone Blend",doses:["125mg","250mg","375mg","500mg"],routes:["IM Injection"],freqs:["1x/week","2x/week","E3D"]},
+{name:"Tren A / Trenbolone Acetate",doses:["50mg","75mg","100mg","150mg","200mg"],routes:["IM Injection"],freqs:["EOD","ED","3x/week"]},
+{name:"Tren E / Trenbolone Enanthate",doses:["100mg","150mg","200mg","300mg","400mg"],routes:["IM Injection"],freqs:["2x/week","1x/week"]},
+{name:"Tren Hex / Parabolan",doses:["76mg","152mg","228mg"],routes:["IM Injection"],freqs:["1x/week","2x/week"]},
+{name:"NPP / Nandrolone Phenylpropionate",doses:["50mg","75mg","100mg","150mg","200mg"],routes:["IM Injection"],freqs:["EOD","3x/week","2x/week"]},
+{name:"Deca / Nandrolone Decanoate",doses:["100mg","150mg","200mg","300mg","400mg","500mg","600mg"],routes:["IM Injection"],freqs:["1x/week","2x/week"]},
+{name:"EQ / Boldenone Undecylenate",doses:["200mg","300mg","400mg","500mg","600mg","800mg","1000mg"],routes:["IM Injection"],freqs:["1x/week","2x/week"]},
+{name:"Primo / Primobolan / Methenolone Enanthate",doses:["100mg","200mg","300mg","400mg","500mg","600mg","800mg","1000mg"],routes:["IM Injection"],freqs:["2x/week","1x/week"]},
+{name:"Primo Oral / Methenolone Acetate",doses:["25mg","50mg","75mg","100mg","150mg"],routes:["Oral"],freqs:["ED","Split AM/PM"]},
+{name:"Masteron P / Drostanolone Propionate",doses:["50mg","100mg","150mg","200mg"],routes:["IM Injection"],freqs:["EOD","3x/week","ED"]},
+{name:"Masteron E / Drostanolone Enanthate",doses:["200mg","300mg","400mg","500mg","600mg"],routes:["IM Injection"],freqs:["2x/week","1x/week"]},
+{name:"Anavar / Oxandrolone",doses:["10mg","20mg","25mg","30mg","40mg","50mg","75mg","100mg"],routes:["Oral"],freqs:["ED","Split AM/PM"]},
+{name:"Dbol / Dianabol / Methandrostenolone",doses:["10mg","20mg","30mg","40mg","50mg"],routes:["Oral"],freqs:["ED","Split AM/PM","Pre-workout"]},
+{name:"Anadrol / Oxymetholone",doses:["25mg","50mg","75mg","100mg","150mg"],routes:["Oral"],freqs:["ED","Split AM/PM"]},
+{name:"Winstrol / Stanozolol",doses:["10mg","20mg","25mg","30mg","40mg","50mg"],routes:["Oral","IM Injection"],freqs:["ED","Split AM/PM","EOD"]},
+{name:"Halotestin / Fluoxymesterone",doses:["5mg","10mg","20mg","30mg","40mg"],routes:["Oral"],freqs:["ED","Pre-workout","Split AM/PM"]},
+{name:"Proviron / Mesterolone",doses:["25mg","50mg","75mg","100mg","150mg"],routes:["Oral"],freqs:["ED","Split AM/PM"]},
+{name:"Superdrol / Methyldrostanolone",doses:["10mg","20mg","30mg"],routes:["Oral"],freqs:["ED","Split AM/PM"]},
+{name:"Turinabol / 4-Chlorodehydromethyltestosterone",doses:["10mg","20mg","30mg","40mg","50mg","60mg"],routes:["Oral"],freqs:["ED","Split AM/PM"]},
+{name:"DHB / Dihydroboldenone / 1-Test Cyp",doses:["100mg","150mg","200mg","300mg"],routes:["IM Injection"],freqs:["2x/week","1x/week","EOD"]},
+{name:"MENT / Trestolone Acetate",doses:["5mg","10mg","15mg","25mg","35mg","50mg"],routes:["IM Injection","SubQ Injection"],freqs:["ED","EOD","2x/week"]},
+{name:"Cheque Drops / Mibolerone",doses:["200mcg","250mcg","500mcg"],routes:["Oral","Sublingual"],freqs:["Pre-workout","Pre-contest"]}
+]},
+{cat:"AI / Aromatase Inhibitors",items:[
+{name:"Arimidex / Anastrozole",doses:["0.25mg","0.5mg","1mg"],routes:["Oral"],freqs:["EOD","E3D","2x/week","1x/week","ED"]},
+{name:"Aromasin / Exemestane",doses:["6.25mg","12.5mg","25mg"],routes:["Oral"],freqs:["EOD","E3D","2x/week","ED"]},
+{name:"Letrozole / Femara",doses:["0.25mg","0.5mg","1mg","2.5mg"],routes:["Oral"],freqs:["EOD","E3D","2x/week","ED"]}
+]},
+{cat:"SERMs",items:[
+{name:"Nolvadex / Tamoxifen",doses:["10mg","20mg","40mg"],routes:["Oral"],freqs:["ED","EOD"]},
+{name:"Raloxifene / Evista",doses:["30mg","60mg","120mg"],routes:["Oral"],freqs:["ED"]},
+{name:"Clomid / Clomiphene",doses:["12.5mg","25mg","50mg","100mg"],routes:["Oral"],freqs:["ED","EOD"]},
+{name:"Enclomiphene",doses:["6.25mg","12.5mg","25mg"],routes:["Oral"],freqs:["ED"]}
+]},
+{cat:"Prolactin / Progesterone Support",items:[
+{name:"Caber / Cabergoline",doses:["0.25mg","0.5mg","1mg"],routes:["Oral"],freqs:["2x/week","1x/week","E3D"]},
+{name:"P5P / Pyridoxal-5-Phosphate (B6)",doses:["50mg","100mg","200mg","300mg"],routes:["Oral"],freqs:["ED","2x/day","3x/day"]},
+{name:"Prami / Pramipexole",doses:["0.125mg","0.25mg","0.5mg","1mg"],routes:["Oral"],freqs:["ED","Before bed"]}
+]},
+{cat:"Peptides",items:[
+{name:"BPC-157",doses:["250mcg","500mcg","750mcg"],routes:["SubQ Injection","IM Injection","Oral"],freqs:["1x/day","2x/day"]},
+{name:"TB-500 / Thymosin Beta-4",doses:["2mg","2.5mg","5mg","10mg"],routes:["SubQ Injection"],freqs:["2x/week","1x/week","EOD"]},
+{name:"CJC-1295 (w/ DAC)",doses:["1mg","2mg"],routes:["SubQ Injection"],freqs:["1x/week","2x/week"]},
+{name:"CJC-1295 (no DAC) / Mod GRF 1-29",doses:["100mcg","200mcg","300mcg"],routes:["SubQ Injection"],freqs:["1-3x/day","Pre-bed"]},
+{name:"Ipamorelin",doses:["100mcg","200mcg","300mcg"],routes:["SubQ Injection"],freqs:["1-3x/day","Pre-bed"]},
+{name:"GHRP-6",doses:["100mcg","200mcg","300mcg"],routes:["SubQ Injection"],freqs:["1-3x/day"]},
+{name:"GHRP-2",doses:["100mcg","200mcg","300mcg"],routes:["SubQ Injection"],freqs:["1-3x/day"]},
+{name:"Hexarelin",doses:["100mcg","200mcg"],routes:["SubQ Injection"],freqs:["1-3x/day"]},
+{name:"MK-677 / Ibutamoren",doses:["10mg","15mg","25mg","50mg"],routes:["Oral"],freqs:["1x/day","Before bed"]},
+{name:"HGH / Somatropin",doses:["2 IU","3 IU","4 IU","5 IU","6 IU","8 IU","10 IU","12 IU","15 IU","20 IU"],routes:["SubQ Injection","IM Injection"],freqs:["ED","5 on/2 off","EOD","Split AM/PM"]},
+{name:"IGF-1 LR3",doses:["20mcg","40mcg","50mcg","80mcg","100mcg"],routes:["IM Injection","SubQ Injection"],freqs:["ED","Bilateral post-workout"]},
+{name:"IGF-1 DES",doses:["50mcg","100mcg","200mcg"],routes:["IM Injection"],freqs:["Pre-workout","Bilateral post-workout"]},
+{name:"Melanotan II",doses:["250mcg","500mcg","1mg"],routes:["SubQ Injection"],freqs:["ED","EOD","Loading then maintenance"]},
+{name:"PT-141 / Bremelanotide",doses:["0.5mg","1mg","1.5mg","2mg"],routes:["SubQ Injection"],freqs:["As needed"]},
+{name:"Sermorelin",doses:["100mcg","200mcg","300mcg","500mcg"],routes:["SubQ Injection"],freqs:["1x/day","Pre-bed"]},
+{name:"Tesamorelin",doses:["1mg","2mg"],routes:["SubQ Injection"],freqs:["1x/day"]},
+{name:"AOD-9604",doses:["250mcg","300mcg","500mcg"],routes:["SubQ Injection"],freqs:["1x/day","2x/day"]},
+{name:"GHK-Cu",doses:["1mg","2mg","5mg"],routes:["SubQ Injection"],freqs:["1x/day"]},
+{name:"Epithalon / Epitalon",doses:["5mg","10mg"],routes:["SubQ Injection","IM Injection"],freqs:["ED for 10-20 days","1x/day"]},
+{name:"Kisspeptin-10",doses:["100mcg","200mcg"],routes:["SubQ Injection"],freqs:["1x/day"]},
+{name:"Selank",doses:["250mcg","500mcg","750mcg"],routes:["SubQ Injection","Nasal"],freqs:["1-3x/day"]},
+{name:"Semax",doses:["200mcg","400mcg","600mcg"],routes:["Nasal","SubQ Injection"],freqs:["1-3x/day"]},
+{name:"HCG / Human Chorionic Gonadotropin",doses:["250 IU","500 IU","1000 IU","1500 IU","2000 IU","2500 IU","5000 IU"],routes:["SubQ Injection","IM Injection"],freqs:["2x/week","3x/week","EOD","ED"]},
+{name:"HMG / Human Menopausal Gonadotropin",doses:["75 IU","150 IU"],routes:["IM Injection","SubQ Injection"],freqs:["EOD","3x/week"]}
+]},
+{cat:"SARMs",items:[
+{name:"Ostarine / MK-2866",doses:["10mg","15mg","20mg","25mg","30mg"],routes:["Oral"],freqs:["1x/day"]},
+{name:"LGD-4033 / Ligandrol",doses:["2.5mg","5mg","10mg","15mg","20mg"],routes:["Oral"],freqs:["1x/day"]},
+{name:"RAD-140 / Testolone",doses:["5mg","10mg","15mg","20mg","30mg"],routes:["Oral"],freqs:["1x/day"]},
+{name:"S-23",doses:["10mg","15mg","20mg","25mg"],routes:["Oral"],freqs:["1x/day","Split AM/PM"]},
+{name:"YK-11",doses:["5mg","10mg","15mg","20mg"],routes:["Oral"],freqs:["1x/day","Split AM/PM"]},
+{name:"Cardarine / GW-501516",doses:["10mg","15mg","20mg"],routes:["Oral"],freqs:["1x/day"]},
+{name:"SR-9009 / Stenabolic",doses:["10mg","20mg","30mg"],routes:["Oral"],freqs:["2-3x/day"]},
+{name:"S-4 / Andarine",doses:["12.5mg","25mg","50mg","75mg"],routes:["Oral"],freqs:["1x/day","Split AM/PM"]},
+{name:"AC-262 / Accadrine",doses:["10mg","20mg","30mg"],routes:["Oral"],freqs:["1x/day"]}
+]},
+{cat:"Ancillaries & Health",items:[
+{name:"TUDCA",doses:["250mg","500mg","1000mg"],routes:["Oral"],freqs:["ED","With hepatotoxic orals"]},
+{name:"NAC / N-Acetyl Cysteine",doses:["600mg","1200mg","1800mg"],routes:["Oral"],freqs:["ED","2x/day"]},
+{name:"Milk Thistle / Silymarin",doses:["250mg","500mg","1000mg"],routes:["Oral"],freqs:["ED","2x/day"]},
+{name:"Cialis / Tadalafil",doses:["2.5mg","5mg","10mg","20mg"],routes:["Oral"],freqs:["ED","As needed","EOD"]},
+{name:"Viagra / Sildenafil",doses:["25mg","50mg","100mg"],routes:["Oral"],freqs:["As needed"]},
+{name:"Finasteride",doses:["0.25mg","0.5mg","1mg"],routes:["Oral"],freqs:["ED"]},
+{name:"Dutasteride",doses:["0.5mg"],routes:["Oral"],freqs:["ED","EOD","3x/week"]},
+{name:"Minoxidil (Oral)",doses:["1.25mg","2.5mg","5mg"],routes:["Oral"],freqs:["ED"]},
+{name:"Metformin",doses:["250mg","500mg","750mg","1000mg"],routes:["Oral"],freqs:["ED","2x/day","With meals"]},
+{name:"Berberine",doses:["500mg","1000mg","1500mg"],routes:["Oral"],freqs:["2-3x/day with meals"]},
+{name:"T3 / Liothyronine (Cytomel)",doses:["12.5mcg","25mcg","37.5mcg","50mcg","75mcg","100mcg"],routes:["Oral"],freqs:["ED","Split AM/PM"]},
+{name:"T4 / Levothyroxine (Synthroid)",doses:["25mcg","50mcg","75mcg","100mcg","150mcg","200mcg"],routes:["Oral"],freqs:["ED"]},
+{name:"Clenbuterol",doses:["20mcg","40mcg","60mcg","80mcg","100mcg","120mcg","140mcg","160mcg"],routes:["Oral"],freqs:["ED","2 weeks on/2 off","Titrate up"]},
+{name:"Albuterol / Salbutamol",doses:["2mg","4mg","8mg","12mg","16mg"],routes:["Oral"],freqs:["3x/day","2x/day"]},
+{name:"Ephedrine",doses:["12.5mg","25mg"],routes:["Oral"],freqs:["1-3x/day","EC Stack"]},
+{name:"DNP / 2,4-Dinitrophenol",doses:["100mg","125mg","200mg","250mg"],routes:["Oral"],freqs:["ED"]},
+{name:"Insulin (Humalog / Novolog)",doses:["5 IU","8 IU","10 IU","12 IU","15 IU","20 IU"],routes:["SubQ Injection"],freqs:["Pre-workout","Post-workout","With meals"]},
+{name:"Insulin (Humulin R)",doses:["5 IU","10 IU","15 IU","20 IU"],routes:["SubQ Injection"],freqs:["Pre-workout","Post-workout","With meals"]},
+{name:"Insulin (Lantus / Glargine)",doses:["10 IU","15 IU","20 IU","30 IU","40 IU"],routes:["SubQ Injection"],freqs:["1x/day","Before bed"]},
+{name:"Modafinil / Provigil",doses:["50mg","100mg","200mg"],routes:["Oral"],freqs:["ED","As needed"]},
+{name:"Raloxifene (for gyno)",doses:["60mg","120mg"],routes:["Oral"],freqs:["ED"]},
+{name:"Niacin",doses:["250mg","500mg","1000mg"],routes:["Oral"],freqs:["ED","With meals"]},
+{name:"Citrus Bergamot",doses:["500mg","1000mg"],routes:["Oral"],freqs:["ED","2x/day"]},
+{name:"Ezetimibe (Zetia)",doses:["10mg"],routes:["Oral"],freqs:["ED"]},
+{name:"Telmisartan",doses:["20mg","40mg","80mg"],routes:["Oral"],freqs:["ED"]},
+{name:"Nebivolol",doses:["2.5mg","5mg","10mg"],routes:["Oral"],freqs:["ED"]}
+]}
+];
+
+var _nutView="training",_nutClientId="",_editMealPlan=null;
+var _workouts=LS.get("workouts",[]),_editWorkout=null;
 function calcMealTotals(meal){var t={cal:0,p:0,c:0,f:0};(meal.foods||[]).forEach(function(fd){var db=FOOD_DB[fd.di];if(!db)return;var per=db.per||1;var m=(fd.qty||0)/per;t.cal+=Math.round((db.cal||0)*m);t.p+=Math.round((db.p||0)*m);t.c+=Math.round((db.c||0)*m);t.f+=Math.round((db.f||0)*m);});return t;}
 function calcPlanTotals(mp){var t={cal:0,p:0,c:0,f:0};(mp.meals||[]).forEach(function(ml){var mt=calcMealTotals(ml);t.cal+=mt.cal;t.p+=mt.p;t.c+=mt.c;t.f+=mt.f;});return t;}
 function renderNutrition(){
   var planCount=mealPlans.length;
-  var html='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><div class="pt" style="margin-bottom:0">Nutrition</div><span style="font-size:10px;color:var(--dm);font-family:var(--mono)">'+planCount+' plan'+(planCount!==1?'s':'')+'</span></div>';
-  var tabs2=[["plans","Meal Plans"],["supps","Supplements"],["water","Water"]];
-  html+='<div style="display:flex;gap:4px;margin-bottom:16px">';
+  var html='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><div class="pt" style="margin-bottom:0">Programs</div><span style="font-size:10px;color:var(--dm);font-family:var(--mono)">'+planCount+' plan'+(planCount!==1?'s':'')+'</span></div>';
+  var tabs2=[["training","Training"],["plans","Nutrition"],["anabolics","Anabolics"],["supps","Supplements"],["water","Water"]];
+  html+='<div style="display:flex;gap:4px;margin-bottom:16px;flex-wrap:wrap">';
   for(var i=0;i<tabs2.length;i++){var st=tabs2[i];html+='<div class="chip'+(_nutView===st[0]?" on":"")+'" onclick="_nutView=\''+st[0]+'\';render()">'+st[1]+'</div>';}
   html+='</div>';
-  if(_nutView==="plans")html+=renderMealPlans();
+  if(_nutView==="training")html+=renderWorkoutBuilder();
+  else if(_nutView==="plans")html+=renderMealPlans();
+  else if(_nutView==="anabolics")html+=renderAnabolics();
   else if(_nutView==="supps")html+=renderSupplements();
   else html+=renderWaterTracker();
   return html;
@@ -2178,7 +2324,7 @@ function checkAndSendReminders(){
   upcoming.forEach(function(s){
     var cl=clientById(s.clientId);
     var clientName=cl?cl.name:s.clientName;
-    var msg="Reminder: "+clientName+" \u2014 "+(s.type||"Training")+" at "+fmtTimeStr(s.time)+" today. $"+(s.rate||70);
+    var msg="Reminder: "+clientName+" \u2014 "+(s.type||"Training")+" at "+fmtTimeStr(s.time)+" today."+(s.rate?" $"+s.rate:"");
     var formattedPhone=coachPhone.replace(/[^0-9+]/g,"");
     if(formattedPhone.length===10)formattedPhone="+1"+formattedPhone;
     else if(!formattedPhone.startsWith("+"))formattedPhone="+1"+formattedPhone;
