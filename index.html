@@ -2111,7 +2111,7 @@ function showPeptidePicker(){
   // Get peptides from ANABOLICS_DB
   var pepCat=ANABOLICS_DB.find(function(c){return c.cat==="Peptides";});
   if(!pepCat){toast("No peptide database");return;}
-  var content='<div style="max-height:60vh;overflow-y:auto">';
+  var content='<div>';
   content+='<div style="margin-bottom:10px"><input id="pepPickSearch" placeholder="Search peptides..." oninput="filterPepPicker()" style="font-size:13px;padding:10px 14px"></div>';
   content+='<div id="pepPickList">';
   for(var s=0;s<pepCat.items.length;s++){
@@ -2218,7 +2218,7 @@ function showFoodPicker(mealIdx){
   var mp=mealPlans.find(function(p){return p.id===_editMealPlan;});
   var dietR=mp?detectDietaryRestrictions(mp.clientId):[];
   var cats=[["P","PROTEIN"],["C","CARBS"],["F","FATS"],["V","VEGGIES"]];
-  var content='<div style="max-height:60vh;overflow-y:auto">';
+  var content='<div>';
   content+='<div style="margin-bottom:10px"><input id="foodPickSearch" placeholder="Search foods..." oninput="filterFoodPicker()" style="font-size:13px;padding:10px 14px"></div>';
   content+='<div id="foodPickList">';
   for(var ci2=0;ci2<cats.length;ci2++){
@@ -2296,7 +2296,7 @@ function duplicateWorkout(){var w=_workouts.find(function(x){return x.id===_edit
 function deleteWorkout(){showDoubleConfirm("Delete Workout","Permanently delete this workout?").then(function(ok){if(!ok)return;_workouts=_workouts.filter(function(x){return x.id!==_editWorkout;});saveWorkouts();_editWorkout=null;render();});}
 function assignWorkoutToProgram(){var w=_workouts.find(function(x){return x.id===_editWorkout;});if(!w||!w.clientId)return;var ci=clients.findIndex(function(c){return c.id===w.clientId;});if(ci<0)return;var c=clients[ci];if(!c.program)c.program={days:[]};var day={name:w.name,exercises:[]};for(var i=0;i<w.exercises.length;i++){var ex=w.exercises[i];day.exercises.push({name:ex.name,scheme:(ex.sets||"")+"x"+(ex.reps||""),type:"resistance"});}for(var j=0;j<w.cardio.length;j++){var cd=w.cardio[j];day.exercises.push({name:cd.name,scheme:(cd.duration||"")+" min "+(cd.mode||""),type:"cardio",cardioDur:parseInt(cd.duration)||0,cardioTiming:""});}c.program.days.push(day);save();toast("\u2713 Added to "+c.name+"'s program");}
 function showExercisePicker(){
-  var content='<div style="max-height:60vh;overflow-y:auto">';
+  var content='<div>';
   content+='<div style="margin-bottom:10px"><input id="exPickSearch" placeholder="Search exercises..." oninput="filterExPickerModal()" style="font-size:13px;padding:10px 14px"></div>';
   content+='<div id="exPickList">';
   var groups=Object.keys(EXERCISE_DB);
@@ -2319,7 +2319,7 @@ function pickWkExCustom(){var n=val("exCustomName"),g=val("exCustomGroup");if(!n
 function filterExPickerModal(){var q=(el("exPickSearch")||{}).value||"";q=q.toLowerCase();var cats=document.querySelectorAll(".exPickCat");cats.forEach(function(c){var items=c.querySelectorAll(".exPickItem");var anyMatch=false;items.forEach(function(it){var match=it.textContent.toLowerCase().indexOf(q)>=0;it.style.display=match?"":"none";if(match)anyMatch=true;});c.style.display=anyMatch||!q?"":"none";if(q&&anyMatch){var itemsDiv=c.querySelector(".exPickItems");if(itemsDiv)itemsDiv.style.display="block";}});}
 function pickExerciseForWorkout(group,name){var w=_workouts.find(function(x){return x.id===_editWorkout;});if(!w)return;w.exercises.push({name:name,group:group,sets:"",reps:"",rest:"",notes:""});saveWorkouts();closeModal();render();}
 function showCardioPicker(){
-  var content='<div style="max-height:60vh;overflow-y:auto">';
+  var content='<div>';
   for(var i=0;i<CARDIO_DB.length;i++){var cd=CARDIO_DB[i];
     content+='<div onclick="pickCardioForWorkout(\''+esc(cd.name.replace(/'/g,"\\'"))+'\')" style="padding:10px 12px;cursor:pointer;border-bottom:1px solid var(--borderS);transition:background .15s" onmouseover="this.style.background=\'var(--accS)\'" onmouseout="this.style.background=\'none\'"><div style="font-size:13px;color:var(--wh)">'+esc(cd.name)+'</div><div style="font-size:9px;color:var(--dm);font-family:var(--mono)">'+cd.modes.join(" \u00b7 ")+'</div></div>';
   }
@@ -2384,7 +2384,7 @@ function addAnabolic(){showAnabolicPicker();}
 function rmAnabolic(i){var cl=clientById(_nutClientId);if(!cl)return;cl.anabolics.splice(i,1);save();render();}
 function setAnabolicNotes(v){var cl=clientById(_nutClientId);if(!cl)return;cl.anabolicNotes=v;save();}
 function showAnabolicPicker(){
-  var content='<div style="max-height:60vh;overflow-y:auto">';
+  var content='<div>';
   content+='<div style="margin-bottom:10px"><input id="anaPickSearch" placeholder="Search compounds..." oninput="filterAnaPicker()" style="font-size:13px;padding:10px 14px"></div>';
   content+='<div id="anaPickList">';
   for(var c2=0;c2<ANABOLICS_DB.length;c2++){
@@ -2482,7 +2482,7 @@ function renderClientSupplements(c,idx){
   return html;
 }
 function showSuppPicker(target,targetIdx){
-  var content='<div style="max-height:60vh;overflow-y:auto">';
+  var content='<div>';
   content+='<div style="margin-bottom:10px"><input id="suppPickSearch" placeholder="Search supplements..." oninput="filterSuppPicker()" style="font-size:13px;padding:10px 14px"></div>';
   content+='<div id="suppPickList">';
   for(var c2=0;c2<SUPPLEMENT_DB.length;c2++){
@@ -2588,7 +2588,7 @@ function rmProgDay(ci,di){if(!clients[ci]||!clients[ci].program||!clients[ci].pr
 function progDayName(ci,di,n){if(!clients[ci]||!clients[ci].program||!clients[ci].program.days[di])return;clients[ci].program.days[di].name=n;save();}
 function addProgEx(ci,di){
   var groups=Object.keys(EXERCISE_DB);
-  var content='<div style="max-height:60vh;overflow-y:auto">';
+  var content='<div>';
   content+='<div style="margin-bottom:10px"><input id="exPickSearch" placeholder="Search exercises..." oninput="filterExPicker()" style="font-size:13px;padding:10px 14px"></div>';
   content+='<div id="exPickList">';
   for(var g=0;g<groups.length;g++){
@@ -2612,7 +2612,7 @@ function rmProgEx(ci,di,ei){if(!clients[ci]||!clients[ci].program||!clients[ci].
 function moveProgEx(ci,di,ei,dir){var exs=clients[ci].program.days[di].exercises;var ni=ei+dir;if(ni<0||ni>=exs.length)return;var tmp=exs[ei];exs[ei]=exs[ni];exs[ni]=tmp;save();render();}
 function moveProgDay(ci,di,dir){var days=clients[ci].program.days;var ni=di+dir;if(ni<0||ni>=days.length)return;var tmp=days[di];days[di]=days[ni];days[ni]=tmp;save();render();}
 function addProgCardio(ci,di){
-  var content='<div style="max-height:60vh;overflow-y:auto">';
+  var content='<div>';
   for(var c2=0;c2<CARDIO_DB.length;c2++){
     var cd=CARDIO_DB[c2];
     content+='<div onclick="pickCardio('+ci+','+di+','+c2+')" style="padding:10px 12px;cursor:pointer;border-bottom:1px solid var(--borderS);transition:background .15s" onmouseover="this.style.background=\'var(--accS)\'" onmouseout="this.style.background=\'none\'"><div style="font-size:13px;font-weight:500;color:var(--wh)">'+esc(cd.name)+'</div><div style="font-size:9px;color:var(--dm);font-family:var(--mono)">'+cd.modes.join(" \u00b7 ")+'</div></div>';
@@ -2783,7 +2783,7 @@ function deleteReminder(rid){
   save();LS.set("_appVersion",VERSION);
 }})();
 // ── MODAL ──
-function showModal(title,content){var old=el("appModal");if(old)old.remove();var d=document.createElement("div");d.id="appModal";d.style.cssText="position:fixed;inset:0;z-index:150;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);padding:0;animation:fadeIn .2s ease";d.onclick=function(e){if(e.target===d)closeModal();};d.innerHTML='<div style="width:100%;max-width:500px;max-height:90vh;overflow-y:auto;background:linear-gradient(160deg,rgba(14,14,18,.99),rgba(8,8,12,.99));border:1.5px solid var(--accB);border-radius:20px 20px 0 0;padding:24px 20px max(24px,env(safe-area-inset-bottom));box-shadow:0 -8px 40px rgba(0,0,0,.6);animation:slideUp .25s ease"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><div style="font-size:13px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.1em">'+title+'</div><div onclick="closeModal()" style="cursor:pointer;font-size:20px;color:var(--dm);padding:4px 8px;min-width:32px;min-height:32px;display:flex;align-items:center;justify-content:center">&times;</div></div>'+content+'</div>';document.body.appendChild(d);}
+function showModal(title,content){var old=el("appModal");if(old)old.remove();var d=document.createElement("div");d.id="appModal";d.style.cssText="position:fixed;inset:0;z-index:150;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);padding:0;animation:fadeIn .2s ease";d.onclick=function(e){if(e.target===d)closeModal();};d.innerHTML='<div style="width:100%;max-width:500px;max-height:85vh;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;background:linear-gradient(160deg,rgba(14,14,18,.99),rgba(8,8,12,.99));border:1.5px solid var(--accB);border-radius:20px 20px 0 0;padding:24px 20px max(24px,env(safe-area-inset-bottom));box-shadow:0 -8px 40px rgba(0,0,0,.6);animation:slideUp .25s ease"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><div style="font-size:13px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.1em">'+title+'</div><div onclick="closeModal()" style="cursor:pointer;font-size:20px;color:var(--dm);padding:4px 8px;min-width:32px;min-height:32px;display:flex;align-items:center;justify-content:center">&times;</div></div>'+content+'</div>';document.body.appendChild(d);}
 function closeModal(){var m=el("appModal");if(m)m.remove();}
 // ── STOPWATCH ──
 var _swRunning=false,_swStart=0,_swElapsed=0,_swInterval=null,_swMode="stopwatch",_swCountdown=0;
@@ -3160,7 +3160,7 @@ function showPDFBuilder(idx){
   var hasSupp=c.supplements&&c.supplements.length;
   var hasWater=c.water&&c.water.goal;
   var hasWk=_workouts.some(function(w){return w.clientId===c.id;});
-  var content='<div style="max-height:70vh;overflow-y:auto">';
+  var content='<div style="-webkit-overflow-scrolling:touch">';
   // Color theme
   content+='<div style="margin-bottom:14px"><span class="lb">PDF COLOR THEME</span><div style="display:flex;gap:6px">'
     +'<div class="chip'+(_pdfBuilderTheme==="crimson"?" on":"")+'" onclick="_pdfBuilderTheme=\'crimson\';pickChip(this,null)" style="flex:1;text-align:center;justify-content:center"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#D03030;margin-right:6px;vertical-align:middle"></span>CRIMSON</div>'
