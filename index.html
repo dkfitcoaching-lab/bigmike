@@ -674,7 +674,7 @@ function clientFormFields(c){
   c=c||{};
   var levels=["Beginner","Intermediate","Advanced","Competitor"];
   var cTypes=["In-Person","Online","Hybrid"];
-  var svcs=["Training","Nutrition","Contest Prep","Posing","Full Coaching","Group"];
+  var svcs=["Training","Nutrition","Contest Prep","Posing","Full Coaching","Anabolics","Peptides","Group"];
   var durs=["30 min","45 min","60 min","90 min"];
   var bills=["Per Session","Weekly","Bi-Weekly","Monthly","Prepaid"];
   var curSvcs=(c.services||"Training").split(",").map(function(s){return s.trim();});
@@ -686,7 +686,7 @@ function clientFormFields(c){
   html+='<div class="sl" style="margin-top:14px">CLIENT TYPE</div><div class="cd" style="padding:14px"><div style="display:flex;gap:4px">';
   for(var i=0;i<cTypes.length;i++)html+='<div class="chip'+((c.clientType||"In-Person")===cTypes[i]?" on":"")+'" onclick="pickChip(this,\'cCTv\')">'+cTypes[i]+'</div>';
   html+='</div><input type="hidden" id="cCTv" value="'+(c.clientType||"In-Person")+'"></div>';
-  html+='<div class="sl" style="margin-top:14px">PROGRAM</div><div class="cd" style="padding:14px"><div style="display:flex;flex-wrap:wrap;gap:4px" id="cSvChips">';
+  html+='<div class="sl" style="margin-top:14px">SERVICES</div><div class="cd" style="padding:14px"><div style="display:flex;flex-wrap:wrap;gap:4px" id="cSvChips">';
   for(var i=0;i<svcs.length;i++){var on=curSvcs.indexOf(svcs[i])>=0;html+='<div class="chip'+(on?" on":"")+'" onclick="toggleSvcChip(this)">'+svcs[i]+'</div>';}
   html+='</div><input type="hidden" id="cSv" value="'+(c.services||"Training")+'"></div>';
   html+='<div class="sl" style="margin-top:14px">SESSION</div><div class="cd" style="padding:14px"><span class="lb">DURATION</span><div style="display:flex;gap:4px;margin-bottom:12px">';
@@ -1929,7 +1929,7 @@ function savePrograms(){LS.set("programs",_programs);}
 function newProgram(){var p={id:uid(),name:"New Program",clientId:"",sections:[],protocolNotes:"",created_at:new Date().toISOString()};_programs.push(p);savePrograms();_editProgram=p.id;render();}
 function deleteProgram(){showDoubleConfirm("Delete Program","Permanently delete this program?").then(function(ok){if(!ok)return;_programs=_programs.filter(function(p){return p.id!==_editProgram;});savePrograms();_editProgram=null;render();});}
 function duplicateProgram(){var p=_programs.find(function(x){return x.id===_editProgram;});if(!p)return;var c=JSON.parse(JSON.stringify(p));c.id=uid();c.name=p.name+" (Copy)";c.created_at=new Date().toISOString();_programs.push(c);savePrograms();_editProgram=c.id;render();toast("\u2713 Duplicated");}
-function progSet(k,v){var p=_programs.find(function(x){return x.id===_editProgram;});if(p){p[k]=v;savePrograms();if(k==="clientId")render();}}
+function progSet(k,v){var p=_programs.find(function(x){return x.id===_editProgram;});if(!p)return;p[k]=v;if(k==="clientId"&&v&&p.sections.length===0){var cl=clientById(v);if(cl){var svcs=(cl.services||"").toLowerCase();var auto=[];if(svcs.indexOf("training")>=0||svcs.indexOf("full coaching")>=0)auto.push("training");if(svcs.indexOf("nutrition")>=0||svcs.indexOf("full coaching")>=0||svcs.indexOf("contest prep")>=0)auto.push("nutrition");if(svcs.indexOf("anabolics")>=0||svcs.indexOf("contest prep")>=0||svcs.indexOf("full coaching")>=0)auto.push("anabolics");if(svcs.indexOf("peptides")>=0||svcs.indexOf("contest prep")>=0)auto.push("peptides");if(svcs.indexOf("nutrition")>=0||svcs.indexOf("full coaching")>=0)auto.push("supplements");auto.push("protocol");p.sections=auto;}}savePrograms();if(k==="clientId")render();}
 function addProgramSection(type){var p=_programs.find(function(x){return x.id===_editProgram;});if(!p)return;if(p.sections.indexOf(type)>=0){toast("Section already added");return;}p.sections.push(type);savePrograms();render();}
 function removeProgramSection(type){var p=_programs.find(function(x){return x.id===_editProgram;});if(!p)return;p.sections=p.sections.filter(function(s){return s!==type;});savePrograms();render();}
 function moveProgramSection(idx,dir){var p=_programs.find(function(x){return x.id===_editProgram;});if(!p)return;var ni=idx+dir;if(ni<0||ni>=p.sections.length)return;var tmp=p.sections[idx];p.sections[idx]=p.sections[ni];p.sections[ni]=tmp;savePrograms();render();}
