@@ -1968,6 +1968,8 @@ function renderWorkoutEditStandalone(){return renderWorkoutEdit();}
 function renderProgramBuilder(){
   var pg=_programs.find(function(x){return x.id===_editProgram;});
   if(!pg){_editProgram=null;return renderNutrition();}
+  if(_editWorkout)return renderWorkoutEditStandalone();
+  if(_editMealPlan)return renderMealPlanEditStandalone();
   var cOpts='<option value="">Select client...</option>';
   for(var i=0;i<clients.length;i++)cOpts+='<option value="'+clients[i].id+'"'+(pg.clientId===clients[i].id?' selected':'')+'>'+esc(clients[i].name)+'</option>';
   var html='<button class="btn2" onclick="_editProgram=null;render()" style="margin-bottom:14px">\u2039 Back</button>'
