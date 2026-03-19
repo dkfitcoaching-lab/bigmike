@@ -399,6 +399,33 @@ function uid(){return Date.now().toString(36)+Math.random().toString(36).substr(
 function clientById(id){return clients.find(function(c){return c.id===id;});}
 function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
 function pickChip(el_,hiddenId){haptic("tap");el_.parentElement.querySelectorAll(".chip").forEach(function(c){c.classList.remove("on");});el_.classList.add("on");if(hiddenId){var h=el(hiddenId);if(h)h.value=el_.textContent.trim();}}
+function pickIntensifier(el_){
+  haptic("tap");
+  // Select the chip across both rows (primary + overflow)
+  var wrap=el_.closest(".intensifier-wrap");
+  if(wrap)wrap.querySelectorAll(".chip-tempo").forEach(function(c){c.classList.remove("on");});
+  el_.classList.add("on");
+  var tech=el_.textContent.trim();
+  // Auto-fill rest based on technique
+  var card=el_.closest(".cd");if(!card)return;
+  var restIn=card.querySelector(".xRest");if(!restIn)return;
+  if(tech==="Normal"){restIn.value="";restIn.placeholder="Rest";return;}
+  // Detect muscle size from exercise name(s)
+  var names="";card.querySelectorAll(".xN").forEach(function(inp){names+=" "+(inp.value||inp.placeholder||"");});
+  names=names.toLowerCase();
+  var small=/bicep|curl|tricep|lateral|raise|calf|calves|rear delt|forearm|wrist|shrug|face pull|fly|flye/i.test(names);
+  var big=/squat|press|row|deadlift|bench|hack|leg|lunge|pull.?up|chin.?up|pulldown|lat pull/i.test(names);
+  var autoRest={"FST-7":small?"30s":(big?"45s":"30-45s"),"Rest-Pause":small?"15s":(big?"20s":"15-20s"),"Myo Reps":small?"15s":(big?"20s":"15-20s"),"Cluster Set":small?"15s":(big?"20s":"15-20s"),"Drop Set":"0s"};
+  if(autoRest[tech]!==undefined){restIn.value=autoRest[tech];restIn.style.color="var(--acc)";setTimeout(function(){restIn.style.color="";},1500);}
+  // Auto-fill notes for techniques that need specifics (per-exercise, editable)
+  var noteIn=card.querySelector(".xNote");if(!noteIn)return;
+  var autoNote={"Slow Ecc":"4sec eccentric","Iso Hold":"10sec hold at peak contraction","Pause Rep":"2sec pause at bottom","Loaded Stretch":"30sec weighted stretch at bottom","BFR":"70% wrap pressure, 30 reps","Cluster Set":"5 reps, rest "+((small?"15":"20")+"s, repeat x3"),"Mech. Drop":"Wide grip → narrow grip (no rest)"};
+  if(autoNote[tech]&&!noteIn.value){noteIn.value=autoNote[tech];noteIn.style.color="var(--acc)";setTimeout(function(){noteIn.style.color="";},1500);}
+  // Contextual placeholder for everything else
+  var autoPlaceholder={"Drop Set":"e.g. 3 drops, -20% each","Forced Reps":"e.g. 2-3 forced reps after failure","Partial Reps":"e.g. Bottom half, lengthened position","1.5 Reps":"Full ROM + half rep = 1 rep","Myo Reps":"e.g. Activation 12 reps → 5+5+5+4","FST-7":"7 sets, squeeze each rep"};
+  if(autoPlaceholder[tech])noteIn.placeholder=autoPlaceholder[tech];
+  else if(tech==="Normal")noteIn.placeholder="Notes, cues, substitutions...";
+}
 function pickChipVal(el_,hiddenId){el_.parentElement.querySelectorAll(".chip").forEach(function(c){c.classList.remove("on");});el_.classList.add("on");var h=el(hiddenId);if(h)h.value=el_.dataset.val||el_.textContent.trim();}
 function clientColor(name){if(!name)return"hsl(0,50%,55%)";var h=0;for(var i=0;i<name.length;i++)h=name.charCodeAt(i)+((h<<5)-h);var hue=Math.abs(h%360);return"hsl("+hue+",50%,55%)";}
 function clientSessions(cid){return sessions.filter(function(s){return s.clientId===cid&&s.status!=="cancelled";});}
@@ -957,7 +984,7 @@ function addExercise(mode){
   var exInputs='<div class="exGroup"><input class="xN" list="exHistory" placeholder="Exercise name" style="margin-bottom:6px;font-weight:600"><div class="xSets"></div><button class="btn2" onclick="addSet(this.closest(\'.exGroup\'))" style="margin-top:4px;padding:4px 10px;font-size:8px">+ SET</button></div>';
   if(mode==="superset")exInputs='<div class="exGroup"><input class="xN" list="exHistory" placeholder="Exercise A" style="margin-bottom:6px;font-weight:600"><div class="xSets"></div><button class="btn2" onclick="addSet(this.closest(\'.exGroup\'))" style="margin-top:4px;padding:4px 10px;font-size:8px">+ SET</button></div><div style="text-align:center;font-size:9px;color:var(--dm);font-family:var(--mono);margin:8px 0;letter-spacing:.1em">PAIRED WITH</div><div class="exGroup"><input class="xN" list="exHistory" placeholder="Exercise B" style="margin-bottom:6px;font-weight:600"><div class="xSets"></div><button class="btn2" onclick="addSet(this.closest(\'.exGroup\'))" style="margin-top:4px;padding:4px 10px;font-size:8px">+ SET</button></div><button class="btn2" onclick="addGiantExercise(this)" style="margin-top:6px;padding:4px 10px;font-size:8px;color:var(--acc);border-color:rgba(200,160,80,.2)">+ ADD EXERCISE TO SET</button>';
   if(mode==="giant")exInputs='<div class="exGroup"><input class="xN" list="exHistory" placeholder="Exercise A" style="margin-bottom:6px;font-weight:600"><div class="xSets"></div><button class="btn2" onclick="addSet(this.closest(\'.exGroup\'))" style="margin-top:4px;padding:4px 10px;font-size:8px">+ SET</button></div><div style="text-align:center;font-size:8px;color:var(--dm);font-family:var(--mono);margin:6px 0">\u2193</div><div class="exGroup"><input class="xN" list="exHistory" placeholder="Exercise B" style="margin-bottom:6px;font-weight:600"><div class="xSets"></div><button class="btn2" onclick="addSet(this.closest(\'.exGroup\'))" style="margin-top:4px;padding:4px 10px;font-size:8px">+ SET</button></div><div style="text-align:center;font-size:8px;color:var(--dm);font-family:var(--mono);margin:6px 0">\u2193</div><div class="exGroup"><input class="xN" list="exHistory" placeholder="Exercise C" style="margin-bottom:6px;font-weight:600"><div class="xSets"></div><button class="btn2" onclick="addSet(this.closest(\'.exGroup\'))" style="margin-top:4px;padding:4px 10px;font-size:8px">+ SET</button></div><button class="btn2" onclick="addGiantExercise(this)" style="margin-top:6px;padding:4px 10px;font-size:8px;color:#c87070;border-color:rgba(200,112,112,.2)">+ ADD EXERCISE TO SET</button>';
-  d.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:11px;font-weight:700;color:var(--acc);font-family:var(--mono)">EXERCISE '+_exCount+'</span>'+badge+'</div><span style="font-size:14px;color:var(--danger);cursor:pointer;padding:6px 10px" onclick="this.closest(\'.cd\').remove()">&#10005;</span></div>'+exInputs+'<div style="display:flex;gap:3px;margin-top:8px;flex-wrap:wrap"><div class="chip chip-tempo on" onclick="pickChip(this,\'\')">Normal</div><div class="chip chip-tempo" onclick="pickChip(this,\'\')">Drop Set</div><div class="chip chip-tempo" onclick="pickChip(this,\'\')">Rest-Pause</div><div class="chip chip-tempo" onclick="pickChip(this,\'\')">Myo Reps</div><div class="chip chip-tempo" onclick="pickChip(this,\'\')">FST-7</div><div class="chip chip-tempo" onclick="pickChip(this,\'\')">Slow Negative</div><div class="chip chip-tempo" onclick="pickChip(this,\'\')">Forced Reps</div><div class="chip chip-tempo" onclick="pickChip(this,\'\')">Partial Reps</div><div class="chip chip-tempo" onclick="pickChip(this,\'\')">Cluster Set</div><div class="chip chip-tempo" onclick="pickChip(this,\'\')">Loaded Stretch</div><div class="chip chip-tempo" onclick="pickChip(this,\'\')">Mech. Drop</div><div class="chip chip-tempo" onclick="pickChip(this,\'\')">1.5 Reps</div><div class="chip chip-tempo" onclick="pickChip(this,\'\')">Pause Rep</div><div class="chip chip-tempo" onclick="pickChip(this,\'\')">Iso Hold</div><div class="chip chip-tempo" onclick="pickChip(this,\'\')">BFR</div><div class="chip chip-tempo" onclick="pickChip(this,\'\')">Tempo</div></div><div style="display:flex;gap:6px;margin-top:10px"><input class="xNote" placeholder="Notes, cues, substitutions..." style="flex:1;font-size:12px"><input class="xRest" placeholder="Rest" style="width:70px;font-size:12px;text-align:center"></div>';
+  d.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:11px;font-weight:700;color:var(--acc);font-family:var(--mono)">EXERCISE '+_exCount+'</span>'+badge+'</div><span style="font-size:14px;color:var(--danger);cursor:pointer;padding:6px 10px" onclick="this.closest(\'.cd\').remove()">&#10005;</span></div>'+exInputs+'<div class="intensifier-wrap" style="margin-top:8px"><div style="display:flex;gap:3px;flex-wrap:wrap;align-items:center"><div class="chip chip-tempo on" onclick="pickIntensifier(this)">Normal</div><div class="chip chip-tempo" onclick="pickIntensifier(this)">Drop Set</div><div class="chip chip-tempo" onclick="pickIntensifier(this)">Rest-Pause</div><div class="chip chip-tempo" onclick="pickIntensifier(this)">Myo Reps</div><div class="chip chip-tempo" onclick="pickIntensifier(this)">FST-7</div><div class="chip chip-tempo" onclick="pickIntensifier(this)">Slow Ecc</div><span class="btn2" onclick="var m=this.closest(\'.intensifier-wrap\').querySelector(\'.more-tech\');m.style.display=m.style.display===\'none\'?\'flex\':\'none\';this.textContent=m.style.display===\'none\'?\'More \u25B8\':\'Less \u25BE\'" style="font-size:7px;padding:2px 6px;cursor:pointer;color:var(--dm)">More \u25B8</span></div><div class="more-tech" style="display:none;gap:3px;flex-wrap:wrap;margin-top:4px"><div class="chip chip-tempo" onclick="pickIntensifier(this)">Forced Reps</div><div class="chip chip-tempo" onclick="pickIntensifier(this)">Partial Reps</div><div class="chip chip-tempo" onclick="pickIntensifier(this)">Cluster Set</div><div class="chip chip-tempo" onclick="pickIntensifier(this)">Loaded Stretch</div><div class="chip chip-tempo" onclick="pickIntensifier(this)">Mech. Drop</div><div class="chip chip-tempo" onclick="pickIntensifier(this)">1.5 Reps</div><div class="chip chip-tempo" onclick="pickIntensifier(this)">Pause Rep</div><div class="chip chip-tempo" onclick="pickIntensifier(this)">Iso Hold</div><div class="chip chip-tempo" onclick="pickIntensifier(this)">BFR</div></div></div><div style="display:flex;gap:6px;margin-top:10px"><input class="xNote" placeholder="Notes, cues, substitutions..." style="flex:1;font-size:12px"><input class="xRest" placeholder="Rest" style="width:70px;font-size:12px;text-align:center"></div>';
   var exList=el("exList");if(!exList)return;
   exList.appendChild(d);
   d.querySelectorAll(".exGroup").forEach(function(g){addSet(g);});
@@ -1024,6 +1051,20 @@ function prefillExercises(){
     }
     var xNote=card.querySelector(".xNote");if(xNote)xNote.value=ex.note||"";
     var xRest=card.querySelector(".xRest");if(xRest)xRest.value=ex.rest||"";
+    // Restore intensifier chip selection
+    if(ex.tempo&&ex.tempo!=="Normal"){
+      var chips=card.querySelectorAll(".chip-tempo");
+      for(var ci=0;ci<chips.length;ci++){
+        if(chips[ci].textContent.trim()===ex.tempo){
+          card.querySelectorAll(".chip-tempo").forEach(function(c){c.classList.remove("on");});
+          chips[ci].classList.add("on");
+          // If chip is in the "more" row, expand it
+          var moreRow=card.querySelector(".more-tech");
+          if(moreRow&&moreRow.contains(chips[ci])){moreRow.style.display="flex";var toggleBtn=card.querySelector(".intensifier-wrap .btn2");if(toggleBtn)toggleBtn.textContent="Less \u25BE";}
+          break;
+        }
+      }
+    }
   }
   toast("\u2713 "+pfEx.length+" exercise"+(pfEx.length!==1?"s":"")+" loaded");
 }
@@ -1710,7 +1751,7 @@ var EXERCISE_DB={
 "Quads":[
 "Barbell Back Squat","Barbell Front Squat","Goblet Squat",
 "Hack Squat (Machine)","Pendulum Squat","V Squat",
-"Leg Press (45°)","Leg Press (Horizontal)","Single Leg Press",
+"Leg Press (45°)","Leg Press (Horizontal)","Leg Press (Vertical)","Hip Press","Single Leg Press",
 "Smith Machine Squat","Smith Machine Front Squat",
 "Leg Extension","Single Leg Extension",
 "Walking Lunges (Dumbbell)","Walking Lunges (Barbell)","Reverse Lunges","Bulgarian Split Squat",
