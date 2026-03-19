@@ -2413,11 +2413,13 @@ function renderWorkoutBuilder(){
   if(_editWorkout)return renderWorkoutEdit();
   var html='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><span class="sl" style="margin:0">WORKOUTS</span><button class="btn2" onclick="newWorkout()" style="padding:6px 10px;font-size:8px">+ NEW WORKOUT</button></div>';
   if(!_workouts.length)return html+'<div class="cd" style="padding:24px;text-align:center;border:1px dashed var(--border)"><div style="color:var(--dm);margin-bottom:8px">No workouts</div><button class="btn2" onclick="newWorkout()">+ NEW WORKOUT</button></div>';
+  if(_workouts.length>3)html+='<div class="search-bar" style="margin-bottom:10px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--dm);flex-shrink:0"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input placeholder="Search workouts..." oninput="filterWorkoutList()" id="wkSearchInput"></div>';
   for(var i=0;i<_workouts.length;i++){var w=_workouts[i],cl=w.clientId?clientById(w.clientId):null;
     var exCount=(w.exercises||[]).length,cardCount=(w.cardio||[]).length;
-    html+='<div class="cd cd-link" style="display:flex;align-items:center;gap:12px" onclick="_editWorkout=\''+w.id+'\';render()"><div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--wh)">'+esc(w.name||"Untitled")+'</div><div style="font-size:10px;color:var(--dm);font-family:var(--mono)">'+(cl?esc(cl.name):"Unassigned")+' \u00b7 '+exCount+' exercise'+(exCount!==1?'s':'')+(cardCount?' \u00b7 '+cardCount+' cardio':'')+'</div></div><div style="color:var(--dm)">\u203a</div></div>';}
+    html+='<div class="cd cd-link wkCard" style="display:flex;align-items:center;gap:12px" onclick="_editWorkout=\''+w.id+'\';render()"><div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--wh)">'+esc(w.name||"Untitled")+'</div><div style="font-size:10px;color:var(--dm);font-family:var(--mono)">'+(cl?esc(cl.name):"Unassigned")+' \u00b7 '+exCount+' exercise'+(exCount!==1?'s':'')+(cardCount?' \u00b7 '+cardCount+' cardio':'')+'</div></div><div style="color:var(--dm)">\u203a</div></div>';}
   return html;
 }
+function filterWorkoutList(){var q=(el("wkSearchInput")||{}).value||"";q=q.toLowerCase();document.querySelectorAll(".wkCard").forEach(function(c){c.style.display=c.textContent.toLowerCase().indexOf(q)>=0?"":"none";});}
 function newWorkout(){var w={id:uid(),name:"New Workout",clientId:"",exercises:[],cardio:[],notes:"",created_at:new Date().toISOString()};_workouts.push(w);LS.set("workouts",_workouts);_editWorkout=w.id;render();}
 function saveWorkouts(){LS.set("workouts",_workouts);}
 function renderWorkoutEdit(){
