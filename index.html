@@ -514,7 +514,7 @@ function renderHome(){
   var projSched=schedule.filter(function(s){var d=new Date(s.date+"T12:00:00");return d.getMonth()===mo&&d.getFullYear()===yr&&s.status!=="cancelled"&&s.status!=="complete";});
   var projected=projSched.reduce(function(a,s){return a+parseFloat(s.rate||0);},0);
   html+='<div style="display:flex;align-items:baseline;gap:0;margin-bottom:6px;margin-top:20px"><div class="sl" style="margin:0">'+t.toLocaleDateString("en-US",{month:"long"}).toUpperCase()+' EARNINGS</div>'+deltaHTML+'</div>';
-  html+='<div class="g4" style="margin-top:4px;margin-bottom:'+(projected>0?8:20)+'px"><div class="stat stat-highlight"><b style="color:var(--acc)">'+moS.length+'</b><small>SESSIONS</small></div><div class="stat stat-highlight"><b style="color:var(--ow)">$'+gross+'</b><small>GROSS</small></div><div class="stat stat-highlight"><b style="color:var(--dm)"><span style="font-size:50%;vertical-align:super;opacity:.5;margin-right:1px">-</span>$'+cut+'</b><small>GYM '+Math.round(getGymCut()*100)+'%</small></div><div class="stat stat-highlight" style="border-color:var(--accB);box-shadow:0 0 12px var(--accS)"><b style="color:var(--accVib)">$'+take+'</b><small>YOUR TAKE</small></div></div>';
+  html+='<div class="g4" style="margin-top:4px;margin-bottom:'+(projected>0?8:20)+'px"><div class="stat stat-highlight"><b style="color:var(--acc)">'+moS.length+'</b><small>SESSIONS</small></div><div class="stat stat-highlight"><b style="color:var(--ow)">$'+gross+'</b><small>GROSS</small></div><div class="stat stat-highlight"><b style="color:var(--dm)"><span style="font-size:50%;vertical-align:super;opacity:.5;margin-right:1px">-</span>$'+cut+'</b><small>GYM SPLIT ('+Math.round(getGymCut()*100)+'%)</small></div><div class="stat stat-highlight" style="border-color:var(--accB);box-shadow:0 0 12px var(--accS)"><b style="color:var(--accVib)">$'+take+'</b><small>YOUR TAKE</small></div></div>';
   if(projected>0)html+='<div style="display:flex;align-items:center;gap:10px;padding:9px 14px;border-radius:8px;background:var(--glassB);border:1px solid var(--borderS);margin-bottom:16px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--acc);flex-shrink:0"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span style="font-size:11px;color:var(--mu);font-family:var(--mono)">+$'+projected+' projected from '+projSched.length+' upcoming session'+(projSched.length!==1?"s":"")+'</span></div>';
   // Unpaid sessions alert
   var unpaid=sessions.filter(function(s){return !s.paid&&s.status!=="cancelled";});
@@ -675,7 +675,7 @@ function clientFormFields(c){
   c=c||{};
   var levels=["Beginner","Intermediate","Advanced","Competitor"];
   var cTypes=["In-Person","Online","Hybrid"];
-  var svcs=["Training","Nutrition","Contest Prep","Posing","Full Coaching","Anabolics","Peptides","Group"];
+  var svcs=["Training","Nutrition","Contest Prep","Posing","Full Coaching","Anabolics","Peptides","Fat Loss / GLPs","Group"];
   var durs=["30 min","45 min","60 min","90 min"];
   var bills=["Per Session","Weekly","Bi-Weekly","Monthly","Prepaid"];
   var curSvcs=(c.services||"Training").split(",").map(function(s){return s.trim();});
@@ -741,7 +741,7 @@ function renderClientDetail(){
   var col=clientColor(c.name);
   var cs=sessions.filter(function(x){return x.clientId===c.id;});
   var rev=cs.filter(function(x){return x.status!=="cancelled";}).reduce(function(a,x){var r=parseFloat(x.rate);return a+(isNaN(r)?parseFloat(c.rate)||0:r);},0);
-  var info=[["Phone",c.phone],["Email",c.email],["Age",c.age],["Goals",c.goals],["Injuries",c.injuries],["Medical",c.medical],["Activity",c.activity],["Notes",c.notes]].filter(function(r){return r[1];});
+  var info=[["Phone",c.phone],["Email",c.email],["Age",c.age],["Goals",c.goals],["Injuries",c.injuries],["Medical",c.medical],["Notes",c.notes]].filter(function(r){return r[1];});
   var st2=calcStreak(c.id),ds2=daysSinceLastSession(c.id);
   var html='<button class="btn2" onclick="pop()" style="margin-bottom:14px">\u2039 Back</button>'
     +'<div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">'
@@ -769,7 +769,7 @@ function renderClientDetail(){
   html+='<div style="margin-top:24px;border:1px solid rgba(216,120,120,.2);border-radius:10px;overflow:hidden"><div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display===\'none\'?\'block\':\'none\'" style="cursor:pointer;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;background:rgba(216,120,120,.03)"><span style="font-size:10px;font-weight:700;color:var(--danger);font-family:var(--mono);letter-spacing:.1em">DANGER ZONE</span><span style="font-size:10px;color:var(--dm)">\u25bc</span></div><div style="display:none;padding:16px"><div style="font-size:11px;color:var(--dm);margin-bottom:12px">This cannot be undone. Session history will be preserved.</div><button class="btn-danger" onclick="deleteClient('+idx+')">DELETE CLIENT</button></div></div>';
   return html;
 }
-function renderClientDetailInPlace(){var b=el("clientDetailBody");if(!b)return;var idx=currentView.data.clientIdx,c=clients[idx];if(!c)return;var cs=sessions.filter(function(x){return x.clientId===c.id;});var rev=cs.filter(function(x){return x.status!=="cancelled";}).reduce(function(a,x){var r=parseFloat(x.rate);return a+(isNaN(r)?parseFloat(c.rate)||0:r);},0);var info=[["Phone",c.phone],["Email",c.email],["Age",c.age],["Goals",c.goals],["Injuries",c.injuries],["Medical",c.medical],["Activity",c.activity],["Notes",c.notes]].filter(function(r){return r[1];});var subTab=(currentView.data||{}).clientSubTab||"overview";b.innerHTML=subTab==="progress"?renderClientProgress(c,idx):subTab==="notes"?renderClientNotes(c,idx):subTab==="program"?renderClientProgram(c,idx):subTab==="checkins"?renderClientCheckins(c,idx):subTab==="peakweek"?renderPeakWeek(c,idx):renderClientOverview(c,idx,cs,rev,info);}
+function renderClientDetailInPlace(){var b=el("clientDetailBody");if(!b)return;var idx=currentView.data.clientIdx,c=clients[idx];if(!c)return;var cs=sessions.filter(function(x){return x.clientId===c.id;});var rev=cs.filter(function(x){return x.status!=="cancelled";}).reduce(function(a,x){var r=parseFloat(x.rate);return a+(isNaN(r)?parseFloat(c.rate)||0:r);},0);var info=[["Phone",c.phone],["Email",c.email],["Age",c.age],["Goals",c.goals],["Injuries",c.injuries],["Medical",c.medical],["Notes",c.notes]].filter(function(r){return r[1];});var subTab=(currentView.data||{}).clientSubTab||"overview";b.innerHTML=subTab==="progress"?renderClientProgress(c,idx):subTab==="notes"?renderClientNotes(c,idx):subTab==="program"?renderClientProgram(c,idx):subTab==="checkins"?renderClientCheckins(c,idx):subTab==="peakweek"?renderPeakWeek(c,idx):renderClientOverview(c,idx,cs,rev,info);}
 function renderClientOverview(c,idx,cs,rev,info){
   var html='<div class="g3" style="margin-bottom:22px"><div class="stat"><b style="color:var(--acc)">'+cs.length+'</b><small>SESSIONS</small></div><div class="stat"><b style="color:var(--ow)">$'+rev+'</b><small>GROSS</small></div><div class="stat"><b style="color:var(--accVib)">$'+Math.round(rev*(1-getGymCut()))+'</b><small>YOUR CUT</small></div></div>';
   if(info.length){html+='<div class="sl">INFO</div><div class="cd" style="padding:4px 16px">';for(var i=0;i<info.length;i++){var infoVal=esc(info[i][1]);if(info[i][0]==="Phone"&&info[i][1])infoVal='<span onclick="window.location.href=\'tel:'+esc(info[i][1]).replace(/[^0-9+]/g,"")+'\'" style="color:var(--acc);cursor:pointer">'+esc(info[i][1])+' <span style=\"font-size:9px;color:var(--dm)\">→</span></span>';if(info[i][0]==="Email"&&info[i][1])infoVal='<span onclick="window.location.href=\'mailto:'+esc(info[i][1])+'\'" style="color:var(--acc);cursor:pointer">'+esc(info[i][1])+' <span style=\"font-size:9px;color:var(--dm)\">→</span></span>';html+='<div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:'+(i<info.length-1?"1px solid var(--borderS)":"none")+';gap:14px"><span style="font-size:11px;color:var(--dm);font-weight:600;min-width:55px">'+info[i][0]+'</span><span style="font-size:12px;color:var(--ow);text-align:right;word-break:break-word;flex:1">'+infoVal+'</span></div>';}html+='</div>';}
@@ -903,9 +903,9 @@ function renderLogSession(){
   html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-top:18px"><div style="display:flex;align-items:center;gap:8px"><div class="sl" style="margin:0">EXERCISES</div><span id="exCountBadge" style="font-size:9px;color:var(--dm);font-family:var(--mono)">0 exercises</span></div><div style="display:flex;gap:4px;flex-wrap:wrap"><button class="btn2" onclick="showTemplateLoader()" style="padding:6px 10px;font-size:8px;color:var(--accVib);border-color:var(--accB)">\u2b07 TEMPLATE</button><button class="btn2" onclick="addExercise(\'normal\')" style="padding:6px 10px;font-size:8px">+ EXERCISE</button><button class="btn2" onclick="addExercise(\'superset\')" style="padding:6px 10px;font-size:8px;color:var(--acc);border-color:rgba(200,160,80,.3)">+ SUPERSET</button><button class="btn2" onclick="addExercise(\'giant\')" style="padding:6px 10px;font-size:8px;color:#c87070;border-color:rgba(200,112,112,.3)">+ GIANT SET</button></div></div>'
     +'<div id="templateLoader" style="display:none;margin-top:8px"></div>'
     +'<div id="exList" style="margin-top:8px"></div>';
-  html+='<div class="sl" style="margin-top:22px">SESSION NOTES</div><div class="cd" style="padding:18px"><div class="field"><span class="lb">NOTES</span><textarea id="sN" rows="3" placeholder="Form notes, adjustments, observations..."></textarea></div><div class="field"><span class="lb">SESSION RATING (1\u201310)</span><div style="display:flex;gap:4px">'+dots+'</div></div><div><span class="lb">NEXT SESSION PLAN</span><textarea id="sNx" rows="2" placeholder="Focus areas, progressions, notes for next time..."></textarea></div></div>';
+  html+='<div class="sl" style="margin-top:22px">SESSION NOTES</div><div class="cd" style="padding:18px"><div class="field"><span class="lb">NOTES</span><textarea id="sN" rows="3" placeholder="Form notes, adjustments, observations..."></textarea></div><div class="field"><span class="lb">CLIENT ENERGY LEVEL (1\u201310)</span><div style="display:flex;gap:4px">'+dots+'</div></div><div><span class="lb">NEXT SESSION PLAN</span><textarea id="sNx" rows="2" placeholder="Focus areas, progressions, notes for next time..."></textarea></div></div>';
   html+='<button class="btn" style="margin-top:18px" onclick="doSaveSession()">SAVE SESSION</button>'
-    +'<div style="display:flex;gap:8px;margin-top:8px"><button class="btn2" style="flex:1" onclick="doSaveSession(true)">SAVE WITHOUT EXERCISES</button><button class="btn2" style="flex:1" onclick="saveAsTemplate()">SAVE AS TEMPLATE</button></div>';
+    +'<div style="display:flex;gap:8px;margin-top:8px"><button class="btn2" style="flex:1" onclick="doSaveSession(true)">QUICK SAVE (no exercises)</button><button class="btn2" style="flex:1" onclick="saveAsTemplate()">SAVE AS TEMPLATE</button></div>';
   startDraftTimer();
   setTimeout(function(){
     var draft=loadDraft();
@@ -1178,8 +1178,8 @@ function renderSchedule(){
     +'<div class="cd" style="padding:18px"><div class="sl" style="margin-bottom:10px">ADD TO SCHEDULE</div>'
     +'<div class="field"><span class="lb">CLIENT *</span><select id="schC" onchange="onScheduleClientSelect()"><option value="">Select\u2026</option>'+copts+'</select></div>'
     +'<div class="g2 field"><div><span class="lb">DATE</span><input id="schD" type="date" value="'+(_selectedDay||todayISO())+'"></div><div><span class="lb">TIME</span><input id="schT" type="time" value="'+getNextHourTime()+'"></div></div>'
-    +'<div class="g2 field"><div><span class="lb">TYPE</span><select id="schTy" onchange="var sf=el(\'showFields\');if(sf)sf.style.display=this.value===\'Competition Day\'?\'block\':\'none\'"><option>Training</option><option>Posing</option><option>Group Session</option><option>Contest Prep</option><option>Nutrition Check-In</option><option>Phone Consult</option><option>Assessment</option><option>Competition Day</option></select></div><div><span class="lb">RATE ($)</span><input id="schR" type="number" min="0" value="" placeholder="\u2014"></div></div>'
-+'<div id="showFields" style="display:none"><div class="g2 field"><div><span class="lb">SHOW NAME</span><input id="schShowName" placeholder="e.g. NPC Nationals"></div><div><span class="lb">LOCATION</span><input id="schShowLoc" placeholder="City, State"></div></div><div class="field"><span class="lb">SCHEDULE NOTES</span><input id="schShowNotes" placeholder="e.g. Check-in 8am, Prejudging 10am, Finals 6pm"></div></div>'
+    +'<div class="g2 field"><div><span class="lb">TYPE</span><select id="schTy" onchange="var sf=el(\'showFields\');if(sf)sf.style.display=this.value===\'Competition Day\'?\'block\':\'none\'"><option>Training</option><option>Posing</option><option>Group Session</option><option>Contest Prep</option><option>Nutrition Session</option><option>Competition Day</option></select></div><div><span class="lb">RATE ($)</span><input id="schR" type="number" min="0" value="" placeholder="\u2014"></div></div>'
++'<div id="showFields" style="display:none"><div class="g2 field"><div><span class="lb">SHOW NAME *</span><input id="schShowName" placeholder="e.g. NPC Nationals"></div><div><span class="lb">LOCATION</span><input id="schShowLoc" placeholder="City, State"></div></div><div class="field"><span class="lb">SCHEDULE NOTES</span><input id="schShowNotes" placeholder="e.g. Check-in 8am, Prejudging 10am, Finals 6pm"></div></div>'
     +'<div class="field"><span class="lb">RECURRING</span><div style="display:flex;gap:4px;margin-bottom:8px"><div class="chip on" data-rec="One-Time" onclick="pickChip(this,\'schRec\');toggleRecurUI()">One-Time</div><div class="chip" data-rec="Weekly" onclick="pickChip(this,\'schRec\');toggleRecurUI()">Weekly</div><div class="chip" data-rec="Biweekly" onclick="pickChip(this,\'schRec\');toggleRecurUI()">Biweekly</div></div><input type="hidden" id="schRec" value="One-Time"><div id="recurDuration" style="display:none;margin-top:6px"><span class="lb">FOR HOW LONG?</span><select id="schRecWeeks"><option value="4" selected>4 weeks</option><option value="6">6 weeks</option><option value="8">8 weeks</option><option value="12">12 weeks</option><option value="16">16 weeks</option><option value="26">26 weeks</option></select></div></div>'
     +'<button class="btn" onclick="addToSchedule()">ADD TO SCHEDULE</button></div></div>';
   setTimeout(function(){var ct=el("ct");if(ct)ct.scrollTop=0;},50);
@@ -1188,7 +1188,7 @@ function renderSchedule(){
 function renderScheduleEdit(){
   var sched=schedule.find(function(s){return s.id===currentView.data.schedId;});if(!sched){pop();return"";}
   var copts="";for(var i=0;i<clients.length;i++){var c=clients[i];copts+='<option value="'+c.id+'"'+(c.id===sched.clientId?" selected":"")+'>'+esc(c.name)+'</option>';}
-  var stypes=["Training","Posing","Group Session","Contest Prep","Nutrition Check-In","Phone Consult","Assessment","Competition Day"];
+  var stypes=["Training","Posing","Group Session","Contest Prep","Nutrition Session","Competition Day"];
   var topts="";for(var i=0;i<stypes.length;i++)topts+='<option value="'+stypes[i]+'"'+(stypes[i]===(sched.type||"Training")?" selected":"")+'>'+stypes[i]+'</option>';
   return '<button class="btn2" onclick="pop()" style="margin-bottom:14px">\u2039 Back</button><div class="pt">Edit Session</div><div class="cd" style="padding:18px"><div class="field"><span class="lb">CLIENT</span><select id="schC" onchange="onScheduleClientSelect()">'+copts+'</select></div><div class="g2 field"><div><span class="lb">DATE</span><input id="schD" type="date" value="'+sched.date+'"></div><div><span class="lb">TIME</span><input id="schT" type="time" value="'+(sched.time||"10:00")+'"></div></div><div class="g2 field"><div><span class="lb">TYPE</span><select id="schTy">'+topts+'</select></div><div><span class="lb">RATE ($)</span><input id="schR" type="number" min="0" value="'+(sched.rate||"")+'" placeholder="\u2014"></div></div><button class="btn" onclick="updateScheduled(\''+sched.id+'\')">SAVE</button><div style="display:flex;gap:8px;margin-top:10px"><button class="btn-success" style="flex:1" onclick="completeScheduled(\''+sched.id+'\')">LOG SESSION</button><button class="btn-danger" style="flex:1" onclick="cancelScheduled(\''+sched.id+'\')">CANCEL</button></div></div>';
 }
@@ -1872,10 +1872,10 @@ var ANABOLICS_DB=[
 {name:"Nebivolol",doses:["2.5mg","5mg","10mg"],routes:["Oral"],freqs:["ED"]}
 ]},
 {cat:"Fat Loss / GLPs",items:[
-{name:"Semaglutide (Ozempic/Wegovy)",doses:["0.25mg","0.5mg","1mg","1.7mg","2.4mg"],routes:["SubQ Injection"],freqs:["1x/week"]},
-{name:"Tirzepatide (Mounjaro/Zepbound)",doses:["2.5mg","5mg","7.5mg","10mg","12.5mg","15mg"],routes:["SubQ Injection"],freqs:["1x/week"]},
+{name:"Semaglutide / Ozempic / Wegovy",doses:["0.25mg","0.5mg","1mg","1.7mg","2.4mg"],routes:["SubQ Injection"],freqs:["1x/week"]},
+{name:"Tirzepatide / Mounjaro / Zepbound",doses:["2.5mg","5mg","7.5mg","10mg","12.5mg","15mg"],routes:["SubQ Injection"],freqs:["1x/week"]},
 {name:"Retatrutide",doses:["1mg","2mg","4mg","8mg","12mg"],routes:["SubQ Injection"],freqs:["1x/week"]},
-{name:"Liraglutide (Saxenda/Victoza)",doses:["0.6mg","1.2mg","1.8mg","2.4mg","3mg"],routes:["SubQ Injection"],freqs:["1x/day"]},
+{name:"Liraglutide / Saxenda / Victoza",doses:["0.6mg","1.2mg","1.8mg","2.4mg","3mg"],routes:["SubQ Injection"],freqs:["1x/day"]},
 {name:"Injectable L-Carnitine",doses:["200mg","400mg","500mg","600mg","1000mg"],routes:["IM Injection","SubQ Injection"],freqs:["ED","5x/week","Pre-workout"]},
 {name:"Tesofensine",doses:["0.25mg","0.5mg","1mg"],routes:["Oral"],freqs:["1x/day"]},
 {name:"5-Amino-1MQ",doses:["50mg","100mg","150mg"],routes:["Oral"],freqs:["1x/day","2x/day"]},
@@ -2015,8 +2015,8 @@ function addProgramSection(type){var p=_programs.find(function(x){return x.id===
 function removeProgramSection(type){var p=_programs.find(function(x){return x.id===_editProgram;});if(!p)return;p.sections=p.sections.filter(function(s){return s!==type;});savePrograms();render();}
 function moveProgramSection(idx,dir){var p=_programs.find(function(x){return x.id===_editProgram;});if(!p)return;var ni=idx+dir;if(ni<0||ni>=p.sections.length)return;var tmp=p.sections[idx];p.sections[idx]=p.sections[ni];p.sections[ni]=tmp;savePrograms();render();}
 function toggleProgramSection(type){_programSectionCollapsed[type]=!_programSectionCollapsed[type];render();}
-function foodPrepBadge(db){if(!db||db.di===-1)return"";if(db.ck===1)return' <span style="font-size:8px;color:var(--warn);font-family:var(--mono)">(cooked)</span>';if(db.ck===0&&db.cat==="C"&&(/oat|cream of rice/i).test(db.n))return' <span style="font-size:8px;color:var(--mu);font-family:var(--mono)">(dry)</span>';return"";}
-function foodPrepBadgePDF(db){if(!db)return"";if(db.ck===1)return' <span style="font-size:9px;color:#b88030;font-family:IBM Plex Mono,monospace">(cooked)</span>';if(db.ck===0&&db.cat==="C"&&(/oat|cream of rice/i).test(db.n))return' <span style="font-size:9px;color:#999;font-family:IBM Plex Mono,monospace">(dry)</span>';return"";}
+function foodPrepBadge(db){if(!db||db.di===-1)return"";if(db.ck===1)return' <span style="font-size:8px;color:var(--warn);font-family:var(--mono)">(cooked)</span>';if(db.ck===0&&(db.cat==="P"||db.cat==="C"))return' <span style="font-size:8px;color:var(--mu);font-family:var(--mono)">(dry/raw)</span>';return"";}
+function foodPrepBadgePDF(db){if(!db)return"";if(db.ck===1)return' <span style="font-size:9px;color:#b88030;font-family:IBM Plex Mono,monospace">(cooked)</span>';if(db.ck===0&&(db.cat==="P"||db.cat==="C"))return' <span style="font-size:9px;color:#999;font-family:IBM Plex Mono,monospace">(dry/raw)</span>';return"";}
 function calcMealTotals(meal){var t={cal:0,p:0,c:0,f:0};(meal.foods||[]).forEach(function(fd){var db=FOOD_DB[fd.di];if(!db)return;var per=db.per||1;var m=(fd.qty||0)/per;t.cal+=Math.round((db.cal||0)*m);t.p+=Math.round((db.p||0)*m);t.c+=Math.round((db.c||0)*m);t.f+=Math.round((db.f||0)*m);});return t;}
 function calcPlanTotals(mp){var t={cal:0,p:0,c:0,f:0};(mp.meals||[]).forEach(function(ml){var mt=calcMealTotals(ml);t.cal+=mt.cal;t.p+=mt.p;t.c+=mt.c;t.f+=mt.f;});return t;}
 function renderNutrition(){
@@ -2216,12 +2216,12 @@ function pickPeptideItem(itemIdx){
   content2+='<div style="margin-bottom:12px"><span class="lb">DOSE</span><div style="display:flex;flex-wrap:wrap;gap:4px">';
   for(var d=0;d<item.doses.length;d++)content2+='<div class="chip'+(d===0?" on":"")+'" onclick="pickChip(this,\'pepDose\')">'+item.doses[d]+'</div>';
   content2+='</div><input type="hidden" id="pepDose" value="'+item.doses[0]+'">';
-  content2+='<input placeholder="Custom dose" style="margin-top:6px;font-size:11px;padding:6px 10px;width:100%;box-sizing:border-box" oninput="if(this.value)el(\'pepDose\').value=this.value">';
+  content2+='<input placeholder="Custom dose (e.g. 250mcg)" style="margin-top:6px;font-size:11px;padding:6px 10px;width:100%;box-sizing:border-box" oninput="if(this.value){el(\'pepDose\').value=this.value;this.parentElement.querySelectorAll(\'.chip\').forEach(function(c){c.classList.remove(\'on\');});}">';
   content2+='</div>';
   content2+='<div style="margin-bottom:12px"><span class="lb">FREQUENCY</span><div style="display:flex;flex-wrap:wrap;gap:4px">';
   for(var f=0;f<item.freqs.length;f++)content2+='<div class="chip'+(f===0?" on":"")+'" onclick="pickChip(this,\'pepFreq\')">'+item.freqs[f]+'</div>';
   content2+='</div><input type="hidden" id="pepFreq" value="'+item.freqs[0]+'">';
-  content2+='<input placeholder="Custom frequency" style="margin-top:6px;font-size:11px;padding:6px 10px;width:100%;box-sizing:border-box" oninput="if(this.value)el(\'pepFreq\').value=this.value">';
+  content2+='<input placeholder="Custom frequency (e.g. 2x/day)" style="margin-top:6px;font-size:11px;padding:6px 10px;width:100%;box-sizing:border-box" oninput="if(this.value){el(\'pepFreq\').value=this.value;this.parentElement.querySelectorAll(\'.chip\').forEach(function(c){c.classList.remove(\'on\');});}">';
   content2+='</div>';
   content2+='<div style="margin-bottom:12px"><span class="lb">ROUTE</span><div style="display:flex;flex-wrap:wrap;gap:4px">';
   for(var r=0;r<item.routes.length;r++)content2+='<div class="chip'+(r===0?" on":"")+'" onclick="pickChip(this,\'pepRoute\')">'+item.routes[r]+'</div>';
@@ -2286,12 +2286,12 @@ function pickFatlossItem(itemIdx){
   content2+='<div style="margin-bottom:12px"><span class="lb">DOSE</span><div style="display:flex;flex-wrap:wrap;gap:4px">';
   for(var d=0;d<item.doses.length;d++)content2+='<div class="chip'+(d===0?" on":"")+'" onclick="pickChip(this,\'flDose\')">'+item.doses[d]+'</div>';
   content2+='</div><input type="hidden" id="flDose" value="'+item.doses[0]+'">';
-  content2+='<input placeholder="Custom dose" style="margin-top:6px;font-size:11px;padding:6px 10px;width:100%;box-sizing:border-box" oninput="if(this.value)el(\'flDose\').value=this.value">';
+  content2+='<input placeholder="Custom dose (e.g. 500mg)" style="margin-top:6px;font-size:11px;padding:6px 10px;width:100%;box-sizing:border-box" oninput="if(this.value){el(\'flDose\').value=this.value;this.parentElement.querySelectorAll(\'.chip\').forEach(function(c){c.classList.remove(\'on\');});}">';
   content2+='</div>';
   content2+='<div style="margin-bottom:12px"><span class="lb">FREQUENCY</span><div style="display:flex;flex-wrap:wrap;gap:4px">';
   for(var f=0;f<item.freqs.length;f++)content2+='<div class="chip'+(f===0?" on":"")+'" onclick="pickChip(this,\'flFreq\')">'+item.freqs[f]+'</div>';
   content2+='</div><input type="hidden" id="flFreq" value="'+item.freqs[0]+'">';
-  content2+='<input placeholder="Custom frequency" style="margin-top:6px;font-size:11px;padding:6px 10px;width:100%;box-sizing:border-box" oninput="if(this.value)el(\'flFreq\').value=this.value">';
+  content2+='<input placeholder="Custom frequency (e.g. EOD)" style="margin-top:6px;font-size:11px;padding:6px 10px;width:100%;box-sizing:border-box" oninput="if(this.value){el(\'flFreq\').value=this.value;this.parentElement.querySelectorAll(\'.chip\').forEach(function(c){c.classList.remove(\'on\');});}">';
   content2+='</div>';
   content2+='<div style="margin-bottom:12px"><span class="lb">ROUTE</span><div style="display:flex;flex-wrap:wrap;gap:4px">';
   for(var r=0;r<item.routes.length;r++)content2+='<div class="chip'+(r===0?" on":"")+'" onclick="pickChip(this,\'flRoute\')">'+item.routes[r]+'</div>';
@@ -2578,7 +2578,7 @@ function pickAnabolicItem(catIdx,itemIdx){
   content2+='<div style="margin-bottom:12px"><span class="lb">FREQUENCY</span><div style="display:flex;flex-wrap:wrap;gap:4px">';
   for(var f=0;f<item.freqs.length;f++)content2+='<div class="chip'+(f===0?" on":"")+'" onclick="pickChip(this,\'anaFreq\')">'+item.freqs[f]+'</div>';
   content2+='</div><input type="hidden" id="anaFreq" value="'+item.freqs[0]+'">';
-  content2+='<input id="anaFreqCustom" placeholder="Custom frequency" style="margin-top:6px;font-size:11px;padding:6px 10px;width:100%;box-sizing:border-box" oninput="if(this.value)el(\'anaFreq\').value=this.value">';
+  content2+='<input id="anaFreqCustom" placeholder="Custom frequency (e.g. MWF)" style="margin-top:6px;font-size:11px;padding:6px 10px;width:100%;box-sizing:border-box" oninput="if(this.value){el(\'anaFreq\').value=this.value;this.parentElement.querySelectorAll(\'.chip\').forEach(function(c){c.classList.remove(\'on\');});}">';
   content2+='</div>';
   content2+='<div style="margin-bottom:12px"><span class="lb">ROUTE</span><div style="display:flex;flex-wrap:wrap;gap:4px">';
   for(var r=0;r<item.routes.length;r++)content2+='<div class="chip'+(r===0?" on":"")+'" onclick="pickChip(this,\'anaRoute\')">'+item.routes[r]+'</div>';
