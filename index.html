@@ -3357,6 +3357,8 @@ function showPDFBuilder(idx){
     {k:"cardio",l:"Cardio Program",d:"Cardio from training days",has:hasProg}
   ];
   if(isComp)secs.push({k:"show",l:"Show Details",d:"Show name, date, division, federation",has:true});
+  var hasPeakWeek=c.peakWeek&&c.peakWeek.days&&c.peakWeek.days.length>0;
+  if(isComp)secs.push({k:"peakweek",l:"Peak Week Protocol",d:"7-day carb/water/sodium/training plan",has:hasPeakWeek});
   secs.push({k:"notes",l:"Program Notes",d:"Custom notes section",has:true});
   for(var i=0;i<secs.length;i++){var s=secs[i];
     content+='<label style="display:flex;align-items:center;gap:10px;padding:12px 6px;border-bottom:1px solid var(--borderS);cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;user-select:none;-webkit-user-select:none">'
@@ -3377,7 +3379,7 @@ function buildCustomPDF(idx){
   var rgb=_pdfBuilderTheme==="crimson"?"208,48,48":"212,168,48";
   // Read checkboxes BEFORE closing modal
   var _pdfChecks={};
-  ["info","training","workouts","nutrition","anabolics","peptides","fatloss","supplements","water","cardio","show","notes"].forEach(function(k){var cb=el("pdfSec_"+k);_pdfChecks[k]=cb&&cb.checked;});
+  ["info","training","workouts","nutrition","anabolics","peptides","fatloss","supplements","water","cardio","show","peakweek","notes"].forEach(function(k){var cb=el("pdfSec_"+k);_pdfChecks[k]=cb&&cb.checked;});
   function isChecked(k){return _pdfChecks[k];}
   var coverSub=val("pdfCoverSub")||"";
   closeModal();
@@ -3542,6 +3544,30 @@ function buildCustomPDF(idx){
     body+='<div style="margin-bottom:24px"><div style="font-size:14px;font-weight:800;color:#4488dd;letter-spacing:.2em;margin-bottom:14px;padding-bottom:6px;border-bottom:2px solid rgba(68,136,221,.4)">WATER INTAKE</div>'
       +'<div style="display:flex;gap:16px;padding:14px 18px;background:#0a0a0a;border:1px solid rgba(68,136,221,.2);border-radius:6px"><div style="flex:1;text-align:center"><div style="font-size:28px;font-weight:800;color:#4488dd;font-family:IBM Plex Mono,monospace">'+wGoal+'</div><div style="font-size:8px;color:#666;letter-spacing:.15em;font-family:IBM Plex Mono,monospace">OZ DAILY GOAL</div></div></div></div>';
   }
+  // Peak Week
+  if(isChecked("peakweek")&&c.peakWeek&&c.peakWeek.days&&c.peakWeek.days.length){hasAnything=true;
+    var pwDayLabels=["Sunday (7 days out)","Monday (6 days out)","Tuesday (5 days out)","Wednesday (4 days out)","Thursday (3 days out)","Friday (2 days out)","Saturday (1 day out)","SHOW DAY"];
+    body+='<div style="margin-bottom:24px"><div style="font-size:14px;font-weight:800;color:'+accent+';letter-spacing:.2em;margin-bottom:14px;padding-bottom:6px;border-bottom:2px solid '+accent+'40">PEAK WEEK PROTOCOL</div>';
+    if(c.peakWeek.notes)body+='<div style="font-size:11px;color:#999;font-style:italic;margin-bottom:14px;line-height:1.6">'+esc(c.peakWeek.notes)+'</div>';
+    for(var pwi=0;pwi<c.peakWeek.days.length;pwi++){var pwd=c.peakWeek.days[pwi];var pwIsShow=pwi===c.peakWeek.days.length-1;
+      var pwColor=pwIsShow?"#e04040":accent;
+      body+='<div style="margin-bottom:10px;padding:12px 16px;background:#0a0a0a;border:1px solid '+pwColor+'30;border-left:3px solid '+pwColor+';border-radius:4px">'
+        +'<div style="font-size:12px;font-weight:800;color:'+pwColor+';letter-spacing:.12em;font-family:IBM Plex Mono,monospace;margin-bottom:8px">'+pwDayLabels[pwi]+'</div>'
+        +'<div style="display:flex;gap:16px;flex-wrap:wrap;font-size:10px;color:#bbb;font-family:IBM Plex Mono,monospace;line-height:1.8">';
+      if(pwd.carbs)body+='<div><span style="color:#888">CARBS:</span> <strong style="color:#eee">'+pwd.carbs+'g</strong></div>';
+      var wVal=pwd.water||"";var wDisplay=wVal;
+      if(wVal&&!isNaN(wVal)){var wOz=parseInt(wVal);wDisplay=wOz>=128?(Math.round(wOz/128*10)/10)+' gal ('+wOz+' oz)':wOz+' oz';}
+      if(wVal)body+='<div><span style="color:#888">WATER:</span> <strong style="color:#4488dd">'+esc(wDisplay)+'</strong></div>';
+      if(pwd.sodium)body+='<div><span style="color:#888">SODIUM:</span> <strong style="color:'+(pwd.sodium==="Cut"?"#e04040":pwd.sodium==="Low"?"#e8b060":"#eee")+'">'+pwd.sodium+'</strong></div>';
+      body+='</div>';
+      if(pwd.training)body+='<div style="font-size:10px;color:#aaa;margin-top:4px"><span style="color:#666">Training:</span> '+esc(pwd.training)+'</div>';
+      if(pwd.cardio&&pwd.cardio!=="None")body+='<div style="font-size:10px;color:#aaa"><span style="color:#666">Cardio:</span> '+esc(pwd.cardio)+'</div>';
+      if(pwd.supplements)body+='<div style="font-size:10px;color:#aaa"><span style="color:#666">Supplements:</span> '+esc(pwd.supplements)+'</div>';
+      if(pwd.notes)body+='<div style="font-size:10px;color:#999;font-style:italic;margin-top:4px">'+esc(pwd.notes)+'</div>';
+      body+='</div>';
+    }
+    body+='</div>';
+  }
   // Notes
   if(isChecked("notes")){hasAnything=true;
     var pgForClient=_programs.find(function(p){return p.clientId===c.id;});
@@ -3559,6 +3585,7 @@ function buildCustomPDF(idx){
     if(isChecked("nutrition"))parts.push("Nutrition");
     if(isChecked("anabolics")||isChecked("peptides"))parts.push("Protocol");
     if(isChecked("fatloss"))parts.push("Fat Loss");
+    if(isChecked("peakweek"))parts.push("Peak Week");
     if(isChecked("supplements"))parts.push("Supplements");
     coverSub=parts.join(" \u00b7 ")||"Complete Program";
   }
@@ -3594,7 +3621,7 @@ function renderPeakWeek(c,idx){
       +'<div style="font-size:13px;font-weight:800;color:'+(isShow?"var(--danger)":"var(--acc)")+';font-family:var(--mono);margin-bottom:10px">'+(dayLabels[d]||"Day "+(d+1))+'</div>';
     // Carbs
     html+='<div style="display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap"><div style="flex:1;min-width:120px"><span class="lb" style="font-size:8px">CARBS (g)</span><input type="number" value="'+(day.carbs||"")+'" onchange="setPeakDay('+idx+','+d+',\'carbs\',this.value)" style="font-size:12px;padding:6px;text-align:center"></div>'
-      +'<div style="flex:1;min-width:120px"><span class="lb" style="font-size:8px">WATER (oz)</span><input type="number" value="'+(day.water||"")+'" onchange="setPeakDay('+idx+','+d+',\'water\',this.value)" style="font-size:12px;padding:6px;text-align:center"></div>'
+      +'<div style="flex:1;min-width:120px"><span class="lb" style="font-size:8px">WATER</span><div style="display:flex;gap:3px"><input type="text" value="'+esc(day.water||"")+'" onchange="setPeakDay('+idx+','+d+',\'water\',this.value)" placeholder="e.g. 200, 1gal, sips" style="font-size:11px;padding:6px;flex:1;min-width:0;text-align:center"></div></div>'
       +'<div style="flex:1;min-width:120px"><span class="lb" style="font-size:8px">SODIUM</span><select onchange="setPeakDay('+idx+','+d+',\'sodium\',this.value)" style="font-size:11px;padding:6px"><option value=""'+(!(day.sodium)?" selected":"")+'>—</option><option value="High"'+(day.sodium==="High"?" selected":"")+'>High</option><option value="Normal"'+(day.sodium==="Normal"?" selected":"")+'>Normal</option><option value="Low"'+(day.sodium==="Low"?" selected":"")+'>Low</option><option value="Cut"'+(day.sodium==="Cut"?" selected":"")+'>Cut</option></select></div></div>';
     // Training, Cardio, Supplements
     html+='<div style="display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap"><div style="flex:1;min-width:150px"><span class="lb" style="font-size:8px">TRAINING</span><input value="'+esc(day.training||"")+'" onchange="setPeakDay('+idx+','+d+',\'training\',this.value)" placeholder="e.g. Depletion workout, Pump-up..." style="font-size:11px;padding:6px"></div>'
