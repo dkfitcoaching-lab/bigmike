@@ -3567,6 +3567,25 @@ function buildCustomPDF(idx){
       if(pw2.showSchedule)body+='<div style="margin-top:10px;padding-top:8px;border-top:1px solid #222;font-size:10px;color:#aaa;line-height:1.7">'+esc(pw2.showSchedule).replace(/\n/g,"<br>")+'</div>';
       body+='</div>';
     }
+    // Competition Class
+    if(pw2.compClass||pw2.stageAttire){
+      body+='<div style="padding:12px 18px;background:#0a0a0a;border:1px solid '+accent+'20;border-radius:6px;margin-bottom:14px"><div style="font-size:11px;font-weight:800;color:'+accent+';letter-spacing:.12em;margin-bottom:8px">COMPETITION CLASS & ATTIRE</div><table style="width:100%;border-collapse:collapse;font-size:10px;font-family:IBM Plex Mono,monospace">';
+      if(pw2.compClass)body+='<tr><td style="color:#777;padding:3px 10px 3px 0">Division</td><td style="color:#eee;padding:3px 0;font-weight:700">'+esc(pw2.compClass)+'</td></tr>';
+      if(pw2.compNumber)body+='<tr><td style="color:#777;padding:3px 10px 3px 0">Number</td><td style="color:#eee;padding:3px 0">#'+esc(pw2.compNumber)+'</td></tr>';
+      if(pw2.stageAttire)body+='<tr><td style="color:#777;padding:3px 10px 3px 0">Attire</td><td style="color:#eee;padding:3px 0">'+esc(pw2.stageAttire)+'</td></tr>';
+      if(pw2.shoes)body+='<tr><td style="color:#777;padding:3px 10px 3px 0">Shoes</td><td style="color:#eee;padding:3px 0">'+esc(pw2.shoes)+'</td></tr>';
+      if(pw2.accessories)body+='<tr><td style="color:#777;padding:3px 10px 3px 0">Accessories</td><td style="color:#eee;padding:3px 0">'+esc(pw2.accessories)+'</td></tr>';
+      body+='</table></div>';
+    }
+    // Backstage Pump-Up
+    if(pw2.pumpEquipment||pw2.pumpExercises||pw2.pumpFood||pw2.showDayCompounds){
+      body+='<div style="padding:14px 18px;background:#0a0a0a;border:1.5px solid #e0404030;border-radius:6px;margin-bottom:14px"><div style="font-size:11px;font-weight:800;color:#e04040;letter-spacing:.12em;margin-bottom:10px">BACKSTAGE PUMP-UP PROTOCOL</div>';
+      if(pw2.pumpEquipment)body+='<div style="margin-bottom:8px"><div style="font-size:9px;color:#888;font-family:IBM Plex Mono,monospace;margin-bottom:3px">EQUIPMENT</div><div style="font-size:10px;color:#ccc;line-height:1.7">'+esc(pw2.pumpEquipment).replace(/\n/g,"<br>")+'</div></div>';
+      if(pw2.pumpExercises)body+='<div style="margin-bottom:8px"><div style="font-size:9px;color:#888;font-family:IBM Plex Mono,monospace;margin-bottom:3px">PUMP-UP EXERCISES</div><div style="font-size:10px;color:#ccc;line-height:1.7">'+esc(pw2.pumpExercises).replace(/\n/g,"<br>")+'</div></div>';
+      if(pw2.pumpFood)body+='<div style="margin-bottom:8px"><div style="font-size:9px;color:#888;font-family:IBM Plex Mono,monospace;margin-bottom:3px">BACKSTAGE FOOD & DRINKS</div><div style="font-size:10px;color:#ccc;line-height:1.7">'+esc(pw2.pumpFood).replace(/\n/g,"<br>")+'</div></div>';
+      if(pw2.showDayCompounds)body+='<div><div style="font-size:9px;color:#888;font-family:IBM Plex Mono,monospace;margin-bottom:3px">SHOW DAY COMPOUNDS</div><div style="font-size:10px;color:#ccc;line-height:1.7">'+esc(pw2.showDayCompounds).replace(/\n/g,"<br>")+'</div></div>';
+      body+='</div>';
+    }
     if(pw2.notes)body+='<div style="font-size:11px;color:#999;font-style:italic;margin-bottom:14px;line-height:1.6">'+esc(pw2.notes)+'</div>';
     // Daily protocol
     for(var pwi=0;pwi<pw2.days.length;pwi++){var pwd=pw2.days[pwi];var pwIsShow=pwi===pw2.days.length-1;
@@ -3647,6 +3666,21 @@ function renderPeakWeek(c,idx){
     +'<div class="g2 field" style="margin-bottom:8px"><div><span class="lb" style="font-size:8px">FINALS TIME</span><input value="'+esc(pw.finalsTime||"")+'" onchange="clients['+idx+'].peakWeek.finalsTime=this.value;save()" placeholder="e.g. Saturday 6:00 PM" style="font-size:11px;padding:6px"></div>'
     +'<div><span class="lb" style="font-size:8px">ARRIVE EARLY BY</span><input value="'+esc(pw.arriveEarly||"")+'" onchange="clients['+idx+'].peakWeek.arriveEarly=this.value;save()" placeholder="e.g. 1 hour before, 30 min" style="font-size:11px;padding:6px"></div></div>'
     +'<div class="field"><span class="lb" style="font-size:8px">SHOW DAY SCHEDULE / NOTES</span><textarea rows="2" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" onchange="clients['+idx+'].peakWeek.showSchedule=this.value;save()" placeholder="Night before: weigh-in at 5pm, bring trunks/suit for number assignment. Show day: arrive 8am, pump up backstage 9:30am...">'+esc(pw.showSchedule||"")+'</textarea></div></div>';
+  // Competition Class & Attire
+  html+='<div class="cd" style="padding:14px;margin-bottom:12px;border:1.5px solid var(--borderH)">'
+    +'<div style="font-size:11px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.12em;margin-bottom:10px">COMPETITION CLASS &amp; ATTIRE</div>'
+    +'<div class="g2 field" style="margin-bottom:8px"><div><span class="lb" style="font-size:8px">DIVISION / CLASS</span><input value="'+esc(pw.compClass||"")+'" onchange="clients['+idx+'].peakWeek.compClass=this.value;save()" placeholder="e.g. Figure Class A, Bikini Open, Men\'s Physique" style="font-size:11px;padding:6px"></div>'
+    +'<div><span class="lb" style="font-size:8px">NPC/IFBB NUMBER</span><input value="'+esc(pw.compNumber||"")+'" onchange="clients['+idx+'].peakWeek.compNumber=this.value;save()" placeholder="Assigned at check-in" style="font-size:11px;padding:6px"></div></div>'
+    +'<div class="g2 field" style="margin-bottom:8px"><div><span class="lb" style="font-size:8px">STAGE ATTIRE</span><input value="'+esc(pw.stageAttire||"")+'" onchange="clients['+idx+'].peakWeek.stageAttire=this.value;save()" placeholder="e.g. Red crystal bikini, Black posing trunks" style="font-size:11px;padding:6px"></div>'
+    +'<div><span class="lb" style="font-size:8px">SHOES / HEELS</span><input value="'+esc(pw.shoes||"")+'" onchange="clients['+idx+'].peakWeek.shoes=this.value;save()" placeholder="e.g. 5-inch clear heels, None (men)" style="font-size:11px;padding:6px"></div></div>'
+    +'<div class="field"><span class="lb" style="font-size:8px">JEWELRY / ACCESSORIES</span><input value="'+esc(pw.accessories||"")+'" onchange="clients['+idx+'].peakWeek.accessories=this.value;save()" placeholder="e.g. Stud earrings, bracelet, wedding ring off" style="font-size:11px;padding:6px"></div></div>';
+  // Backstage Pump-Up Protocol
+  html+='<div class="cd" style="padding:14px;margin-bottom:12px;border:1.5px solid var(--borderH)">'
+    +'<div style="font-size:11px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.12em;margin-bottom:10px">BACKSTAGE PUMP-UP</div>'
+    +'<div class="field" style="margin-bottom:8px"><span class="lb" style="font-size:8px">PUMP-UP EQUIPMENT</span><textarea rows="2" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" onchange="clients['+idx+'].peakWeek.pumpEquipment=this.value;save()" placeholder="Resistance bands (light/medium/heavy)\nDumbbells if available\nTowel, yoga mat">'+esc(pw.pumpEquipment||"")+'</textarea></div>'
+    +'<div class="field" style="margin-bottom:8px"><span class="lb" style="font-size:8px">PUMP-UP EXERCISES</span><textarea rows="2" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" onchange="clients['+idx+'].peakWeek.pumpExercises=this.value;save()" placeholder="Band pull-aparts 3x20, Lateral raises 3x15, Pushups 3x15\nBand curls 3x20, Overhead press 2x15\nDO NOT pump legs — kills separation">'+esc(pw.pumpExercises||"")+'</textarea></div>'
+    +'<div class="field" style="margin-bottom:8px"><span class="lb" style="font-size:8px">BACKSTAGE FOOD &amp; DRINKS</span><textarea rows="2" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" onchange="clients['+idx+'].peakWeek.pumpFood=this.value;save()" placeholder="Rice cakes + honey + peanut butter (every 30-45min)\nSkittles / gummy bears for quick carbs\nSea salt on rice cakes for pump\nSip water or Gatorade (small amounts)\nCaffeine tabs 30min before stage">'+esc(pw.pumpFood||"")+'</textarea></div>'
+    +'<div class="field" style="margin-bottom:0"><span class="lb" style="font-size:8px">SHOW DAY COMPOUNDS</span><textarea rows="2" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" onchange="clients['+idx+'].peakWeek.showDayCompounds=this.value;save()" placeholder="e.g. Clenbuterol 40mcg AM, Halotestin 10mg pre-stage\nCaffeine 200mg, Evogen Super Dry, Dandelion root\nGlycerin for vascularity (optional)">'+esc(pw.showDayCompounds||"")+'</textarea></div></div>';
   // Day-by-day protocol
   html+='<div class="sl" style="margin-top:4px;margin-bottom:8px">DAILY PROTOCOL</div>';
   var dayLabels=["Sunday (7 days out)","Monday (6 days out)","Tuesday (5 days out)","Wednesday (4 days out)","Thursday (3 days out)","Friday (2 days out)","Saturday (1 day out)","SHOW DAY"];
