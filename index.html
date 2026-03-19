@@ -154,23 +154,41 @@ button{font-family:var(--body);cursor:pointer;border:none;outline:none;transitio
   .ti:hover{color:var(--ow);background:var(--glassB)}
   .ti.on{color:var(--acc);background:var(--accS)}
   .ti.on::before{top:50%;left:0;transform:translateY(-50%);width:3px;height:60%;border-radius:0 3px 3px 0}
-  .ct{margin-left:var(--sidebar);padding:44px 60px 60px;min-height:100vh;max-width:1100px}
+  .ct{margin-left:var(--sidebar);padding:44px 48px 60px;min-height:100vh;max-width:none}
   .desk-logo{display:flex!important}
   .timer-bar{left:var(--sidebar)}
-  .pt{font-size:30px}.stat b{font-size:32px}.stat{padding:24px 14px;border-radius:14px}.cd{padding:20px;border-radius:16px;transition:border-color .2s,box-shadow .2s,transform .15s}.cd-link:hover{transform:translateY(-1px)}.g2{gap:14px}.g3{gap:12px}.g4{gap:10px}.field{margin-bottom:20px}
+  .pt{font-size:30px}
+  .stat b{font-size:32px}
+  .stat{padding:24px 14px;border-radius:14px}
+  .cd{padding:20px;border-radius:16px;transition:border-color .2s,box-shadow .2s,transform .15s}
+  .cd-link:hover{transform:translateY(-1px)}
+  .g2{gap:14px}.g3{gap:12px}.g4{gap:10px;grid-template-columns:repeat(4,1fr)}.field{margin-bottom:20px}
   .qnote-fab{right:40px;bottom:40px}
-  .btn{padding:18px 24px;font-size:12px;border-radius:14px}
+  .btn{padding:18px 24px;font-size:13px;border-radius:14px;max-width:480px}
   .btn2{padding:12px 18px;font-size:11px;border-radius:12px}
   .chip{padding:8px 16px;font-size:11px;border-radius:10px}
-  .search-bar{padding:14px 18px;border-radius:14px}
-  .search-bar input{font-size:14px}
+  .search-bar{padding:14px 18px;border-radius:14px;max-width:600px}
+  .search-bar input{font-size:15px}
   input,textarea,select{font-size:15px;padding:14px 18px;border-radius:12px;min-height:48px}
-  .modal-box{max-width:520px;padding:32px 28px 26px;border-radius:20px}
+  .modal-box{max-width:580px;padding:32px 28px 26px;border-radius:20px}
   .set-row{padding:8px 12px;border-radius:8px}
+  .toast{left:calc(var(--sidebar) + 50%);transform:translateX(-50%)}
+  /* Desktop grid layouts */
+  .desk-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .desk-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+  .desk-wide{max-width:900px}
+  .desk-full{max-width:none}
+  .sl{font-size:12px}
+  .lb{font-size:11px}
+  .ex-summary-line{font-size:13px}
 }
 @media(min-width:1200px){
-  .ct{padding:48px 80px 60px;max-width:1200px}
-  .g4{grid-template-columns:repeat(4,1fr);gap:14px}
+  .ct{padding:48px 64px 60px}
+  .desk-grid-3{grid-template-columns:1fr 1fr 1fr}
+  .modal-box{max-width:640px}
+}
+@media(min-width:1600px){
+  .ct{padding:48px 80px 60px}
 }
 
 @keyframes goldShimmer{0%{background-position:200% center}100%{background-position:-200% center}}
@@ -599,10 +617,10 @@ function renderHome(){
       html+='<div class="cd cd-link" style="display:flex;align-items:center;gap:12px" onclick="navToSession(\''+s.id+'\')"><div style="width:38px;height:38px;border-radius:10px;background:var(--accS);border:1.5px solid var(--borderS);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:700;color:'+col+';flex-shrink:0">'+(s.clientName||"?")[0].toUpperCase()+'</div><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--wh)">'+esc(s.clientName)+'</div><div style="font-size:10px;color:var(--dm);font-family:var(--mono)">'+s.type+' \u00b7 '+fmtDate(s.date)+' \u00b7 '+(s.duration||60)+'min'+(exCount?' \u00b7 '+exCount+' ex':'')+'</div></div><div style="text-align:right"><div style="font-size:11px;color:var(--ow);font-family:var(--mono);font-weight:700">$'+s.rate+'</div>'+(s.paid?'<div style="font-size:7px;color:var(--success);font-family:var(--mono);margin-top:2px">PAID</div>':'<div style="font-size:7px;color:var(--warn);font-family:var(--mono);margin-top:2px">UNPAID</div>')+'</div></div>';}
   }
   // Log Session - single entry point
-  html+='<button class="btn" onclick="go(\'sessions\');setTimeout(function(){push(\'new\',{})},50)" style="width:100%;margin-top:24px;margin-bottom:12px;padding:16px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:12px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>LOG SESSION</button>';
+  html+='<button class="btn" onclick="go(\'sessions\');setTimeout(function(){push(\'new\',{})},50)" style="margin-top:24px;margin-bottom:12px;padding:16px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:12px;max-width:480px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>LOG SESSION</button>';
   // Quick actions
   html+='<div class="sl" style="margin-top:12px">QUICK ACTIONS</div>';
-  html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px">'
+  html+='<div class="desk-grid-3" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px">'
     +'<button class="btn2" onclick="go(\'schedule\')" style="width:100%;padding:14px;display:flex;align-items:center;justify-content:center;gap:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4"/></svg>SCHEDULE</button>'
     +'<button class="btn2" onclick="addReminder()" style="width:100%;padding:14px;display:flex;align-items:center;justify-content:center;gap:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>REMINDER</button>'
     +'<button class="btn2" onclick="go(\'nutrition\')" style="width:100%;padding:14px;display:flex;align-items:center;justify-content:center;gap:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/></svg>PROGRAMS</button></div>';
@@ -674,6 +692,7 @@ function renderClients(){
   if(!filtered.length&&_clientSearch)return html+'<div style="text-align:center;padding:40px 20px;color:var(--dm);font-family:var(--mono);font-size:11px">No clients match "'+esc(_clientSearch)+'"</div>';
   if(!clients.length)return html+'<div style="text-align:center;padding:44px 24px"><div style="width:56px;height:56px;border-radius:16px;background:linear-gradient(145deg,#0c0c0c,#060606);border:2px solid var(--accB);display:inline-flex;align-items:center;justify-content:center;margin-bottom:16px;box-shadow:0 0 20px var(--accS)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div><div style="color:var(--dm);font-family:var(--mono);font-size:12px;margin-bottom:16px">No clients</div><button class="btn" onclick="push(\'add\')" style="max-width:200px;margin:0 auto">+ ADD CLIENT</button></div>';
   var sorted=clients.slice().sort(function(a,b){return(a.name||"").toLowerCase().localeCompare((b.name||"").toLowerCase());});
+  html+='<div class="desk-grid">';
   for(var si2=0;si2<sorted.length;si2++){
     var c=sorted[si2];var i=clients.indexOf(c);
     if(_clientSearch&&c.name.toLowerCase().indexOf(_clientSearch.toLowerCase())<0)continue;
@@ -695,6 +714,7 @@ function renderClients(){
       +'<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:5px">'+dsBadge+stBadge+(c.isCompetitor?'<span style="font-size:8px;font-family:var(--mono);font-weight:700;color:var(--bg);background:var(--goldGrad);background-size:200% 100%;animation:shimmer 3s ease-in-out infinite;padding:3px 10px;border-radius:10px;letter-spacing:.1em;box-shadow:0 2px 8px var(--accGlow)">COMPETITOR</span>':'')+'</div></div>'
       +'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="2" style="flex-shrink:0;opacity:.5"><path d="M9 18l6-6-6-6"/></svg></div>';
   }
+  html+='</div>';
   return html;
 }
 function renderInPlace(){var ct=el("ct");if(!ct)return;var renderers={home:renderHome,clients:renderClients,sessions:renderSessions,schedule:renderSchedule,nutrition:renderNutrition,settings:renderSettings};ct.innerHTML=(renderers[currentView.tab]||renderHome)();timerUpdateUI();var inp=el("clientSearchInput")||el("sessionSearchInput");if(inp){inp.focus();var v=inp.value;inp.value="";inp.value=v;}}
@@ -2081,6 +2101,7 @@ function renderNutrition(){
       +'<button class="btn2" onclick="newProgram()">+ NEW PROGRAM</button></div>';
   } else {
     var sortedProg=_programs.slice().sort(function(a,b){return(a.name||"").toLowerCase().localeCompare((b.name||"").toLowerCase());});
+    html+='<div class="desk-grid">';
     for(var i=0;i<sortedProg.length;i++){var pg=sortedProg[i],cl=pg.clientId?clientById(pg.clientId):null;
       var secLabels=pg.sections.map(function(s){return s.charAt(0).toUpperCase()+s.slice(1);}).join(" \u00b7 ")||"No sections";
       html+='<div class="cd cd-link progCard" style="display:flex;align-items:center;gap:12px" onclick="_editProgram=\''+pg.id+'\';render()">'
@@ -2089,6 +2110,7 @@ function renderNutrition(){
         +'<div style="font-size:9px;color:var(--acc);font-family:var(--mono);margin-top:2px">'+secLabels+'</div></div>'
         +'<div style="color:var(--dm)">\u203a</div></div>';
     }
+    html+='</div>';
   }
   // Workout Templates section
   html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-top:28px;margin-bottom:6px"><div class="pt" style="margin-bottom:0">Workout Templates</div><span style="font-size:9px;color:var(--dm);font-family:var(--mono)">'+templates.length+' template'+(templates.length!==1?'s':'')+'</span></div>'
