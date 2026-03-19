@@ -3548,23 +3548,43 @@ function buildCustomPDF(idx){
   }
   // Peak Week
   if(isChecked("peakweek")&&c.peakWeek&&c.peakWeek.days&&c.peakWeek.days.length){hasAnything=true;
+    var pw2=c.peakWeek;
     var pwDayLabels=["Sunday (7 days out)","Monday (6 days out)","Tuesday (5 days out)","Wednesday (4 days out)","Thursday (3 days out)","Friday (2 days out)","Saturday (1 day out)","SHOW DAY"];
     body+='<div style="margin-bottom:24px"><div style="font-size:14px;font-weight:800;color:'+accent+';letter-spacing:.2em;margin-bottom:14px;padding-bottom:6px;border-bottom:2px solid '+accent+'40">PEAK WEEK PROTOCOL</div>';
-    if(c.peakWeek.notes)body+='<div style="font-size:11px;color:#999;font-style:italic;margin-bottom:14px;line-height:1.6">'+esc(c.peakWeek.notes)+'</div>';
-    for(var pwi=0;pwi<c.peakWeek.days.length;pwi++){var pwd=c.peakWeek.days[pwi];var pwIsShow=pwi===c.peakWeek.days.length-1;
+    // Show Day Information
+    if(pw2.showVenue||pw2.checkinTime||pw2.prejudgingTime){
+      body+='<div style="padding:14px 18px;background:#0a0a0a;border:1.5px solid '+accent+'30;border-radius:6px;margin-bottom:16px">'
+        +'<div style="font-size:11px;font-weight:800;color:'+accent+';letter-spacing:.15em;margin-bottom:10px">SHOW DAY INFORMATION</div>'
+        +'<table style="width:100%;border-collapse:collapse;font-size:10px;font-family:IBM Plex Mono,monospace">';
+      if(pw2.showVenue)body+='<tr><td style="color:#777;padding:3px 10px 3px 0;white-space:nowrap">Venue</td><td style="color:#ddd;padding:3px 0">'+esc(pw2.showVenue)+'</td></tr>';
+      if(pw2.showAddress)body+='<tr><td style="color:#777;padding:3px 10px 3px 0;white-space:nowrap">Address</td><td style="color:#ddd;padding:3px 0">'+esc(pw2.showAddress)+'</td></tr>';
+      if(pw2.checkinTime)body+='<tr><td style="color:#777;padding:3px 10px 3px 0;white-space:nowrap">Check-In</td><td style="color:#ddd;padding:3px 0">'+esc(pw2.checkinTime)+(pw2.checkinLocation?' \u2014 '+esc(pw2.checkinLocation):'')+'</td></tr>';
+      if(pw2.weighinTime)body+='<tr><td style="color:#777;padding:3px 10px 3px 0;white-space:nowrap">Weigh-In</td><td style="color:#ddd;padding:3px 0">'+esc(pw2.weighinTime)+'</td></tr>';
+      if(pw2.prejudgingTime)body+='<tr><td style="color:#777;padding:3px 10px 3px 0;white-space:nowrap">Prejudging</td><td style="color:#e8b060;padding:3px 0;font-weight:700">'+esc(pw2.prejudgingTime)+'</td></tr>';
+      if(pw2.finalsTime)body+='<tr><td style="color:#777;padding:3px 10px 3px 0;white-space:nowrap">Finals</td><td style="color:#e8b060;padding:3px 0;font-weight:700">'+esc(pw2.finalsTime)+'</td></tr>';
+      if(pw2.arriveEarly)body+='<tr><td style="color:#777;padding:3px 10px 3px 0;white-space:nowrap">Arrive Early</td><td style="color:#e04040;padding:3px 0;font-weight:700">'+esc(pw2.arriveEarly)+' before</td></tr>';
+      body+='</table>';
+      if(pw2.showSchedule)body+='<div style="margin-top:10px;padding-top:8px;border-top:1px solid #222;font-size:10px;color:#aaa;line-height:1.7">'+esc(pw2.showSchedule).replace(/\n/g,"<br>")+'</div>';
+      body+='</div>';
+    }
+    if(pw2.notes)body+='<div style="font-size:11px;color:#999;font-style:italic;margin-bottom:14px;line-height:1.6">'+esc(pw2.notes)+'</div>';
+    // Daily protocol
+    for(var pwi=0;pwi<pw2.days.length;pwi++){var pwd=pw2.days[pwi];var pwIsShow=pwi===pw2.days.length-1;
       var pwColor=pwIsShow?"#e04040":accent;
       body+='<div style="margin-bottom:10px;padding:12px 16px;background:#0a0a0a;border:1px solid '+pwColor+'30;border-left:3px solid '+pwColor+';border-radius:4px">'
         +'<div style="font-size:12px;font-weight:800;color:'+pwColor+';letter-spacing:.12em;font-family:IBM Plex Mono,monospace;margin-bottom:8px">'+pwDayLabels[pwi]+'</div>'
-        +'<div style="display:flex;gap:16px;flex-wrap:wrap;font-size:10px;color:#bbb;font-family:IBM Plex Mono,monospace;line-height:1.8">';
-      if(pwd.carbs)body+='<div><span style="color:#888">CARBS:</span> <strong style="color:#eee">'+pwd.carbs+'g</strong></div>';
-      var wVal=pwd.water||"";var wDisplay=wVal;
-      if(wVal&&!isNaN(wVal)){var wOz=parseInt(wVal);wDisplay=wOz>=128?(Math.round(wOz/128*10)/10)+' gal ('+wOz+' oz)':wOz+' oz';}
-      if(wVal)body+='<div><span style="color:#888">WATER:</span> <strong style="color:#4488dd">'+esc(wDisplay)+'</strong></div>';
-      if(pwd.sodium)body+='<div><span style="color:#888">SODIUM:</span> <strong style="color:'+(pwd.sodium==="Cut"?"#e04040":pwd.sodium==="Low"?"#e8b060":"#eee")+'">'+pwd.sodium+'</strong></div>';
+        +'<div style="display:flex;gap:12px;flex-wrap:wrap;font-size:10px;color:#bbb;font-family:IBM Plex Mono,monospace;line-height:1.8">';
+      if(pwd.protein)body+='<div><span style="color:#888">P:</span> <strong style="color:#eee">'+pwd.protein+'g</strong></div>';
+      if(pwd.carbs)body+='<div><span style="color:#888">C:</span> <strong style="color:#eee">'+pwd.carbs+'g</strong></div>';
+      if(pwd.fat)body+='<div><span style="color:#888">F:</span> <strong style="color:#eee">'+pwd.fat+'g</strong></div>';
+      if(pwd.water)body+='<div><span style="color:#888">Water:</span> <strong style="color:#4488dd">'+esc(pwd.water)+'</strong></div>';
+      var sodColor=(!pwd.sodium||pwd.sodium==="0"||pwd.sodium==="0mg")?"#e04040":(parseInt(pwd.sodium)<=1000?"#e8b060":"#eee");
+      if(pwd.sodium)body+='<div><span style="color:#888">Na:</span> <strong style="color:'+sodColor+'">'+esc(pwd.sodium)+'</strong></div>';
       body+='</div>';
       if(pwd.training)body+='<div style="font-size:10px;color:#aaa;margin-top:4px"><span style="color:#666">Training:</span> '+esc(pwd.training)+'</div>';
       if(pwd.cardio&&pwd.cardio!=="None")body+='<div style="font-size:10px;color:#aaa"><span style="color:#666">Cardio:</span> '+esc(pwd.cardio)+'</div>';
       if(pwd.supplements)body+='<div style="font-size:10px;color:#aaa"><span style="color:#666">Supplements:</span> '+esc(pwd.supplements)+'</div>';
+      if(pwd.mealPlan)body+='<div style="font-size:10px;color:#aaa"><span style="color:#666">Meals:</span> '+esc(pwd.mealPlan)+'</div>';
       if(pwd.notes)body+='<div style="font-size:10px;color:#999;font-style:italic;margin-top:4px">'+esc(pwd.notes)+'</div>';
       body+='</div>';
     }
@@ -3615,21 +3635,43 @@ function renderPeakWeek(c,idx){
   if(!pw.days.length)return html+'<div class="cd" style="padding:24px;text-align:center;border:1px dashed var(--border)"><div style="color:var(--dm);margin-bottom:8px;font-size:12px">No peak week protocol set up</div><button class="btn2" onclick="initPeakWeek('+idx+')">GENERATE PEAK WEEK</button></div>';
   // Notes field
   html+='<div class="cd" style="padding:12px;margin-bottom:10px"><span class="lb">PEAK WEEK NOTES</span><textarea rows="2" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" placeholder="Overall strategy, posing practice schedule, tanning..." onchange="clients['+idx+'].peakWeek.notes=this.value;save();">'+(pw.notes?esc(pw.notes):'')+'</textarea></div>';
+  // Show Day Information
+  html+='<div class="cd" style="padding:14px;margin-bottom:12px;border:1.5px solid var(--accB)">'
+    +'<div style="font-size:11px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.12em;margin-bottom:10px">SHOW DAY INFORMATION</div>'
+    +'<div class="g2 field" style="margin-bottom:8px"><div><span class="lb" style="font-size:8px">VENUE / SHOW NAME</span><input value="'+esc(pw.showVenue||"")+'" onchange="clients['+idx+'].peakWeek.showVenue=this.value;save()" placeholder="e.g. Greater Columbus Convention Center" style="font-size:11px;padding:6px"></div>'
+    +'<div><span class="lb" style="font-size:8px">VENUE ADDRESS</span><input value="'+esc(pw.showAddress||"")+'" onchange="clients['+idx+'].peakWeek.showAddress=this.value;save()" placeholder="400 N High St, Columbus, OH 43215" style="font-size:11px;padding:6px"></div></div>'
+    +'<div class="g2 field" style="margin-bottom:8px"><div><span class="lb" style="font-size:8px">ATHLETE CHECK-IN (Night Before)</span><input value="'+esc(pw.checkinTime||"")+'" onchange="clients['+idx+'].peakWeek.checkinTime=this.value;save()" placeholder="e.g. Friday 5:00 PM - 8:00 PM" style="font-size:11px;padding:6px"></div>'
+    +'<div><span class="lb" style="font-size:8px">CHECK-IN LOCATION</span><input value="'+esc(pw.checkinLocation||"")+'" onchange="clients['+idx+'].peakWeek.checkinLocation=this.value;save()" placeholder="e.g. Ballroom A, 2nd Floor" style="font-size:11px;padding:6px"></div></div>'
+    +'<div class="g2 field" style="margin-bottom:8px"><div><span class="lb" style="font-size:8px">WEIGH-IN TIME</span><input value="'+esc(pw.weighinTime||"")+'" onchange="clients['+idx+'].peakWeek.weighinTime=this.value;save()" placeholder="e.g. Friday 5:00 PM or Saturday 7:00 AM" style="font-size:11px;padding:6px"></div>'
+    +'<div><span class="lb" style="font-size:8px">PREJUDGING TIME</span><input value="'+esc(pw.prejudgingTime||"")+'" onchange="clients['+idx+'].peakWeek.prejudgingTime=this.value;save()" placeholder="e.g. Saturday 10:00 AM" style="font-size:11px;padding:6px"></div></div>'
+    +'<div class="g2 field" style="margin-bottom:8px"><div><span class="lb" style="font-size:8px">FINALS TIME</span><input value="'+esc(pw.finalsTime||"")+'" onchange="clients['+idx+'].peakWeek.finalsTime=this.value;save()" placeholder="e.g. Saturday 6:00 PM" style="font-size:11px;padding:6px"></div>'
+    +'<div><span class="lb" style="font-size:8px">ARRIVE EARLY BY</span><input value="'+esc(pw.arriveEarly||"")+'" onchange="clients['+idx+'].peakWeek.arriveEarly=this.value;save()" placeholder="e.g. 1 hour before, 30 min" style="font-size:11px;padding:6px"></div></div>'
+    +'<div class="field"><span class="lb" style="font-size:8px">SHOW DAY SCHEDULE / NOTES</span><textarea rows="2" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" onchange="clients['+idx+'].peakWeek.showSchedule=this.value;save()" placeholder="Night before: weigh-in at 5pm, bring trunks/suit for number assignment. Show day: arrive 8am, pump up backstage 9:30am...">'+esc(pw.showSchedule||"")+'</textarea></div></div>';
+  // Day-by-day protocol
+  html+='<div class="sl" style="margin-top:4px;margin-bottom:8px">DAILY PROTOCOL</div>';
   var dayLabels=["Sunday (7 days out)","Monday (6 days out)","Tuesday (5 days out)","Wednesday (4 days out)","Thursday (3 days out)","Friday (2 days out)","Saturday (1 day out)","SHOW DAY"];
   for(var d=0;d<pw.days.length;d++){
     var day=pw.days[d];
     var isShow=d===pw.days.length-1;
     html+='<div class="cd" style="padding:14px;margin-bottom:8px;border-left:3px solid '+(isShow?"var(--danger)":"var(--accGlow)")+'">'
       +'<div style="font-size:13px;font-weight:800;color:'+(isShow?"var(--danger)":"var(--acc)")+';font-family:var(--mono);margin-bottom:10px">'+(dayLabels[d]||"Day "+(d+1))+'</div>';
-    // Carbs
-    html+='<div style="display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap"><div style="flex:1;min-width:120px"><span class="lb" style="font-size:8px">CARBS (g)</span><input type="number" value="'+(day.carbs||"")+'" onchange="setPeakDay('+idx+','+d+',\'carbs\',this.value)" style="font-size:12px;padding:6px;text-align:center"></div>'
-      +'<div style="flex:1;min-width:120px"><span class="lb" style="font-size:8px">WATER</span><div style="display:flex;gap:3px"><input type="text" value="'+esc(day.water||"")+'" onchange="setPeakDay('+idx+','+d+',\'water\',this.value)" placeholder="e.g. 200, 1gal, sips" style="font-size:11px;padding:6px;flex:1;min-width:0;text-align:center"></div></div>'
-      +'<div style="flex:1;min-width:120px"><span class="lb" style="font-size:8px">SODIUM</span><select onchange="setPeakDay('+idx+','+d+',\'sodium\',this.value)" style="font-size:11px;padding:6px"><option value=""'+(!(day.sodium)?" selected":"")+'>—</option><option value="High"'+(day.sodium==="High"?" selected":"")+'>High</option><option value="Normal"'+(day.sodium==="Normal"?" selected":"")+'>Normal</option><option value="Low"'+(day.sodium==="Low"?" selected":"")+'>Low</option><option value="Cut"'+(day.sodium==="Cut"?" selected":"")+'>Cut</option></select></div></div>';
-    // Training, Cardio, Supplements
+    // Macros row - Protein, Carbs, Fat
+    html+='<div style="display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap">'
+      +'<div style="flex:1;min-width:70px"><span class="lb" style="font-size:8px">PROTEIN (g)</span><input type="number" value="'+(day.protein||"")+'" onchange="setPeakDay('+idx+','+d+',\'protein\',this.value)" placeholder="\u2014" style="font-size:12px;padding:6px;text-align:center"></div>'
+      +'<div style="flex:1;min-width:70px"><span class="lb" style="font-size:8px">CARBS (g)</span><input type="number" value="'+(day.carbs||"")+'" onchange="setPeakDay('+idx+','+d+',\'carbs\',this.value)" placeholder="\u2014" style="font-size:12px;padding:6px;text-align:center"></div>'
+      +'<div style="flex:1;min-width:70px"><span class="lb" style="font-size:8px">FAT (g)</span><input type="number" value="'+(day.fat||"")+'" onchange="setPeakDay('+idx+','+d+',\'fat\',this.value)" placeholder="\u2014" style="font-size:12px;padding:6px;text-align:center"></div></div>';
+    // Water, Sodium
+    html+='<div style="display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap">'
+      +'<div style="flex:1;min-width:120px"><span class="lb" style="font-size:8px">WATER</span><input type="text" value="'+esc(day.water||"")+'" onchange="setPeakDay('+idx+','+d+',\'water\',this.value)" placeholder="e.g. 2gal, 128oz, sips only" style="font-size:11px;padding:6px;text-align:center"></div>'
+      +'<div style="flex:1;min-width:120px"><span class="lb" style="font-size:8px">SODIUM</span><input type="text" value="'+esc(day.sodium||"")+'" onchange="setPeakDay('+idx+','+d+',\'sodium\',this.value)" placeholder="e.g. 5000mg, 2000mg, 0, Normal" style="font-size:11px;padding:6px;text-align:center"></div></div>';
+    // Training, Cardio
     html+='<div style="display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap"><div style="flex:1;min-width:150px"><span class="lb" style="font-size:8px">TRAINING</span><input value="'+esc(day.training||"")+'" onchange="setPeakDay('+idx+','+d+',\'training\',this.value)" placeholder="e.g. Depletion workout, Pump-up..." style="font-size:11px;padding:6px"></div>'
       +'<div style="flex:1;min-width:150px"><span class="lb" style="font-size:8px">CARDIO</span><input value="'+esc(day.cardio||"")+'" onchange="setPeakDay('+idx+','+d+',\'cardio\',this.value)" placeholder="e.g. 20min easy walk, None..." style="font-size:11px;padding:6px"></div></div>';
-    html+='<div style="display:flex;gap:6px;margin-bottom:4px;flex-wrap:wrap"><div style="flex:1;min-width:150px"><span class="lb" style="font-size:8px">SUPPLEMENTS</span><input value="'+esc(day.supplements||"")+'" onchange="setPeakDay('+idx+','+d+',\'supplements\',this.value)" placeholder="e.g. Dandelion root, Vitamin C..." style="font-size:11px;padding:6px"></div>'
-      +'<div style="flex:1;min-width:150px"><span class="lb" style="font-size:8px">NOTES</span><input value="'+esc(day.notes||"")+'" onchange="setPeakDay('+idx+','+d+',\'notes\',this.value)" placeholder="Posing practice, tanning, etc." style="font-size:11px;padding:6px"></div></div>';
+    // Supplements, Meal Plan
+    html+='<div style="display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap"><div style="flex:1;min-width:150px"><span class="lb" style="font-size:8px">SUPPLEMENTS</span><input value="'+esc(day.supplements||"")+'" onchange="setPeakDay('+idx+','+d+',\'supplements\',this.value)" placeholder="e.g. Dandelion root, Vitamin C, Potassium..." style="font-size:11px;padding:6px"></div>'
+      +'<div style="flex:1;min-width:150px"><span class="lb" style="font-size:8px">MEAL PLAN</span><input value="'+esc(day.mealPlan||"")+'" onchange="setPeakDay('+idx+','+d+',\'mealPlan\',this.value)" placeholder="e.g. 6 meals: rice/chicken, rice cakes + honey..." style="font-size:11px;padding:6px"></div></div>';
+    // Notes
+    html+='<div class="field" style="margin-bottom:0"><span class="lb" style="font-size:8px">NOTES</span><input value="'+esc(day.notes||"")+'" onchange="setPeakDay('+idx+','+d+',\'notes\',this.value)" placeholder="Posing practice, tanning, sleep, etc." style="font-size:11px;padding:6px"></div>';
     html+='</div>';
   }
   return html;
@@ -3639,14 +3681,14 @@ function initPeakWeek(idx){
   function _doPeakWeek(){
   c.peakWeek={notes:"",days:[]};
   var templates=[
-    {carbs:"300",water:"200",sodium:"High",training:"Full depletion workout",cardio:"30min fasted AM",supplements:"Multivitamin, Vitamin C",notes:"Start carb depletion"},
-    {carbs:"100",water:"200",sodium:"High",training:"Depletion - Upper",cardio:"30min fasted AM",supplements:"Multivitamin, Vitamin C",notes:"Continue depletion"},
-    {carbs:"75",water:"200",sodium:"Normal",training:"Depletion - Lower",cardio:"20min fasted AM",supplements:"Multivitamin, Vitamin C, Potassium",notes:"Deep depletion day"},
-    {carbs:"400",water:"150",sodium:"Normal",training:"Light pump workout",cardio:"None",supplements:"Multivitamin, Vitamin C, Potassium",notes:"Begin carb load"},
-    {carbs:"500",water:"100",sodium:"Low",training:"Light pump workout",cardio:"None",supplements:"Dandelion root, Vitamin C",notes:"Heavy carb load"},
-    {carbs:"350",water:"64",sodium:"Low",training:"Final pump-up",cardio:"None",supplements:"Dandelion root, Vitamin C",notes:"Moderate carbs, reduce water"},
-    {carbs:"250",water:"Sips only",sodium:"Cut",training:"Posing practice",cardio:"None",supplements:"Dandelion root, Glycerin (optional)",notes:"Water cut, tan, rest"},
-    {carbs:"200",water:"Sips only",sodium:"Cut",training:"Pump-up backstage",cardio:"None",supplements:"Per protocol",notes:"SHOW DAY - rice cakes, honey, pump up"}
+    {protein:"200",carbs:"300",fat:"50",water:"2 gal",sodium:"5000mg",training:"Full depletion workout",cardio:"30min fasted AM",supplements:"Multivitamin, Vitamin C, Electrolytes",mealPlan:"High protein, moderate carbs - chicken/rice/vegetables",notes:"Start carb depletion, high water & sodium loading"},
+    {protein:"200",carbs:"100",fat:"45",water:"2 gal",sodium:"5000mg",training:"Depletion - Upper body",cardio:"30min fasted AM",supplements:"Multivitamin, Vitamin C, Electrolytes",mealPlan:"High protein, low carbs - chicken/fish, green vegetables",notes:"Continue depletion, maintain water & sodium loading"},
+    {protein:"200",carbs:"75",fat:"40",water:"2 gal",sodium:"3000mg",training:"Depletion - Lower body",cardio:"20min fasted AM",supplements:"Multivitamin, Vitamin C, Potassium",mealPlan:"Protein focus, minimal carbs - egg whites, chicken, greens",notes:"Deep depletion, start reducing sodium"},
+    {protein:"180",carbs:"400",fat:"35",water:"1 gal",sodium:"2000mg",training:"Light pump workout",cardio:"None",supplements:"Multivitamin, Vitamin C, Potassium",mealPlan:"Begin carb load - rice, sweet potato, oats w/ chicken",notes:"Begin carb load, reduce water by half"},
+    {protein:"160",carbs:"500",fat:"30",water:"64oz",sodium:"1000mg",training:"Light pump workout",cardio:"None",supplements:"Dandelion root, Vitamin C",mealPlan:"Heavy carb load - white rice, rice cakes, cream of rice, honey",notes:"Heavy carb load, continue water reduction"},
+    {protein:"160",carbs:"350",fat:"25",water:"32oz",sodium:"500mg",training:"Final pump-up",cardio:"None",supplements:"Dandelion root, Vitamin C",mealPlan:"Moderate carbs - rice, rice cakes, small amounts through day",notes:"Reduce water significantly, tighten up"},
+    {protein:"150",carbs:"250",fat:"20",water:"Sips only",sodium:"0",training:"Posing practice only",cardio:"None",supplements:"Dandelion root, Glycerin (optional)",mealPlan:"Light meals - rice cakes, honey, peanut butter, small protein",notes:"Water cut, get tan, rest, practice posing, lay flat"},
+    {protein:"150",carbs:"200",fat:"20",water:"Sips only",sodium:"0",training:"Pump-up backstage",cardio:"None",supplements:"Per protocol",mealPlan:"Rice cakes, honey, jam, peanut butter backstage. Sip wine optional.",notes:"SHOW DAY - eat to fill out, pump up 20min before stage"}
   ];
   for(var i=0;i<8;i++)c.peakWeek.days.push(JSON.parse(JSON.stringify(templates[i])));
   save();render();toast("\u2713 Peak week template generated");}
