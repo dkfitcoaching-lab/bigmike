@@ -362,7 +362,7 @@ var navStack=[],currentView={tab:"home",view:"main",data:{}};
 var scheduleWeekOffset=0,_selectedDay=null;
 var _clientSearch="",_sessionSearch="";
 function go(tab){if(currentView.view==="new"&&tab!==currentView.tab){var exCount=document.querySelectorAll("#exList .cd").length;var hasData=val("sC")||val("sN")||exCount>0;if(hasData){showConfirm("Unsaved Session","Leave session log?\nUnsaved data will be lost.","Leave").then(function(ok){if(!ok)return;_doGoTab(tab);});return;}}_doGoTab(tab);}
-function _doGoTab(tab){haptic("tap");navStack=[];if(tab!=="schedule")scheduleWeekOffset=0;_selectedDay=null;_clientSearch="";_sessionSearch="";_editMealPlan=null;_editProgram=null;_editWorkout=null;currentView={tab:tab,view:"main",data:{}};render();window.scrollTo({top:0,behavior:"smooth"});}
+function _doGoTab(tab){haptic("tap");navStack=[];if(tab!=="schedule")scheduleWeekOffset=0;_selectedDay=null;_clientSearch="";_sessionSearch="";_editMealPlan=null;_editProgram=null;_editWorkout=null;_programSectionCollapsed={};currentView={tab:tab,view:"main",data:{}};render();window.scrollTo({top:0,behavior:"smooth"});}
 function push(view,data){haptic("tap");data=data||{};navStack.push(JSON.parse(JSON.stringify(currentView)));currentView={tab:currentView.tab,view:view,data:Object.assign({},currentView.data,data)};render();window.scrollTo({top:0,behavior:"smooth"});}
 function pop(){haptic("tap");if(navStack.length)currentView=navStack.pop();else currentView={tab:currentView.tab,view:"main",data:{}};render();window.scrollTo({top:0,behavior:"smooth"});}
 function el(id){return document.getElementById(id);}
@@ -655,7 +655,7 @@ function renderEarningsChart(){
   html+='</div></div>';return html;
 }
 function completeScheduled(schedId){var sched=schedule.find(function(s){return s.id===schedId;});if(!sched)return;if(sched.clientId&&!clientById(sched.clientId)){toast("Client no longer exists");return;}navStack=[];currentView={tab:"sessions",view:"main",data:{}};push("new",{prefillClientId:sched.clientId,prefillType:sched.type,prefillRate:sched.rate,prefillDate:sched.date,scheduleId:schedId});}
-function exportData(){var d={clients:clients,sessions:sessions,schedule:schedule,templates:templates,mealPlans:mealPlans,programs:_programs,workouts:_workouts,version:VERSION,exported:new Date().toISOString()};var blob=new Blob([JSON.stringify(d,null,2)],{type:"application/json"});var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="bigmike_backup_"+todayISO()+".json";document.body.appendChild(a);a.click();document.body.removeChild(a);toast("\u2713 Backup ready");}
+function exportData(){var d={clients:clients,sessions:sessions,schedule:schedule,templates:templates,mealPlans:mealPlans,programs:_programs,workouts:_workouts,reminders:LS.get("reminders",[]),version:VERSION,exported:new Date().toISOString()};var blob=new Blob([JSON.stringify(d,null,2)],{type:"application/json"});var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="bigmike_backup_"+todayISO()+".json";document.body.appendChild(a);a.click();document.body.removeChild(a);toast("\u2713 Backup ready");}
 function importData(event){var file=event.target.files[0];if(!file)return;var reader=new FileReader();reader.onload=function(e){try{var d=JSON.parse(e.target.result);
   var info="IMPORT PREVIEW:\n";
   info+="Clients: "+(d.clients?d.clients.length:0)+" (current: "+clients.length+")\n";
@@ -664,7 +664,8 @@ function importData(event){var file=event.target.files[0];if(!file)return;var re
   info+="Templates: "+(d.templates?d.templates.length:0)+"\n";
   info+="Meal Plans: "+(d.mealPlans?d.mealPlans.length:0)+"\n";
   info+="Programs: "+(d.programs?d.programs.length:0)+"\n";
-  info+="Workouts: "+(d.workouts?d.workouts.length:0)+"\n\n";
+  info+="Workouts: "+(d.workouts?d.workouts.length:0)+"\n";
+  info+="Reminders: "+(d.reminders?d.reminders.length:0)+"\n\n";
   info+="Choose action:\nOK = MERGE (add new, keep existing)\nCancel = abort import";
   showConfirm("Import Data",info,"Merge").then(function(ok){if(!ok){event.target.value="";return;}
   var merged={c:0,s:0,sc:0};
@@ -675,6 +676,7 @@ function importData(event){var file=event.target.files[0];if(!file)return;var re
   if(d.mealPlans){var ids5={};mealPlans.forEach(function(m){ids5[m.id]=true;});d.mealPlans.forEach(function(m){if(!ids5[m.id])mealPlans.push(m);});}
   if(d.programs){var ids6={};_programs.forEach(function(p){ids6[p.id]=true;});d.programs.forEach(function(p){if(!ids6[p.id])_programs.push(p);});savePrograms();}
   if(d.workouts){var ids7={};_workouts.forEach(function(w){ids7[w.id]=true;});d.workouts.forEach(function(w){if(!ids7[w.id])_workouts.push(w);});saveWorkouts();}
+  if(d.reminders){var rems=LS.get("reminders",[]);var ids8={};rems.forEach(function(r){ids8[r.id]=true;});d.reminders.forEach(function(r){if(!ids8[r.id])rems.push(r);});LS.set("reminders",rems);}
   save();toast("\u2713 Merged: +"+merged.c+" clients, +"+merged.s+" sessions, +"+merged.sc+" scheduled",5000);render();
   });
   }catch(err){toast("\u2717 Invalid file");}};reader.readAsText(file);event.target.value="";}
@@ -885,7 +887,7 @@ function toggleMeasForm(){var f=el("measForm");if(f){f.classList.toggle("expande
 function saveMeasurement(idx){var c=clients[idx];if(!c)return;var FIELDS=["Weight (lbs)","Body Fat %","Waist (in)","Hips (in)","Chest (in)","Left Arm (in)","Right Arm (in)","Left Thigh (in)","Right Thigh (in)"];var fields=[],hasAny=false;for(var i=0;i<FIELDS.length;i++){var v=(el("measF"+i)||{}).value||"";fields.push(v);if(v)hasAny=true;}if(!hasAny){toast("Enter at least one measurement");return;}if(!c.measurements)c.measurements=[];c.measurements.push({id:uid(),date:val("measDate")||todayISO(),fields:fields});save();toast("\u2713 Measurements saved");renderClientDetailInPlace();}
 function deleteMeasurement(idx,mid){var c=clients[idx];if(!c||!c.measurements)return;c.measurements=c.measurements.filter(function(m){return m.id!==mid;});save();renderClientDetailInPlace();}
 function deleteQNote(cidx,nid){var c=clients[parseInt(cidx)];if(!c||!c.quickNotes)return;var removed=c.quickNotes.find(function(n){return n.id===nid;});c.quickNotes=c.quickNotes.filter(function(n){return n.id!==nid;});save();toast("Note deleted \u00b7 ",2600,function(){if(removed){c.quickNotes.push(removed);save();render();}});render();}
-function deleteClient(idx){var c=clients[idx];if(!c)return;showDoubleConfirm("Delete "+c.name+"?","Session history will be preserved but quick notes will be lost.").then(function(ok){if(!ok)return;var id=c.id,name=c.name;clients=clients.filter(function(x){return x.id!==id;});sessions.forEach(function(s){if(s.clientId===id)s.clientName=name+" (removed)";});schedule.forEach(function(s){if(s.clientId===id){s.clientName=name+" (removed)";s.clientId="";}});mealPlans.forEach(function(mp){if(mp.clientId===id)mp.clientId="";});_programs=_programs.filter(function(p){return p.clientId!==id;});savePrograms();_workouts=_workouts.filter(function(w){return w.clientId!==id;});saveWorkouts();save();toast("Client removed");navStack=[];currentView={tab:"clients",view:"main",data:{}};render();});}
+function deleteClient(idx){var c=clients[idx];if(!c)return;showDoubleConfirm("Delete "+c.name+"?","Session history will be preserved but quick notes will be lost.").then(function(ok){if(!ok)return;var id=c.id,name=c.name;clients=clients.filter(function(x){return x.id!==id;});sessions.forEach(function(s){if(s.clientId===id)s.clientName=name+" (removed)";});schedule.forEach(function(s){if(s.clientId===id){s.clientName=name+" (removed)";s.clientId="";}});mealPlans.forEach(function(mp){if(mp.clientId===id)mp.clientId="";});_programs=_programs.filter(function(p){return p.clientId!==id;});savePrograms();_workouts=_workouts.filter(function(w){return w.clientId!==id;});saveWorkouts();var rems=LS.get("reminders",[]);LS.set("reminders",rems.filter(function(r){return r.clientId!==id;}));save();toast("Client removed");navStack=[];currentView={tab:"clients",view:"main",data:{}};render();});}
 function navToLogFromClient(cid,rate,type){var c=clientById(cid);var dur=c&&c.duration?parseInt(c.duration):60;var svcs=c?(c.services||"Training"):"Training";var bestType="Training";if(svcs.indexOf("Contest Prep")>=0)bestType="Contest Prep";else if(svcs.indexOf("Nutrition")>=0)bestType="Nutrition Check-In";else if(svcs.indexOf("Posing")>=0)bestType="Posing";else if(svcs.indexOf("Group")>=0)bestType="Group Session";navStack=[];currentView={tab:"sessions",view:"main",data:{}};push("new",{prefillClientId:cid,prefillRate:rate,prefillType:bestType,prefillDuration:String(dur||60)});}
 function navToScheduleFromClient(cid){navStack=[];currentView={tab:"schedule",view:"main",data:{prefillClientId:cid}};render();setTimeout(function(){var e=el("schC");if(e&&cid){e.value=cid;onScheduleClientSelect();}var f=el("schForm");if(f)f.style.display="block";},100);}
 function navToSession(sid){navStack=[];currentView={tab:"sessions",view:"main",data:{}};push("detail",{sessionId:sid});}
@@ -2068,7 +2070,7 @@ var SUPP_DB=[
 {name:"Chlorella",doses:["3g","5g"],timings:["Morning"]}
 ]}
 ];
-var _nutClientId="",_editMealPlan=null,_foodUnitG=LS.get("foodUnitG",false);
+var _nutClientId="",_editMealPlan=null,_foodUnitG=LS.get("foodUnitG",false),_inProgramBuilder=false;
 var _workouts=LS.get("workouts",[]),_editWorkout=null;
 var _programs=LS.get("programs",[]),_editProgram=null,_programSectionCollapsed={};
 function savePrograms(){LS.set("programs",_programs);}
@@ -2083,7 +2085,7 @@ function moveProgramSection(idx,dir){var p=_programs.find(function(x){return x.i
 function toggleProgramSection(type){_programSectionCollapsed[type]=!_programSectionCollapsed[type];render();}
 function foodPrepBadge(db){if(!db||db.di===-1)return"";if(db.ck===1)return' <span style="font-size:8px;color:var(--warn);font-family:var(--mono)">(cooked)</span>';if(db.ck===0&&(db.cat==="P"||db.cat==="C"))return' <span style="font-size:8px;color:var(--mu);font-family:var(--mono)">(dry/raw)</span>';return"";}
 function foodPrepBadgePDF(db){if(!db)return"";if(db.ck===1)return' <span style="font-size:9px;color:#b88030;font-family:IBM Plex Mono,monospace">(cooked)</span>';if(db.ck===0&&(db.cat==="P"||db.cat==="C"))return' <span style="font-size:9px;color:#999;font-family:IBM Plex Mono,monospace">(dry/raw)</span>';return"";}
-function calcMealTotals(meal){var t={cal:0,p:0,c:0,f:0};(meal.foods||[]).forEach(function(fd){var db=FOOD_DB[fd.di];if(!db)return;var per=db.per||1;var m=(fd.qty||0)/per;t.cal+=Math.round((db.cal||0)*m);t.p+=Math.round((db.p||0)*m);t.c+=Math.round((db.c||0)*m);t.f+=Math.round((db.f||0)*m);});return t;}
+function calcMealTotals(meal){var t={cal:0,p:0,c:0,f:0};(meal.foods||[]).forEach(function(fd){var db=fd.custom?fd:FOOD_DB[fd.di];if(!db)return;var per=db.per||1;var m=(fd.qty||0)/per;t.cal+=Math.round((db.cal||0)*m);t.p+=Math.round((db.p||0)*m);t.c+=Math.round((db.c||0)*m);t.f+=Math.round((db.f||0)*m);});return t;}
 function calcPlanTotals(mp){var t={cal:0,p:0,c:0,f:0};(mp.meals||[]).forEach(function(ml){var mt=calcMealTotals(ml);t.cal+=mt.cal;t.p+=mt.p;t.c+=mt.c;t.f+=mt.f;});return t;}
 function renderNutrition(){
   if(_editProgram)return renderProgramBuilder();
@@ -2244,18 +2246,18 @@ function renderProgramNutritionSection(pg){
 function newMealPlanForClient(clientId){var mp={id:uid(),name:"New Meal Plan",clientId:clientId,meals:[],created_at:new Date().toISOString()};mealPlans.push(mp);save();_editMealPlan=mp.id;render();}
 function renderProgramAnabolicsSection(pg){
   if(!pg.clientId)return '<div style="padding:12px;text-align:center;color:var(--dm);font-size:11px;font-family:var(--mono)">Select a client above</div>';
-  _nutClientId=pg.clientId;
-  return renderAnabolics();
+  _nutClientId=pg.clientId;_inProgramBuilder=true;
+  var h=renderAnabolics();_inProgramBuilder=false;return h;
 }
 function renderProgramSupplementsSection(pg){
   if(!pg.clientId)return '<div style="padding:12px;text-align:center;color:var(--dm);font-size:11px;font-family:var(--mono)">Select a client above</div>';
-  _nutClientId=pg.clientId;
-  return renderSupplements();
+  _nutClientId=pg.clientId;_inProgramBuilder=true;
+  var h=renderSupplements();_inProgramBuilder=false;return h;
 }
 function renderProgramWaterSection(pg){
   if(!pg.clientId)return '<div style="padding:12px;text-align:center;color:var(--dm);font-size:11px;font-family:var(--mono)">Select a client above</div>';
-  _nutClientId=pg.clientId;
-  return renderWaterTracker();
+  _nutClientId=pg.clientId;_inProgramBuilder=true;
+  var h=renderWaterTracker();_inProgramBuilder=false;return h;
 }
 function renderProgramPeptidesSection(pg){
   if(!pg.clientId)return '<div style="padding:12px;text-align:center;color:var(--dm);font-size:11px;font-family:var(--mono)">Select a client above</div>';
@@ -2430,7 +2432,7 @@ function renderMealPlanEdit(){
     html+='<div class="cd" style="padding:14px;margin-bottom:8px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><div style="display:flex;flex-direction:column;gap:1px;margin-right:6px;flex-shrink:0">'+(m>0?'<span style="cursor:pointer;font-size:9px;color:var(--dm);line-height:1" onclick="moveMeal('+m+',-1)">\u25b2</span>':'')+(m<mp.meals.length-1?'<span style="cursor:pointer;font-size:9px;color:var(--dm);line-height:1" onclick="moveMeal('+m+',1)">\u25bc</span>':'')+'</div><input value="'+esc(meal.name)+'" onchange="mealName('+m+',this.value)" style="font-size:14px;font-weight:700;border:none;background:none;color:var(--wh);padding:0;flex:1"><span style="font-size:9px;color:var(--acc);font-family:var(--mono)">'+mt.cal+'cal \u00b7 '+mt.p+'p \u00b7 '+mt.c+'c \u00b7 '+mt.f+'f</span><span style="font-size:14px;color:var(--danger);cursor:pointer;margin-left:8px" onclick="rmMeal('+m+')">\u2715</span></div>'
     +'<div style="margin-bottom:6px"><input value="'+esc(meal.time||"")+'" onchange="mealTime('+m+',this.value)" placeholder="Timing (e.g. 7:00 AM, Pre-Workout, Post-Training)" style="font-size:10px;padding:6px 10px;color:var(--mu);border:1px solid var(--borderS);background:var(--glass)"></div>';
     html+='<input value="'+esc(meal.notes||"")+'" onchange="mealNote('+m+',this.value)" placeholder="Meal notes (e.g. pre-workout, post-training, before bed...)" style="font-size:9px;padding:4px 8px;color:var(--mu);margin-bottom:6px;width:100%;box-sizing:border-box;border:1px solid var(--borderS);background:var(--glass)">';
-    for(var f=0;f<meal.foods.length;f++){var fd=meal.foods[f],db=FOOD_DB[fd.di]||{};
+    for(var f=0;f<meal.foods.length;f++){var fd=meal.foods[f],db=fd.custom?fd:(FOOD_DB[fd.di]||{});
       var dispQty=fd.qty,dispUnit=fd.unit;if(_foodUnitG&&(fd.unit==="oz"||fd.unit==="g")){dispQty=fd.unit==="oz"?Math.round(fd.qty*28.35):fd.qty;dispUnit="g";}
       html+='<div style="display:flex;align-items:center;gap:4px;padding:6px 0;border-bottom:1px solid var(--borderS)"><div style="display:flex;flex-direction:column;gap:1px;flex-shrink:0">'+(f>0?'<span style="cursor:pointer;font-size:7px;color:var(--dm);line-height:1" onclick="moveFood('+m+','+f+',-1)">\u25b2</span>':'<span style="font-size:7px;visibility:hidden">\u25b2</span>')+(f<meal.foods.length-1?'<span style="cursor:pointer;font-size:7px;color:var(--dm);line-height:1" onclick="moveFood('+m+','+f+',1)">\u25bc</span>':'<span style="font-size:7px;visibility:hidden">\u25bc</span>')+'</div><span style="flex:1;font-size:11px;color:var(--ow)">'+esc(fd.name)+foodPrepBadge(db)+'</span><input type="number" value="'+dispQty+'" onchange="fdQty('+m+','+f+',this.value'+(_foodUnitG&&fd.unit==="oz"?'/28.35':'')+')\" style="width:42px;text-align:center;font-size:10px;padding:3px"><span style="font-size:9px;color:var(--dm);font-family:var(--mono);min-width:28px">'+dispUnit+'</span><span style="font-size:9px;color:var(--dm);font-family:var(--mono);min-width:38px;text-align:right">'+Math.round((db.cal||0)*(fd.qty/(db.per||1)))+'cal</span><span style="font-size:12px;color:var(--danger);cursor:pointer;padding:0 4px" onclick="rmFood('+m+','+f+')">\u2715</span></div>';}
     var dietRestrictions=detectDietaryRestrictions(mp.clientId);
@@ -2479,7 +2481,7 @@ function showFoodPicker(mealIdx){
 }
 function filterFoodPicker(){var q=(el("foodPickSearch")||{}).value||"";q=q.toLowerCase();var cats=document.querySelectorAll(".foodPickCat");cats.forEach(function(c){var items=c.querySelectorAll(".foodPickItem");var anyMatch=false;items.forEach(function(it){var match=it.textContent.toLowerCase().indexOf(q)>=0;it.style.display=match?"":"none";if(match)anyMatch=true;});c.style.display=anyMatch||!q?"":"none";if(q&&anyMatch){var itemsDiv=c.querySelector(".foodPickItems");if(itemsDiv)itemsDiv.style.display="block";}});}
 function pickFoodForMeal(di){var mp=mealPlans.find(function(p){return p.id===_editMealPlan;});if(!mp)return;var db=FOOD_DB[di];if(!db)return;mp.meals[_foodPickerMealIdx].foods.push({name:db.n,qty:db.per,unit:db.unit,di:di});save();closeModal();render();}
-function pickFoodCustom(){var n=val("customFoodName");if(!n){toast("Enter food name");return;}var mp=mealPlans.find(function(p){return p.id===_editMealPlan;});if(!mp)return;var cQty=numVal("customFoodQty")||1;var cUnit=val("customFoodUnit")||"oz";var cCal=numVal("customFoodCal");var cP=numVal("customFoodP");var cC=numVal("customFoodC");var cF=numVal("customFoodF");var cIdx=FOOD_DB.length;FOOD_DB.push({n:n,cal:cCal,p:cP,c:cC,f:cF,per:cQty,unit:cUnit,cat:"P",ck:1});mp.meals[_foodPickerMealIdx].foods.push({name:n,qty:cQty,unit:cUnit,di:cIdx});save();closeModal();render();}
+function pickFoodCustom(){var n=val("customFoodName");if(!n){toast("Enter food name");return;}var mp=mealPlans.find(function(p){return p.id===_editMealPlan;});if(!mp)return;var cQty=numVal("customFoodQty")||1;var cUnit=val("customFoodUnit")||"oz";var cCal=numVal("customFoodCal");var cP=numVal("customFoodP");var cC=numVal("customFoodC");var cF=numVal("customFoodF");mp.meals[_foodPickerMealIdx].foods.push({name:n,qty:cQty,unit:cUnit,di:-1,custom:true,cal:cCal,p:cP,c:cC,f:cF,per:cQty});save();closeModal();render();}
 function delPlan(){showDoubleConfirm("Delete Meal Plan","This will permanently delete this meal plan.").then(function(ok){if(!ok)return;mealPlans=mealPlans.filter(function(p){return p.id!==_editMealPlan;});save();_editMealPlan=null;render();});}
 function duplicatePlan(mpId){
   var orig=mealPlans.find(function(p){return p.id===mpId;});if(!orig)return;
@@ -2592,9 +2594,10 @@ function renderAnabolics(){
   if(!clients.length)return'<div class="cd" style="padding:24px;text-align:center;color:var(--dm)">Add a client first</div>';
   if(!_nutClientId)_nutClientId=clients[0].id;
   var cl=clientById(_nutClientId);
-  var html='<div style="margin-bottom:12px"><select onchange="_nutClientId=this.value;render()" style="font-size:12px">';
+  var html='';
+  if(!_inProgramBuilder){html+='<div style="margin-bottom:12px"><select onchange="_nutClientId=this.value;render()" style="font-size:12px">';
   for(var i=0;i<clients.length;i++)html+='<option value="'+clients[i].id+'"'+(_nutClientId===clients[i].id?" selected":"")+'>'+esc(clients[i].name)+'</option>';
-  html+='</select></div>';
+  html+='</select></div>';}
   if(!cl)return html+'<div class="cd" style="padding:20px;text-align:center;color:var(--dm)">Select a client</div>';
   if(!cl.anabolics)cl.anabolics=[];
   html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><span class="sl" style="margin:0">PROTOCOL</span><div style="display:flex;gap:4px"><button class="btn2" onclick="addAnabolic()" style="padding:5px 10px;font-size:8px">+ ADD</button>'+(cl.anabolics.length?'<button class="btn2" onclick="generateAnabolicsPDF()" style="padding:5px 10px;font-size:8px">PDF</button>':'')+'</div></div>';
@@ -2701,9 +2704,10 @@ function renderSupplements(){
   if(!clients.length)return'<div class="cd" style="padding:24px;text-align:center;color:var(--dm)">Add a client first</div>';
   if(!_nutClientId)_nutClientId=clients[0].id;
   var cl=clientById(_nutClientId);
-  var html='<div style="margin-bottom:12px"><select onchange="_nutClientId=this.value;render()" style="font-size:12px">';
+  var html='';
+  if(!_inProgramBuilder){html+='<div style="margin-bottom:12px"><select onchange="_nutClientId=this.value;render()" style="font-size:12px">';
   for(var i=0;i<clients.length;i++)html+='<option value="'+clients[i].id+'"'+(_nutClientId===clients[i].id?" selected":"")+'>'+esc(clients[i].name)+'</option>';
-  html+='</select></div>';
+  html+='</select></div>';}
   if(!cl)return html+'<div class="cd" style="padding:20px;text-align:center;color:var(--dm)">Add a client first</div>';
   if(!cl.supplements)cl.supplements=[];
   html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><span class="sl" style="margin:0">SUPPLEMENTS</span><button class="btn2" onclick="addSupp()" style="padding:5px 10px;font-size:8px">+ ADD</button></div>';
@@ -2766,9 +2770,10 @@ function renderWaterTracker(){
   if(!clients.length)return'<div class="cd" style="padding:24px;text-align:center;color:var(--dm)">Add a client first</div>';
   if(!_nutClientId)_nutClientId=clients[0].id;
   var cl=clientById(_nutClientId);
-  var html='<div style="margin-bottom:12px"><select onchange="_nutClientId=this.value;render()" style="font-size:12px">';
+  var html='';
+  if(!_inProgramBuilder){html+='<div style="margin-bottom:12px"><select onchange="_nutClientId=this.value;render()" style="font-size:12px">';
   for(var i=0;i<clients.length;i++)html+='<option value="'+clients[i].id+'"'+(_nutClientId===clients[i].id?" selected":"")+'>'+esc(clients[i].name)+'</option>';
-  html+='</select></div>';
+  html+='</select></div>';}
   if(!cl)return html+'<div class="cd" style="padding:20px;text-align:center;color:var(--dm)">Add a client first</div>';
   if(!cl.water)cl.water={goal:128,logs:{}};
   var td=todayISO(),oz=cl.water.logs[td]||0,goal=cl.water.goal||128;
@@ -3028,7 +3033,7 @@ function deleteReminder(rid){
   save();LS.set("_appVersion",VERSION);
 }})();
 // ── MODAL ──
-function showModal(title,content){var old=el("appModal");if(old)old.remove();var d=document.createElement("div");d.id="appModal";d.style.cssText="position:fixed;inset:0;z-index:150;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);padding:0;animation:fadeIn .2s ease";d.onclick=function(e){if(e.target===d)closeModal();};d.innerHTML='<div style="width:100%;max-width:500px;max-height:85vh;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;background:linear-gradient(160deg,rgba(14,14,18,.99),rgba(8,8,12,.99));border:1.5px solid var(--accB);border-radius:20px 20px 0 0;padding:24px 20px max(24px,env(safe-area-inset-bottom));box-shadow:0 -8px 40px rgba(0,0,0,.6);animation:slideUp .25s ease"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><div style="font-size:13px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.1em">'+title+'</div><div onclick="closeModal()" style="cursor:pointer;font-size:20px;color:var(--dm);padding:4px 8px;min-width:32px;min-height:32px;display:flex;align-items:center;justify-content:center">&times;</div></div>'+content+'</div>';document.body.appendChild(d);}
+function showModal(title,content){var old=el("appModal");if(old)old.remove();var d=document.createElement("div");d.id="appModal";d.style.cssText="position:fixed;inset:0;z-index:150;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);padding:0;animation:fadeIn .2s ease";d.onclick=function(e){if(e.target===d)closeModal();};d.innerHTML='<div style="width:100%;max-width:500px;max-height:85vh;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;background:linear-gradient(160deg,rgba(14,14,18,.99),rgba(8,8,12,.99));border:1.5px solid var(--accB);border-radius:20px 20px 0 0;padding:24px 20px max(24px,env(safe-area-inset-bottom));box-shadow:0 -8px 40px rgba(0,0,0,.6);animation:slideUp .25s ease"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><div style="font-size:13px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.1em">'+esc(title)+'</div><div onclick="closeModal()" style="cursor:pointer;font-size:20px;color:var(--dm);padding:4px 8px;min-width:32px;min-height:32px;display:flex;align-items:center;justify-content:center">&times;</div></div>'+content+'</div>';document.body.appendChild(d);}
 function closeModal(){var m=el("appModal");if(m)m.remove();}
 // ── STOPWATCH ──
 var _swRunning=false,_swStart=0,_swElapsed=0,_swInterval=null,_swMode="stopwatch",_swCountdown=0;
@@ -3348,7 +3353,7 @@ function generateMealPlanPDF(mpId){
 
   for(var m=0;m<mp.meals.length;m++){var meal=mp.meals[m],mt=calcMealTotals(meal);
     body+='<div style="margin-bottom:18px"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px"><div style="font-size:13px;font-weight:700;color:'+accent+'">'+esc(meal.name).toUpperCase()+'</div>'+(meal.time?'<div style="font-size:9px;color:#777;font-family:IBM Plex Mono,monospace">'+esc(meal.time)+'</div>':'')+'</div>';
-    for(var f=0;f<meal.foods.length;f++){var fd=meal.foods[f],db=FOOD_DB[fd.di]||{};var fcal=Math.round((db.cal||0)*(fd.qty/(db.per||1)));
+    for(var f=0;f<meal.foods.length;f++){var fd=meal.foods[f],db=fd.custom?fd:(FOOD_DB[fd.di]||{});var fcal=Math.round((db.cal||0)*(fd.qty/(db.per||1)));
       body+='<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #151515"><span style="color:#ccc;font-size:12px">&bull; '+esc(fd.name)+foodPrepBadgePDF(db)+' &mdash; '+fd.qty+' '+fd.unit+'</span><span style="color:#888;font-size:11px;font-family:IBM Plex Mono,monospace">'+fcal+' cal</span></div>';}
     body+='<div style="font-size:10px;color:#666;font-family:IBM Plex Mono,monospace;margin-top:4px">Calories: '+mt.cal+' | '+mt.p+'g P | '+mt.c+'g C | '+mt.f+'g F</div></div>';}
 
@@ -3537,7 +3542,7 @@ function buildCustomPDF(idx){
           +'<div style="flex:1;text-align:center"><div style="font-size:18px;font-weight:700;color:#d87878;font-family:IBM Plex Mono,monospace">'+tot.f+'g</div><div style="font-size:8px;color:#666;letter-spacing:.15em;font-family:IBM Plex Mono,monospace">FAT</div></div></div>';
         for(var m=0;m<mp.meals.length;m++){var meal=mp.meals[m],mt=calcMealTotals(meal);
           body+='<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px"><div style="font-size:12px;font-weight:700;color:'+accent+'">'+esc(meal.name).toUpperCase()+'</div>'+(meal.time?'<div style="font-size:9px;color:#777;font-family:IBM Plex Mono,monospace">'+esc(meal.time)+'</div>':'')+'</div>';
-          for(var f=0;f<meal.foods.length;f++){var fd=meal.foods[f],db=FOOD_DB[fd.di]||{};var fcal=Math.round((db.cal||0)*(fd.qty/(db.per||1)));
+          for(var f=0;f<meal.foods.length;f++){var fd=meal.foods[f],db=fd.custom?fd:(FOOD_DB[fd.di]||{});var fcal=Math.round((db.cal||0)*(fd.qty/(db.per||1)));
             body+='<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #141414"><span style="color:#ccc;font-size:11px">\u2022 '+esc(fd.name)+foodPrepBadgePDF(db)+' \u2014 '+fd.qty+' '+fd.unit+'</span><span style="color:#888;font-size:10px;font-family:IBM Plex Mono,monospace">'+fcal+' cal</span></div>';}
           body+='<div style="font-size:9px;color:#666;font-family:IBM Plex Mono,monospace;margin-top:3px">'+mt.cal+' cal | '+mt.p+'g P | '+mt.c+'g C | '+mt.f+'g F</div></div>';}
         body+='</div>';
