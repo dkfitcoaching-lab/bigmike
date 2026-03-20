@@ -133,10 +133,10 @@ button{font-family:var(--body);cursor:pointer;border:none;outline:none;transitio
   .g4{grid-template-columns:1fr 1fr;gap:6px}
   .cd{padding:14px;border-radius:12px}
   .field{margin-bottom:12px}
-  .chip{padding:5px 10px;font-size:9px;min-height:30px}
-  input,textarea,select{padding:11px 14px;font-size:13px;min-height:42px;border-radius:8px}
+  .chip{padding:6px 10px;font-size:9px;min-height:34px}
+  input,textarea,select{padding:12px 14px;font-size:13px;min-height:44px;border-radius:8px}
   .btn{padding:14px 16px;min-height:46px;border-radius:10px;font-size:10px}
-  .btn2{padding:8px 12px;font-size:9px;border-radius:8px}
+  .btn2{padding:10px 12px;font-size:9px;border-radius:8px;min-height:36px}
   .sl{font-size:9px;letter-spacing:.14em;margin-bottom:10px}
   .hdr{padding:10px 12px 8px}
   .tabs{padding:6px 0 max(6px,env(safe-area-inset-bottom))}
@@ -415,7 +415,7 @@ function fmtTimeStr(t){if(!t)return"TBD";var p=t.split(":"),hr=parseInt(p[0]);if
 function todayISO(){return new Date().toISOString().split("T")[0];}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).substr(2,5);}
 function clientById(id){return clients.find(function(c){return c.id===id;});}
-function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");}
 function pickChip(el_,hiddenId){haptic("tap");el_.parentElement.querySelectorAll(".chip").forEach(function(c){c.classList.remove("on");});el_.classList.add("on");if(hiddenId){var h=el(hiddenId);if(h)h.value=el_.textContent.trim();}}
 function pickIntensifier(el_){
   haptic("tap");
@@ -587,7 +587,7 @@ function renderHome(){
       var cidx=clients.findIndex(function(cc){return cc.id===s.clientId;});
       html+='<div class="cd" style="display:flex;align-items:center;gap:14px;border-left:3px solid '+bc+'">'
         +'<div style="min-width:50px;font-family:var(--mono);font-size:13px;font-weight:700;color:'+(ic?"var(--success)":"var(--acc)")+'">'+fmtTimeStr(s.time)+'</div>'
-        +'<div style="flex:1;cursor:'+(cidx>=0?"pointer":"default")+'" onclick="'+(cidx>=0?"navToClient("+cidx+")":"")+'"><div style="font-size:14px;font-weight:500;color:var(--wh)">'+esc(s.clientName||"Unknown")+'</div><div style="font-size:10px;color:var(--dm)">'+(s.type||"Training")+' \u00b7 '+(s.duration||60)+'min'+(ic?' \u00b7 <span class="status-chip status-complete">COMPLETED</span>':ix?' \u00b7 <span class="status-chip status-cancelled">CANCELLED</span>':"")+'</div></div>'
+        +'<div style="flex:1;cursor:'+(cidx>=0?"pointer":"default")+'" onclick="'+(cidx>=0?"navToClient("+cidx+")":"")+'"><div style="font-size:14px;font-weight:500;color:var(--wh)">'+esc(s.clientName||"Unknown")+'</div><div style="font-size:10px;color:var(--dm)">'+esc(s.type||"Training")+' \u00b7 '+(s.duration||60)+'min'+(ic?' \u00b7 <span class="status-chip status-complete">COMPLETED</span>':ix?' \u00b7 <span class="status-chip status-cancelled">CANCELLED</span>':"")+'</div></div>'
         +(!ic&&!ix?'<button class="btn2" onclick="completeScheduled(\''+s.id+'\')" style="padding:5px 10px;font-size:8px">LOG</button>':"")
         +(s.rate?'<div style="font-size:11px;color:var(--ow);font-family:var(--mono)">$'+s.rate+'</div>':'')+'</div>';
     }
@@ -614,7 +614,7 @@ function renderHome(){
     html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-top:24px"><div class="sl" style="margin:0">RECENT SESSIONS</div><div class="chip" onclick="go(\'sessions\')" style="padding:3px 8px;font-size:8px">VIEW ALL</div></div>';
     var rec=sessions.slice(-5).reverse();
     for(var i=0;i<rec.length;i++){var s=rec[i];var col=clientColor(s.clientName);var exCount=(s.exercises||[]).length;
-      html+='<div class="cd cd-link" style="display:flex;align-items:center;gap:12px" onclick="navToSession(\''+s.id+'\')"><div style="width:38px;height:38px;border-radius:10px;background:var(--accS);border:1.5px solid var(--borderS);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:700;color:'+col+';flex-shrink:0">'+(s.clientName||"?")[0].toUpperCase()+'</div><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--wh)">'+esc(s.clientName)+'</div><div style="font-size:10px;color:var(--dm);font-family:var(--mono)">'+s.type+' \u00b7 '+fmtDate(s.date)+' \u00b7 '+(s.duration||60)+'min'+(exCount?' \u00b7 '+exCount+' ex':'')+'</div></div><div style="text-align:right"><div style="font-size:11px;color:var(--ow);font-family:var(--mono);font-weight:700">$'+s.rate+'</div>'+(s.paid?'<div style="font-size:7px;color:var(--success);font-family:var(--mono);margin-top:2px">PAID</div>':'<div style="font-size:7px;color:var(--warn);font-family:var(--mono);margin-top:2px">UNPAID</div>')+'</div></div>';}
+      html+='<div class="cd cd-link" style="display:flex;align-items:center;gap:12px" onclick="navToSession(\''+s.id+'\')"><div style="width:38px;height:38px;border-radius:10px;background:var(--accS);border:1.5px solid var(--borderS);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:700;color:'+col+';flex-shrink:0">'+(s.clientName||"?")[0].toUpperCase()+'</div><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--wh)">'+esc(s.clientName)+'</div><div style="font-size:10px;color:var(--dm);font-family:var(--mono)">'+esc(s.type)+' \u00b7 '+fmtDate(s.date)+' \u00b7 '+(s.duration||60)+'min'+(exCount?' \u00b7 '+exCount+' ex':'')+'</div></div><div style="text-align:right"><div style="font-size:11px;color:var(--ow);font-family:var(--mono);font-weight:700">$'+esc(String(s.rate))+'</div>'+(s.paid?'<div style="font-size:7px;color:var(--success);font-family:var(--mono);margin-top:2px">PAID</div>':'<div style="font-size:7px;color:var(--warn);font-family:var(--mono);margin-top:2px">UNPAID</div>')+'</div></div>';}
   }
   // Log Session - single entry point
   html+='<button class="btn" onclick="go(\'sessions\');setTimeout(function(){push(\'new\',{})},50)" style="margin-top:24px;margin-bottom:12px;padding:16px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:12px;max-width:480px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>LOG SESSION</button>';
@@ -1184,7 +1184,7 @@ function renderSessionDetail(){
   var paidChip=s.status!=="cancelled"?'<div class="chip'+(s.paid?" on":"")+'" onclick="toggleSessionPaid(\''+s.id+'\')" style="min-width:50px;text-align:center;font-size:9px">'+(s.paid?"\u2713 PAID":"UNPAID")+'</div>':"";
   var html='<button class="btn2" onclick="pop()" style="margin-bottom:14px">\u2039 Back</button>'
     +'<div style="margin-bottom:18px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><div class="pt" style="margin-bottom:0;flex:1">'+esc(s.clientName)+'</div>'+sc2+paidChip+'</div>'
-    +'<div style="font-size:12px;color:var(--dm);font-family:var(--mono)">'+fmtDate(s.date)+' \u00b7 '+s.type+' \u00b7 '+(s.duration||60)+'min \u00b7 $'+s.rate+'</div>'
+    +'<div style="font-size:12px;color:var(--dm);font-family:var(--mono)">'+fmtDate(s.date)+' \u00b7 '+esc(s.type)+' \u00b7 '+(s.duration||60)+'min \u00b7 $'+esc(String(s.rate))+'</div>'
     +(clientIdx>=0?'<div style="margin-top:6px"><button class="btn2" onclick="navToClient('+clientIdx+')" style="padding:4px 10px;font-size:8px">VIEW CLIENT \u2192</button></div>':"")+'</div>';
   if(s.energy){
     html+='<div class="cd" style="display:flex;align-items:center;gap:12px;margin-bottom:8px"><span style="font-size:10px;color:var(--dm);font-family:var(--mono)">RATING</span><div style="display:flex;gap:3px;flex:1">';
@@ -3033,7 +3033,7 @@ function deleteReminder(rid){
   save();LS.set("_appVersion",VERSION);
 }})();
 // ── MODAL ──
-function showModal(title,content){var old=el("appModal");if(old)old.remove();var d=document.createElement("div");d.id="appModal";d.style.cssText="position:fixed;inset:0;z-index:150;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);padding:0;animation:fadeIn .2s ease";d.onclick=function(e){if(e.target===d)closeModal();};d.innerHTML='<div style="width:100%;max-width:500px;max-height:85vh;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;background:linear-gradient(160deg,rgba(14,14,18,.99),rgba(8,8,12,.99));border:1.5px solid var(--accB);border-radius:20px 20px 0 0;padding:24px 20px max(24px,env(safe-area-inset-bottom));box-shadow:0 -8px 40px rgba(0,0,0,.6);animation:slideUp .25s ease"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><div style="font-size:13px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.1em">'+esc(title)+'</div><div onclick="closeModal()" style="cursor:pointer;font-size:20px;color:var(--dm);padding:4px 8px;min-width:32px;min-height:32px;display:flex;align-items:center;justify-content:center">&times;</div></div>'+content+'</div>';document.body.appendChild(d);}
+function showModal(title,content){var old=el("appModal");if(old)old.remove();var d=document.createElement("div");d.id="appModal";d.style.cssText="position:fixed;inset:0;z-index:250;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);padding:0;animation:fadeIn .2s ease";d.onclick=function(e){if(e.target===d)closeModal();};d.innerHTML='<div style="width:100%;max-width:500px;max-height:85vh;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;background:linear-gradient(160deg,rgba(14,14,18,.99),rgba(8,8,12,.99));border:1.5px solid var(--accB);border-radius:20px 20px 0 0;padding:24px 20px max(24px,env(safe-area-inset-bottom));box-shadow:0 -8px 40px rgba(0,0,0,.6);animation:slideUp .25s ease"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><div style="font-size:13px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.1em">'+esc(title)+'</div><div onclick="closeModal()" style="cursor:pointer;font-size:20px;color:var(--dm);padding:4px 8px;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center">&times;</div></div>'+content+'</div>';document.body.appendChild(d);}
 function closeModal(){var m=el("appModal");if(m)m.remove();}
 // ── STOPWATCH ──
 var _swRunning=false,_swStart=0,_swElapsed=0,_swInterval=null,_swMode="stopwatch",_swCountdown=0;
