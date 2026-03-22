@@ -935,7 +935,7 @@ function renderLogSession(){
     if(lexs.length)lastSessHTML+='<button class="btn2" onclick="prefillExercises()" style="margin-top:10px;width:100%;font-size:9px">LOAD THESE EXERCISES \u2192</button>';
     lastSessHTML+='</div></div>';
   }
-  var stypes=["Training","Posing","Group Session","Contest Prep","Nutrition Check-In","Phone Consult","Assessment","Competition Day"];
+  var stypes=["Training","Team Workout","Posing Lesson","Spray Tan","Massage","Consultation","Dinner","Group Session","Contest Prep","Nutrition Check-In","Phone Consult","Assessment","Competition Day"];
   var topts="";for(var i=0;i<stypes.length;i++)topts+='<option'+(pfT===stypes[i]?" selected":"")+'>'+stypes[i]+'</option>';
   var pfEx=data.prefillExercises||[];
   var dots="";for(var i=1;i<=10;i++){var clr=i<=3?"var(--danger)":i<=6?"var(--warn)":"var(--success)";dots+='<div onclick="setRating('+i+')" id="r'+i+'" style="flex:1;height:36px;border-radius:6px;display:flex;align-items:center;justify-content:center;background:var(--glassB);border:1px solid var(--borderS);color:var(--dm);font-size:11px;font-weight:700;font-family:var(--mono);cursor:pointer;transition:all .15s" data-color="'+clr+'">'+i+'</div>';}
@@ -1252,7 +1252,7 @@ function renderSchedule(){
 function renderScheduleEdit(){
   var sched=schedule.find(function(s){return s.id===currentView.data.schedId;});if(!sched){pop();return"";}
   var copts="";for(var i=0;i<clients.length;i++){var c=clients[i];copts+='<option value="'+c.id+'"'+(c.id===sched.clientId?" selected":"")+'>'+esc(c.name)+'</option>';}
-  var stypes=["Training","Posing","Group Session","Contest Prep","Nutrition Session","Competition Day"];
+  var stypes=["Training","Team Workout","Posing Lesson","Spray Tan","Massage","Consultation","Dinner","Group Session","Contest Prep","Nutrition Session","Competition Day"];
   var topts="";for(var i=0;i<stypes.length;i++)topts+='<option value="'+stypes[i]+'"'+(stypes[i]===(sched.type||"Training")?" selected":"")+'>'+stypes[i]+'</option>';
   var isComp=sched.type==="Competition Day";
   return '<button class="btn2" onclick="pop()" style="margin-bottom:14px">\u2039 Back</button><div class="pt">Edit Session</div><div class="cd" style="padding:18px"><div class="field"><span class="lb">CLIENT</span><select id="schC" onchange="onScheduleClientSelect()">'+copts+'</select></div><div class="g2 field"><div><span class="lb">DATE</span><input id="schD" type="date" value="'+sched.date+'"></div><div><span class="lb">TIME</span><input id="schT" type="time" value="'+(sched.time||"10:00")+'"></div></div><div class="g2 field"><div><span class="lb">TYPE</span><select id="schTy" onchange="var sf=el(\'editShowFields\');if(sf)sf.style.display=this.value===\'Competition Day\'?\'block\':\'none\'">'+topts+'</select></div><div><span class="lb">RATE ($)</span><input id="schR" type="number" min="0" value="'+(sched.rate||"")+'" placeholder="\u2014"></div></div>'
