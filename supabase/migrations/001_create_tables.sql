@@ -57,6 +57,13 @@ CREATE TABLE IF NOT EXISTS app_settings (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- Bookings table (client portal booking records)
+CREATE TABLE IF NOT EXISTS bookings (
+  id TEXT PRIMARY KEY,
+  data JSONB NOT NULL,
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
 -- App state (used by auto-remind to track sent reminders)
 CREATE TABLE IF NOT EXISTS app_state (
   id TEXT PRIMARY KEY,
@@ -73,6 +80,7 @@ ALTER TABLE meal_plans ENABLE ROW LEVEL SECURITY;
 ALTER TABLE programs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE workouts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE app_settings ENABLE ROW LEVEL SECURITY;
+ALTER TABLE bookings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE app_state ENABLE ROW LEVEL SECURITY;
 
 -- Policies (allow all for anon key - single user app behind PIN)
@@ -84,6 +92,7 @@ CREATE POLICY "Allow all" ON meal_plans FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Allow all" ON programs FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Allow all" ON workouts FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Allow all" ON app_settings FOR ALL USING (true) WITH CHECK (true);
+CREATE POLICY "Allow all" ON bookings FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Allow all" ON app_state FOR ALL USING (true) WITH CHECK (true);
 
 -- Indexes for fast lookups
