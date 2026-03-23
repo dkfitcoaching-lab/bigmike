@@ -75,8 +75,9 @@ serve(async (req) => {
       });
     }
 
+    const clientSent = results.some(r => r.target === "client" && r.status === "sent");
     return new Response(
-      JSON.stringify({ success: true, results }),
+      JSON.stringify({ success: clientSent, results }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (err) {

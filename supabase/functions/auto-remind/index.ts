@@ -33,11 +33,20 @@ serve(async (req) => {
 
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Get today's date in US Eastern time (most common for coaching)
+    // Get today's date and time in US Eastern time
     const now = new Date();
-    const eastern = new Date(now.toLocaleString("en-US", { timeZone: "America/New_York" }));
-    const today = eastern.toISOString().split("T")[0];
-    const currentMinutes = eastern.getHours() * 60 + eastern.getMinutes();
+    const tz = "America/New_York";
+    const dtf = new Intl.DateTimeFormat("en-US", { timeZone: tz, year: "numeric", month: "2-digit", day: "2-digit" });
+    const parts = dtf.formatToParts(now);
+    const yy = parts.find(p => p.type === "year")!.value;
+    const mm = parts.find(p => p.type === "month")!.value;
+    const dd = parts.find(p => p.type === "day")!.value;
+    const today = `${yy}-${mm}-${dd}`;
+    const tf = new Intl.DateTimeFormat("en-US", { timeZone: tz, hour: "numeric", minute: "numeric", hour12: false });
+    const tp = tf.formatToParts(now);
+    const hr = parseInt(tp.find(p => p.type === "hour")!.value);
+    const mn = parseInt(tp.find(p => p.type === "minute")!.value);
+    const currentMinutes = hr * 60 + mn;
 
     // Fetch today's schedule from Supabase
     const { data: scheduleRows, error } = await supabase

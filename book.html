@@ -742,11 +742,16 @@ function confirmBooking(){
   var id="bk_"+Date.now()+"_"+Math.random().toString(36).substring(2,8);
 
   /* Find or create client by phone number */
+  /* Normalize phone to last 10 digits for comparison — handles all formats:
+     "+14403093886", "(440) 309-3886", "440-309-3886", "4403093886" all → "4403093886" */
+  function phoneDigits(p){if(!p)return"";var d=p.replace(/\D/g,"");return d.length>10?d.slice(-10):d;}
+  var myDigits=phoneDigits(_phone);
+
   sb.from("clients").select("data").then(function(res){
     var existingClient=null;
-    if(res.data&&res.data.length){
+    if(res.data&&res.data.length&&myDigits.length===10){
       for(var i=0;i<res.data.length;i++){
-        if(res.data[i].data&&res.data[i].data.phone===_phone){existingClient=res.data[i].data;break;}
+        if(res.data[i].data&&phoneDigits(res.data[i].data.phone)===myDigits){existingClient=res.data[i].data;break;}
       }
     }
 
@@ -767,6 +772,12 @@ function confirmBooking(){
         clientType:"In-Person",
         services:typeName,
         rate:"",
+        age:"",weight:"",height:"",level:"",duration:"60",
+        billing:"Per Session",billingAmt:"",billingMonths:"",
+        prepWeeks:"",prepStart:"",showName:"",showDivision:"",
+        showDate:"",showLocation:"",
+        isCompetitor:false,compClasses:[],federation:"",compStatus:"",
+        goals:"",injuries:"",medical:"",notes:"",
         source:"client_portal",
         created_at:new Date().toISOString()
       };
