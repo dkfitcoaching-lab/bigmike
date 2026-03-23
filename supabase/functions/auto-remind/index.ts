@@ -87,34 +87,40 @@ serve(async (req) => {
 
     // Send SMS for each upcoming session
     const results: any[] = [];
+    const twilioUrl = `https://api.twilio.com/2010-04-01/Accounts/${twilioSid}/Messages.json`;
+    const authHeader = "Basic " + btoa(`${twilioSid}:${twilioAuth}`);
+
     for (const s of sessions) {
       const timeStr = formatTime(s.time);
-      const msg = `Reminder: ${s.clientName || "Client"} — ${s.type || "Training"} at ${timeStr} today.${s.rate ? " $" + s.rate : ""}`;
 
-      const twilioUrl = `https://api.twilio.com/2010-04-01/Accounts/${twilioSid}/Messages.json`;
-      const authHeader = "Basic " + btoa(`${twilioSid}:${twilioAuth}`);
-
-      const body = new URLSearchParams({
-        To: coachPhone,
-        From: twilioFrom,
-        Body: msg,
-      });
-
-      const res = await fetch(twilioUrl, {
+      // Send reminder to coach
+      const coachMsg = `Reminder: ${s.clientName || "Client"} — ${s.type || "Training"} at ${timeStr} today.${s.rate ? " $" + s.rate : ""}`;
+      const coachRes = await fetch(twilioUrl, {
         method: "POST",
-        headers: {
-          Authorization: authHeader,
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: body.toString(),
+        headers: { Authorization: authHeader, "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({ To: coachPhone, From: twilioFrom, Body: coachMsg }).toString(),
       });
+      const coachResult = await coachRes.json();
 
-      const result = await res.json();
-      if (res.ok) {
+      // Also send reminder to client if they have a phone (portal bookings)
+      let clientStatus = "skipped";
+      if (s.clientPhone) {
+        const clientMsg = `Reminder: Your ${s.type || "session"} with Big Mike is at ${timeStr} today. See you there!`;
+        try {
+          const clientRes = await fetch(twilioUrl, {
+            method: "POST",
+            headers: { Authorization: authHeader, "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({ To: s.clientPhone, From: twilioFrom, Body: clientMsg }).toString(),
+          });
+          clientStatus = clientRes.ok ? "sent" : "failed";
+        } catch { clientStatus = "failed"; }
+      }
+
+      if (coachRes.ok) {
         sent[s.id] = true;
-        results.push({ id: s.id, client: s.clientName, status: "sent" });
+        results.push({ id: s.id, client: s.clientName, coachSMS: "sent", clientSMS: clientStatus });
       } else {
-        results.push({ id: s.id, client: s.clientName, status: "failed", error: result.message });
+        results.push({ id: s.id, client: s.clientName, coachSMS: "failed", clientSMS: clientStatus, error: coachResult.message });
       }
     }
 

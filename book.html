@@ -679,67 +679,104 @@ function confirmBooking(){
   var typeName=(SESSION_TYPES.find(function(t){return t.id===_selectedType;})||{name:"Training"}).name;
   var id="bk_"+Date.now()+"_"+Math.random().toString(36).substring(2,8);
 
-  /* Create schedule entry (same format as main app) */
-  var entry={
-    id:id,
-    clientId:"",
-    clientName:_name,
-    clientPhone:_phone,
-    date:_selectedDate,
-    time:_selectedTime,
-    type:typeName,
-    rate:"",
-    status:"pending",
-    notes:_notes,
-    source:"client_portal",
-    created_at:new Date().toISOString()
-  };
-
-  /* Also create a booking record for the portal */
-  var booking={
-    id:id,
-    phone:_phone,
-    name:_name,
-    date:_selectedDate,
-    time:_selectedTime,
-    type:typeName,
-    notes:_notes,
-    status:"confirmed",
-    created_at:new Date().toISOString()
-  };
-
-  /* Write to schedule table (syncs to Mike's app) */
-  var p1=sb.from("schedule").upsert({id:id,data:entry,updated_at:new Date().toISOString()},{onConflict:"id"});
-
-  /* Write to bookings table (portal tracking) */
-  var p2=sb.from("bookings").upsert({id:id,data:booking,updated_at:new Date().toISOString()},{onConflict:"id"});
-
-  /* Send SMS confirmation via edge function */
-  var p3=sb.functions.invoke("confirm-booking",{body:{
-    phone:_phone,
-    name:_name,
-    date:_selectedDate,
-    time:fmtTime(_selectedTime),
-    type:typeName
-  }}).catch(function(){/* SMS is best-effort */});
-
-  Promise.all([p1,p2,p3]).then(function(results){
-    if(results[0].error){
-      toast("Booking failed — please try again");
-      btn.disabled=false;btn.textContent="BOOK SESSION";
-      return;
+  /* Find or create client by phone number */
+  sb.from("clients").select("data").then(function(res){
+    var existingClient=null;
+    if(res.data&&res.data.length){
+      for(var i=0;i<res.data.length;i++){
+        if(res.data[i].data&&res.data[i].data.phone===_phone){existingClient=res.data[i].data;break;}
+      }
     }
-    /* Add to local booked slots so calendar updates */
-    _bookedSlots.push(entry);
 
-    var dt=new Date(_selectedDate+"T12:00:00");
-    var dayName=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][dt.getDay()];
-    document.getElementById("successMsg").innerHTML=
-      '<strong>'+esc(typeName)+'</strong> with Big Mike<br>'
-      +dayName+', '+MONTHS_SHORT[dt.getMonth()]+' '+dt.getDate()+' at '+fmtTime(_selectedTime)
-      +'<br><br><span style="font-size:11px;color:var(--dm)">Confirmation sent to '+formatPhoneDisplay(_phone)+'</span>';
-    goStep(5);
+    var clientId;
+    var clientUpsert;
+    if(existingClient){
+      /* Reuse existing client — no duplicate */
+      clientId=existingClient.id;
+      clientUpsert=Promise.resolve();
+    }else{
+      /* Create new client profile so Mike sees them immediately */
+      clientId="portal_"+Date.now()+"_"+Math.random().toString(36).substring(2,8);
+      var newClient={
+        id:clientId,
+        name:_name,
+        phone:_phone,
+        email:"",
+        clientType:"In-Person",
+        services:typeName,
+        rate:"",
+        source:"client_portal",
+        created_at:new Date().toISOString()
+      };
+      clientUpsert=sb.from("clients").upsert({id:clientId,data:newClient,updated_at:new Date().toISOString()},{onConflict:"id"});
+    }
+
+    /* Create schedule entry (same format as main app) */
+    var entry={
+      id:id,
+      clientId:clientId,
+      clientName:existingClient?existingClient.name:_name,
+      clientPhone:_phone,
+      date:_selectedDate,
+      time:_selectedTime,
+      type:typeName,
+      rate:"",
+      status:"pending",
+      notes:_notes,
+      source:"client_portal",
+      created_at:new Date().toISOString()
+    };
+
+    /* Also create a booking record for the portal */
+    var booking={
+      id:id,
+      phone:_phone,
+      name:_name,
+      date:_selectedDate,
+      time:_selectedTime,
+      type:typeName,
+      notes:_notes,
+      status:"confirmed",
+      created_at:new Date().toISOString()
+    };
+
+    /* Write to schedule table (syncs to Mike's app) */
+    var p1=sb.from("schedule").upsert({id:id,data:entry,updated_at:new Date().toISOString()},{onConflict:"id"});
+
+    /* Write to bookings table (portal tracking) */
+    var p2=sb.from("bookings").upsert({id:id,data:booking,updated_at:new Date().toISOString()},{onConflict:"id"});
+
+    /* Send SMS confirmation via edge function */
+    var p3=sb.functions.invoke("confirm-booking",{body:{
+      phone:_phone,
+      name:_name,
+      date:_selectedDate,
+      time:fmtTime(_selectedTime),
+      type:typeName
+    }}).catch(function(){/* SMS is best-effort */});
+
+    Promise.all([clientUpsert,p1,p2,p3]).then(function(results){
+      if(results[1]&&results[1].error){
+        toast("Booking failed — please try again");
+        btn.disabled=false;btn.textContent="BOOK SESSION";
+        return;
+      }
+      /* Add to local booked slots so calendar updates */
+      _bookedSlots.push(entry);
+
+      var dt=new Date(_selectedDate+"T12:00:00");
+      var dayName=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][dt.getDay()];
+      document.getElementById("successMsg").innerHTML=
+        '<strong>'+esc(typeName)+'</strong> with Big Mike<br>'
+        +dayName+', '+MONTHS_SHORT[dt.getMonth()]+' '+dt.getDate()+' at '+fmtTime(_selectedTime)
+        +'<br><br><span style="font-size:11px;color:var(--dm)">Confirmation sent to '+formatPhoneDisplay(_phone)+'</span>';
+      goStep(5);
+    }).catch(function(){
+      toast("Network error — please try again");
+      btn.disabled=false;btn.textContent="BOOK SESSION";
+    });
   }).catch(function(){
+    /* If client lookup fails, still book without client creation */
     toast("Network error — please try again");
     btn.disabled=false;btn.textContent="BOOK SESSION";
   });
