@@ -33,11 +33,20 @@ serve(async (req) => {
 
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Get today's date in US Eastern time (most common for coaching)
+    // Get today's date and time in US Eastern time
     const now = new Date();
-    const eastern = new Date(now.toLocaleString("en-US", { timeZone: "America/New_York" }));
-    const today = eastern.toISOString().split("T")[0];
-    const currentMinutes = eastern.getHours() * 60 + eastern.getMinutes();
+    const tz = "America/New_York";
+    const dtf = new Intl.DateTimeFormat("en-US", { timeZone: tz, year: "numeric", month: "2-digit", day: "2-digit" });
+    const parts = dtf.formatToParts(now);
+    const yy = parts.find(p => p.type === "year")!.value;
+    const mm = parts.find(p => p.type === "month")!.value;
+    const dd = parts.find(p => p.type === "day")!.value;
+    const today = `${yy}-${mm}-${dd}`;
+    const tf = new Intl.DateTimeFormat("en-US", { timeZone: tz, hour: "numeric", minute: "numeric", hour12: false });
+    const tp = tf.formatToParts(now);
+    const hr = parseInt(tp.find(p => p.type === "hour")!.value);
+    const mn = parseInt(tp.find(p => p.type === "minute")!.value);
+    const currentMinutes = hr * 60 + mn;
 
     // Fetch today's schedule from Supabase
     const { data: scheduleRows, error } = await supabase
@@ -87,34 +96,40 @@ serve(async (req) => {
 
     // Send SMS for each upcoming session
     const results: any[] = [];
+    const twilioUrl = `https://api.twilio.com/2010-04-01/Accounts/${twilioSid}/Messages.json`;
+    const authHeader = "Basic " + btoa(`${twilioSid}:${twilioAuth}`);
+
     for (const s of sessions) {
       const timeStr = formatTime(s.time);
-      const msg = `Reminder: ${s.clientName || "Client"} — ${s.type || "Training"} at ${timeStr} today.${s.rate ? " $" + s.rate : ""}`;
 
-      const twilioUrl = `https://api.twilio.com/2010-04-01/Accounts/${twilioSid}/Messages.json`;
-      const authHeader = "Basic " + btoa(`${twilioSid}:${twilioAuth}`);
-
-      const body = new URLSearchParams({
-        To: coachPhone,
-        From: twilioFrom,
-        Body: msg,
-      });
-
-      const res = await fetch(twilioUrl, {
+      // Send reminder to coach
+      const coachMsg = `Reminder: ${s.clientName || "Client"} — ${s.type || "Training"} at ${timeStr} today.${s.rate ? " $" + s.rate : ""}`;
+      const coachRes = await fetch(twilioUrl, {
         method: "POST",
-        headers: {
-          Authorization: authHeader,
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: body.toString(),
+        headers: { Authorization: authHeader, "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({ To: coachPhone, From: twilioFrom, Body: coachMsg }).toString(),
       });
+      const coachResult = await coachRes.json();
 
-      const result = await res.json();
-      if (res.ok) {
+      // Also send reminder to client if they have a phone (portal bookings)
+      let clientStatus = "skipped";
+      if (s.clientPhone) {
+        const clientMsg = `Reminder: Your ${s.type || "session"} with Big Mike is at ${timeStr} today. See you there!`;
+        try {
+          const clientRes = await fetch(twilioUrl, {
+            method: "POST",
+            headers: { Authorization: authHeader, "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({ To: s.clientPhone, From: twilioFrom, Body: clientMsg }).toString(),
+          });
+          clientStatus = clientRes.ok ? "sent" : "failed";
+        } catch { clientStatus = "failed"; }
+      }
+
+      if (coachRes.ok) {
         sent[s.id] = true;
-        results.push({ id: s.id, client: s.clientName, status: "sent" });
+        results.push({ id: s.id, client: s.clientName, coachSMS: "sent", clientSMS: clientStatus });
       } else {
-        results.push({ id: s.id, client: s.clientName, status: "failed", error: result.message });
+        results.push({ id: s.id, client: s.clientName, coachSMS: "failed", clientSMS: clientStatus, error: coachResult.message });
       }
     }
 

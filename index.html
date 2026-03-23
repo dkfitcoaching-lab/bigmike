@@ -188,7 +188,25 @@ button{font-family:var(--body);cursor:pointer;border:none;outline:none;transitio
   .modal-box{max-width:640px}
 }
 @media(min-width:1600px){
-  .ct{padding:48px 80px 60px}
+  .ct{padding:48px 80px 60px;max-width:1400px}
+  .pt{font-size:34px}
+  .stat b{font-size:36px}
+  .modal-box{max-width:720px;padding:36px 32px 30px}
+  .btn{max-width:520px}
+  .search-bar{max-width:680px}
+}
+@media(min-width:1920px){
+  .ct{padding:52px 100px 60px;max-width:1600px}
+  .pt{font-size:38px}
+  .stat b{font-size:40px}
+  .stat{padding:28px 18px}
+  .modal-box{max-width:780px}
+  .btn{max-width:560px;font-size:14px}
+  .search-bar{max-width:720px}
+  .cd{padding:24px;border-radius:18px}
+  .sl{font-size:13px}
+  .lb{font-size:12px}
+  input,textarea,select{font-size:16px;padding:16px 20px}
 }
 
 @keyframes goldShimmer{0%{background-position:200% center}100%{background-position:-200% center}}
@@ -654,7 +672,7 @@ function renderEarningsChart(){
   for(var i=0;i<months.length;i++)html+='<div style="flex:1;text-align:center;font-size:8px;color:var(--dm);font-family:var(--mono)">'+months[i].label+'</div>';
   html+='</div></div>';return html;
 }
-function completeScheduled(schedId){var sched=schedule.find(function(s){return s.id===schedId;});if(!sched)return;if(sched.clientId&&!clientById(sched.clientId)){toast("Client no longer exists");return;}navStack=[];currentView={tab:"sessions",view:"main",data:{}};push("new",{prefillClientId:sched.clientId,prefillType:sched.type,prefillRate:sched.rate,prefillDate:sched.date,scheduleId:schedId});}
+function completeScheduled(schedId){var sched=schedule.find(function(s){return s.id===schedId;});if(!sched)return;if(sched.clientId&&sched.source!=="client_portal"&&!clientById(sched.clientId)){toast("Client no longer exists");return;}navStack=[];currentView={tab:"sessions",view:"main",data:{}};push("new",{prefillClientId:sched.clientId,prefillType:sched.type,prefillRate:sched.rate,prefillDate:sched.date,scheduleId:schedId});}
 function exportData(){var d={clients:clients,sessions:sessions,schedule:schedule,templates:templates,mealPlans:mealPlans,programs:_programs,workouts:_workouts,reminders:LS.get("reminders",[]),version:VERSION,exported:new Date().toISOString()};var blob=new Blob([JSON.stringify(d,null,2)],{type:"application/json"});var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="bigmike_backup_"+todayISO()+".json";document.body.appendChild(a);a.click();document.body.removeChild(a);toast("\u2713 Backup ready");}
 function importData(event){var file=event.target.files[0];if(!file)return;var reader=new FileReader();reader.onload=function(e){try{var d=JSON.parse(e.target.result);
   var info="IMPORT PREVIEW:\n";
@@ -888,7 +906,7 @@ function saveMeasurement(idx){var c=clients[idx];if(!c)return;var FIELDS=["Weigh
 function deleteMeasurement(idx,mid){var c=clients[idx];if(!c||!c.measurements)return;c.measurements=c.measurements.filter(function(m){return m.id!==mid;});save();renderClientDetailInPlace();}
 function deleteQNote(cidx,nid){var c=clients[parseInt(cidx)];if(!c||!c.quickNotes)return;var removed=c.quickNotes.find(function(n){return n.id===nid;});c.quickNotes=c.quickNotes.filter(function(n){return n.id!==nid;});save();toast("Note deleted \u00b7 ",2600,function(){if(removed){c.quickNotes.push(removed);save();render();}});render();}
 function deleteClient(idx){var c=clients[idx];if(!c)return;showDoubleConfirm("Delete "+c.name+"?","Session history will be preserved but quick notes will be lost.").then(function(ok){if(!ok)return;var id=c.id,name=c.name;clients=clients.filter(function(x){return x.id!==id;});sessions.forEach(function(s){if(s.clientId===id)s.clientName=name+" (removed)";});schedule.forEach(function(s){if(s.clientId===id){s.clientName=name+" (removed)";s.clientId="";}});mealPlans.forEach(function(mp){if(mp.clientId===id)mp.clientId="";});_programs=_programs.filter(function(p){return p.clientId!==id;});savePrograms();_workouts=_workouts.filter(function(w){return w.clientId!==id;});saveWorkouts();var rems=LS.get("reminders",[]);LS.set("reminders",rems.filter(function(r){return r.clientId!==id;}));save();toast("Client removed");navStack=[];currentView={tab:"clients",view:"main",data:{}};render();});}
-function navToLogFromClient(cid,rate,type){var c=clientById(cid);var dur=c&&c.duration?parseInt(c.duration):60;var svcs=c?(c.services||"Training"):"Training";var bestType="Training";if(svcs.indexOf("Contest Prep")>=0)bestType="Contest Prep";else if(svcs.indexOf("Nutrition")>=0)bestType="Nutrition Check-In";else if(svcs.indexOf("Posing")>=0)bestType="Posing";else if(svcs.indexOf("Group")>=0)bestType="Group Session";navStack=[];currentView={tab:"sessions",view:"main",data:{}};push("new",{prefillClientId:cid,prefillRate:rate,prefillType:bestType,prefillDuration:String(dur||60)});}
+function navToLogFromClient(cid,rate,type){var c=clientById(cid);var dur=c&&c.duration?parseInt(c.duration):60;var svcs=c?(c.services||"Training"):"Training";var bestType="Training";if(svcs.indexOf("Contest Prep")>=0)bestType="Contest Prep";else if(svcs.indexOf("Nutrition")>=0)bestType="Nutrition Check-In";else if(svcs.indexOf("Posing")>=0)bestType="Posing Lesson";else if(svcs.indexOf("Group")>=0)bestType="Team Workout";navStack=[];currentView={tab:"sessions",view:"main",data:{}};push("new",{prefillClientId:cid,prefillRate:rate,prefillType:bestType,prefillDuration:String(dur||60)});}
 function navToScheduleFromClient(cid){navStack=[];currentView={tab:"schedule",view:"main",data:{prefillClientId:cid}};render();setTimeout(function(){var e=el("schC");if(e&&cid){e.value=cid;onScheduleClientSelect();}var f=el("schForm");if(f)f.style.display="block";},100);}
 function navToSession(sid){navStack=[];currentView={tab:"sessions",view:"main",data:{}};push("detail",{sessionId:sid});}
 function navToClient(idx){navStack=[];currentView={tab:"clients",view:"main",data:{}};push("detail",{clientIdx:idx});}
@@ -935,7 +953,7 @@ function renderLogSession(){
     if(lexs.length)lastSessHTML+='<button class="btn2" onclick="prefillExercises()" style="margin-top:10px;width:100%;font-size:9px">LOAD THESE EXERCISES \u2192</button>';
     lastSessHTML+='</div></div>';
   }
-  var stypes=["Training","Posing","Group Session","Contest Prep","Nutrition Check-In","Phone Consult","Assessment","Competition Day"];
+  var stypes=["Training","Team Workout","Posing Lesson","Spray Tan","Massage","Consultation","Dinner","Contest Prep","Nutrition Check-In","Assessment","Competition Day"];
   var topts="";for(var i=0;i<stypes.length;i++)topts+='<option'+(pfT===stypes[i]?" selected":"")+'>'+stypes[i]+'</option>';
   var pfEx=data.prefillExercises||[];
   var dots="";for(var i=1;i<=10;i++){var clr=i<=3?"var(--danger)":i<=6?"var(--warn)":"var(--success)";dots+='<div onclick="setRating('+i+')" id="r'+i+'" style="flex:1;height:36px;border-radius:6px;display:flex;align-items:center;justify-content:center;background:var(--glassB);border:1px solid var(--borderS);color:var(--dm);font-size:11px;font-weight:700;font-family:var(--mono);cursor:pointer;transition:all .15s" data-color="'+clr+'">'+i+'</div>';}
@@ -976,7 +994,7 @@ function renderLogSession(){
 function onClientSelect(){
   var cId=val("sC"),c=clientById(cId);if(!c)return;
   var r=el("sR");if(r&&c.rate){r.value=c.rate;toast("Rate set to $"+c.rate+" ("+c.name+"'s rate)");}
-  var t=el("sT");if(t){var svcs=(c.services||"Training");var bestType="Training";if(svcs.indexOf("Contest Prep")>=0)bestType="Contest Prep";else if(svcs.indexOf("Nutrition")>=0)bestType="Nutrition Check-In";else if(svcs.indexOf("Posing")>=0)bestType="Posing";else if(svcs.indexOf("Group")>=0)bestType="Group Session";for(var i=0;i<t.options.length;i++)if(t.options[i].text===bestType){t.selectedIndex=i;break;}}
+  var t=el("sT");if(t){var svcs=(c.services||"Training");var bestType="Training";if(svcs.indexOf("Contest Prep")>=0)bestType="Contest Prep";else if(svcs.indexOf("Nutrition")>=0)bestType="Nutrition Check-In";else if(svcs.indexOf("Posing")>=0)bestType="Posing Lesson";else if(svcs.indexOf("Group")>=0)bestType="Team Workout";for(var i=0;i<t.options.length;i++)if(t.options[i].text===bestType){t.selectedIndex=i;break;}}
   currentView.data.prefillClientId=cId;
   var panel=el("lastSessPanel");if(panel){
     var lastSess2=sessions.filter(function(s){return s.clientId===cId&&s.status!=="cancelled";}).slice(-1)[0];
@@ -1229,7 +1247,7 @@ function renderSchedule(){
         var isShow=s.type==="Competition Day";
         html+='<div class="cd" style="display:flex;align-items:center;gap:12px;border-left:3px solid '+(isShow?"var(--accVib)":bc)+'">'
           +'<div style="min-width:48px;font-family:var(--mono);font-size:12px;font-weight:700;color:'+(isShow?"var(--accVib)":ic?"var(--success)":"var(--acc)")+'">'+fmtTimeStr(s.time)+'</div>'
-          +'<div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--wh)">'+esc(s.clientName)+(isShow?' <span style="font-size:8px;font-weight:700;color:var(--bg);background:var(--goldGrad);background-size:200% 100%;animation:shimmer 3s ease-in-out infinite;padding:1px 6px;border-radius:4px;letter-spacing:.06em;vertical-align:middle">SHOW</span>':'')+'</div><div style="font-size:10px;color:var(--dm)">'+(s.type||"Training")+(s.showName?' \u00b7 '+esc(s.showName):'')+(s.showLocation?' \u00b7 '+esc(s.showLocation):'')+(s.rate?' \u00b7 $'+s.rate:'')+(ic?' \u00b7 <span class="status-chip status-complete">COMPLETED</span>':ix?' \u00b7 <span class="status-chip status-cancelled">CANCELLED</span>':"")+'</div>'+(s.showNotes?'<div style="font-size:9px;color:var(--mu);font-family:var(--mono);margin-top:2px">'+esc(s.showNotes)+'</div>':'')+'</div>'
+          +'<div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--wh)">'+esc(s.clientName)+(isShow?' <span style="font-size:8px;font-weight:700;color:var(--bg);background:var(--goldGrad);background-size:200% 100%;animation:shimmer 3s ease-in-out infinite;padding:1px 6px;border-radius:4px;letter-spacing:.06em;vertical-align:middle">SHOW</span>':'')+(s.source==="client_portal"?' <span style="font-size:7px;font-weight:700;color:var(--bg);background:var(--acc);padding:1px 5px;border-radius:3px;letter-spacing:.04em;vertical-align:middle;font-family:var(--mono)">ONLINE</span>':'')+'</div><div style="font-size:10px;color:var(--dm)">'+(s.type||"Training")+(s.showName?' \u00b7 '+esc(s.showName):'')+(s.showLocation?' \u00b7 '+esc(s.showLocation):'')+(s.rate?' \u00b7 $'+s.rate:'')+(ic?' \u00b7 <span class="status-chip status-complete">COMPLETED</span>':ix?' \u00b7 <span class="status-chip status-cancelled">CANCELLED</span>':"")+'</div>'+(s.showNotes?'<div style="font-size:9px;color:var(--mu);font-family:var(--mono);margin-top:2px">'+esc(s.showNotes)+'</div>':'')+'</div>'
           +(!ic&&!ix?'<button class="btn2" onclick="completeScheduled(\''+s.id+'\')" style="padding:4px 8px;font-size:8px">LOG</button><button class="btn2" onclick="push(\'edit\',{schedId:\''+s.id+'\'})" style="padding:4px 8px;font-size:8px">EDIT</button>':"")
           +'<span style="font-size:13px;color:var(--danger);cursor:pointer;padding:4px" onclick="deleteScheduled(\''+s.id+'\')">&#10005;</span></div>';
       }
@@ -1242,7 +1260,7 @@ function renderSchedule(){
     +'<div class="cd" style="padding:18px"><div class="sl" style="margin-bottom:10px">ADD TO SCHEDULE</div>'
     +'<div class="field"><span class="lb">CLIENT *</span><select id="schC" onchange="onScheduleClientSelect()"><option value="">Select\u2026</option>'+copts+'</select></div>'
     +'<div class="g2 field"><div><span class="lb">DATE</span><input id="schD" type="date" value="'+(_selectedDay||todayISO())+'"></div><div><span class="lb">TIME</span><input id="schT" type="time" value="'+getNextHourTime()+'"></div></div>'
-    +'<div class="g2 field"><div><span class="lb">TYPE</span><select id="schTy" onchange="var sf=el(\'showFields\');if(sf)sf.style.display=this.value===\'Competition Day\'?\'block\':\'none\'"><option>Training</option><option>Posing</option><option>Group Session</option><option>Contest Prep</option><option>Nutrition Session</option><option>Competition Day</option></select></div><div><span class="lb">RATE ($)</span><input id="schR" type="number" min="0" value="" placeholder="\u2014"></div></div>'
+    +'<div class="g2 field"><div><span class="lb">TYPE</span><select id="schTy" onchange="var sf=el(\'showFields\');if(sf)sf.style.display=this.value===\'Competition Day\'?\'block\':\'none\'"><option>Training</option><option>Team Workout</option><option>Posing Lesson</option><option>Spray Tan</option><option>Massage</option><option>Consultation</option><option>Dinner</option><option>Contest Prep</option><option>Nutrition Check-In</option><option>Assessment</option><option>Competition Day</option></select></div><div><span class="lb">RATE ($)</span><input id="schR" type="number" min="0" value="" placeholder="\u2014"></div></div>'
 +'<div id="showFields" style="display:none"><div class="g2 field"><div><span class="lb">SHOW NAME *</span><input id="schShowName" placeholder="e.g. NPC Nationals"></div><div><span class="lb">LOCATION</span><input id="schShowLoc" placeholder="City, State"></div></div><div class="field"><span class="lb">SCHEDULE NOTES</span><input id="schShowNotes" placeholder="e.g. Check-in 8am, Prejudging 10am, Finals 6pm"></div></div>'
     +'<div class="field"><span class="lb">RECURRING</span><div style="display:flex;gap:4px;margin-bottom:8px"><div class="chip on" data-rec="One-Time" onclick="pickChip(this,\'schRec\');toggleRecurUI()">One-Time</div><div class="chip" data-rec="Weekly" onclick="pickChip(this,\'schRec\');toggleRecurUI()">Weekly</div><div class="chip" data-rec="Biweekly" onclick="pickChip(this,\'schRec\');toggleRecurUI()">Biweekly</div></div><input type="hidden" id="schRec" value="One-Time"><div id="recurDuration" style="display:none;margin-top:6px"><span class="lb">FOR HOW LONG?</span><select id="schRecWeeks"><option value="4" selected>4 weeks</option><option value="6">6 weeks</option><option value="8">8 weeks</option><option value="12">12 weeks</option><option value="16">16 weeks</option><option value="26">26 weeks</option></select></div></div>'
     +'<button class="btn" onclick="addToSchedule()">ADD TO SCHEDULE</button></div></div>';
@@ -1251,8 +1269,9 @@ function renderSchedule(){
 }
 function renderScheduleEdit(){
   var sched=schedule.find(function(s){return s.id===currentView.data.schedId;});if(!sched){pop();return"";}
-  var copts="";for(var i=0;i<clients.length;i++){var c=clients[i];copts+='<option value="'+c.id+'"'+(c.id===sched.clientId?" selected":"")+'>'+esc(c.name)+'</option>';}
-  var stypes=["Training","Posing","Group Session","Contest Prep","Nutrition Session","Competition Day"];
+  var copts="",clientFound=false;for(var i=0;i<clients.length;i++){var c=clients[i];var sel=c.id===sched.clientId;if(sel)clientFound=true;copts+='<option value="'+c.id+'"'+(sel?" selected":"")+'>'+esc(c.name)+'</option>';}
+  if(sched.clientId&&!clientFound)copts+='<option value="'+esc(sched.clientId)+'" selected>'+esc(sched.clientName||"Portal Booking")+'</option>';
+  var stypes=["Training","Team Workout","Posing Lesson","Spray Tan","Massage","Consultation","Dinner","Contest Prep","Nutrition Check-In","Assessment","Competition Day"];
   var topts="";for(var i=0;i<stypes.length;i++)topts+='<option value="'+stypes[i]+'"'+(stypes[i]===(sched.type||"Training")?" selected":"")+'>'+stypes[i]+'</option>';
   var isComp=sched.type==="Competition Day";
   return '<button class="btn2" onclick="pop()" style="margin-bottom:14px">\u2039 Back</button><div class="pt">Edit Session</div><div class="cd" style="padding:18px"><div class="field"><span class="lb">CLIENT</span><select id="schC" onchange="onScheduleClientSelect()">'+copts+'</select></div><div class="g2 field"><div><span class="lb">DATE</span><input id="schD" type="date" value="'+sched.date+'"></div><div><span class="lb">TIME</span><input id="schT" type="time" value="'+(sched.time||"10:00")+'"></div></div><div class="g2 field"><div><span class="lb">TYPE</span><select id="schTy" onchange="var sf=el(\'editShowFields\');if(sf)sf.style.display=this.value===\'Competition Day\'?\'block\':\'none\'">'+topts+'</select></div><div><span class="lb">RATE ($)</span><input id="schR" type="number" min="0" value="'+(sched.rate||"")+'" placeholder="\u2014"></div></div>'
@@ -1266,7 +1285,7 @@ function toggleRecurUI(){
   var val2=(activeChip&&activeChip.dataset)?activeChip.dataset.rec:(f.value||"One-Time");
   d.style.display=(val2==="One-Time")?"none":"block";
 }
-function onScheduleClientSelect(){var cId=val("schC"),c=clientById(cId);if(!c)return;var r=el("schR");if(r)r.value=c.rate||LS.get("defaultRate","")||"";var t=el("schTy");if(t){var svcs=(c.services||"Training");var bestType="Training";if(svcs.indexOf("Contest Prep")>=0)bestType="Contest Prep";else if(svcs.indexOf("Nutrition")>=0)bestType="Nutrition Check-In";else if(svcs.indexOf("Posing")>=0)bestType="Posing";else if(svcs.indexOf("Group")>=0)bestType="Group Session";for(var i=0;i<t.options.length;i++)if(t.options[i].text===bestType){t.selectedIndex=i;break;}}}
+function onScheduleClientSelect(){var cId=val("schC"),c=clientById(cId);if(!c)return;var r=el("schR");if(r)r.value=c.rate||LS.get("defaultRate","")||"";var t=el("schTy");if(t){var svcs=(c.services||"Training");var bestType="Training";if(svcs.indexOf("Contest Prep")>=0)bestType="Contest Prep";else if(svcs.indexOf("Nutrition")>=0)bestType="Nutrition Check-In";else if(svcs.indexOf("Posing")>=0)bestType="Posing Lesson";else if(svcs.indexOf("Group")>=0)bestType="Team Workout";for(var i=0;i<t.options.length;i++)if(t.options[i].text===bestType){t.selectedIndex=i;break;}}}
 function addToSchedule(){
   var cId=val("schC");if(!cId){toast("Select a client");return;}
   var cl=clientById(cId),rec=val("schRec")||"One-Time",baseDate=new Date((val("schD")||todayISO())+"T12:00:00");
