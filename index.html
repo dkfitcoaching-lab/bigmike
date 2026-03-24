@@ -3209,7 +3209,7 @@ function checkBrowserNotifications(){
 function setTheme(t){LS.set("theme",t);applyTheme();render();}
 function setFontScale(s){LS.set("fontScale",s);applyFontScale();render();}
 function applyFontScale(){var s=LS.get("fontScale","medium");var z=s==="small"?"0.92":s==="large"?"1.12":s==="xl"?"1.24":"1";document.body.style.zoom=z;}
-function applyTheme(){var t=LS.get("theme","crimson");if(t==="crimson")document.body.classList.add("theme-crimson");else document.body.classList.remove("theme-crimson");generateThemeIcon(t);}
+function applyTheme(){var t=LS.get("theme","crimson");if(t==="crimson")document.body.classList.add("theme-crimson");else document.body.classList.remove("theme-crimson");var mc=document.querySelector('meta[name="theme-color"]');if(mc)mc.content=t==="crimson"?"#1a0808":"#1a1408";generateThemeIcon(t);}
 function generateThemeIcon(theme){
   try{
     var sizes=[120,152,180,192,512];
@@ -3266,7 +3266,8 @@ function _updateManifestIcons(){
       }
     }
     if(icons.length){
-      var manifest={name:"Big Mike Ely Coaching Lab",short_name:"Coaching Lab",description:"IFBB Pro Big Mike Ely's coaching management platform",id:"/",start_url:"/",display:"standalone",orientation:"portrait",background_color:"#020202",theme_color:"#020202",categories:["fitness","health","productivity"],icons:icons};
+      var isCrimson=LS.get("theme","crimson")==="crimson";
+      var manifest={name:"Big Mike Ely Coaching Lab",short_name:"Coaching Lab",description:"IFBB Pro Big Mike Ely's coaching management platform",id:"/",start_url:"/",display:"standalone",orientation:"portrait",background_color:"#020202",theme_color:isCrimson?"#1a0808":"#1a1408",categories:["fitness","health","productivity"],icons:icons};
       var blob=new Blob([JSON.stringify(manifest)],{type:"application/json"});
       var url=URL.createObjectURL(blob);
       var link=document.querySelector('link[rel="manifest"]');
@@ -3311,11 +3312,11 @@ function _pdfContentPage(accent,rgb,sections,docType,pageLabel){
     +ftr+'</div>';
 }
 
-function _renderPDFToFile(pages,filename,docType,pageLabel){
+function _renderPDFToFile(pages,filename,docType,pageLabel,overrideAccent,overrideRGB){
   if(!window.jspdf||!window.jspdf.jsPDF){toast("\u26a0 PDF library not loaded \u2014 check your internet connection",4000);return;}
   if(!window.html2canvas){toast("\u26a0 PDF renderer not loaded \u2014 check your internet connection",4000);return;}
   toast("Generating PDF...");
-  var accent=_pdfAccent(),rgb=_pdfAccentRGB();
+  var accent=overrideAccent||_pdfAccent(),rgb=overrideRGB||_pdfAccentRGB();
   var container=document.createElement("div");
   container.id="_pdfRender";
   container.style.cssText="position:fixed;left:-9999px;top:0;z-index:-1;";
@@ -3758,15 +3759,10 @@ function buildCustomPDF(idx){
     if(isChecked("supplements"))parts.push("Supplements");
     coverSub=parts.join(" \u00b7 ")||"Complete Program";
   }
-  // Override accent for PDF rendering
-  var origAccent=_pdfAccent;var origRGB=_pdfAccentRGB;
-  _pdfAccent=function(){return accent;};_pdfAccentRGB=function(){return rgb;};
   var contentPages=_splitContentIntoPages(body);
   var pages=[{coverTitle:"Complete Program",coverClient:c.name,coverSub:coverSub}];
   for(var pi4=0;pi4<contentPages.length;pi4++)pages.push({content:contentPages[pi4]});
-  _renderPDFToFile(pages,c.name.replace(/\s+/g,"_")+"_Program","Complete Program",c.name);
-  // Restore
-  _pdfAccent=origAccent;_pdfAccentRGB=origRGB;
+  _renderPDFToFile(pages,c.name.replace(/\s+/g,"_")+"_Program","Complete Program",c.name,accent,rgb);
 }
 
 // ── PEAK WEEK PROTOCOL ──
