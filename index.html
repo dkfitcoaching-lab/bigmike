@@ -144,7 +144,7 @@ button{font-family:var(--body);cursor:pointer;border:none;outline:none;transitio
   .ti svg{width:18px;height:18px}
   .search-bar{padding:10px 12px;margin-bottom:10px}
 }
-@media(max-width:380px){.g2{grid-template-columns:1fr}.g4{grid-template-columns:1fr 1fr}}
+@media(max-width:380px){.g2{grid-template-columns:1fr}.g3{grid-template-columns:1fr 1fr}.g4{grid-template-columns:1fr 1fr}}
 /* Tablet/Desktop */
 @media(min-width:900px){
   #app{max-width:100%}
@@ -777,8 +777,8 @@ function clientFormFields(c){
   var compClasses=["Men\'s Open","Classic Physique","Men\'s Physique","212","Women\'s Figure","Women\'s Bikini","Women\'s Physique","Women\'s Wellness","Bodybuilding"];
   for(var ci=0;ci<compClasses.length;ci++){var ccOn=(c.compClasses||[]).indexOf(compClasses[ci])>=0;html+='<div class="chip'+(ccOn?" on":"")+'" onclick="toggleCompClass(this)" style="font-size:8px;padding:4px 8px">'+compClasses[ci]+'</div>';}
   html+='</div>'
-    +'<div class="field" style="margin-bottom:8px"><span class="lb">FEDERATION</span><div style="display:flex;gap:4px"><div class="chip'+((c.federation||"")==="NPC"?" on":"")+'" onclick="pickChip(this,\'cFed\')">NPC</div><div class="chip'+((c.federation||"")==="IFBB"?" on":"")+'" onclick="pickChip(this,\'cFed\')">IFBB</div><div class="chip'+((c.federation||"")==="OCB"?" on":"")+'" onclick="pickChip(this,\'cFed\')">OCB</div><div class="chip'+((c.federation||"")==="WNBF"?" on":"")+'" onclick="pickChip(this,\'cFed\')">WNBF</div></div><input type="hidden" id="cFed" value="'+(c.federation||"")+'"></div>'
-    +'<div class="field" style="margin-bottom:8px"><span class="lb">STATUS</span><div style="display:flex;gap:4px"><div class="chip'+((c.compStatus||"offseason")==="offseason"?" on":"")+'" data-val="offseason" onclick="pickChipVal(this,\'cCS\')">OFFSEASON</div><div class="chip'+((c.compStatus||"")==="prep"?" on":"")+'" data-val="prep" onclick="pickChipVal(this,\'cCS\')">PREP</div><div class="chip'+((c.compStatus||"")==="peakweek"?" on":"")+'" data-val="peakweek" onclick="pickChipVal(this,\'cCS\')">PEAK WEEK</div></div><input type="hidden" id="cCS" value="'+(c.compStatus||"offseason")+'"></div>'
+    +'<div class="field" style="margin-bottom:8px"><span class="lb">FEDERATION</span><div style="display:flex;gap:4px;flex-wrap:wrap"><div class="chip'+((c.federation||"")==="NPC"?" on":"")+'" onclick="pickChip(this,\'cFed\')">NPC</div><div class="chip'+((c.federation||"")==="IFBB"?" on":"")+'" onclick="pickChip(this,\'cFed\')">IFBB</div><div class="chip'+((c.federation||"")==="OCB"?" on":"")+'" onclick="pickChip(this,\'cFed\')">OCB</div><div class="chip'+((c.federation||"")==="WNBF"?" on":"")+'" onclick="pickChip(this,\'cFed\')">WNBF</div></div><input type="hidden" id="cFed" value="'+(c.federation||"")+'"></div>'
+    +'<div class="field" style="margin-bottom:8px"><span class="lb">STATUS</span><div style="display:flex;gap:4px;flex-wrap:wrap"><div class="chip'+((c.compStatus||"offseason")==="offseason"?" on":"")+'" data-val="offseason" onclick="pickChipVal(this,\'cCS\')">OFFSEASON</div><div class="chip'+((c.compStatus||"")==="prep"?" on":"")+'" data-val="prep" onclick="pickChipVal(this,\'cCS\')">PREP</div><div class="chip'+((c.compStatus||"")==="peakweek"?" on":"")+'" data-val="peakweek" onclick="pickChipVal(this,\'cCS\')">PEAK WEEK</div></div><input type="hidden" id="cCS" value="'+(c.compStatus||"offseason")+'"></div>'
     +'</div></div>';
   if(curSvcs.indexOf("Contest Prep")>=0||c.isCompetitor){
     html+='<div class="sl" style="margin-top:14px">CONTEST PREP</div><div class="cd" style="padding:14px"><div class="g2"><div><span class="lb">PREP LENGTH</span><select id="cPW" style="font-size:12px">';
@@ -1319,7 +1319,7 @@ function renderSettings(){
     +'<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px"><div style="text-align:center;padding:10px 6px;background:var(--glass);border-radius:8px;border:1px solid var(--borderS)"><div style="font-size:18px;font-weight:700;color:var(--acc);font-family:var(--mono)">'+totalClients+'</div><div style="font-size:8px;color:var(--dm);font-family:var(--mono);letter-spacing:.08em">CLIENTS</div></div><div style="text-align:center;padding:10px 6px;background:var(--glass);border-radius:8px;border:1px solid var(--borderS)"><div style="font-size:18px;font-weight:700;color:var(--wh);font-family:var(--mono)">'+totalSess+'</div><div style="font-size:8px;color:var(--dm);font-family:var(--mono);letter-spacing:.08em">SESSIONS</div></div><div style="text-align:center;padding:10px 6px;background:var(--glass);border-radius:8px;border:1px solid var(--borderS)"><div style="font-size:18px;font-weight:700;color:var(--accVib);font-family:var(--mono)">$'+tr+'</div><div style="font-size:8px;color:var(--dm);font-family:var(--mono);letter-spacing:.08em">REVENUE</div></div></div>'
     +(memberSince?'<div style="margin-top:10px;font-size:9px;color:var(--dm);font-family:var(--mono);text-align:center">Tracking since '+fmtDate(memberSince)+'</div>':'')+'</div>'
     +'<div class="sl" style="margin-top:18px">GYM SETTINGS</div><div class="cd" style="padding:16px"><div class="field"><span class="lb">GYM CUT (%)</span><div style="display:flex;gap:4px;flex-wrap:wrap">'+ph+'</div></div><div class="field"><span class="lb">DEFAULT SESSION RATE ($)</span><input id="defRate" type="number" min="0" value="'+LS.get("defaultRate","")+'" onchange="LS.set(\'defaultRate\',this.value)"></div></div>'
-    +'<div class="sl" style="margin-top:18px">DISPLAY</div><div class="cd" style="padding:16px"><div class="field"><span class="lb">COLOR THEME</span><div style="display:flex;gap:4px"><div class="chip'+(LS.get("theme","crimson")==="gold"?" on":"")+'" onclick="setTheme(\'gold\')">GOLD</div><div class="chip'+(LS.get("theme","crimson")==="crimson"?" on":"")+'" onclick="setTheme(\'crimson\')">CRIMSON</div></div></div><div class="field"><span class="lb">TEXT SIZE</span><div style="display:flex;gap:4px"><div class="chip'+(LS.get("fontScale","medium")==="small"?" on":"")+'" onclick="setFontScale(\'small\')">SMALL</div><div class="chip'+(LS.get("fontScale","medium")==="medium"?" on":"")+'" onclick="setFontScale(\'medium\')">MEDIUM</div><div class="chip'+(LS.get("fontScale","medium")==="large"?" on":"")+'" onclick="setFontScale(\'large\')">LARGE</div><div class="chip'+(LS.get("fontScale","medium")==="xl"?" on":"")+'" onclick="setFontScale(\'xl\')">XL</div></div></div><div class="field"><span class="lb">TIME FORMAT</span><div style="display:flex;gap:4px"><div class="chip'+(is24Hr()?"":" on")+'" onclick="LS.set(\'timeFormat\',\'12\');render()">12-Hour</div><div class="chip'+(is24Hr()?" on":"")+'" onclick="LS.set(\'timeFormat\',\'24\');render()">24-Hour</div></div></div><div><span class="lb">TIMER SOUND</span><div style="display:flex;gap:4px"><div class="chip'+(LS.get("timerSound",true)?" on":"")+'" onclick="LS.set(\'timerSound\',true);render()">ON</div><div class="chip'+(!LS.get("timerSound",true)?" on":"")+'" onclick="LS.set(\'timerSound\',false);render()">OFF</div></div></div></div>'
+    +'<div class="sl" style="margin-top:18px">DISPLAY</div><div class="cd" style="padding:16px"><div class="field"><span class="lb">COLOR THEME</span><div style="display:flex;gap:4px;flex-wrap:wrap"><div class="chip'+(LS.get("theme","crimson")==="gold"?" on":"")+'" onclick="setTheme(\'gold\')">GOLD</div><div class="chip'+(LS.get("theme","crimson")==="crimson"?" on":"")+'" onclick="setTheme(\'crimson\')">CRIMSON</div></div></div><div class="field"><span class="lb">TEXT SIZE</span><div style="display:flex;gap:4px;flex-wrap:wrap"><div class="chip'+(LS.get("fontScale","medium")==="small"?" on":"")+'" onclick="setFontScale(\'small\')">SMALL</div><div class="chip'+(LS.get("fontScale","medium")==="medium"?" on":"")+'" onclick="setFontScale(\'medium\')">MEDIUM</div><div class="chip'+(LS.get("fontScale","medium")==="large"?" on":"")+'" onclick="setFontScale(\'large\')">LARGE</div><div class="chip'+(LS.get("fontScale","medium")==="xl"?" on":"")+'" onclick="setFontScale(\'xl\')">XL</div></div></div><div class="field"><span class="lb">TIME FORMAT</span><div style="display:flex;gap:4px;flex-wrap:wrap"><div class="chip'+(is24Hr()?"":" on")+'" onclick="LS.set(\'timeFormat\',\'12\');render()">12-Hour</div><div class="chip'+(is24Hr()?" on":"")+'" onclick="LS.set(\'timeFormat\',\'24\');render()">24-Hour</div></div></div><div><span class="lb">TIMER SOUND</span><div style="display:flex;gap:4px;flex-wrap:wrap"><div class="chip'+(LS.get("timerSound",true)?" on":"")+'" onclick="LS.set(\'timerSound\',true);render()">ON</div><div class="chip'+(!LS.get("timerSound",true)?" on":"")+'" onclick="LS.set(\'timerSound\',false);render()">OFF</div></div></div></div>'
     +'<div class="sl" style="margin-top:18px">SECURITY</div><div class="cd" style="padding:16px"><div style="margin-bottom:12px"><div style="font-size:13px;font-weight:500;color:var(--wh)">PIN Lock</div></div><button class="btn2" onclick="changePIN()" style="width:100%;margin-bottom:8px">CHANGE PIN</button><button class="btn2" onclick="LS.set(\'tutorialDone\',false);showTutorial()" style="width:100%">REPLAY TUTORIAL</button></div>'
     +'<div class="sl" style="margin-top:18px">ALERTS & NOTIFICATIONS</div><div class="cd" style="padding:16px">'
     +(function(){var nRet=LS.get("notif_retention",true),nSched=LS.get("notif_schedule",true);return '<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--borderS)"><div><div style="font-size:13px;font-weight:500;color:var(--wh)">PR Celebrations</div><div style="font-size:10px;color:var(--dm)">Toast when a client hits a new weight record</div></div><div class="chip'+(nPR?" on":"")+'" onclick="toggleNotif(\'notif_pr\',this)" style="min-width:40px;text-align:center">'+(nPR?"ON":"OFF")+'</div></div><div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--borderS)"><div><div style="font-size:13px;font-weight:500;color:var(--wh)">Retention Warnings</div><div style="font-size:10px;color:var(--dm)">Flag clients inactive 7+ days</div></div><div class="chip'+(nRet?" on":"")+'" onclick="toggleNotif(\'notif_retention\',this)" style="min-width:40px;text-align:center">'+(nRet?"ON":"OFF")+'</div></div><div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0"><div><div style="font-size:13px;font-weight:500;color:var(--wh)">Schedule Reminders</div><div style="font-size:10px;color:var(--dm)">Show upcoming sessions on home</div></div><div class="chip'+(nSched?" on":"")+'" onclick="toggleNotif(\'notif_schedule\',this)" style="min-width:40px;text-align:center">'+(nSched?"ON":"OFF")+'</div></div>'
@@ -1330,7 +1330,7 @@ function renderSettings(){
     +'<div style="font-size:11px;color:var(--mu);margin-bottom:14px;line-height:1.6">Send SMS reminders to your phone before sessions. Requires Supabase project + Twilio credentials configured as Edge Function secrets.</div>'
     +'<div class="field"><span class="lb">SUPABASE PROJECT URL</span><input id="supaUrl" placeholder="https://xxxx.supabase.co" value="'+esc(LS.get("supa_url",""))+'"></div>'
     +'<div class="field"><span class="lb">SUPABASE ANON KEY</span><input id="supaKey" placeholder="eyJ..." value="'+esc(LS.get("supa_key",""))+'"></div>'
-    +'<div class="field"><span class="lb">COACH PHONE (receives reminders)</span><input id="coachPhone" placeholder="+1 555-123-4567" value="'+esc(LS.get("coach_phone",""))+'"></div>'
+    +'<div class="field"><span class="lb">COACH PHONE (receives reminders)</span><input id="coachPhone" placeholder="+1 555-123-4567" value="'+esc(LS.get("coach_phone","+14403093886"))+'"></div>'
     +'<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:1px solid var(--borderS)"><div><div style="font-size:13px;font-weight:500;color:var(--wh)">Send Coach Reminders</div><div style="font-size:10px;color:var(--dm)">SMS before each session</div></div><div class="chip'+(LS.get("sms_reminders",false)?" on":"")+'" onclick="toggleNotif(\'sms_reminders\',this);startSMSChecker()" style="min-width:40px;text-align:center">'+(LS.get("sms_reminders",false)?"ON":"OFF")+'</div></div>'
     +'<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:1px solid var(--borderS)"><div><div style="font-size:13px;font-weight:500;color:var(--wh)">Send Client Reminders</div><div style="font-size:10px;color:var(--dm)">Also text clients before sessions</div></div><div class="chip'+(LS.get("sms_client_reminders",false)?" on":"")+'" onclick="toggleNotif(\'sms_client_reminders\',this)" style="min-width:40px;text-align:center">'+(LS.get("sms_client_reminders",false)?"ON":"OFF")+'</div></div>'
     +'<div style="display:flex;gap:8px;margin-top:12px"><button class="btn" onclick="saveSMSConfig()" style="flex:1">SAVE & CONNECT</button><button class="btn2" onclick="testSMS()" style="flex:1">TEST SMS</button></div></div>'
@@ -3888,34 +3888,48 @@ function showTutorial(){
       if(tabs[tabIdx]){var te=tabs[tabIdx];te.style.outline="2px solid var(--acc)";te.style.outlineOffset="3px";te.style.zIndex="800";te.style.borderRadius="10px";}
     }
   }
-  window.renderTutStep=function(){
+  window.renderTutStep=function(skipAnim){
     var s=steps[_tutStep],isLast=_tutStep===steps.length-1,isFirst=_tutStep===0;
     if(s.action)navigateToTab(s.action);
     if(s.highlight)setTimeout(function(){highlightTab(s.highlight);},100);
     else highlightTab(null);
-    var ov=el("tutOverlay");if(!ov){ov=document.createElement("div");ov.id="tutOverlay";document.body.appendChild(ov);}
-    ov.style.cssText="position:fixed;inset:0;z-index:700;background:rgba(2,2,4,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;animation:fadeIn .2s ease";
+    var ov=el("tutOverlay");var isNew=!ov;
+    if(!ov){ov=document.createElement("div");ov.id="tutOverlay";document.body.appendChild(ov);}
+    ov.style.cssText="position:fixed;inset:0;z-index:700;background:rgba(2,2,4,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px"+(isNew?";animation:fadeIn .2s ease":"");
     var dots='';for(var i=0;i<steps.length;i++)dots+='<div style="width:'+(i===_tutStep?'20px':'6px')+';height:6px;border-radius:3px;background:'+(i===_tutStep?'var(--acc)':'var(--borderH)')+';transition:all .3s"></div>';
     var stepLabel='<div style="font-size:9px;color:var(--dm);font-family:var(--mono);letter-spacing:.2em;margin-bottom:20px">STEP '+(_tutStep+1)+' OF '+steps.length+'</div>';
-    ov.innerHTML='<div style="position:absolute;top:0;left:50%;transform:translateX(-50%);width:60%;height:2px;background:linear-gradient(90deg,transparent,var(--acc),transparent)"></div>'
-      +'<div onclick="event.stopPropagation()" style="width:100%;max-width:380px;text-align:center;animation:slideUp .25s ease;background:linear-gradient(160deg,rgba(14,14,18,.95),rgba(8,8,12,.95));border:1.5px solid var(--accB);border-radius:20px;padding:32px 28px;box-shadow:0 24px 80px rgba(0,0,0,.5),0 0 40px var(--accS)">'
-      +stepLabel
-      +'<div style="margin-bottom:20px">'+s.icon+'</div>'
-      +'<div style="font-family:var(--display);font-size:20px;font-weight:700;color:var(--ice);margin-bottom:10px;letter-spacing:.03em;line-height:1.3">'+s.title+'</div>'
-      +'<div style="width:40px;height:2px;background:linear-gradient(90deg,transparent,var(--acc),transparent);margin:0 auto 14px"></div>'
-      +'<div style="font-size:13px;color:var(--ow);line-height:1.7;margin-bottom:28px;white-space:pre-line">'+s.body+'</div>'
-      +'<div style="display:flex;gap:6px;justify-content:center;margin-bottom:20px">'+dots+'</div>'
-      +'<div style="display:flex;gap:10px;justify-content:center">'
-      +(!isFirst?'<button class="btn2" onclick="_tutStep--;renderTutStep()" style="min-width:90px;padding:12px 18px">BACK</button>':'')
-      +(isLast?'<button class="btn" onclick="finishTutorial()" style="min-width:140px;padding:14px 28px">LET\'S GO</button>':'<button class="btn" onclick="_tutStep++;renderTutStep()" style="min-width:140px;padding:14px 28px">NEXT</button>')
-      +'</div>'
-      +(!isLast?'<div onclick="finishTutorial()" style="margin-top:14px;font-size:10px;color:var(--dm);font-family:var(--mono);cursor:pointer;letter-spacing:.1em">SKIP</div>':'')
-      +'</div>'
-      +'<div style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:60%;height:2px;background:linear-gradient(90deg,transparent,var(--acc),transparent)"></div>';
+    function renderCard(){
+      var card=ov.querySelector("#tutCard");
+      var cardHTML='<div id="tutCard" onclick="event.stopPropagation()" style="width:100%;max-width:380px;text-align:center;background:linear-gradient(160deg,rgba(14,14,18,.95),rgba(8,8,12,.95));border:1.5px solid var(--accB);border-radius:20px;padding:32px 28px;box-shadow:0 24px 80px rgba(0,0,0,.5),0 0 40px var(--accS);transition:opacity .15s ease,transform .15s ease;opacity:1;transform:scale(1)">'
+        +stepLabel
+        +'<div style="margin-bottom:20px">'+s.icon+'</div>'
+        +'<div style="font-family:var(--display);font-size:20px;font-weight:700;color:var(--ice);margin-bottom:10px;letter-spacing:.03em;line-height:1.3">'+s.title+'</div>'
+        +'<div style="width:40px;height:2px;background:linear-gradient(90deg,transparent,var(--acc),transparent);margin:0 auto 14px"></div>'
+        +'<div style="font-size:13px;color:var(--ow);line-height:1.7;margin-bottom:28px;white-space:pre-line">'+s.body+'</div>'
+        +'<div style="display:flex;gap:6px;justify-content:center;margin-bottom:20px">'+dots+'</div>'
+        +'<div style="display:flex;gap:10px;justify-content:center">'
+        +(!isFirst?'<button class="btn2" onclick="_tutStep--;renderTutStep()" style="min-width:90px;padding:12px 18px">BACK</button>':'')
+        +(isLast?'<button class="btn" onclick="finishTutorial()" style="min-width:140px;padding:14px 28px">LET\'S GO</button>':'<button class="btn" onclick="_tutStep++;renderTutStep()" style="min-width:140px;padding:14px 28px">NEXT</button>')
+        +'</div>'
+        +(!isLast?'<div onclick="finishTutorial()" style="margin-top:14px;font-size:10px;color:var(--dm);font-family:var(--mono);cursor:pointer;letter-spacing:.1em">SKIP</div>':'')
+        +'</div>';
+      ov.innerHTML='<div style="position:absolute;top:0;left:50%;transform:translateX(-50%);width:60%;height:2px;background:linear-gradient(90deg,transparent,var(--acc),transparent)"></div>'
+        +cardHTML
+        +'<div style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:60%;height:2px;background:linear-gradient(90deg,transparent,var(--acc),transparent)"></div>';
+      // Animate in
+      var newCard=ov.querySelector("#tutCard");
+      if(!isNew&&!skipAnim&&newCard){newCard.style.opacity="0";newCard.style.transform="scale(0.97)";requestAnimationFrame(function(){newCard.style.opacity="1";newCard.style.transform="scale(1)";});}
+    }
+    // If existing card, fade out first then swap
+    var existingCard=ov.querySelector("#tutCard");
+    if(existingCard&&!isNew&&!skipAnim){
+      existingCard.style.opacity="0";existingCard.style.transform="scale(0.97)";
+      setTimeout(renderCard,150);
+    }else{renderCard();}
   };
-  renderTutStep();
+  renderTutStep(true);
 }
-function finishTutorial(){LS.set("tutorialDone",true);var ov=el("tutOverlay");if(ov)ov.remove();document.querySelectorAll(".ti").forEach(function(t){t.style.outline="";t.style.outlineOffset="";t.style.zIndex="";});_doGoTab("home");}
+function finishTutorial(){LS.set("tutorialDone",true);var ov=el("tutOverlay");if(ov){ov.style.transition="opacity .3s ease";ov.style.opacity="0";setTimeout(function(){ov.remove();},300);}document.querySelectorAll(".ti").forEach(function(t){t.style.outline="";t.style.outlineOffset="";t.style.zIndex="";});_doGoTab("home");}
 // ── BIRTHDAY GIFT UNWRAP ──
 var _bdayLaunch=1773705600000;
 var _bdayExpiry=1773936000000;
