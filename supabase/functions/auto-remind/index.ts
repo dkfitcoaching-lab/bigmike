@@ -83,7 +83,7 @@ serve(async (req) => {
         const [hr, min] = s.time.split(":").map(Number);
         const sessMinutes = hr * 60 + min;
         const diff = sessMinutes - currentMinutes;
-        // Send reminder 25-35 minutes before (5-min cron window)
+        // Send reminder up to 35 minutes before (5-min cron catches it; sent-tracking prevents duplicates)
         return diff > 0 && diff <= 35;
       });
 
