@@ -1319,7 +1319,7 @@ function renderSettings(){
     +'<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px"><div style="text-align:center;padding:10px 6px;background:var(--glass);border-radius:8px;border:1px solid var(--borderS)"><div style="font-size:18px;font-weight:700;color:var(--acc);font-family:var(--mono)">'+totalClients+'</div><div style="font-size:8px;color:var(--dm);font-family:var(--mono);letter-spacing:.08em">CLIENTS</div></div><div style="text-align:center;padding:10px 6px;background:var(--glass);border-radius:8px;border:1px solid var(--borderS)"><div style="font-size:18px;font-weight:700;color:var(--wh);font-family:var(--mono)">'+totalSess+'</div><div style="font-size:8px;color:var(--dm);font-family:var(--mono);letter-spacing:.08em">SESSIONS</div></div><div style="text-align:center;padding:10px 6px;background:var(--glass);border-radius:8px;border:1px solid var(--borderS)"><div style="font-size:18px;font-weight:700;color:var(--accVib);font-family:var(--mono)">$'+tr+'</div><div style="font-size:8px;color:var(--dm);font-family:var(--mono);letter-spacing:.08em">REVENUE</div></div></div>'
     +(memberSince?'<div style="margin-top:10px;font-size:9px;color:var(--dm);font-family:var(--mono);text-align:center">Tracking since '+fmtDate(memberSince)+'</div>':'')+'</div>'
     +'<div class="sl" style="margin-top:18px">GYM SETTINGS</div><div class="cd" style="padding:16px"><div class="field"><span class="lb">GYM CUT (%)</span><div style="display:flex;gap:4px;flex-wrap:wrap">'+ph+'</div></div><div class="field"><span class="lb">DEFAULT SESSION RATE ($)</span><input id="defRate" type="number" min="0" value="'+LS.get("defaultRate","")+'" onchange="LS.set(\'defaultRate\',this.value)"></div></div>'
-    +'<div class="sl" style="margin-top:18px">DISPLAY</div><div class="cd" style="padding:16px"><div class="field"><span class="lb">COLOR THEME</span><div style="display:flex;gap:4px"><div class="chip'+(LS.get("theme","crimson")==="gold"?" on":"")+'" onclick="setTheme(\'gold\')">GOLD</div><div class="chip'+(LS.get("theme","crimson")==="crimson"?" on":"")+'" onclick="setTheme(\'crimson\')">CRIMSON</div></div></div><div class="field"><span class="lb">TEXT SIZE</span><div style="display:flex;gap:4px"><div class="chip'+(LS.get("fontScale","medium")==="small"?" on":"")+'" onclick="setFontScale(\'small\')">SMALL</div><div class="chip'+(LS.get("fontScale","medium")==="medium"?" on":"")+'" onclick="setFontScale(\'medium\')">MEDIUM</div><div class="chip'+(LS.get("fontScale","medium")==="large"?" on":"")+'" onclick="setFontScale(\'large\')">LARGE</div></div></div><div class="field"><span class="lb">TIME FORMAT</span><div style="display:flex;gap:4px"><div class="chip'+(is24Hr()?"":" on")+'" onclick="LS.set(\'timeFormat\',\'12\');render()">12-Hour</div><div class="chip'+(is24Hr()?" on":"")+'" onclick="LS.set(\'timeFormat\',\'24\');render()">24-Hour</div></div></div><div><span class="lb">TIMER SOUND</span><div style="display:flex;gap:4px"><div class="chip'+(LS.get("timerSound",true)?" on":"")+'" onclick="LS.set(\'timerSound\',true);render()">ON</div><div class="chip'+(!LS.get("timerSound",true)?" on":"")+'" onclick="LS.set(\'timerSound\',false);render()">OFF</div></div></div></div>'
+    +'<div class="sl" style="margin-top:18px">DISPLAY</div><div class="cd" style="padding:16px"><div class="field"><span class="lb">COLOR THEME</span><div style="display:flex;gap:4px"><div class="chip'+(LS.get("theme","crimson")==="gold"?" on":"")+'" onclick="setTheme(\'gold\')">GOLD</div><div class="chip'+(LS.get("theme","crimson")==="crimson"?" on":"")+'" onclick="setTheme(\'crimson\')">CRIMSON</div></div></div><div class="field"><span class="lb">TEXT SIZE</span><div style="display:flex;gap:4px"><div class="chip'+(LS.get("fontScale","medium")==="small"?" on":"")+'" onclick="setFontScale(\'small\')">SMALL</div><div class="chip'+(LS.get("fontScale","medium")==="medium"?" on":"")+'" onclick="setFontScale(\'medium\')">MEDIUM</div><div class="chip'+(LS.get("fontScale","medium")==="large"?" on":"")+'" onclick="setFontScale(\'large\')">LARGE</div><div class="chip'+(LS.get("fontScale","medium")==="xl"?" on":"")+'" onclick="setFontScale(\'xl\')">XL</div></div></div><div class="field"><span class="lb">TIME FORMAT</span><div style="display:flex;gap:4px"><div class="chip'+(is24Hr()?"":" on")+'" onclick="LS.set(\'timeFormat\',\'12\');render()">12-Hour</div><div class="chip'+(is24Hr()?" on":"")+'" onclick="LS.set(\'timeFormat\',\'24\');render()">24-Hour</div></div></div><div><span class="lb">TIMER SOUND</span><div style="display:flex;gap:4px"><div class="chip'+(LS.get("timerSound",true)?" on":"")+'" onclick="LS.set(\'timerSound\',true);render()">ON</div><div class="chip'+(!LS.get("timerSound",true)?" on":"")+'" onclick="LS.set(\'timerSound\',false);render()">OFF</div></div></div></div>'
     +'<div class="sl" style="margin-top:18px">SECURITY</div><div class="cd" style="padding:16px"><div style="margin-bottom:12px"><div style="font-size:13px;font-weight:500;color:var(--wh)">PIN Lock</div></div><button class="btn2" onclick="changePIN()" style="width:100%;margin-bottom:8px">CHANGE PIN</button><button class="btn2" onclick="LS.set(\'tutorialDone\',false);showTutorial()" style="width:100%">REPLAY TUTORIAL</button></div>'
     +'<div class="sl" style="margin-top:18px">ALERTS & NOTIFICATIONS</div><div class="cd" style="padding:16px">'
     +(function(){var nRet=LS.get("notif_retention",true),nSched=LS.get("notif_schedule",true);return '<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--borderS)"><div><div style="font-size:13px;font-weight:500;color:var(--wh)">PR Celebrations</div><div style="font-size:10px;color:var(--dm)">Toast when a client hits a new weight record</div></div><div class="chip'+(nPR?" on":"")+'" onclick="toggleNotif(\'notif_pr\',this)" style="min-width:40px;text-align:center">'+(nPR?"ON":"OFF")+'</div></div><div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--borderS)"><div><div style="font-size:13px;font-weight:500;color:var(--wh)">Retention Warnings</div><div style="font-size:10px;color:var(--dm)">Flag clients inactive 7+ days</div></div><div class="chip'+(nRet?" on":"")+'" onclick="toggleNotif(\'notif_retention\',this)" style="min-width:40px;text-align:center">'+(nRet?"ON":"OFF")+'</div></div><div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0"><div><div style="font-size:13px;font-weight:500;color:var(--wh)">Schedule Reminders</div><div style="font-size:10px;color:var(--dm)">Show upcoming sessions on home</div></div><div class="chip'+(nSched?" on":"")+'" onclick="toggleNotif(\'notif_schedule\',this)" style="min-width:40px;text-align:center">'+(nSched?"ON":"OFF")+'</div></div>'
@@ -3208,8 +3208,8 @@ function checkBrowserNotifications(){
 // ── THEME ──
 function setTheme(t){LS.set("theme",t);applyTheme();render();}
 function setFontScale(s){LS.set("fontScale",s);applyFontScale();render();}
-function applyFontScale(){var s=LS.get("fontScale","medium");var ct=document.getElementById("ct");if(!ct)return;ct.style.zoom=s==="small"?"0.92":s==="large"?"1.08":"1";}
-function applyTheme(){var t=LS.get("theme","crimson");if(t==="crimson")document.body.classList.add("theme-crimson");else document.body.classList.remove("theme-crimson");generateThemeIcon(t);}
+function applyFontScale(){var s=LS.get("fontScale","medium");var z=s==="small"?"0.92":s==="large"?"1.12":s==="xl"?"1.24":"1";document.body.style.zoom=z;}
+function applyTheme(){var t=LS.get("theme","crimson");if(t==="crimson")document.body.classList.add("theme-crimson");else document.body.classList.remove("theme-crimson");var mc=document.querySelector('meta[name="theme-color"]');if(mc)mc.content=t==="crimson"?"#1a0808":"#1a1408";generateThemeIcon(t);}
 function generateThemeIcon(theme){
   try{
     var sizes=[120,152,180,192,512];
@@ -3266,7 +3266,8 @@ function _updateManifestIcons(){
       }
     }
     if(icons.length){
-      var manifest={name:"Big Mike Ely Coaching Lab",short_name:"Coaching Lab",description:"IFBB Pro Big Mike Ely's coaching management platform",id:"/",start_url:"/",display:"standalone",orientation:"portrait",background_color:"#020202",theme_color:"#020202",categories:["fitness","health","productivity"],icons:icons};
+      var isCrimson=LS.get("theme","crimson")==="crimson";
+      var manifest={name:"Big Mike Ely Coaching Lab",short_name:"Coaching Lab",description:"IFBB Pro Big Mike Ely's coaching management platform",id:"/",start_url:"/",display:"standalone",orientation:"portrait",background_color:"#020202",theme_color:isCrimson?"#1a0808":"#1a1408",categories:["fitness","health","productivity"],icons:icons};
       var blob=new Blob([JSON.stringify(manifest)],{type:"application/json"});
       var url=URL.createObjectURL(blob);
       var link=document.querySelector('link[rel="manifest"]');
@@ -3311,11 +3312,11 @@ function _pdfContentPage(accent,rgb,sections,docType,pageLabel){
     +ftr+'</div>';
 }
 
-function _renderPDFToFile(pages,filename,docType,pageLabel){
+function _renderPDFToFile(pages,filename,docType,pageLabel,overrideAccent,overrideRGB){
   if(!window.jspdf||!window.jspdf.jsPDF){toast("\u26a0 PDF library not loaded \u2014 check your internet connection",4000);return;}
   if(!window.html2canvas){toast("\u26a0 PDF renderer not loaded \u2014 check your internet connection",4000);return;}
   toast("Generating PDF...");
-  var accent=_pdfAccent(),rgb=_pdfAccentRGB();
+  var accent=overrideAccent||_pdfAccent(),rgb=overrideRGB||_pdfAccentRGB();
   var container=document.createElement("div");
   container.id="_pdfRender";
   container.style.cssText="position:fixed;left:-9999px;top:0;z-index:-1;";
@@ -3758,15 +3759,10 @@ function buildCustomPDF(idx){
     if(isChecked("supplements"))parts.push("Supplements");
     coverSub=parts.join(" \u00b7 ")||"Complete Program";
   }
-  // Override accent for PDF rendering
-  var origAccent=_pdfAccent;var origRGB=_pdfAccentRGB;
-  _pdfAccent=function(){return accent;};_pdfAccentRGB=function(){return rgb;};
   var contentPages=_splitContentIntoPages(body);
   var pages=[{coverTitle:"Complete Program",coverClient:c.name,coverSub:coverSub}];
   for(var pi4=0;pi4<contentPages.length;pi4++)pages.push({content:contentPages[pi4]});
-  _renderPDFToFile(pages,c.name.replace(/\s+/g,"_")+"_Program","Complete Program",c.name);
-  // Restore
-  _pdfAccent=origAccent;_pdfAccentRGB=origRGB;
+  _renderPDFToFile(pages,c.name.replace(/\s+/g,"_")+"_Program","Complete Program",c.name,accent,rgb);
 }
 
 // ── PEAK WEEK PROTOCOL ──
