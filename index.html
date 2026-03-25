@@ -3197,8 +3197,8 @@ function copyBookingLink(){
   var sb=getSupabase();
   var url=window.location.origin+"/book.html";
   if(sb){
-    var sbUrl=LS.get("sb_url","");
-    var sbKey=LS.get("sb_key","");
+    var sbUrl=LS.get("supa_url","");
+    var sbKey=LS.get("supa_key","");
     if(sbUrl&&sbKey)url+="?sb_url="+encodeURIComponent(sbUrl)+"&sb_key="+encodeURIComponent(sbKey);
   }
   if(navigator.clipboard){navigator.clipboard.writeText(url).then(function(){toast("\u2713 Link copied!");}).catch(function(){toast("Copy failed");});}

@@ -88,7 +88,7 @@ button{font-family:var(--body);cursor:pointer;border:none;outline:none;transitio
 
 /* Calendar */
 .cal-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
-.cal-nav-btn{width:36px;height:36px;border-radius:10px;background:var(--accS);border:1.5px solid var(--borderH);color:var(--acc);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700}
+.cal-nav-btn{width:44px;height:44px;border-radius:10px;background:var(--accS);border:1.5px solid var(--borderH);color:var(--acc);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700}
 .cal-month{font-family:var(--display);font-size:16px;color:var(--ice);letter-spacing:.04em}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:20px}
 .cal-hdr{font-size:9px;font-family:var(--mono);color:var(--dm);text-align:center;padding:6px 0;font-weight:700;letter-spacing:.08em}
@@ -106,7 +106,7 @@ button{font-family:var(--body);cursor:pointer;border:none;outline:none;transitio
 .slot-group-title{font-size:9px;font-family:var(--mono);color:var(--dm);letter-spacing:.14em;text-transform:uppercase;margin:14px 0 8px;display:flex;align-items:center;gap:8px}
 .slot-group-title::after{content:'';flex:1;height:1px;background:var(--borderS)}
 .time-slots{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.time-slot{padding:12px 8px;border-radius:10px;text-align:center;font-family:var(--mono);font-size:12px;font-weight:600;color:var(--ow);background:var(--glassB);border:1.5px solid var(--borderS);cursor:pointer;transition:all .2s}
+.time-slot{padding:14px 8px;border-radius:10px;text-align:center;font-family:var(--mono);font-size:12px;font-weight:600;color:var(--ow);background:var(--glassB);border:1.5px solid var(--borderS);cursor:pointer;transition:all .2s;min-height:44px;display:flex;align-items:center;justify-content:center}
 .time-slot:hover{border-color:var(--borderH);color:var(--wh);background:var(--accS)}
 .time-slot.selected{background:var(--accGlow);border-color:var(--accB);color:var(--accBright);box-shadow:0 0 12px var(--accS)}
 .time-slot.booked{opacity:.3;pointer-events:none;text-decoration:line-through}
