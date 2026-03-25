@@ -126,7 +126,7 @@ input::placeholder{color:var(--dm);opacity:.6;font-style:italic}
 
     <!-- Book Another -->
     <div style="margin-top:20px;text-align:center">
-      <a href="https://big-mike-108395.square.site/" target="_blank" rel="noopener" class="btn2" style="display:inline-flex;align-items:center;gap:8px;padding:12px 24px;text-decoration:none">
+      <a href="book.html" class="btn2" style="display:inline-flex;align-items:center;gap:8px;padding:12px 24px;text-decoration:none">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l2 2"/></svg>
         BOOK A SESSION
       </a>
@@ -354,14 +354,31 @@ function renderUpcomingSessions(){
   var sb=getSupabase();
   var container=document.getElementById("upcomingSessions");
   if(!sb||!_clientData){container.innerHTML='<div style="font-size:11px;color:var(--dm);font-family:var(--mono);text-align:center;padding:16px">No upcoming sessions</div>';return;}
-  var phone=localStorage.getItem("bm_portal_phone")||"";
-  sb.from("schedule").select("*").eq("phone",phone).gte("date",new Date().toISOString().split("T")[0]).order("date",{ascending:true}).limit(5).then(function(res){
+  var today=new Date().toISOString().split("T")[0];
+  sb.from("schedule").select("id,data").then(function(res){
     if(!res.data||!res.data.length){container.innerHTML='<div style="font-size:11px;color:var(--dm);font-family:var(--mono);text-align:center;padding:16px">No upcoming sessions</div>';return;}
+    var phone=localStorage.getItem("bm_portal_phone")||"";
+    function phoneDigits(p){if(!p)return"";var d=p.replace(/\D/g,"");return d.length>10?d.slice(-10):d;}
+    var myDigits=phoneDigits(phone);
+    var upcoming=res.data.filter(function(r){
+      var s=r.data;if(!s)return false;
+      return s.date>=today&&s.status!=="cancelled"&&s.status!=="complete"&&phoneDigits(s.clientPhone)===myDigits;
+    }).sort(function(a,b){return(a.data.date+a.data.time).localeCompare(b.data.date+b.data.time);}).slice(0,5);
+    if(!upcoming.length){container.innerHTML='<div style="font-size:11px;color:var(--dm);font-family:var(--mono);text-align:center;padding:16px">No upcoming sessions</div>';return;}
     var html="";
-    for(var i=0;i<res.data.length;i++){var s=res.data[i];
-      html+='<div class="cd" style="display:flex;align-items:center;gap:12px;padding:12px 14px"><div style="text-align:center;min-width:44px"><div style="font-size:18px;font-weight:800;color:var(--acc);font-family:var(--mono)">'+new Date(s.date+"T12:00:00").getDate()+'</div><div style="font-size:8px;color:var(--dm);font-family:var(--mono)">'+["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"][new Date(s.date+"T12:00:00").getMonth()]+'</div></div><div style="flex:1"><div style="font-size:12px;font-weight:600;color:var(--wh)">'+(s.type||"Session")+'</div><div style="font-size:10px;color:var(--dm);font-family:var(--mono)">'+(s.time||"")+'</div></div></div>';}
+    for(var i=0;i<upcoming.length;i++){var r=upcoming[i],s=r.data;
+      var dt=new Date(s.date+"T12:00:00");
+      html+='<div class="cd" style="display:flex;align-items:center;gap:12px;padding:12px 14px"><div style="text-align:center;min-width:44px"><div style="font-size:18px;font-weight:800;color:var(--acc);font-family:var(--mono)">'+dt.getDate()+'</div><div style="font-size:8px;color:var(--dm);font-family:var(--mono)">'+["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"][dt.getMonth()]+'</div></div><div style="flex:1"><div style="font-size:12px;font-weight:600;color:var(--wh)">'+(s.type||"Session")+'</div><div style="font-size:10px;color:var(--dm);font-family:var(--mono)">'+(s.time?formatTime12(s.time):"TBD")+'</div></div><button onclick="cancelSession(\''+r.id+'\',\''+esc(s.clientName||"")+'\',\''+s.date+'\',\''+s.time+'\',\''+(s.type||"Session")+'\')" style="background:none;border:1px solid rgba(216,120,120,.3);color:var(--danger);font-family:var(--mono);font-size:8px;padding:5px 10px;border-radius:6px;cursor:pointer;letter-spacing:.06em">CANCEL</button></div>';}
     container.innerHTML=html;
   });
+}
+function formatTime12(t){if(!t)return"TBD";var p=t.split(":");var h=parseInt(p[0]);var ap=h>=12?"PM":"AM";var h12=h===0?12:h>12?h-12:h;return h12+":"+p[1]+" "+ap;}
+function cancelSession(id,name,date,time,type){
+  if(!confirm("Cancel your "+type+" on "+date+"? Cancellations within the policy window may be charged."))return;
+  var sb=getSupabase();if(!sb){toast("Connection error");return;}
+  sb.functions.invoke("cancel-booking",{body:{scheduleId:id,clientName:name,date:date,time:time,type:type}}).then(function(res){
+    toast("Session cancelled");renderUpcomingSessions();
+  }).catch(function(){toast("Failed to cancel - contact coach directly");});
 }
 
 /* Helpers */
