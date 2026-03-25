@@ -285,6 +285,8 @@ body.theme-crimson{
 .card-actions{display:flex;gap:8px;margin-top:14px}
 .stat-number{font-size:28px;font-weight:700;font-family:var(--mono);line-height:1;color:var(--acc)}
 .stat-caption{font-size:9px;color:var(--dm);font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;margin-top:6px}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:0.01ms !important}}
+@media print{body{background:#fff !important;color:#000 !important}.nav,.fab,#qnoteModal,.modal-overlay{display:none !important}.cd{border:1px solid #ddd !important;background:#fff !important;color:#000 !important}.pt,.sl{color:#000 !important;text-shadow:none !important}}
 </style>
 </head>
 <body>
@@ -329,7 +331,7 @@ var MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","D
 var LS={get:function(k,d){try{var v=JSON.parse(localStorage.getItem("fm_"+k));return v!=null?v:d;}catch(e){return d;}},set:function(k,v){try{localStorage.setItem("fm_"+k,JSON.stringify(v));}catch(e){if(e.name==="QuotaExceededError"){toast("\u26a0 Storage full! Export backup now.",5000);}}},space:function(){try{var total=0;for(var k in localStorage){if(localStorage.hasOwnProperty(k))total+=localStorage[k].length;}return{used:Math.round(total/1024),max:5120,pct:Math.round((total/1024/5120)*100)};}catch(e){return{used:0,max:5120,pct:0};}}};
 var clients=LS.get("clients",[]),sessions=LS.get("sessions",[]),schedule=LS.get("schedule",[]),templates=LS.get("templates",[]),mealPlans=LS.get("mealPlans",[]);
 function getGymCut(){return LS.get("gymCut",20)/100;}
-function save(){LS.set("clients",clients);LS.set("sessions",sessions);LS.set("schedule",schedule);LS.set("templates",templates);LS.set("mealPlans",mealPlans);LS.set("programs",_programs);LS.set("workouts",_workouts);cloudSync();}
+function save(){try{LS.set("clients",clients);LS.set("sessions",sessions);LS.set("schedule",schedule);LS.set("templates",templates);LS.set("mealPlans",mealPlans);LS.set("programs",_programs);LS.set("workouts",_workouts);}catch(e){console.error("Save error:",e);toast("Storage full! Export your data.");}cloudSync();}
 // ── CLOUD SYNC ──
 var _syncDebounce=null;
 function cloudSync(){
@@ -510,7 +512,7 @@ function render(){
   tabsEl.innerHTML=deskLogo+th;
   var ct=el("ct");ct.style.animation="none";ct.offsetHeight;ct.style.animation="fadeIn .3s ease";
   var renderers={home:renderHome,clients:renderClients,sessions:renderSessions,schedule:renderSchedule,nutrition:renderNutrition,settings:renderSettings};
-  ct.innerHTML=(renderers[currentView.tab]||renderHome)();
+  try{ct.innerHTML=(renderers[currentView.tab]||renderHome)();}catch(e){console.error("Render error ("+currentView.tab+"):",e);ct.innerHTML='<div class="cd" style="padding:24px;text-align:center"><div style="color:var(--danger);font-size:13px;font-weight:600;margin-bottom:8px">Something went wrong</div><div style="font-size:10px;color:var(--dm);font-family:var(--mono);margin-bottom:12px">'+esc(e.message)+'</div><button class="btn2" onclick="location.reload()" style="padding:8px 20px;font-size:10px">RELOAD</button></div>';}
   if(el("qnoteFab"))el("qnoteFab").style.display=(currentView.tab==="home"||currentView.tab==="clients")?"":"none";
   if(el("swFab"))el("swFab").style.display=(currentView.tab==="sessions"&&currentView.view==="new")?"flex":"none";
   timerUpdateUI();
@@ -791,11 +793,13 @@ function renderClientDetail(){
   html+='</div><div id="clientDetailBody">';
   html+=subTab==="progress"?renderClientProgress(c,idx):subTab==="notes"?renderClientNotes(c,idx):subTab==="program"?renderClientProgram(c,idx):subTab==="checkins"?renderClientCheckins(c,idx):subTab==="peakweek"?renderPeakWeek(c,idx):renderClientOverview(c,idx,cs,rev,info);
   html+='</div>';
+  if(subTab!=="peakweek"){
   html+='<div style="display:flex;gap:8px;margin-top:16px"><button class="btn" style="flex:1" onclick="navToLogFromClient(\''+c.id+'\',\''+c.rate+'\',\''+c.clientType+'\')">LOG SESSION</button><button class="btn2" style="flex:1" onclick="navToScheduleFromClient(\''+c.id+'\')">SCHEDULE</button></div>';
   html+='<div style="display:flex;gap:8px;margin-top:8px">';
   if(c.phone)html+='<button class="btn2" style="flex:1" onclick="sendQuickSMS(\''+c.id+'\')">SEND SMS</button>';
   if(c.phone)html+='<a href="tel:'+esc((c.phone||"").replace(/[^0-9+]/g,""))+'" style="flex:1"><button class="btn2" style="width:100%">CALL</button></a>';
   html+='</div>';
+  }
   html+='<button class="btn2" style="width:100%;margin-top:8px;border-color:var(--accB)" onclick="goToClientProgram('+idx+')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>BUILD PROGRAM & PDF</button>';
   html+='<div style="margin-top:24px;border:1px solid rgba(216,120,120,.2);border-radius:10px;overflow:hidden"><div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display===\'none\'?\'block\':\'none\'" style="cursor:pointer;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;background:rgba(216,120,120,.03)"><span style="font-size:10px;font-weight:700;color:var(--danger);font-family:var(--mono);letter-spacing:.1em">DANGER ZONE</span><span style="font-size:10px;color:var(--dm)">\u25bc</span></div><div style="display:none;padding:16px"><div style="font-size:11px;color:var(--dm);margin-bottom:12px">This cannot be undone. Session history will be preserved.</div><button class="btn-danger" onclick="deleteClient('+idx+')">DELETE CLIENT</button></div></div>';
   return html;
@@ -1513,7 +1517,8 @@ var FOOD_DB=[
 {n:"Ground Beef 96/4",cal:155,p:24,c:0,f:6,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp,lf"},
 {n:"Ground Beef 90/10",cal:196,p:27,c:0,f:9,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp"},
 {n:"Ground Beef 80/20",cal:260,p:26,c:0,f:17,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,kf"},
-{n:"Bison",cal:143,p:28,c:0,f:2.4,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp,lf"},
+{n:"Bison (Steak)",cal:143,p:28,c:0,f:2.4,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp,lf"},
+{n:"Ground Bison 90/10",cal:152,p:26,c:0,f:5,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp"},
 {n:"Venison",cal:136,p:26,c:0,f:2.7,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp,lf"},
 {n:"Pork Tenderloin",cal:143,p:26,c:0,f:3.5,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp,lf"},
 {n:"Pork Chop (boneless)",cal:187,p:28,c:0,f:8,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp"},
@@ -1833,7 +1838,7 @@ var ANABOLICS_DB=[
 {name:"Tamoxifen / Nolvadex",doses:["10mg","20mg","40mg"],routes:["Oral"],freqs:["ED","EOD"]},
 {name:"Raloxifene / Evista",doses:["30mg","60mg","120mg"],routes:["Oral"],freqs:["ED"]},
 {name:"Clomiphene / Clomid",doses:["12.5mg","25mg","50mg","100mg"],routes:["Oral"],freqs:["ED","EOD"]},
-{name:"Enclomiphene",doses:["6.25mg","12.5mg","25mg"],routes:["Oral"],freqs:["ED"]}
+{name:"Enclomiphene / Androxal",doses:["6.25mg","12.5mg","25mg"],routes:["Oral"],freqs:["ED"]}
 ]},
 {cat:"Prolactin / Progesterone Support",items:[
 {name:"Cabergoline / Caber",doses:["0.25mg","0.5mg","1mg"],routes:["Oral"],freqs:["2x/week","1x/week","E3D"]},
@@ -1888,12 +1893,6 @@ var ANABOLICS_DB=[
 {name:"Minoxidil (Oral)",doses:["1.25mg","2.5mg","5mg"],routes:["Oral"],freqs:["ED"]},
 {name:"Metformin",doses:["250mg","500mg","750mg","1000mg"],routes:["Oral"],freqs:["ED","2x/day","With meals"]},
 {name:"Berberine",doses:["500mg","1000mg","1500mg"],routes:["Oral"],freqs:["2-3x/day with meals"]},
-{name:"Liothyronine / T3 / Cytomel",doses:["12.5mcg","25mcg","37.5mcg","50mcg","75mcg","100mcg"],routes:["Oral"],freqs:["ED","Split AM/PM"]},
-{name:"Levothyroxine / T4 / Synthroid",doses:["25mcg","50mcg","75mcg","100mcg","150mcg","200mcg"],routes:["Oral"],freqs:["ED"]},
-{name:"Clenbuterol",doses:["20mcg","40mcg","60mcg","80mcg","100mcg","120mcg","140mcg","160mcg"],routes:["Oral"],freqs:["ED","2 weeks on/2 off","Titrate up"]},
-{name:"Salbutamol / Albuterol",doses:["2mg","4mg","8mg","12mg","16mg"],routes:["Oral"],freqs:["3x/day","2x/day"]},
-{name:"Ephedrine",doses:["12.5mg","25mg"],routes:["Oral"],freqs:["1-3x/day","EC Stack"]},
-{name:"2,4-Dinitrophenol / DNP",doses:["100mg","125mg","200mg","250mg"],routes:["Oral"],freqs:["ED"]},
 {name:"Insulin Lispro / Humalog",doses:["5 IU","8 IU","10 IU","12 IU","15 IU","20 IU"],routes:["SubQ Injection"],freqs:["Pre-workout","Post-workout","With meals"]},
 {name:"Insulin Regular / Humulin R",doses:["5 IU","10 IU","15 IU","20 IU"],routes:["SubQ Injection"],freqs:["Pre-workout","Post-workout","With meals"]},
 {name:"Insulin Glargine / Lantus",doses:["10 IU","15 IU","20 IU","30 IU","40 IU"],routes:["SubQ Injection"],freqs:["1x/day","Before bed"]},
@@ -1901,9 +1900,9 @@ var ANABOLICS_DB=[
 {name:"Raloxifene / Evista (Gyno Protocol)",doses:["60mg","120mg"],routes:["Oral"],freqs:["ED"]},
 {name:"Niacin",doses:["250mg","500mg","1000mg"],routes:["Oral"],freqs:["ED","With meals"]},
 {name:"Citrus Bergamot",doses:["500mg","1000mg"],routes:["Oral"],freqs:["ED","2x/day"]},
-{name:"Ezetimibe (Zetia)",doses:["10mg"],routes:["Oral"],freqs:["ED"]},
-{name:"Telmisartan",doses:["20mg","40mg","80mg"],routes:["Oral"],freqs:["ED"]},
-{name:"Nebivolol",doses:["2.5mg","5mg","10mg"],routes:["Oral"],freqs:["ED"]}
+{name:"Ezetimibe / Zetia",doses:["10mg"],routes:["Oral"],freqs:["ED"]},
+{name:"Telmisartan / Micardis",doses:["20mg","40mg","80mg"],routes:["Oral"],freqs:["ED"]},
+{name:"Nebivolol / Bystolic",doses:["2.5mg","5mg","10mg"],routes:["Oral"],freqs:["ED"]}
 ]},
 {cat:"Fat Loss / GLPs",items:[
 {name:"Semaglutide / Ozempic / Wegovy",doses:["0.25mg","0.5mg","1mg","1.7mg","2.4mg"],routes:["SubQ Injection"],freqs:["1x/week"]},
@@ -1913,8 +1912,7 @@ var ANABOLICS_DB=[
 {name:"Injectable L-Carnitine",doses:["200mg","400mg","500mg","600mg","1000mg"],routes:["IM Injection","SubQ Injection"],freqs:["ED","5x/week","Pre-workout"]},
 {name:"Tesofensine",doses:["0.25mg","0.5mg","1mg"],routes:["Oral"],freqs:["1x/day"]},
 {name:"5-Amino-1MQ",doses:["50mg","100mg","150mg"],routes:["Oral"],freqs:["1x/day","2x/day"]},
-{name:"AOD-9604",doses:["250mcg","300mcg","500mcg"],routes:["SubQ Injection"],freqs:["1x/day","2x/day"]},
-{name:"Fragment 176-191",doses:["250mcg","500mcg"],routes:["SubQ Injection"],freqs:["1x/day","2x/day"]},
+{name:"HGH Fragment 176-191 / Frag",doses:["250mcg","500mcg"],routes:["SubQ Injection"],freqs:["1x/day","2x/day"]},
 {name:"MOTS-c",doses:["5mg","10mg"],routes:["SubQ Injection"],freqs:["1x/week","3x/week"]},
 {name:"Clenbuterol",doses:["20mcg","40mcg","60mcg","80mcg","100mcg","120mcg","140mcg","160mcg"],routes:["Oral"],freqs:["ED","2 weeks on/2 off","Titrate up"]},
 {name:"Salbutamol / Albuterol",doses:["2mg","4mg","8mg","12mg","16mg"],routes:["Oral"],freqs:["3x/day","2x/day"]},
@@ -1928,6 +1926,67 @@ var ANABOLICS_DB=[
 ];
 
 
+var ORGAN_SUPPORT_DB=[
+{cat:"Liver Support",items:[
+{name:"TUDCA",doses:["250mg","500mg","1000mg"],timings:["ED","With hepatotoxic orals","Split AM/PM"]},
+{name:"NAC / N-Acetyl Cysteine",doses:["600mg","1200mg","1800mg"],timings:["ED","2x/day","With hepatotoxic orals"]},
+{name:"Milk Thistle / Silymarin",doses:["250mg","500mg","1000mg"],timings:["ED","2x/day"]},
+{name:"Liver Support Complex",doses:["1 serving","2 servings"],timings:["ED","With hepatotoxic orals"]},
+{name:"Glutathione (Oral)",doses:["250mg","500mg","1000mg"],timings:["Empty stomach","Morning"]},
+{name:"Glutathione (IV/Push)",doses:["200mg","400mg","600mg","1000mg","2000mg"],timings:["1x/week","2x/week","As prescribed"]},
+{name:"Alpha Lipoic Acid (ALA)",doses:["300mg","600mg","900mg"],timings:["ED","With meals","2x/day"]},
+{name:"Liv.52 / LiverCare",doses:["1 tab","2 tabs"],timings:["2x/day with meals"]}
+]},
+{cat:"Kidney Support",items:[
+{name:"Astragalus",doses:["250mg","500mg","1000mg"],timings:["ED","2x/day"]},
+{name:"Cranberry Extract",doses:["500mg","1000mg"],timings:["ED","2x/day"]},
+{name:"Dandelion Root",doses:["500mg","1000mg","1500mg"],timings:["ED","2x/day"]},
+{name:"Stinging Nettle Leaf",doses:["300mg","600mg"],timings:["ED","With meals"]},
+{name:"Alpha Lipoic Acid (ALA)",doses:["300mg","600mg"],timings:["ED","With meals"]},
+{name:"Adequate Hydration Protocol",doses:["1 gal/day","1.5 gal/day","2 gal/day"],timings:["Throughout day"]}
+]},
+{cat:"Cardiovascular / Blood Pressure",items:[
+{name:"Telmisartan",doses:["20mg","40mg","80mg"],timings:["ED"]},
+{name:"Nebivolol",doses:["2.5mg","5mg","10mg"],timings:["ED"]},
+{name:"Lisinopril",doses:["5mg","10mg","20mg","40mg"],timings:["ED"]},
+{name:"Amlodipine",doses:["2.5mg","5mg","10mg"],timings:["ED"]},
+{name:"CoQ10 / Ubiquinol",doses:["100mg","200mg","300mg","400mg"],timings:["With meal","Morning","Split AM/PM"]},
+{name:"Fish Oil / Omega-3 (high-dose)",doses:["2g","3g","4g","5g","6g"],timings:["With meals","Split doses"]},
+{name:"Citrus Bergamot",doses:["500mg","1000mg","1500mg"],timings:["ED","2x/day"]},
+{name:"Niacin (flush-free)",doses:["250mg","500mg","1000mg"],timings:["With meals"]},
+{name:"Red Yeast Rice",doses:["600mg","1200mg","1800mg"],timings:["With meal","Split doses"]},
+{name:"Garlic Extract / Kyolic",doses:["600mg","1200mg"],timings:["ED","With meals"]},
+{name:"Hawthorn Berry",doses:["500mg","1000mg"],timings:["ED","2x/day"]},
+{name:"Beetroot Extract",doses:["500mg","1000mg","1500mg"],timings:["Pre-workout","Morning"]},
+{name:"Nattokinase",doses:["100mg","200mg"],timings:["Empty stomach","Morning"]},
+{name:"Baby Aspirin",doses:["81mg"],timings:["ED with meal"]},
+{name:"Ezetimibe / Zetia",doses:["10mg"],timings:["ED"]},
+{name:"Rosuvastatin / Crestor",doses:["5mg","10mg","20mg"],timings:["ED"]},
+{name:"Atorvastatin / Lipitor",doses:["10mg","20mg","40mg","80mg"],timings:["ED"]}
+]},
+{cat:"Prostate Support",items:[
+{name:"Finasteride",doses:["0.25mg","0.5mg","1mg"],timings:["ED"]},
+{name:"Dutasteride",doses:["0.5mg"],timings:["ED","EOD","3x/week"]},
+{name:"Saw Palmetto",doses:["320mg","640mg"],timings:["With meal"]},
+{name:"Pygeum",doses:["50mg","100mg","200mg"],timings:["ED","2x/day"]},
+{name:"Beta-Sitosterol",doses:["60mg","130mg","300mg"],timings:["With meals","2x/day"]},
+{name:"Stinging Nettle Root",doses:["300mg","600mg"],timings:["ED","With meal"]},
+{name:"Zinc",doses:["15mg","25mg","30mg","50mg"],timings:["With meal","Before bed"]},
+{name:"Lycopene",doses:["10mg","15mg","30mg"],timings:["With meal"]}
+]},
+{cat:"Lipid Management",items:[
+{name:"Citrus Bergamot",doses:["500mg","1000mg"],timings:["ED","2x/day"]},
+{name:"Niacin",doses:["250mg","500mg","1000mg"],timings:["With meals"]},
+{name:"Red Yeast Rice",doses:["600mg","1200mg"],timings:["With meal"]},
+{name:"Berberine",doses:["500mg","1000mg","1500mg"],timings:["2-3x/day with meals"]},
+{name:"Plant Sterols / Stanols",doses:["1g","2g"],timings:["With meals"]},
+{name:"Psyllium Husk",doses:["5g","10g"],timings:["Before meals","Before bed"]},
+{name:"Ezetimibe / Zetia",doses:["10mg"],timings:["ED"]},
+{name:"Rosuvastatin / Crestor",doses:["5mg","10mg","20mg"],timings:["ED"]},
+{name:"Atorvastatin / Lipitor",doses:["10mg","20mg","40mg","80mg"],timings:["ED"]},
+{name:"PCSK9 Inhibitor (Repatha)",doses:["140mg"],timings:["Every 2 weeks"]}
+]}
+];
 var SUPP_DB=[
 {cat:"Protein & Aminos",items:[
 {name:"Whey Protein Isolate",doses:["1 scoop","2 scoops"],timings:["Post-workout","Morning","Between meals"]},
@@ -1941,7 +2000,7 @@ var SUPP_DB=[
 {name:"Beef Protein Isolate",doses:["1 scoop","2 scoops"],timings:["Post-workout","Between meals"]}
 ]},
 {cat:"Pre-Workout & Performance",items:[
-{name:"Pre-Workout (stimulant)",doses:["u00bd scoop","1 scoop","1.5 scoops"],timings:["30 min pre-workout"]},
+{name:"Pre-Workout (stimulant)",doses:["\u00bd scoop","1 scoop","1.5 scoops"],timings:["30 min pre-workout"]},
 {name:"Pre-Workout (non-stim)",doses:["1 scoop"],timings:["30 min pre-workout"]},
 {name:"Citrulline Malate",doses:["3g","6g","8g","10g"],timings:["Pre-workout"]},
 {name:"Beta-Alanine",doses:["2g","3.2g","4g","6.4g"],timings:["Pre-workout","Split doses"]},
@@ -2041,10 +2100,10 @@ var _workouts=LS.get("workouts",[]),_editWorkout=null;
 var _programs=LS.get("programs",[]),_editProgram=null,_programSectionCollapsed={};
 function savePrograms(){LS.set("programs",_programs);}
 function newProgram(){var p={id:uid(),name:"New Program",clientId:"",sections:[],protocolNotes:"",created_at:new Date().toISOString()};_programs.push(p);savePrograms();_editProgram=p.id;render();}
-function goToClientProgram(idx){var c=clients[idx];if(!c)return;var existing=_programs.find(function(p){return p.clientId===c.id;});if(existing){_editProgram=existing.id;navStack=[];currentView={tab:"nutrition",view:"main",data:{}};render();window.scrollTo({top:0,behavior:"smooth"});return;}var svcs=(c.services||"").toLowerCase();var auto=[];if(svcs.indexOf("training")>=0||svcs.indexOf("full coaching")>=0)auto.push("training");if(svcs.indexOf("nutrition")>=0||svcs.indexOf("full coaching")>=0||svcs.indexOf("contest prep")>=0)auto.push("nutrition");if(svcs.indexOf("anabolics")>=0||svcs.indexOf("contest prep")>=0||svcs.indexOf("full coaching")>=0)auto.push("anabolics");if(svcs.indexOf("peptides")>=0||svcs.indexOf("contest prep")>=0)auto.push("peptides");if(svcs.indexOf("full coaching")>=0||svcs.indexOf("contest prep")>=0)auto.push("fatloss");if(svcs.indexOf("nutrition")>=0||svcs.indexOf("full coaching")>=0)auto.push("supplements");auto.push("protocol");var p={id:uid(),name:c.name+" Program",clientId:c.id,sections:auto,protocolNotes:"",created_at:new Date().toISOString()};_programs.push(p);savePrograms();_editProgram=p.id;navStack=[];currentView={tab:"nutrition",view:"main",data:{}};render();window.scrollTo({top:0,behavior:"smooth"});toast("\u2713 Program created \u2014 "+auto.length+" sections: "+auto.map(function(s){return s==="protocol"?"Coach Notes":s==="fatloss"?"Cutting Agents":s==="anabolics"?"PED Protocol":s.charAt(0).toUpperCase()+s.slice(1);}).join(", "));}
+function goToClientProgram(idx){var c=clients[idx];if(!c)return;var existing=_programs.find(function(p){return p.clientId===c.id;});if(existing){_editProgram=existing.id;navStack=[];currentView={tab:"nutrition",view:"main",data:{}};render();window.scrollTo({top:0,behavior:"smooth"});return;}var svcs=(c.services||"").toLowerCase();var auto=[];if(svcs.indexOf("training")>=0||svcs.indexOf("full coaching")>=0)auto.push("training");if(svcs.indexOf("nutrition")>=0||svcs.indexOf("full coaching")>=0||svcs.indexOf("contest prep")>=0)auto.push("nutrition");if(svcs.indexOf("anabolics")>=0||svcs.indexOf("contest prep")>=0||svcs.indexOf("full coaching")>=0)auto.push("anabolics");if(svcs.indexOf("peptides")>=0||svcs.indexOf("contest prep")>=0)auto.push("peptides");if(svcs.indexOf("full coaching")>=0||svcs.indexOf("contest prep")>=0)auto.push("fatloss");if(svcs.indexOf("nutrition")>=0||svcs.indexOf("full coaching")>=0)auto.push("supplements");if(svcs.indexOf("anabolics")>=0||svcs.indexOf("contest prep")>=0||svcs.indexOf("full coaching")>=0)auto.push("organsupport");auto.push("protocol");var p={id:uid(),name:c.name+" Program",clientId:c.id,sections:auto,protocolNotes:"",created_at:new Date().toISOString()};_programs.push(p);savePrograms();_editProgram=p.id;navStack=[];currentView={tab:"nutrition",view:"main",data:{}};render();window.scrollTo({top:0,behavior:"smooth"});toast("\u2713 Program created \u2014 "+auto.length+" sections: "+auto.map(function(s){return s==="protocol"?"Coach Notes":s==="fatloss"?"Cutting Agents":s==="anabolics"?"PED Protocol":s==="organsupport"?"Organ Support":s.charAt(0).toUpperCase()+s.slice(1);}).join(", "));}
 function deleteProgram(){showDoubleConfirm("Delete Program","Permanently delete this program?").then(function(ok){if(!ok)return;_programs=_programs.filter(function(p){return p.id!==_editProgram;});savePrograms();_editProgram=null;render();});}
 function duplicateProgram(){var p=_programs.find(function(x){return x.id===_editProgram;});if(!p)return;var c=JSON.parse(JSON.stringify(p));c.id=uid();c.name=p.name+" (Copy)";c.created_at=new Date().toISOString();_programs.push(c);savePrograms();_editProgram=c.id;render();toast("\u2713 Duplicated");}
-function progSet(k,v){var p=_programs.find(function(x){return x.id===_editProgram;});if(!p)return;p[k]=v;if(k==="clientId"&&v&&p.sections.length===0){var cl=clientById(v);if(cl){var svcs=(cl.services||"").toLowerCase();var auto=[];if(svcs.indexOf("training")>=0||svcs.indexOf("full coaching")>=0)auto.push("training");if(svcs.indexOf("nutrition")>=0||svcs.indexOf("full coaching")>=0||svcs.indexOf("contest prep")>=0)auto.push("nutrition");if(svcs.indexOf("anabolics")>=0||svcs.indexOf("contest prep")>=0||svcs.indexOf("full coaching")>=0)auto.push("anabolics");if(svcs.indexOf("peptides")>=0||svcs.indexOf("contest prep")>=0)auto.push("peptides");if(svcs.indexOf("full coaching")>=0||svcs.indexOf("contest prep")>=0)auto.push("fatloss");if(svcs.indexOf("nutrition")>=0||svcs.indexOf("full coaching")>=0)auto.push("supplements");auto.push("protocol");p.sections=auto;}}savePrograms();if(k==="clientId")render();}
+function progSet(k,v){var p=_programs.find(function(x){return x.id===_editProgram;});if(!p)return;p[k]=v;if(k==="clientId"&&v&&p.sections.length===0){var cl=clientById(v);if(cl){var svcs=(cl.services||"").toLowerCase();var auto=[];if(svcs.indexOf("training")>=0||svcs.indexOf("full coaching")>=0)auto.push("training");if(svcs.indexOf("nutrition")>=0||svcs.indexOf("full coaching")>=0||svcs.indexOf("contest prep")>=0)auto.push("nutrition");if(svcs.indexOf("anabolics")>=0||svcs.indexOf("contest prep")>=0||svcs.indexOf("full coaching")>=0)auto.push("anabolics");if(svcs.indexOf("peptides")>=0||svcs.indexOf("contest prep")>=0)auto.push("peptides");if(svcs.indexOf("full coaching")>=0||svcs.indexOf("contest prep")>=0)auto.push("fatloss");if(svcs.indexOf("nutrition")>=0||svcs.indexOf("full coaching")>=0)auto.push("supplements");if(svcs.indexOf("anabolics")>=0||svcs.indexOf("contest prep")>=0||svcs.indexOf("full coaching")>=0)auto.push("organsupport");auto.push("protocol");p.sections=auto;}}savePrograms();if(k==="clientId")render();}
 function addProgramSection(type){var p=_programs.find(function(x){return x.id===_editProgram;});if(!p)return;if(p.sections.indexOf(type)>=0){toast("Section already added");return;}p.sections.push(type);savePrograms();render();}
 function removeProgramSection(type){var p=_programs.find(function(x){return x.id===_editProgram;});if(!p)return;p.sections=p.sections.filter(function(s){return s!==type;});savePrograms();render();}
 function moveProgramSection(idx,dir){var p=_programs.find(function(x){return x.id===_editProgram;});if(!p)return;var ni=idx+dir;if(ni<0||ni>=p.sections.length)return;var tmp=p.sections[idx];p.sections[idx]=p.sections[ni];p.sections[ni]=tmp;savePrograms();render();}
@@ -2110,7 +2169,7 @@ function renderProgramBuilder(){
   var html='<button class="btn2" onclick="_editProgram=null;render()" style="margin-bottom:14px">\u2039 Back</button>'
     +'<div class="cd" style="padding:14px;margin-bottom:14px"><div class="g2 field"><div><span class="lb">PROGRAM NAME</span><input value="'+esc(pg.name)+'" onchange="progSet(\'name\',this.value)"></div><div><span class="lb">CLIENT</span><select onchange="progSet(\'clientId\',this.value)">'+cOpts+'</select></div></div></div>';
   // Sections
-  var SECTION_TYPES=[["training","Training"],["nutrition","Nutrition"],["anabolics","PED Protocol"],["peptides","Peptides"],["fatloss","Cutting Agents"],["supplements","Supplements"],["water","Water"],["protocol","Coach Notes"]];
+  var SECTION_TYPES=[["training","Training"],["nutrition","Nutrition"],["anabolics","PED Protocol"],["peptides","Peptides"],["fatloss","Cutting Agents"],["supplements","Supplements"],["organsupport","Organ Support"],["water","Water"],["protocol","Coach Notes"]];
   var _pgClient=pg.clientId?clientById(pg.clientId):null;
   for(var si=0;si<pg.sections.length;si++){
     var sType=pg.sections[si];
@@ -2124,6 +2183,7 @@ function renderProgramBuilder(){
     else if(sType==='peptides'){var _n=_pgClient&&_pgClient.peptides?_pgClient.peptides.length:0;_sc=_n+' peptide'+(_n!==1?'s':'');}
     else if(sType==='fatloss'){var _n=_pgClient&&_pgClient.fatloss?_pgClient.fatloss.length:0;_sc=_n+' compound'+(_n!==1?'s':'');}
     else if(sType==='supplements'){var _n=_pgClient&&_pgClient.supplements?_pgClient.supplements.length:0;_sc=_n+' supplement'+(_n!==1?'s':'');}
+    else if(sType==='organsupport'){var _n=_pgClient&&_pgClient.organsupport?_pgClient.organsupport.length:0;_sc=_n+' item'+(_n!==1?'s':'');}
     else if(sType==='water'){_sc=_pgClient&&_pgClient.water&&_pgClient.water.goal?_pgClient.water.goal+'oz':'not set';}
     else if(sType==='protocol'){_sc=pg.protocolNotes?'has notes':'empty';}
     html+='<div class="cd" style="padding:0;margin-bottom:8px;border:1.5px solid var(--borderH);overflow:hidden">'
@@ -2140,6 +2200,7 @@ function renderProgramBuilder(){
       else if(sType==="peptides")html+=renderProgramPeptidesSection(pg);
       else if(sType==="fatloss")html+=renderProgramFatlossSection(pg);
       else if(sType==="supplements")html+=renderProgramSupplementsSection(pg);
+      else if(sType==="organsupport")html+=renderProgramOrganSupportSection(pg);
       else if(sType==="water")html+=renderProgramWaterSection(pg);
       else if(sType==="protocol")html+=renderProgramProtocolSection(pg);
       html+='</div>';
@@ -2165,7 +2226,7 @@ function renderProgramBuilder(){
 }
 function showAddSectionMenu(){
   var pg=_programs.find(function(x){return x.id===_editProgram;});if(!pg)return;
-  var SECTION_TYPES=[["training","Training","Workouts, exercises & cardio"],["nutrition","Nutrition","Meal plans & macros"],["anabolics","PED Protocol","Anabolics, AIs, SERMs, ancillaries & health"],["peptides","Peptides","BPC-157, TB-500, CJC, HGH, growth peptides"],["fatloss","Cutting Agents","GLPs, thermogenics, fat burners, appetite suppressants"],["supplements","Supplements","Supplement stack"],["water","Water","Hydration tracking"],["protocol","Coach Notes","General notes, instructions & comments"]];
+  var SECTION_TYPES=[["training","Training","Workouts, exercises & cardio"],["nutrition","Nutrition","Meal plans & macros"],["anabolics","PED Protocol","Anabolics, AIs, SERMs, ancillaries & health"],["peptides","Peptides","BPC-157, TB-500, CJC, HGH, growth peptides"],["fatloss","Cutting Agents","GLPs, thermogenics, fat burners, appetite suppressants"],["supplements","Supplements","Supplement stack"],["organsupport","Organ Support","Liver, kidney, cardiovascular, prostate & lipid protection"],["water","Water","Hydration tracking"],["protocol","Coach Notes","General notes, instructions & comments"]];
   var avail=SECTION_TYPES.filter(function(t){return pg.sections.indexOf(t[0])<0;});
   if(!avail.length){toast("All sections added");return;}
   var content='<div>';
@@ -2377,6 +2438,82 @@ function pickFatlossCustom(){
   cl.fatloss.push({name:n,dose:d,freq:f,route:r,notes:""});
   save();closeModal();render();toast("\u2713 Added "+n);
 }
+function renderProgramOrganSupportSection(pg){
+  if(!pg.clientId)return '<div style="padding:12px;text-align:center;color:var(--dm);font-size:11px;font-family:var(--mono)">Select a client above</div>';
+  var cl=clientById(pg.clientId);if(!cl)return '';
+  if(!cl.organsupport)cl.organsupport=[];
+  var html='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><span class="sl" style="margin:0">ORGAN SUPPORT</span><button class="btn2" onclick="addOrganSupport()" style="padding:5px 10px;font-size:8px">+ ADD</button></div>';
+  if(!cl.organsupport.length){
+    html+='<div class="cd" style="padding:20px;text-align:center;border:1px dashed var(--border)"><div style="color:var(--dm);font-size:11px;margin-bottom:8px">No organ support items yet</div><div style="font-size:9px;color:var(--dmL);font-family:var(--mono);margin-bottom:10px">Liver, kidney, cardiovascular, prostate &amp; lipid protection</div><button class="btn2" onclick="addOrganSupport()" style="padding:6px 14px;font-size:9px">+ ADD ITEM</button></div>';
+  } else {
+    var grouped={};cl.organsupport.forEach(function(item,idx){var cat=item.cat||"Uncategorized";if(!grouped[cat])grouped[cat]=[];grouped[cat].push({item:item,idx:idx});});
+    var catOrder=["Liver Support","Kidney Support","Cardiovascular / Blood Pressure","Prostate Support","Lipid Management","Uncategorized"];
+    for(var ci2=0;ci2<catOrder.length;ci2++){var catName=catOrder[ci2];if(!grouped[catName])continue;
+      html+='<div style="font-size:9px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.12em;margin:10px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--borderS)">'+catName.toUpperCase()+'</div>';
+      for(var j=0;j<grouped[catName].length;j++){var entry=grouped[catName][j];var p=entry.item;
+        html+='<div class="cd" style="display:flex;align-items:center;gap:10px;padding:12px 14px;margin-bottom:4px"><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--wh)">'+esc(p.name)+'</div><div style="font-size:10px;color:var(--dm);font-family:var(--mono)">'+esc(p.dose||"")+' \u00b7 '+esc(p.timing||"")+'</div>'+(p.notes?'<div style="font-size:9px;color:var(--mu);margin-top:2px">'+esc(p.notes)+'</div>':'')+'</div><span style="font-size:12px;color:var(--danger);cursor:pointer;padding:2px 6px" onclick="rmOrganSupport('+entry.idx+')">\u2715</span></div>';
+      }
+    }
+  }
+  html+='<div style="margin-top:10px"><span class="lb">ORGAN SUPPORT NOTES</span><textarea rows="2" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" placeholder="Bloodwork schedule, target values, cycle support notes..." onchange="setOrganSupportNotes(this.value)">'+(cl.organsupportNotes?esc(cl.organsupportNotes):"")+'</textarea></div>';
+  return html;
+}
+function addOrganSupport(){showOrganSupportPicker();}
+function rmOrganSupport(i){var pg=_programs.find(function(x){return x.id===_editProgram;});if(!pg||!pg.clientId)return;var cl=clientById(pg.clientId);if(!cl||!cl.organsupport)return;cl.organsupport.splice(i,1);save();render();}
+function setOrganSupportNotes(v){var pg=_programs.find(function(x){return x.id===_editProgram;});if(!pg||!pg.clientId)return;var cl=clientById(pg.clientId);if(!cl)return;cl.organsupportNotes=v;save();}
+function showOrganSupportPicker(){
+  var content='<div>';
+  content+='<div style="margin-bottom:10px"><input id="osPickSearch" placeholder="Search organ support..." oninput="filterOrganSupportPicker()" style="font-size:13px;padding:10px 14px"></div>';
+  content+='<div id="osPickList">';
+  for(var c2=0;c2<ORGAN_SUPPORT_DB.length;c2++){
+    var cat=ORGAN_SUPPORT_DB[c2];
+    content+='<div class="osPickCat"><div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display===\'none\'?\'block\':\'none\'" style="cursor:pointer;padding:10px 0;border-bottom:1px solid var(--borderS);display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;font-weight:700;color:var(--acc);letter-spacing:.1em;font-family:var(--mono)">'+cat.cat.toUpperCase()+'</span><span style="font-size:9px;color:var(--dm)">'+cat.items.length+' \u25bc</span></div><div class="osPickItems" style="display:'+(c2===0?'block':'none')+'">';
+    for(var s=0;s<cat.items.length;s++){
+      var sp=cat.items[s];
+      content+='<div class="osPickItem" data-cat="'+esc(cat.cat)+'" onclick="pickOrganSupportItem('+c2+','+s+')" style="padding:8px 12px;cursor:pointer;border-bottom:1px solid var(--borderS);transition:background .15s" onmouseover="this.style.background=\'var(--accS)\'" onmouseout="this.style.background=\'none\'"><div style="font-size:12px;color:var(--wh)">'+esc(sp.name)+'</div><div style="font-size:9px;color:var(--dm);font-family:var(--mono)">'+sp.doses.join(" | ")+' \u00b7 '+sp.timings[0]+'</div></div>';
+    }
+    content+='</div></div>';
+  }
+  content+='</div>';
+  content+='<div style="border-top:1px solid var(--borderS);padding-top:12px;margin-top:10px"><div style="font-size:10px;color:var(--dm);font-family:var(--mono);margin-bottom:6px">CUSTOM ITEM</div><div style="display:flex;flex-direction:column;gap:6px"><input id="osCustomN" placeholder="Item name" style="font-size:12px;padding:8px"><div style="display:flex;gap:6px"><input id="osCustomD" placeholder="Dose" style="flex:1;font-size:12px;padding:8px"><input id="osCustomT" placeholder="Timing" style="flex:1;font-size:12px;padding:8px"></div><select id="osCustomCat" style="font-size:12px;padding:8px"><option value="Liver Support">Liver Support</option><option value="Kidney Support">Kidney Support</option><option value="Cardiovascular / Blood Pressure">Cardiovascular / BP</option><option value="Prostate Support">Prostate Support</option><option value="Lipid Management">Lipid Management</option></select><button class="btn2" onclick="pickOrganSupportCustom()" style="padding:6px 12px;font-size:9px">ADD CUSTOM</button></div></div></div>';
+  showModal("ADD ORGAN SUPPORT",content);
+  setTimeout(function(){var s=el("osPickSearch");if(s)s.focus();},100);
+}
+function filterOrganSupportPicker(){var q=(el("osPickSearch")||{}).value||"";q=q.toLowerCase();var cats=document.querySelectorAll(".osPickCat");cats.forEach(function(c){var items=c.querySelectorAll(".osPickItem");var anyMatch=false;items.forEach(function(it){var match=it.textContent.toLowerCase().indexOf(q)>=0;it.style.display=match?"":"none";if(match)anyMatch=true;});c.style.display=anyMatch||!q?"":"none";if(q&&anyMatch){var itemsDiv=c.querySelector(".osPickItems");if(itemsDiv)itemsDiv.style.display="block";}});}
+function pickOrganSupportItem(catIdx,itemIdx){
+  var cat=ORGAN_SUPPORT_DB[catIdx];var sp=cat.items[itemIdx];
+  var doseOpts=sp.doses;var timingOpts=sp.timings;var catName=cat.cat;
+  closeModal();
+  var content2='<div style="margin-bottom:16px"><div style="font-size:14px;font-weight:600;color:var(--wh);margin-bottom:4px">'+esc(sp.name)+'</div><div style="font-size:9px;color:var(--dm);font-family:var(--mono);margin-bottom:12px">'+esc(catName)+'</div>';
+  content2+='<div style="margin-bottom:12px"><span class="lb">DOSE</span><div style="display:flex;flex-wrap:wrap;gap:4px">';
+  for(var d=0;d<doseOpts.length;d++)content2+='<div class="chip'+(d===0?" on":"")+'" onclick="pickChip(this,\'osDose\')">'+doseOpts[d]+'</div>';
+  content2+='</div><input type="hidden" id="osDose" value="'+doseOpts[0]+'">';
+  content2+='<input placeholder="Custom dose" style="margin-top:6px;font-size:11px;padding:6px 10px;width:100%;box-sizing:border-box" oninput="if(this.value){el(\'osDose\').value=this.value;this.parentElement.querySelectorAll(\'.chip\').forEach(function(c){c.classList.remove(\'on\');});}">';
+  content2+='</div>';
+  content2+='<div style="margin-bottom:12px"><span class="lb">TIMING</span><div style="display:flex;flex-wrap:wrap;gap:4px">';
+  for(var t=0;t<timingOpts.length;t++)content2+='<div class="chip'+(t===0?" on":"")+'" onclick="pickChip(this,\'osTiming\')">'+timingOpts[t]+'</div>';
+  content2+='</div><input type="hidden" id="osTiming" value="'+timingOpts[0]+'">';
+  content2+='<input placeholder="Custom timing" style="margin-top:6px;font-size:11px;padding:6px 10px;width:100%;box-sizing:border-box" oninput="if(this.value){el(\'osTiming\').value=this.value;this.parentElement.querySelectorAll(\'.chip\').forEach(function(c){c.classList.remove(\'on\');});}">';
+  content2+='</div>';
+  content2+='<div style="margin-bottom:12px"><span class="lb">NOTES (optional)</span><input id="osNotes" placeholder="Bloodwork targets, cycling notes..." style="font-size:12px;padding:8px"></div>';
+  content2+='<button class="btn" onclick="confirmOrganSupport(\''+esc(sp.name.replace(/'/g,"\\'"))+'\',\''+esc(catName.replace(/'/g,"\\'"))+'\')" style="width:100%">ADD TO PROTOCOL</button></div>';
+  showModal("CONFIGURE \u2014 "+esc(sp.name),content2);
+}
+function confirmOrganSupport(name,cat){
+  var dose=val("osDose"),timing=val("osTiming"),notes=val("osNotes")||"";
+  var pg=_programs.find(function(x){return x.id===_editProgram;});if(!pg||!pg.clientId)return;
+  var cl=clientById(pg.clientId);if(!cl)return;if(!cl.organsupport)cl.organsupport=[];
+  cl.organsupport.push({name:name,dose:dose,timing:timing,cat:cat,notes:notes});
+  save();closeModal();render();toast("\u2713 Added "+name);
+}
+function pickOrganSupportCustom(){
+  var n=val("osCustomN"),d=val("osCustomD")||"",t=val("osCustomT")||"",cat=val("osCustomCat")||"Liver Support";
+  if(!n){toast("Enter item name");return;}
+  var pg=_programs.find(function(x){return x.id===_editProgram;});if(!pg||!pg.clientId)return;
+  var cl=clientById(pg.clientId);if(!cl)return;if(!cl.organsupport)cl.organsupport=[];
+  cl.organsupport.push({name:n,dose:d,timing:t,cat:cat,notes:""});
+  save();closeModal();render();toast("\u2713 Added "+n);
+}
 function renderProgramProtocolSection(pg){
   return '<div><span class="lb">PROTOCOL NOTES</span><textarea rows="4" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" placeholder="Overall program notes, instructions, cycle info..." onchange="progSet(\'protocolNotes\',this.value)">'+esc(pg.protocolNotes||"")+'</textarea></div>';
 }
@@ -2431,6 +2568,7 @@ function renderMealPlanEdit(){
         +'<div class="cd cd-link" style="padding:12px;text-align:center;cursor:pointer" onclick="jumpToSection(\''+mp.clientId+'\',\'peptides\')"><div style="font-size:18px;margin-bottom:4px">\uD83E\uDDEA</div><div style="font-size:10px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.08em">PEPTIDES</div><div style="font-size:8px;color:var(--dm)">'+(_cl2.peptides?_cl2.peptides.length:0)+' peptide'+(_cl2.peptides&&_cl2.peptides.length===1?'':'s')+'</div></div>'
         +'<div class="cd cd-link" style="padding:12px;text-align:center;cursor:pointer" onclick="jumpToSection(\''+mp.clientId+'\',\'fatloss\')"><div style="font-size:18px;margin-bottom:4px">\uD83D\uDD25</div><div style="font-size:10px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.08em">CUTTING AGENTS</div><div style="font-size:8px;color:var(--dm)">'+(_cl2.fatloss?_cl2.fatloss.length:0)+' compound'+(_cl2.fatloss&&_cl2.fatloss.length===1?'':'s')+'</div></div>'
         +'<div class="cd cd-link" style="padding:12px;text-align:center;cursor:pointer" onclick="jumpToSection(\''+mp.clientId+'\',\'supplements\')"><div style="font-size:18px;margin-bottom:4px">\uD83D\uDCAA</div><div style="font-size:10px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.08em">SUPPLEMENTS</div><div style="font-size:8px;color:var(--dm)">'+(_cl2.supplements?_cl2.supplements.length:0)+' supplement'+(_cl2.supplements&&_cl2.supplements.length===1?'':'s')+'</div></div>'
+        +'<div class="cd cd-link" style="padding:12px;text-align:center;cursor:pointer" onclick="jumpToSection(\''+mp.clientId+'\',\'organsupport\')"><div style="font-size:18px;margin-bottom:4px">\uD83D\uDEE1\uFE0F</div><div style="font-size:10px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.08em">ORGAN SUPPORT</div><div style="font-size:8px;color:var(--dm)">'+(_cl2.organsupport?_cl2.organsupport.length:0)+' item'+(_cl2.organsupport&&_cl2.organsupport.length===1?'':'s')+'</div></div>'
         +'<div class="cd cd-link" style="padding:12px;text-align:center;cursor:pointer" onclick="jumpToSection(\''+mp.clientId+'\',\'water\')"><div style="font-size:18px;margin-bottom:4px">\uD83D\uDCA7</div><div style="font-size:10px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.08em">HYDRATION</div><div style="font-size:8px;color:var(--dm)">'+(_cl2.water&&_cl2.water.goal?_cl2.water.goal+'oz goal':'Not set')+'</div></div>'
         +'</div>';
     }
@@ -2621,6 +2759,7 @@ function renderWorkoutEdit(){
         +'<div class="cd cd-link" style="padding:12px;text-align:center;cursor:pointer" onclick="jumpToSection(\''+w.clientId+'\',\'peptides\')"><div style="font-size:18px;margin-bottom:4px">\uD83E\uDDEA</div><div style="font-size:10px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.08em">PEPTIDES</div><div style="font-size:8px;color:var(--dm)">'+(_cl.peptides?_cl.peptides.length:0)+' peptide'+(_cl.peptides&&_cl.peptides.length===1?'':'s')+'</div></div>'
         +'<div class="cd cd-link" style="padding:12px;text-align:center;cursor:pointer" onclick="jumpToSection(\''+w.clientId+'\',\'fatloss\')"><div style="font-size:18px;margin-bottom:4px">\uD83D\uDD25</div><div style="font-size:10px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.08em">CUTTING AGENTS</div><div style="font-size:8px;color:var(--dm)">'+(_cl.fatloss?_cl.fatloss.length:0)+' compound'+(_cl.fatloss&&_cl.fatloss.length===1?'':'s')+'</div></div>'
         +'<div class="cd cd-link" style="padding:12px;text-align:center;cursor:pointer" onclick="jumpToSection(\''+w.clientId+'\',\'supplements\')"><div style="font-size:18px;margin-bottom:4px">\uD83D\uDCAA</div><div style="font-size:10px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.08em">SUPPLEMENTS</div><div style="font-size:8px;color:var(--dm)">'+(_cl.supplements?_cl.supplements.length:0)+' supplement'+(_cl.supplements&&_cl.supplements.length===1?'':'s')+'</div></div>'
+        +'<div class="cd cd-link" style="padding:12px;text-align:center;cursor:pointer" onclick="jumpToSection(\''+w.clientId+'\',\'organsupport\')"><div style="font-size:18px;margin-bottom:4px">\uD83D\uDEE1\uFE0F</div><div style="font-size:10px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.08em">ORGAN SUPPORT</div><div style="font-size:8px;color:var(--dm)">'+(_cl.organsupport?_cl.organsupport.length:0)+' item'+(_cl.organsupport&&_cl.organsupport.length===1?'':'s')+'</div></div>'
         +'<div class="cd cd-link" style="padding:12px;text-align:center;cursor:pointer" onclick="jumpToSection(\''+w.clientId+'\',\'water\')"><div style="font-size:18px;margin-bottom:4px">\uD83D\uDCA7</div><div style="font-size:10px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.08em">HYDRATION</div><div style="font-size:8px;color:var(--dm)">'+(_cl.water&&_cl.water.goal?_cl.water.goal+'oz goal':'Not set')+'</div></div>'
         +'</div>';
     }
@@ -2868,10 +3007,25 @@ function showSuppPicker(target,targetIdx){
 }
 function filterSuppPicker(){var q=(el("suppPickSearch")||{}).value||"";q=q.toLowerCase();var cats=document.querySelectorAll(".suppPickCat");cats.forEach(function(c){var items=c.querySelectorAll(".suppPickItem");var anyMatch=false;items.forEach(function(it){var match=it.textContent.toLowerCase().indexOf(q)>=0;it.style.display=match?"":"none";if(match)anyMatch=true;});c.style.display=anyMatch||!q?"":"none";if(q&&anyMatch){var itemsDiv=c.querySelector(".suppPickItems");if(itemsDiv)itemsDiv.style.display="block";}});}
 function pickSupplement(target,targetIdx,catIdx,itemIdx){
-  var sp=SUPP_DB[catIdx].items[itemIdx];
-  var doseOpts=sp.doses;var timingOpts=sp.timings;
-  closeModal();
-  if(doseOpts.length>1){showPrompt("Dose","Dose for "+sp.name+":\nOptions: "+doseOpts.join(", "),doseOpts[0]).then(function(dose){dose=dose||doseOpts[0];if(timingOpts.length>1){showPrompt("Timing","Timing for "+sp.name+":\nOptions: "+timingOpts.join(", "),timingOpts[0]).then(function(timing){timing=timing||timingOpts[0];_addSuppToTarget(target,targetIdx,sp.name,dose,timing);});}else{_addSuppToTarget(target,targetIdx,sp.name,dose,timingOpts[0]);}});}else{var dose=doseOpts[0];if(timingOpts.length>1){showPrompt("Timing","Timing for "+sp.name+":\nOptions: "+timingOpts.join(", "),timingOpts[0]).then(function(timing){timing=timing||timingOpts[0];_addSuppToTarget(target,targetIdx,sp.name,dose,timing);});}else{_addSuppToTarget(target,targetIdx,sp.name,dose,timingOpts[0]);}}
+  var sp=SUPP_DB[catIdx].items[itemIdx];closeModal();
+  var content2='<div style="margin-bottom:16px"><div style="font-size:14px;font-weight:600;color:var(--wh);margin-bottom:12px">'+esc(sp.name)+'</div>';
+  content2+='<div style="margin-bottom:12px"><span class="lb">DOSE</span><div style="display:flex;flex-wrap:wrap;gap:4px">';
+  for(var d=0;d<sp.doses.length;d++)content2+='<div class="chip'+(d===0?" on":"")+'" onclick="pickChip(this,\'suppDose\')">'+sp.doses[d]+'</div>';
+  content2+='</div><input type="hidden" id="suppDose" value="'+sp.doses[0]+'">';
+  content2+='<input placeholder="Custom dose (e.g. 5g, 2 caps)" style="margin-top:6px;font-size:11px;padding:6px 10px;width:100%;box-sizing:border-box" oninput="if(this.value){el(\'suppDose\').value=this.value;this.parentElement.querySelectorAll(\'.chip\').forEach(function(c){c.classList.remove(\'on\');});}">';
+  content2+='</div>';
+  content2+='<div style="margin-bottom:12px"><span class="lb">TIMING</span><div style="display:flex;flex-wrap:wrap;gap:4px">';
+  for(var t=0;t<sp.timings.length;t++)content2+='<div class="chip'+(t===0?" on":"")+'" onclick="pickChip(this,\'suppTiming\')">'+sp.timings[t]+'</div>';
+  content2+='</div><input type="hidden" id="suppTiming" value="'+sp.timings[0]+'">';
+  content2+='<input placeholder="Custom timing (e.g. Pre-Workout, With Meals)" style="margin-top:6px;font-size:11px;padding:6px 10px;width:100%;box-sizing:border-box" oninput="if(this.value){el(\'suppTiming\').value=this.value;this.parentElement.querySelectorAll(\'.chip\').forEach(function(c){c.classList.remove(\'on\');});}">';
+  content2+='</div>';
+  content2+='<div style="margin-bottom:12px"><span class="lb">NOTES (optional)</span><input id="suppConfNotes" placeholder="Additional notes..." style="font-size:12px;padding:8px"></div>';
+  content2+='<button class="btn" onclick="confirmSupplement(\''+esc(sp.name.replace(/'/g,"\\'"))+'\',\''+target+'\','+targetIdx+')" style="width:100%">ADD TO STACK</button></div>';
+  showModal("CONFIGURE \u2014 "+esc(sp.name),content2);
+}
+function confirmSupplement(name,target,targetIdx){
+  var dose=val("suppDose"),timing=val("suppTiming"),notes=val("suppConfNotes")||"";
+  closeModal();_addSuppToTarget(target,targetIdx,name,dose,timing,notes);
 }
 function pickSuppCustom(target,targetIdx){
   var n=val("suppCustomN"),d=val("suppCustomD")||"",t=val("suppCustomT")||"";
@@ -2879,9 +3033,9 @@ function pickSuppCustom(target,targetIdx){
   closeModal();
   _addSuppToTarget(target,targetIdx,n,d,t);
 }
-function _addSuppToTarget(target,targetIdx,name,dose,timing){
-  if(target==="client"){var cl=clients[targetIdx];if(!cl)return;if(!cl.supplements)cl.supplements=[];cl.supplements.push({name:name,dose:dose,timing:timing,notes:""});save();render();}
-  else if(target==="nut"){var cl2=clientById(_nutClientId);if(!cl2)return;if(!cl2.supplements)cl2.supplements=[];cl2.supplements.push({name:name,dose:dose,timing:timing,notes:""});save();render();}
+function _addSuppToTarget(target,targetIdx,name,dose,timing,notes){
+  if(target==="client"){var cl=clients[targetIdx];if(!cl)return;if(!cl.supplements)cl.supplements=[];cl.supplements.push({name:name,dose:dose,timing:timing,notes:notes||""});save();render();toast("\u2713 Added "+name);}
+  else if(target==="nut"){var cl2=clientById(_nutClientId);if(!cl2)return;if(!cl2.supplements)cl2.supplements=[];cl2.supplements.push({name:name,dose:dose,timing:timing,notes:notes||""});save();render();toast("\u2713 Added "+name);}
 }
 function setSuppNote(target,targetIdx,suppIdx,val2){
   var cl;if(target==="client"){cl=clients[targetIdx];}else{cl=clientById(_nutClientId);}
@@ -3598,6 +3752,7 @@ function showPDFBuilder(idx){
   var hasPep=c.peptides&&c.peptides.length;
   var hasFatloss=c.fatloss&&c.fatloss.length;
   var hasSupp=c.supplements&&c.supplements.length;
+  var hasOrgan=c.organsupport&&c.organsupport.length;
   var hasWater=c.water&&c.water.goal;
   var hasWk=_workouts.some(function(w){return w.clientId===c.id;});
   var content='<div style="-webkit-overflow-scrolling:touch">';
@@ -3620,6 +3775,7 @@ function showPDFBuilder(idx){
   secs.push({k:"peptides",l:"Peptide Protocol",d:"BPC-157, TB-500, CJC, HGH, etc.",has:hasPep});
   secs.push({k:"fatloss",l:"Cutting Agents",d:"GLPs, thermogenics, fat burners, appetite suppressants",has:hasFatloss});
   secs.push({k:"supplements",l:"Supplement Stack",d:"Supplements, doses & timing",has:hasSupp});
+  secs.push({k:"organsupport",l:"Organ Support",d:"Liver, kidney, cardiovascular, prostate & lipid protection",has:hasOrgan});
   secs.push({k:"water",l:"Water Intake",d:"Hydration goal & tracking",has:hasWater});
   secs.push({group:"OTHER"});
   secs.push({k:"info",l:"Client Info",d:"Contact, goals, level",has:true});
@@ -3664,7 +3820,7 @@ function buildCustomPDF(idx){
   var rgb=_pdfBuilderTheme==="crimson"?"208,48,48":"212,168,48";
   // Read checkboxes BEFORE closing modal
   var _pdfChecks={};
-  ["info","training","workouts","nutrition","anabolics","peptides","fatloss","supplements","water","cardio","show","peakweek","notes"].forEach(function(k){var cb=el("pdfSec_"+k);_pdfChecks[k]=cb&&cb.checked;});
+  ["info","training","workouts","nutrition","anabolics","peptides","fatloss","supplements","organsupport","water","cardio","show","peakweek","notes"].forEach(function(k){var cb=el("pdfSec_"+k);_pdfChecks[k]=cb&&cb.checked;});
   function isChecked(k){return _pdfChecks[k];}
   var coverSub=val("pdfCoverSub")||"";
   closeModal();
@@ -3823,6 +3979,21 @@ function buildCustomPDF(idx){
       body+='<tr style="border-bottom:1px solid #1a1a1a;background:'+(si3%2===0?"#0a0a0a":"#080808")+'"><td style="padding:8px 12px;color:#ddd;font-size:12px;font-weight:500">'+esc(sp2.name)+'</td><td style="padding:8px 12px;text-align:center;color:#bbb;font-size:11px;font-family:IBM Plex Mono,monospace">'+esc(sp2.dose)+'</td><td style="padding:8px 12px;color:#aaa;font-size:11px">'+esc(sp2.timing)+'</td></tr>';}
     body+='</table></div>';
   }
+  // Organ Support
+  if(isChecked("organsupport")&&c.organsupport&&c.organsupport.length){hasAnything=true;
+    body+='<div style="margin-bottom:24px"><div style="font-size:14px;font-weight:800;color:'+accent+';letter-spacing:.2em;margin-bottom:14px;padding-bottom:6px;border-bottom:2px solid '+accent+'40">ORGAN SUPPORT</div>';
+    var osGrouped={};c.organsupport.forEach(function(item){var cat=item.cat||"Uncategorized";if(!osGrouped[cat])osGrouped[cat]=[];osGrouped[cat].push(item);});
+    var osCatOrder=["Liver Support","Kidney Support","Cardiovascular / Blood Pressure","Prostate Support","Lipid Management","Uncategorized"];
+    for(var oci=0;oci<osCatOrder.length;oci++){var ocn=osCatOrder[oci];if(!osGrouped[ocn])continue;
+      body+='<div style="font-size:10px;font-weight:700;color:'+accent+';letter-spacing:.15em;margin:10px 0 6px;padding-bottom:3px;border-bottom:1px solid '+accent+'30">'+ocn.toUpperCase()+'</div>'
+        +'<table style="width:100%;border-collapse:collapse"><tr style="background:'+accent+'10"><th style="padding:6px 12px;text-align:left;color:'+accent+';font-size:9px;letter-spacing:.1em">ITEM</th><th style="padding:6px 12px;text-align:center;color:'+accent+';font-size:9px;letter-spacing:.1em">DOSE</th><th style="padding:6px 12px;text-align:left;color:'+accent+';font-size:9px;letter-spacing:.1em">TIMING</th></tr>';
+      for(var osi=0;osi<osGrouped[ocn].length;osi++){var osItem=osGrouped[ocn][osi];
+        body+='<tr style="border-bottom:1px solid #1a1a1a;background:'+(osi%2===0?"#0a0a0a":"#080808")+'"><td style="padding:8px 12px;color:#ddd;font-size:12px;font-weight:500">'+esc(osItem.name)+'</td><td style="padding:8px 12px;text-align:center;color:#bbb;font-size:11px;font-family:IBM Plex Mono,monospace">'+esc(osItem.dose)+'</td><td style="padding:8px 12px;color:#aaa;font-size:11px">'+esc(osItem.timing)+'</td></tr>';}
+      body+='</table>';
+    }
+    if(c.organsupportNotes)body+='<div style="margin-top:10px;padding:10px 14px;background:#0c0c0c;border:1px solid '+accent+'20;border-radius:4px;color:#999;font-size:11px;font-style:italic">'+esc(c.organsupportNotes)+'</div>';
+    body+='</div>';
+  }
   // Water
   if(isChecked("water")&&c.water){hasAnything=true;
     var wGoal=c.water.goal||128;var wToday=c.water.logs[todayISO()]||0;
@@ -3911,6 +4082,7 @@ function buildCustomPDF(idx){
     if(isChecked("fatloss"))parts.push("Cutting Agents");
     if(isChecked("peakweek"))parts.push("Peak Week");
     if(isChecked("supplements"))parts.push("Supplements");
+    if(isChecked("organsupport"))parts.push("Organ Support");
     coverSub=parts.join(" \u00b7 ")||"Complete Program";
   }
   var contentPages=_splitContentIntoPages(body);
@@ -3931,7 +4103,7 @@ function renderPeakWeek(c,idx){
   }
   if(!pw.days.length)return html+'<div class="cd" style="padding:24px;text-align:center;border:1px dashed var(--border)"><div style="color:var(--dm);margin-bottom:8px;font-size:12px">No peak week protocol set up</div><button class="btn2" onclick="initPeakWeek('+idx+')">GENERATE PEAK WEEK</button></div>';
   // Notes field
-  html+='<div class="cd" style="padding:12px;margin-bottom:10px"><span class="lb">PEAK WEEK NOTES</span><textarea rows="2" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" placeholder="Overall strategy, posing practice schedule, tanning..." onchange="clients['+idx+'].peakWeek.notes=this.value;save();">'+(pw.notes?esc(pw.notes):'')+'</textarea></div>';
+  html+='<div class="cd" style="padding:12px;margin-bottom:10px"><span class="lb">PEAK WEEK NOTES</span><textarea rows="3" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" placeholder="Overall strategy, posing practice schedule, tanning..." onchange="clients['+idx+'].peakWeek.notes=this.value;save();">'+(pw.notes?esc(pw.notes):'')+'</textarea></div>';
   // Show Day Information
   html+='<div class="cd" style="padding:14px;margin-bottom:12px;border:1.5px solid var(--accB)">'
     +'<div style="font-size:11px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.12em;margin-bottom:10px">SHOW DAY INFORMATION</div>'
@@ -3943,7 +4115,7 @@ function renderPeakWeek(c,idx){
     +'<div><span class="lb" style="font-size:8px">PREJUDGING TIME</span><input value="'+esc(pw.prejudgingTime||"")+'" onchange="clients['+idx+'].peakWeek.prejudgingTime=this.value;save()" placeholder="e.g. Saturday 10:00 AM" style="font-size:11px;padding:6px"></div></div>'
     +'<div class="g2 field" style="margin-bottom:8px"><div><span class="lb" style="font-size:8px">FINALS TIME</span><input value="'+esc(pw.finalsTime||"")+'" onchange="clients['+idx+'].peakWeek.finalsTime=this.value;save()" placeholder="e.g. Saturday 6:00 PM" style="font-size:11px;padding:6px"></div>'
     +'<div><span class="lb" style="font-size:8px">ARRIVE EARLY BY</span><input value="'+esc(pw.arriveEarly||"")+'" onchange="clients['+idx+'].peakWeek.arriveEarly=this.value;save()" placeholder="e.g. 1 hour before, 30 min" style="font-size:11px;padding:6px"></div></div>'
-    +'<div class="field"><span class="lb" style="font-size:8px">SHOW DAY SCHEDULE / NOTES</span><textarea rows="2" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" onchange="clients['+idx+'].peakWeek.showSchedule=this.value;save()" placeholder="Night before: weigh-in at 5pm, bring trunks/suit for number assignment. Show day: arrive 8am, pump up backstage 9:30am...">'+esc(pw.showSchedule||"")+'</textarea></div></div>';
+    +'<div class="field"><span class="lb" style="font-size:8px">SHOW DAY SCHEDULE / NOTES</span><textarea rows="3" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" onchange="clients['+idx+'].peakWeek.showSchedule=this.value;save()" placeholder="Night before: weigh-in at 5pm, bring trunks/suit for number assignment. Show day: arrive 8am, pump up backstage 9:30am...">'+esc(pw.showSchedule||"")+'</textarea></div></div>';
   // Competition Class & Attire
   html+='<div class="cd" style="padding:14px;margin-bottom:12px;border:1.5px solid var(--borderH)">'
     +'<div style="font-size:11px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.12em;margin-bottom:10px">COMPETITION CLASS &amp; ATTIRE</div>'
@@ -3955,10 +4127,10 @@ function renderPeakWeek(c,idx){
   // Backstage Pump-Up Protocol
   html+='<div class="cd" style="padding:14px;margin-bottom:12px;border:1.5px solid var(--borderH)">'
     +'<div style="font-size:11px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.12em;margin-bottom:10px">BACKSTAGE PUMP-UP</div>'
-    +'<div class="field" style="margin-bottom:8px"><span class="lb" style="font-size:8px">PUMP-UP EQUIPMENT</span><textarea rows="2" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" onchange="clients['+idx+'].peakWeek.pumpEquipment=this.value;save()" placeholder="Resistance bands (light/medium/heavy)\nDumbbells if available\nTowel, yoga mat">'+esc(pw.pumpEquipment||"")+'</textarea></div>'
-    +'<div class="field" style="margin-bottom:8px"><span class="lb" style="font-size:8px">PUMP-UP EXERCISES</span><textarea rows="2" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" onchange="clients['+idx+'].peakWeek.pumpExercises=this.value;save()" placeholder="Band pull-aparts 3x20, Lateral raises 3x15, Pushups 3x15\nBand curls 3x20, Overhead press 2x15\nDO NOT pump legs — kills separation">'+esc(pw.pumpExercises||"")+'</textarea></div>'
-    +'<div class="field" style="margin-bottom:8px"><span class="lb" style="font-size:8px">BACKSTAGE FOOD &amp; DRINKS</span><textarea rows="2" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" onchange="clients['+idx+'].peakWeek.pumpFood=this.value;save()" placeholder="Rice cakes + honey + peanut butter (every 30-45min)\nSkittles / gummy bears for quick carbs\nSea salt on rice cakes for pump\nSip water or Gatorade (small amounts)\nCaffeine tabs 30min before stage">'+esc(pw.pumpFood||"")+'</textarea></div>'
-    +'<div class="field" style="margin-bottom:0"><span class="lb" style="font-size:8px">SHOW DAY COMPOUNDS</span><textarea rows="2" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" onchange="clients['+idx+'].peakWeek.showDayCompounds=this.value;save()" placeholder="e.g. Clenbuterol 40mcg AM, Halotestin 10mg pre-stage\nCaffeine 200mg, Evogen Super Dry, Dandelion root\nGlycerin for vascularity (optional)">'+esc(pw.showDayCompounds||"")+'</textarea></div></div>';
+    +'<div class="field" style="margin-bottom:8px"><span class="lb" style="font-size:8px">PUMP-UP EQUIPMENT</span><textarea rows="3" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" onchange="clients['+idx+'].peakWeek.pumpEquipment=this.value;save()" placeholder="Resistance bands (light/medium/heavy)\nDumbbells if available\nTowel, yoga mat">'+esc(pw.pumpEquipment||"")+'</textarea></div>'
+    +'<div class="field" style="margin-bottom:8px"><span class="lb" style="font-size:8px">PUMP-UP EXERCISES</span><textarea rows="3" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" onchange="clients['+idx+'].peakWeek.pumpExercises=this.value;save()" placeholder="Band pull-aparts 3x20, Lateral raises 3x15, Pushups 3x15\nBand curls 3x20, Overhead press 2x15\nDO NOT pump legs — kills separation">'+esc(pw.pumpExercises||"")+'</textarea></div>'
+    +'<div class="field" style="margin-bottom:8px"><span class="lb" style="font-size:8px">BACKSTAGE FOOD &amp; DRINKS</span><textarea rows="3" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" onchange="clients['+idx+'].peakWeek.pumpFood=this.value;save()" placeholder="Rice cakes + honey + peanut butter (every 30-45min)\nSkittles / gummy bears for quick carbs\nSea salt on rice cakes for pump\nSip water or Gatorade (small amounts)\nCaffeine tabs 30min before stage">'+esc(pw.pumpFood||"")+'</textarea></div>'
+    +'<div class="field" style="margin-bottom:0"><span class="lb" style="font-size:8px">SHOW DAY COMPOUNDS</span><textarea rows="3" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" onchange="clients['+idx+'].peakWeek.showDayCompounds=this.value;save()" placeholder="e.g. Clenbuterol 40mcg AM, Halotestin 10mg pre-stage\nCaffeine 200mg, Evogen Super Dry, Dandelion root\nGlycerin for vascularity (optional)">'+esc(pw.showDayCompounds||"")+'</textarea></div></div>';
   // Day-by-day protocol
   html+='<div class="sl" style="margin-top:4px;margin-bottom:8px">DAILY PROTOCOL</div>';
   var dayLabels=["Sunday (7 days out)","Monday (6 days out)","Tuesday (5 days out)","Wednesday (4 days out)","Thursday (3 days out)","Friday (2 days out)","Saturday (1 day out)","SHOW DAY"];
@@ -3977,13 +4149,13 @@ function renderPeakWeek(c,idx){
       +'<div style="flex:1;min-width:120px"><span class="lb" style="font-size:8px">WATER</span><input type="text" value="'+esc(day.water||"")+'" onchange="setPeakDay('+idx+','+d+',\'water\',this.value)" placeholder="e.g. 2gal, 128oz, sips only" style="font-size:11px;padding:6px;text-align:center"></div>'
       +'<div style="flex:1;min-width:120px"><span class="lb" style="font-size:8px">SODIUM</span><input type="text" value="'+esc(day.sodium||"")+'" onchange="setPeakDay('+idx+','+d+',\'sodium\',this.value)" placeholder="e.g. 5000mg, 2000mg, 0, Normal" style="font-size:11px;padding:6px;text-align:center"></div></div>';
     // Training, Cardio
-    html+='<div style="display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap"><div style="flex:1;min-width:150px"><span class="lb" style="font-size:8px">TRAINING</span><input value="'+esc(day.training||"")+'" onchange="setPeakDay('+idx+','+d+',\'training\',this.value)" placeholder="e.g. Depletion workout, Pump-up..." style="font-size:11px;padding:6px"></div>'
-      +'<div style="flex:1;min-width:150px"><span class="lb" style="font-size:8px">CARDIO</span><input value="'+esc(day.cardio||"")+'" onchange="setPeakDay('+idx+','+d+',\'cardio\',this.value)" placeholder="e.g. 20min easy walk, None..." style="font-size:11px;padding:6px"></div></div>';
+    html+='<div style="display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap"><div style="flex:1;min-width:150px"><span class="lb" style="font-size:8px">TRAINING</span><textarea rows="3" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" onchange="setPeakDay('+idx+','+d+',\'training\',this.value)" placeholder="e.g. Depletion workout - full body high rep\nChest/Back/Shoulders supersets 4x15\nLegs: leg press 4x20, extensions 3x20">'+esc(day.training||"")+'</textarea></div>'
+      +'<div style="flex:1;min-width:150px"><span class="lb" style="font-size:8px">CARDIO</span><textarea rows="3" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" onchange="setPeakDay('+idx+','+d+',\'cardio\',this.value)" placeholder="e.g. 30min fasted AM walk\n20min stairmaster post-workout\nNone">'+esc(day.cardio||"")+'</textarea></div></div>';
     // Supplements, Meal Plan
-    html+='<div style="display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap"><div style="flex:1;min-width:150px"><span class="lb" style="font-size:8px">SUPPLEMENTS</span><input value="'+esc(day.supplements||"")+'" onchange="setPeakDay('+idx+','+d+',\'supplements\',this.value)" placeholder="e.g. Dandelion root, Vitamin C, Potassium..." style="font-size:11px;padding:6px"></div>'
-      +'<div style="flex:1;min-width:150px"><span class="lb" style="font-size:8px">MEAL PLAN</span><input value="'+esc(day.mealPlan||"")+'" onchange="setPeakDay('+idx+','+d+',\'mealPlan\',this.value)" placeholder="e.g. 6 meals: rice/chicken, rice cakes + honey..." style="font-size:11px;padding:6px"></div></div>';
+    html+='<div style="display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap"><div style="flex:1;min-width:150px"><span class="lb" style="font-size:8px">SUPPLEMENTS</span><textarea rows="3" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" onchange="setPeakDay('+idx+','+d+',\'supplements\',this.value)" placeholder="e.g. Multivitamin, Vitamin C 2000mg\nDandelion root, Potassium\nElectrolytes intra-workout">'+esc(day.supplements||"")+'</textarea></div>'
+      +'<div style="flex:1;min-width:150px"><span class="lb" style="font-size:8px">MEAL PLAN</span><textarea rows="3" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" onchange="setPeakDay('+idx+','+d+',\'mealPlan\',this.value)" placeholder="e.g. Meal 1: 8oz chicken, 1.5c rice\nMeal 2: 6oz tilapia, 6oz sweet potato\nMeal 3: 8oz chicken, rice cakes + honey">'+esc(day.mealPlan||"")+'</textarea></div></div>';
     // Notes
-    html+='<div class="field" style="margin-bottom:0"><span class="lb" style="font-size:8px">NOTES</span><input value="'+esc(day.notes||"")+'" onchange="setPeakDay('+idx+','+d+',\'notes\',this.value)" placeholder="Posing practice, tanning, sleep, etc." style="font-size:11px;padding:6px"></div>';
+    html+='<div class="field" style="margin-bottom:0"><span class="lb" style="font-size:8px">NOTES</span><textarea rows="3" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" onchange="setPeakDay('+idx+','+d+',\'notes\',this.value)" placeholder="Posing practice, tanning schedule, sleep targets, mental prep...">'+esc(day.notes||"")+'</textarea></div>';
     html+='</div>';
   }
   return html;
@@ -3993,14 +4165,14 @@ function initPeakWeek(idx){
   function _doPeakWeek(){
   c.peakWeek={notes:"",days:[]};
   var templates=[
-    {protein:"200",carbs:"300",fat:"50",water:"2 gal",sodium:"5000mg",training:"Full depletion workout",cardio:"30min fasted AM",supplements:"Multivitamin, Vitamin C, Electrolytes",mealPlan:"High protein, moderate carbs - chicken/rice/vegetables",notes:"Start carb depletion, high water & sodium loading"},
-    {protein:"200",carbs:"100",fat:"45",water:"2 gal",sodium:"5000mg",training:"Depletion - Upper body",cardio:"30min fasted AM",supplements:"Multivitamin, Vitamin C, Electrolytes",mealPlan:"High protein, low carbs - chicken/fish, green vegetables",notes:"Continue depletion, maintain water & sodium loading"},
-    {protein:"200",carbs:"75",fat:"40",water:"2 gal",sodium:"3000mg",training:"Depletion - Lower body",cardio:"20min fasted AM",supplements:"Multivitamin, Vitamin C, Potassium",mealPlan:"Protein focus, minimal carbs - egg whites, chicken, greens",notes:"Deep depletion, start reducing sodium"},
-    {protein:"180",carbs:"400",fat:"35",water:"1 gal",sodium:"2000mg",training:"Light pump workout",cardio:"None",supplements:"Multivitamin, Vitamin C, Potassium",mealPlan:"Begin carb load - rice, sweet potato, oats w/ chicken",notes:"Begin carb load, reduce water by half"},
-    {protein:"160",carbs:"500",fat:"30",water:"64oz",sodium:"1000mg",training:"Light pump workout",cardio:"None",supplements:"Dandelion root, Vitamin C",mealPlan:"Heavy carb load - white rice, rice cakes, cream of rice, honey",notes:"Heavy carb load, continue water reduction"},
-    {protein:"160",carbs:"350",fat:"25",water:"32oz",sodium:"500mg",training:"Final pump-up",cardio:"None",supplements:"Dandelion root, Vitamin C",mealPlan:"Moderate carbs - rice, rice cakes, small amounts through day",notes:"Reduce water significantly, tighten up"},
-    {protein:"150",carbs:"250",fat:"20",water:"Sips only",sodium:"0",training:"Posing practice only",cardio:"None",supplements:"Dandelion root, Glycerin (optional)",mealPlan:"Light meals - rice cakes, honey, peanut butter, small protein",notes:"Water cut, get tan, rest, practice posing, lay flat"},
-    {protein:"150",carbs:"200",fat:"20",water:"Sips only",sodium:"0",training:"Pump-up backstage",cardio:"None",supplements:"Per protocol",mealPlan:"Rice cakes, honey, jam, peanut butter backstage. Sip wine optional.",notes:"SHOW DAY - eat to fill out, pump up 20min before stage"}
+    {protein:"",carbs:"",fat:"",water:"",sodium:"",training:"",cardio:"",supplements:"",mealPlan:"",notes:""},
+    {protein:"",carbs:"",fat:"",water:"",sodium:"",training:"",cardio:"",supplements:"",mealPlan:"",notes:""},
+    {protein:"",carbs:"",fat:"",water:"",sodium:"",training:"",cardio:"",supplements:"",mealPlan:"",notes:""},
+    {protein:"",carbs:"",fat:"",water:"",sodium:"",training:"",cardio:"",supplements:"",mealPlan:"",notes:""},
+    {protein:"",carbs:"",fat:"",water:"",sodium:"",training:"",cardio:"",supplements:"",mealPlan:"",notes:""},
+    {protein:"",carbs:"",fat:"",water:"",sodium:"",training:"",cardio:"",supplements:"",mealPlan:"",notes:""},
+    {protein:"",carbs:"",fat:"",water:"",sodium:"",training:"",cardio:"",supplements:"",mealPlan:"",notes:""},
+    {protein:"",carbs:"",fat:"",water:"",sodium:"",training:"",cardio:"",supplements:"",mealPlan:"",notes:""}
   ];
   for(var i=0;i<8;i++)c.peakWeek.days.push(JSON.parse(JSON.stringify(templates[i])));
   save();render();toast("\u2713 Peak week template generated");}
