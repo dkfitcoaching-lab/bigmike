@@ -706,7 +706,7 @@ function clientFormFields(c){
   c=c||{};
   var levels=["Beginner","Intermediate","Advanced","Competitor"];
   var cTypes=["In-Person","Online","Hybrid"];
-  var svcs=["Training","Nutrition","Contest Prep","Posing","Full Coaching","Anabolics","Peptides","Fat Loss / GLPs","Group"];
+  var svcs=["Training","Nutrition","Contest Prep","Posing","Full Coaching","Anabolics","Peptides","Cutting Agents","Group"];
   var durs=["30 min","45 min","60 min","90 min"];
   var bills=["Per Session","Weekly","Bi-Weekly","Monthly","Prepaid"];
   var curSvcs=(c.services||"Training").split(",").map(function(s){return s.trim();});
@@ -2041,7 +2041,7 @@ var _workouts=LS.get("workouts",[]),_editWorkout=null;
 var _programs=LS.get("programs",[]),_editProgram=null,_programSectionCollapsed={};
 function savePrograms(){LS.set("programs",_programs);}
 function newProgram(){var p={id:uid(),name:"New Program",clientId:"",sections:[],protocolNotes:"",created_at:new Date().toISOString()};_programs.push(p);savePrograms();_editProgram=p.id;render();}
-function goToClientProgram(idx){var c=clients[idx];if(!c)return;var existing=_programs.find(function(p){return p.clientId===c.id;});if(existing){_editProgram=existing.id;navStack=[];currentView={tab:"nutrition",view:"main",data:{}};render();window.scrollTo({top:0,behavior:"smooth"});return;}var svcs=(c.services||"").toLowerCase();var auto=[];if(svcs.indexOf("training")>=0||svcs.indexOf("full coaching")>=0)auto.push("training");if(svcs.indexOf("nutrition")>=0||svcs.indexOf("full coaching")>=0||svcs.indexOf("contest prep")>=0)auto.push("nutrition");if(svcs.indexOf("anabolics")>=0||svcs.indexOf("contest prep")>=0||svcs.indexOf("full coaching")>=0)auto.push("anabolics");if(svcs.indexOf("peptides")>=0||svcs.indexOf("contest prep")>=0)auto.push("peptides");if(svcs.indexOf("full coaching")>=0||svcs.indexOf("contest prep")>=0)auto.push("fatloss");if(svcs.indexOf("nutrition")>=0||svcs.indexOf("full coaching")>=0)auto.push("supplements");auto.push("protocol");var p={id:uid(),name:c.name+" Program",clientId:c.id,sections:auto,protocolNotes:"",created_at:new Date().toISOString()};_programs.push(p);savePrograms();_editProgram=p.id;navStack=[];currentView={tab:"nutrition",view:"main",data:{}};render();window.scrollTo({top:0,behavior:"smooth"});toast("\u2713 Program created \u2014 "+auto.length+" sections: "+auto.map(function(s){return s==="protocol"?"Coach Notes":s==="fatloss"?"Fat Loss":s.charAt(0).toUpperCase()+s.slice(1);}).join(", "));}
+function goToClientProgram(idx){var c=clients[idx];if(!c)return;var existing=_programs.find(function(p){return p.clientId===c.id;});if(existing){_editProgram=existing.id;navStack=[];currentView={tab:"nutrition",view:"main",data:{}};render();window.scrollTo({top:0,behavior:"smooth"});return;}var svcs=(c.services||"").toLowerCase();var auto=[];if(svcs.indexOf("training")>=0||svcs.indexOf("full coaching")>=0)auto.push("training");if(svcs.indexOf("nutrition")>=0||svcs.indexOf("full coaching")>=0||svcs.indexOf("contest prep")>=0)auto.push("nutrition");if(svcs.indexOf("anabolics")>=0||svcs.indexOf("contest prep")>=0||svcs.indexOf("full coaching")>=0)auto.push("anabolics");if(svcs.indexOf("peptides")>=0||svcs.indexOf("contest prep")>=0)auto.push("peptides");if(svcs.indexOf("full coaching")>=0||svcs.indexOf("contest prep")>=0)auto.push("fatloss");if(svcs.indexOf("nutrition")>=0||svcs.indexOf("full coaching")>=0)auto.push("supplements");auto.push("protocol");var p={id:uid(),name:c.name+" Program",clientId:c.id,sections:auto,protocolNotes:"",created_at:new Date().toISOString()};_programs.push(p);savePrograms();_editProgram=p.id;navStack=[];currentView={tab:"nutrition",view:"main",data:{}};render();window.scrollTo({top:0,behavior:"smooth"});toast("\u2713 Program created \u2014 "+auto.length+" sections: "+auto.map(function(s){return s==="protocol"?"Coach Notes":s==="fatloss"?"Cutting Agents":s==="anabolics"?"PED Protocol":s.charAt(0).toUpperCase()+s.slice(1);}).join(", "));}
 function deleteProgram(){showDoubleConfirm("Delete Program","Permanently delete this program?").then(function(ok){if(!ok)return;_programs=_programs.filter(function(p){return p.id!==_editProgram;});savePrograms();_editProgram=null;render();});}
 function duplicateProgram(){var p=_programs.find(function(x){return x.id===_editProgram;});if(!p)return;var c=JSON.parse(JSON.stringify(p));c.id=uid();c.name=p.name+" (Copy)";c.created_at=new Date().toISOString();_programs.push(c);savePrograms();_editProgram=c.id;render();toast("\u2713 Duplicated");}
 function progSet(k,v){var p=_programs.find(function(x){return x.id===_editProgram;});if(!p)return;p[k]=v;if(k==="clientId"&&v&&p.sections.length===0){var cl=clientById(v);if(cl){var svcs=(cl.services||"").toLowerCase();var auto=[];if(svcs.indexOf("training")>=0||svcs.indexOf("full coaching")>=0)auto.push("training");if(svcs.indexOf("nutrition")>=0||svcs.indexOf("full coaching")>=0||svcs.indexOf("contest prep")>=0)auto.push("nutrition");if(svcs.indexOf("anabolics")>=0||svcs.indexOf("contest prep")>=0||svcs.indexOf("full coaching")>=0)auto.push("anabolics");if(svcs.indexOf("peptides")>=0||svcs.indexOf("contest prep")>=0)auto.push("peptides");if(svcs.indexOf("full coaching")>=0||svcs.indexOf("contest prep")>=0)auto.push("fatloss");if(svcs.indexOf("nutrition")>=0||svcs.indexOf("full coaching")>=0)auto.push("supplements");auto.push("protocol");p.sections=auto;}}savePrograms();if(k==="clientId")render();}
@@ -2110,7 +2110,7 @@ function renderProgramBuilder(){
   var html='<button class="btn2" onclick="_editProgram=null;render()" style="margin-bottom:14px">\u2039 Back</button>'
     +'<div class="cd" style="padding:14px;margin-bottom:14px"><div class="g2 field"><div><span class="lb">PROGRAM NAME</span><input value="'+esc(pg.name)+'" onchange="progSet(\'name\',this.value)"></div><div><span class="lb">CLIENT</span><select onchange="progSet(\'clientId\',this.value)">'+cOpts+'</select></div></div></div>';
   // Sections
-  var SECTION_TYPES=[["training","Training"],["nutrition","Nutrition"],["anabolics","Anabolics"],["peptides","Peptides"],["fatloss","Fat Loss / GLPs"],["supplements","Supplements"],["water","Water"],["protocol","Coach Notes"]];
+  var SECTION_TYPES=[["training","Training"],["nutrition","Nutrition"],["anabolics","PED Protocol"],["peptides","Peptides"],["fatloss","Cutting Agents"],["supplements","Supplements"],["water","Water"],["protocol","Coach Notes"]];
   var _pgClient=pg.clientId?clientById(pg.clientId):null;
   for(var si=0;si<pg.sections.length;si++){
     var sType=pg.sections[si];
@@ -2165,7 +2165,7 @@ function renderProgramBuilder(){
 }
 function showAddSectionMenu(){
   var pg=_programs.find(function(x){return x.id===_editProgram;});if(!pg)return;
-  var SECTION_TYPES=[["training","Training","Workouts, exercises & cardio"],["nutrition","Nutrition","Meal plans & macros"],["anabolics","Anabolics","PED protocols"],["peptides","Peptides","BPC-157, TB-500, CJC, growth peptides"],["fatloss","Fat Loss / GLPs","Semaglutide, Retatrutide, L-Carnitine, thermogenics"],["supplements","Supplements","Supplement stack"],["water","Water","Hydration tracking"],["protocol","Coach Notes","General notes, instructions & comments"]];
+  var SECTION_TYPES=[["training","Training","Workouts, exercises & cardio"],["nutrition","Nutrition","Meal plans & macros"],["anabolics","PED Protocol","Anabolics, AIs, SERMs, ancillaries & health"],["peptides","Peptides","BPC-157, TB-500, CJC, HGH, growth peptides"],["fatloss","Cutting Agents","GLPs, thermogenics, fat burners, appetite suppressants"],["supplements","Supplements","Supplement stack"],["water","Water","Hydration tracking"],["protocol","Coach Notes","General notes, instructions & comments"]];
   var avail=SECTION_TYPES.filter(function(t){return pg.sections.indexOf(t[0])<0;});
   if(!avail.length){toast("All sections added");return;}
   var content='<div>';
@@ -2311,9 +2311,9 @@ function renderProgramFatlossSection(pg){
   if(!pg.clientId)return '<div style="padding:12px;text-align:center;color:var(--dm);font-size:11px;font-family:var(--mono)">Select a client above</div>';
   var cl=clientById(pg.clientId);if(!cl)return '';
   if(!cl.fatloss)cl.fatloss=[];
-  var html='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><span class="sl" style="margin:0">FAT LOSS / GLP PROTOCOL</span><button class="btn2" onclick="addFatloss()" style="padding:5px 10px;font-size:8px">+ ADD</button></div>';
+  var html='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><span class="sl" style="margin:0">CUTTING AGENTS</span><button class="btn2" onclick="addFatloss()" style="padding:5px 10px;font-size:8px">+ ADD</button></div>';
   if(!cl.fatloss.length){
-    html+='<div class="cd" style="padding:20px;text-align:center;border:1px dashed var(--border)"><div style="color:var(--dm);font-size:11px;margin-bottom:8px">No fat loss compounds yet</div><div style="font-size:9px;color:var(--dmL);font-family:var(--mono);margin-bottom:10px">Tap + ADD for Semaglutide, Retatrutide, L-Carnitine, thermogenics, etc.</div><button class="btn2" onclick="addFatloss()" style="padding:6px 14px;font-size:9px">+ ADD COMPOUND</button></div>';
+    html+='<div class="cd" style="padding:20px;text-align:center;border:1px dashed var(--border)"><div style="color:var(--dm);font-size:11px;margin-bottom:8px">No fat loss compounds yet</div><div style="font-size:9px;color:var(--dmL);font-family:var(--mono);margin-bottom:10px">GLPs, Clenbuterol, T3, DNP, L-Carnitine, Yohimbine &amp; more</div><button class="btn2" onclick="addFatloss()" style="padding:6px 14px;font-size:9px">+ ADD COMPOUND</button></div>';
   } else {
     for(var i=0;i<cl.fatloss.length;i++){var p=cl.fatloss[i];
       html+='<div class="cd" style="display:flex;align-items:center;gap:10px;padding:12px 14px;margin-bottom:4px"><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--wh)">'+esc(p.name)+'</div><div style="font-size:10px;color:var(--dm);font-family:var(--mono)">'+esc(p.dose||"")+' \u00b7 '+esc(p.freq||"")+' \u00b7 '+esc(p.route||"")+'</div>'+(p.notes?'<div style="font-size:9px;color:var(--mu);margin-top:2px">'+esc(p.notes)+'</div>':'')+'</div><span style="font-size:12px;color:var(--danger);cursor:pointer;padding:2px 6px" onclick="rmFatloss('+i+')">\u2715</span></div>';
@@ -2575,7 +2575,7 @@ function renderAnabolics(){
   html+='</select></div>';}
   if(!cl)return html+'<div class="cd" style="padding:20px;text-align:center;color:var(--dm)">Select a client</div>';
   if(!cl.anabolics)cl.anabolics=[];
-  html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><span class="sl" style="margin:0">PROTOCOL</span><div style="display:flex;gap:4px"><button class="btn2" onclick="addAnabolic()" style="padding:5px 10px;font-size:8px">+ ADD</button>'+(cl.anabolics.length?'<button class="btn2" onclick="openPDFFromAnabolics()" style="padding:5px 10px;font-size:8px">PDF</button>':'')+'</div></div>';
+  html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><span class="sl" style="margin:0">PED PROTOCOL</span><div style="display:flex;gap:4px"><button class="btn2" onclick="addAnabolic()" style="padding:5px 10px;font-size:8px">+ ADD</button>'+(cl.anabolics.length?'<button class="btn2" onclick="openPDFFromAnabolics()" style="padding:5px 10px;font-size:8px">PDF</button>':'')+'</div></div>';
   if(!cl.anabolics.length)return html+'<div class="cd" style="padding:20px;text-align:center;border:1px dashed var(--border)"><div style="color:var(--dm);font-size:11px;margin-bottom:8px">No protocol yet</div><div style="font-size:9px;color:var(--dmL);font-family:var(--mono);margin-bottom:10px">Tap + ADD to create a protocol</div><button class="btn2" onclick="addAnabolic()" style="padding:6px 14px;font-size:9px">+ ADD COMPOUND</button></div>';
   // Group by category
   var grouped={};cl.anabolics.forEach(function(a,idx){
@@ -3466,9 +3466,9 @@ function showPDFBuilder(idx){
   secs.push({k:"nutrition",l:"Nutrition / Meal Plans",d:"Meals, macros & daily totals",has:hasMeals});
   secs.push({k:"cardio",l:"Cardio Program",d:"Cardio from training days",has:hasProg});
   secs.push({group:"PROTOCOLS"});
-  secs.push({k:"anabolics",l:"Anabolics Protocol",d:"PED compounds & cycle details",has:hasAna});
-  secs.push({k:"peptides",l:"Peptide Protocol",d:"BPC-157, TB-500, CJC, etc.",has:hasPep});
-  secs.push({k:"fatloss",l:"Fat Loss / GLPs",d:"Semaglutide, Retatrutide, L-Carnitine, thermogenics",has:hasFatloss});
+  secs.push({k:"anabolics",l:"PED Protocol",d:"Anabolics, AIs, SERMs, ancillaries & cycle details",has:hasAna});
+  secs.push({k:"peptides",l:"Peptide Protocol",d:"BPC-157, TB-500, CJC, HGH, etc.",has:hasPep});
+  secs.push({k:"fatloss",l:"Cutting Agents",d:"GLPs, thermogenics, fat burners, appetite suppressants",has:hasFatloss});
   secs.push({k:"supplements",l:"Supplement Stack",d:"Supplements, doses & timing",has:hasSupp});
   secs.push({k:"water",l:"Water Intake",d:"Hydration goal & tracking",has:hasWater});
   secs.push({group:"OTHER"});
@@ -3656,7 +3656,7 @@ function buildCustomPDF(idx){
   if(isChecked("fatloss")){
     var flItems=c.fatloss&&c.fatloss.length?c.fatloss:[];
     if(flItems.length){hasAnything=true;
-      body+='<div style="margin-bottom:24px"><div style="font-size:14px;font-weight:800;color:'+accent+';letter-spacing:.2em;margin-bottom:14px;padding-bottom:6px;border-bottom:2px solid '+accent+'40">FAT LOSS / GLP PROTOCOL</div>'
+      body+='<div style="margin-bottom:24px"><div style="font-size:14px;font-weight:800;color:'+accent+';letter-spacing:.2em;margin-bottom:14px;padding-bottom:6px;border-bottom:2px solid '+accent+'40">CUTTING AGENTS</div>'
         +'<table style="width:100%;border-collapse:collapse"><tr style="background:'+accent+'10"><th style="padding:6px 12px;text-align:left;color:'+accent+';font-size:9px;letter-spacing:.1em">COMPOUND</th><th style="padding:6px 10px;text-align:center;color:'+accent+';font-size:9px;letter-spacing:.1em">DOSE</th><th style="padding:6px 10px;text-align:center;color:'+accent+';font-size:9px;letter-spacing:.1em">FREQUENCY</th><th style="padding:6px 10px;text-align:left;color:'+accent+';font-size:9px;letter-spacing:.1em">ROUTE</th></tr>';
       for(var fli=0;fli<flItems.length;fli++){var fl=flItems[fli];
         body+='<tr style="border-bottom:1px solid #161616;background:'+(fli%2===0?"#0a0a0a":"#080808")+'"><td style="padding:7px 12px;color:#ddd;font-size:12px;font-weight:500">'+esc(fl.name)+'</td><td style="padding:7px 10px;text-align:center;color:#bbb;font-size:11px;font-family:IBM Plex Mono,monospace">'+esc(fl.dose)+'</td><td style="padding:7px 10px;text-align:center;color:#bbb;font-size:11px;font-family:IBM Plex Mono,monospace">'+esc(fl.freq)+'</td><td style="padding:7px 10px;color:#aaa;font-size:11px">'+esc(fl.route)+'</td></tr>';}
@@ -3758,7 +3758,7 @@ function buildCustomPDF(idx){
     if(isChecked("training"))parts.push("Training");
     if(isChecked("nutrition"))parts.push("Nutrition");
     if(isChecked("anabolics")||isChecked("peptides"))parts.push("Protocol");
-    if(isChecked("fatloss"))parts.push("Fat Loss");
+    if(isChecked("fatloss"))parts.push("Cutting Agents");
     if(isChecked("peakweek"))parts.push("Peak Week");
     if(isChecked("supplements"))parts.push("Supplements");
     coverSub=parts.join(" \u00b7 ")||"Complete Program";
