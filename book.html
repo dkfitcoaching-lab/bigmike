@@ -38,8 +38,9 @@ body.theme-crimson{
   --glass:rgba(210,40,40,0.02);--glassB:rgba(210,40,40,0.04);
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{height:100%;overflow-x:hidden}
-body{min-height:100vh;overflow-x:hidden;background:var(--bg);color:var(--wh);font-family:var(--body);-webkit-font-smoothing:antialiased;touch-action:manipulation;position:relative}
+html{height:100%;overflow-x:hidden;overscroll-behavior:none}
+body{min-height:100dvh;min-height:100vh;overflow-x:hidden;overscroll-behavior:none;background:var(--bg);color:var(--wh);font-family:var(--body);-webkit-font-smoothing:antialiased;touch-action:manipulation;position:relative}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:0.01ms !important}}
 input,select{font-family:var(--body);color:var(--wh);background:var(--glassB);border:1.5px solid var(--borderH);border-radius:10px;padding:13px 16px;font-size:14px;outline:none;width:100%;box-sizing:border-box;-webkit-appearance:none;appearance:none;transition:border-color .2s,box-shadow .2s;min-height:46px}
 input:focus,select:focus{border-color:var(--acc);box-shadow:0 0 0 3px var(--accGlow)}
 input::placeholder{color:var(--dm);opacity:.6;font-style:italic;font-size:13px}
@@ -303,11 +304,12 @@ button{font-family:var(--body);cursor:pointer;border:none;outline:none;transitio
         <span style="font-size:11px;color:var(--dm)">New or returning — just your number.</span></div>
       </div>
       <div class="phone-wrap">
+        <label for="phoneInput" class="lb">PHONE NUMBER</label>
         <span class="phone-prefix">+1</span>
         <input type="tel" id="phoneInput" class="phone-input" placeholder="(555) 123-4567" maxlength="14" inputmode="tel" autocomplete="tel">
       </div>
       <div style="margin-bottom:16px">
-        <span class="lb">YOUR NAME</span>
+        <label for="nameInput" class="lb">YOUR NAME</label>
         <input type="text" id="nameInput" placeholder="First and last name" autocomplete="name">
       </div>
       <button class="btn" id="phoneBtn" onclick="submitPhone()">CONTINUE</button>
@@ -328,9 +330,9 @@ button{font-family:var(--body);cursor:pointer;border:none;outline:none;transitio
     <!-- Calendar -->
     <div class="cd" style="padding:16px" id="calendarCard">
       <div class="cal-nav">
-        <button class="cal-nav-btn" onclick="calNav(-1)">&lsaquo;</button>
-        <div class="cal-month" id="calMonth"></div>
-        <button class="cal-nav-btn" onclick="calNav(1)">&rsaquo;</button>
+        <button class="cal-nav-btn" onclick="calNav(-1)" aria-label="Previous month">&lsaquo;</button>
+        <div class="cal-month" id="calMonth" aria-live="polite"></div>
+        <button class="cal-nav-btn" onclick="calNav(1)" aria-label="Next month">&rsaquo;</button>
       </div>
       <div class="cal-grid" id="calGrid"></div>
     </div>
@@ -533,6 +535,7 @@ function goStep(n){
   if(n===3)renderTypes();
   if(n===4)renderConfirm();
   window.scrollTo({top:0,behavior:"smooth"});
+  try{history.pushState({step:n},"","");}catch(e){}
 }
 
 function showSection(name){
@@ -681,7 +684,7 @@ function renderCalendar(){
     else if(hasSlots)cls+=" has-slots";
     else cls+=" no-slots disabled";
 
-    html+='<div class="'+cls+'" onclick="selectDate(\''+iso+'\')">'+d+'</div>';
+    html+='<div class="'+cls+'" role="button" tabindex="'+(available&&hasSlots?'0':'-1')+'" aria-label="'+MONTHS[_calMonth]+' '+d+'" onclick="selectDate(\''+iso+'\')">'+d+'</div>';
   }
 
   /* Fill remaining cells */
@@ -756,7 +759,7 @@ function renderTimeSlots(dateIso){
     noSlots.style.display="block";
   }else{
     noSlots.style.display="none";
-    grid.innerHTML=html;
+    grid.innerHTML=html+'<div style="font-size:9px;color:var(--dm);text-align:center;margin-top:8px;font-family:var(--mono)">All times shown in your local timezone</div>';
   }
 }
 
@@ -766,7 +769,7 @@ function renderSlotGroup(label,slots){
     var cls="time-slot";
     if(s.booked)cls+=" booked";
     if(_selectedTime===s.time)cls+=" selected";
-    html+='<div class="'+cls+'" onclick="selectTime(\''+s.time+'\')">'+s.display+'</div>';
+    html+='<div class="'+cls+'" role="button" tabindex="'+(s.booked?'-1':'0')+'" aria-label="'+s.display+(s.booked?' booked':'')+'" onclick="selectTime(\''+s.time+'\')">'+s.display+'</div>';
   });
   html+='</div>';
   return html;
@@ -794,7 +797,7 @@ function renderTypes(){
   var html="";
   SESSION_TYPES.forEach(function(t){
     var cls="type-chip"+(_selectedType===t.id?" selected":"");
-    html+='<div class="'+cls+'" onclick="selectType(\''+t.id+'\')">'
+    html+='<div class="'+cls+'" role="button" tabindex="0" aria-label="'+t.name+' '+t.duration+'" onclick="selectType(\''+t.id+'\')">'
       +'<div class="type-icon">'+t.icon+'</div>'
       +'<div class="type-name">'+t.name+'</div>'
       +'<div class="type-dur">'+t.duration+'</div></div>';
@@ -997,6 +1000,8 @@ function toast(msg){
   if(existing)existing.remove();
   var t=document.createElement("div");
   t.className="toast";
+  t.setAttribute("role","status");
+  t.setAttribute("aria-live","polite");
   t.textContent=msg;
   document.body.appendChild(t);
   setTimeout(function(){t.remove();},3000);
@@ -1013,6 +1018,20 @@ function shake(id){
 var shakeStyle=document.createElement("style");
 shakeStyle.textContent="@keyframes shake{0%,100%{transform:translateX(0)}10%,30%,50%,70%,90%{transform:translateX(-4px)}20%,40%,60%,80%{transform:translateX(4px)}}.shake{animation:shake .4s ease}";
 document.head.appendChild(shakeStyle);
+
+/* Android back button — navigate steps instead of leaving app */
+history.pushState({step:1},"","");
+window.addEventListener("popstate",function(e){
+  if(_step>1){goStep(_step-1);}
+  else{history.pushState({step:1},"","");}
+});
+
+/* iOS keyboard dismiss — prevent scroll jump */
+document.addEventListener("focusout",function(e){
+  if(e.target.tagName==="INPUT"||e.target.tagName==="TEXTAREA"||e.target.tagName==="SELECT"){
+    setTimeout(function(){window.scrollTo(0,window.scrollY);},100);
+  }
+});
 </script>
 </body>
 </html>

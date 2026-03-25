@@ -285,6 +285,8 @@ body.theme-crimson{
 .card-actions{display:flex;gap:8px;margin-top:14px}
 .stat-number{font-size:28px;font-weight:700;font-family:var(--mono);line-height:1;color:var(--acc)}
 .stat-caption{font-size:9px;color:var(--dm);font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;margin-top:6px}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:0.01ms !important}}
+@media print{body{background:#fff !important;color:#000 !important}.nav,.fab,#qnoteModal,.modal-overlay{display:none !important}.cd{border:1px solid #ddd !important;background:#fff !important;color:#000 !important}.pt,.sl{color:#000 !important;text-shadow:none !important}}
 </style>
 </head>
 <body>
@@ -329,7 +331,7 @@ var MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","D
 var LS={get:function(k,d){try{var v=JSON.parse(localStorage.getItem("fm_"+k));return v!=null?v:d;}catch(e){return d;}},set:function(k,v){try{localStorage.setItem("fm_"+k,JSON.stringify(v));}catch(e){if(e.name==="QuotaExceededError"){toast("\u26a0 Storage full! Export backup now.",5000);}}},space:function(){try{var total=0;for(var k in localStorage){if(localStorage.hasOwnProperty(k))total+=localStorage[k].length;}return{used:Math.round(total/1024),max:5120,pct:Math.round((total/1024/5120)*100)};}catch(e){return{used:0,max:5120,pct:0};}}};
 var clients=LS.get("clients",[]),sessions=LS.get("sessions",[]),schedule=LS.get("schedule",[]),templates=LS.get("templates",[]),mealPlans=LS.get("mealPlans",[]);
 function getGymCut(){return LS.get("gymCut",20)/100;}
-function save(){LS.set("clients",clients);LS.set("sessions",sessions);LS.set("schedule",schedule);LS.set("templates",templates);LS.set("mealPlans",mealPlans);LS.set("programs",_programs);LS.set("workouts",_workouts);cloudSync();}
+function save(){try{LS.set("clients",clients);LS.set("sessions",sessions);LS.set("schedule",schedule);LS.set("templates",templates);LS.set("mealPlans",mealPlans);LS.set("programs",_programs);LS.set("workouts",_workouts);}catch(e){console.error("Save error:",e);toast("Storage full! Export your data.");}cloudSync();}
 // ── CLOUD SYNC ──
 var _syncDebounce=null;
 function cloudSync(){
@@ -510,7 +512,7 @@ function render(){
   tabsEl.innerHTML=deskLogo+th;
   var ct=el("ct");ct.style.animation="none";ct.offsetHeight;ct.style.animation="fadeIn .3s ease";
   var renderers={home:renderHome,clients:renderClients,sessions:renderSessions,schedule:renderSchedule,nutrition:renderNutrition,settings:renderSettings};
-  ct.innerHTML=(renderers[currentView.tab]||renderHome)();
+  try{ct.innerHTML=(renderers[currentView.tab]||renderHome)();}catch(e){console.error("Render error ("+currentView.tab+"):",e);ct.innerHTML='<div class="cd" style="padding:24px;text-align:center"><div style="color:var(--danger);font-size:13px;font-weight:600;margin-bottom:8px">Something went wrong</div><div style="font-size:10px;color:var(--dm);font-family:var(--mono);margin-bottom:12px">'+esc(e.message)+'</div><button class="btn2" onclick="location.reload()" style="padding:8px 20px;font-size:10px">RELOAD</button></div>';}
   if(el("qnoteFab"))el("qnoteFab").style.display=(currentView.tab==="home"||currentView.tab==="clients")?"":"none";
   if(el("swFab"))el("swFab").style.display=(currentView.tab==="sessions"&&currentView.view==="new")?"flex":"none";
   timerUpdateUI();
@@ -1515,7 +1517,8 @@ var FOOD_DB=[
 {n:"Ground Beef 96/4",cal:155,p:24,c:0,f:6,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp,lf"},
 {n:"Ground Beef 90/10",cal:196,p:27,c:0,f:9,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp"},
 {n:"Ground Beef 80/20",cal:260,p:26,c:0,f:17,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,kf"},
-{n:"Bison",cal:143,p:28,c:0,f:2.4,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp,lf"},
+{n:"Bison (Steak)",cal:143,p:28,c:0,f:2.4,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp,lf"},
+{n:"Ground Bison 90/10",cal:152,p:26,c:0,f:5,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp"},
 {n:"Venison",cal:136,p:26,c:0,f:2.7,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp,lf"},
 {n:"Pork Tenderloin",cal:143,p:26,c:0,f:3.5,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp,lf"},
 {n:"Pork Chop (boneless)",cal:187,p:28,c:0,f:8,unit:"oz",per:4,ck:1,cat:"P",tags:"gf,df,lc,hp"},
@@ -1835,7 +1838,7 @@ var ANABOLICS_DB=[
 {name:"Tamoxifen / Nolvadex",doses:["10mg","20mg","40mg"],routes:["Oral"],freqs:["ED","EOD"]},
 {name:"Raloxifene / Evista",doses:["30mg","60mg","120mg"],routes:["Oral"],freqs:["ED"]},
 {name:"Clomiphene / Clomid",doses:["12.5mg","25mg","50mg","100mg"],routes:["Oral"],freqs:["ED","EOD"]},
-{name:"Enclomiphene",doses:["6.25mg","12.5mg","25mg"],routes:["Oral"],freqs:["ED"]}
+{name:"Enclomiphene / Androxal",doses:["6.25mg","12.5mg","25mg"],routes:["Oral"],freqs:["ED"]}
 ]},
 {cat:"Prolactin / Progesterone Support",items:[
 {name:"Cabergoline / Caber",doses:["0.25mg","0.5mg","1mg"],routes:["Oral"],freqs:["2x/week","1x/week","E3D"]},
@@ -1897,9 +1900,9 @@ var ANABOLICS_DB=[
 {name:"Raloxifene / Evista (Gyno Protocol)",doses:["60mg","120mg"],routes:["Oral"],freqs:["ED"]},
 {name:"Niacin",doses:["250mg","500mg","1000mg"],routes:["Oral"],freqs:["ED","With meals"]},
 {name:"Citrus Bergamot",doses:["500mg","1000mg"],routes:["Oral"],freqs:["ED","2x/day"]},
-{name:"Ezetimibe (Zetia)",doses:["10mg"],routes:["Oral"],freqs:["ED"]},
-{name:"Telmisartan",doses:["20mg","40mg","80mg"],routes:["Oral"],freqs:["ED"]},
-{name:"Nebivolol",doses:["2.5mg","5mg","10mg"],routes:["Oral"],freqs:["ED"]}
+{name:"Ezetimibe / Zetia",doses:["10mg"],routes:["Oral"],freqs:["ED"]},
+{name:"Telmisartan / Micardis",doses:["20mg","40mg","80mg"],routes:["Oral"],freqs:["ED"]},
+{name:"Nebivolol / Bystolic",doses:["2.5mg","5mg","10mg"],routes:["Oral"],freqs:["ED"]}
 ]},
 {cat:"Fat Loss / GLPs",items:[
 {name:"Semaglutide / Ozempic / Wegovy",doses:["0.25mg","0.5mg","1mg","1.7mg","2.4mg"],routes:["SubQ Injection"],freqs:["1x/week"]},
@@ -1909,8 +1912,7 @@ var ANABOLICS_DB=[
 {name:"Injectable L-Carnitine",doses:["200mg","400mg","500mg","600mg","1000mg"],routes:["IM Injection","SubQ Injection"],freqs:["ED","5x/week","Pre-workout"]},
 {name:"Tesofensine",doses:["0.25mg","0.5mg","1mg"],routes:["Oral"],freqs:["1x/day"]},
 {name:"5-Amino-1MQ",doses:["50mg","100mg","150mg"],routes:["Oral"],freqs:["1x/day","2x/day"]},
-{name:"AOD-9604",doses:["250mcg","300mcg","500mcg"],routes:["SubQ Injection"],freqs:["1x/day","2x/day"]},
-{name:"Fragment 176-191",doses:["250mcg","500mcg"],routes:["SubQ Injection"],freqs:["1x/day","2x/day"]},
+{name:"HGH Fragment 176-191 / Frag",doses:["250mcg","500mcg"],routes:["SubQ Injection"],freqs:["1x/day","2x/day"]},
 {name:"MOTS-c",doses:["5mg","10mg"],routes:["SubQ Injection"],freqs:["1x/week","3x/week"]},
 {name:"Clenbuterol",doses:["20mcg","40mcg","60mcg","80mcg","100mcg","120mcg","140mcg","160mcg"],routes:["Oral"],freqs:["ED","2 weeks on/2 off","Titrate up"]},
 {name:"Salbutamol / Albuterol",doses:["2mg","4mg","8mg","12mg","16mg"],routes:["Oral"],freqs:["3x/day","2x/day"]},
@@ -3005,10 +3007,25 @@ function showSuppPicker(target,targetIdx){
 }
 function filterSuppPicker(){var q=(el("suppPickSearch")||{}).value||"";q=q.toLowerCase();var cats=document.querySelectorAll(".suppPickCat");cats.forEach(function(c){var items=c.querySelectorAll(".suppPickItem");var anyMatch=false;items.forEach(function(it){var match=it.textContent.toLowerCase().indexOf(q)>=0;it.style.display=match?"":"none";if(match)anyMatch=true;});c.style.display=anyMatch||!q?"":"none";if(q&&anyMatch){var itemsDiv=c.querySelector(".suppPickItems");if(itemsDiv)itemsDiv.style.display="block";}});}
 function pickSupplement(target,targetIdx,catIdx,itemIdx){
-  var sp=SUPP_DB[catIdx].items[itemIdx];
-  var doseOpts=sp.doses;var timingOpts=sp.timings;
-  closeModal();
-  if(doseOpts.length>1){showPrompt("Dose","Dose for "+sp.name+":\nOptions: "+doseOpts.join(", "),doseOpts[0]).then(function(dose){dose=dose||doseOpts[0];if(timingOpts.length>1){showPrompt("Timing","Timing for "+sp.name+":\nOptions: "+timingOpts.join(", "),timingOpts[0]).then(function(timing){timing=timing||timingOpts[0];_addSuppToTarget(target,targetIdx,sp.name,dose,timing);});}else{_addSuppToTarget(target,targetIdx,sp.name,dose,timingOpts[0]);}});}else{var dose=doseOpts[0];if(timingOpts.length>1){showPrompt("Timing","Timing for "+sp.name+":\nOptions: "+timingOpts.join(", "),timingOpts[0]).then(function(timing){timing=timing||timingOpts[0];_addSuppToTarget(target,targetIdx,sp.name,dose,timing);});}else{_addSuppToTarget(target,targetIdx,sp.name,dose,timingOpts[0]);}}
+  var sp=SUPP_DB[catIdx].items[itemIdx];closeModal();
+  var content2='<div style="margin-bottom:16px"><div style="font-size:14px;font-weight:600;color:var(--wh);margin-bottom:12px">'+esc(sp.name)+'</div>';
+  content2+='<div style="margin-bottom:12px"><span class="lb">DOSE</span><div style="display:flex;flex-wrap:wrap;gap:4px">';
+  for(var d=0;d<sp.doses.length;d++)content2+='<div class="chip'+(d===0?" on":"")+'" onclick="pickChip(this,\'suppDose\')">'+sp.doses[d]+'</div>';
+  content2+='</div><input type="hidden" id="suppDose" value="'+sp.doses[0]+'">';
+  content2+='<input placeholder="Custom dose (e.g. 5g, 2 caps)" style="margin-top:6px;font-size:11px;padding:6px 10px;width:100%;box-sizing:border-box" oninput="if(this.value){el(\'suppDose\').value=this.value;this.parentElement.querySelectorAll(\'.chip\').forEach(function(c){c.classList.remove(\'on\');});}">';
+  content2+='</div>';
+  content2+='<div style="margin-bottom:12px"><span class="lb">TIMING</span><div style="display:flex;flex-wrap:wrap;gap:4px">';
+  for(var t=0;t<sp.timings.length;t++)content2+='<div class="chip'+(t===0?" on":"")+'" onclick="pickChip(this,\'suppTiming\')">'+sp.timings[t]+'</div>';
+  content2+='</div><input type="hidden" id="suppTiming" value="'+sp.timings[0]+'">';
+  content2+='<input placeholder="Custom timing (e.g. Pre-Workout, With Meals)" style="margin-top:6px;font-size:11px;padding:6px 10px;width:100%;box-sizing:border-box" oninput="if(this.value){el(\'suppTiming\').value=this.value;this.parentElement.querySelectorAll(\'.chip\').forEach(function(c){c.classList.remove(\'on\');});}">';
+  content2+='</div>';
+  content2+='<div style="margin-bottom:12px"><span class="lb">NOTES (optional)</span><input id="suppConfNotes" placeholder="Additional notes..." style="font-size:12px;padding:8px"></div>';
+  content2+='<button class="btn" onclick="confirmSupplement(\''+esc(sp.name.replace(/'/g,"\\'"))+'\',\''+target+'\','+targetIdx+')" style="width:100%">ADD TO STACK</button></div>';
+  showModal("CONFIGURE \u2014 "+esc(sp.name),content2);
+}
+function confirmSupplement(name,target,targetIdx){
+  var dose=val("suppDose"),timing=val("suppTiming"),notes=val("suppConfNotes")||"";
+  closeModal();_addSuppToTarget(target,targetIdx,name,dose,timing,notes);
 }
 function pickSuppCustom(target,targetIdx){
   var n=val("suppCustomN"),d=val("suppCustomD")||"",t=val("suppCustomT")||"";
@@ -3016,9 +3033,9 @@ function pickSuppCustom(target,targetIdx){
   closeModal();
   _addSuppToTarget(target,targetIdx,n,d,t);
 }
-function _addSuppToTarget(target,targetIdx,name,dose,timing){
-  if(target==="client"){var cl=clients[targetIdx];if(!cl)return;if(!cl.supplements)cl.supplements=[];cl.supplements.push({name:name,dose:dose,timing:timing,notes:""});save();render();}
-  else if(target==="nut"){var cl2=clientById(_nutClientId);if(!cl2)return;if(!cl2.supplements)cl2.supplements=[];cl2.supplements.push({name:name,dose:dose,timing:timing,notes:""});save();render();}
+function _addSuppToTarget(target,targetIdx,name,dose,timing,notes){
+  if(target==="client"){var cl=clients[targetIdx];if(!cl)return;if(!cl.supplements)cl.supplements=[];cl.supplements.push({name:name,dose:dose,timing:timing,notes:notes||""});save();render();toast("\u2713 Added "+name);}
+  else if(target==="nut"){var cl2=clientById(_nutClientId);if(!cl2)return;if(!cl2.supplements)cl2.supplements=[];cl2.supplements.push({name:name,dose:dose,timing:timing,notes:notes||""});save();render();toast("\u2713 Added "+name);}
 }
 function setSuppNote(target,targetIdx,suppIdx,val2){
   var cl;if(target==="client"){cl=clients[targetIdx];}else{cl=clientById(_nutClientId);}
