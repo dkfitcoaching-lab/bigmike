@@ -791,11 +791,13 @@ function renderClientDetail(){
   html+='</div><div id="clientDetailBody">';
   html+=subTab==="progress"?renderClientProgress(c,idx):subTab==="notes"?renderClientNotes(c,idx):subTab==="program"?renderClientProgram(c,idx):subTab==="checkins"?renderClientCheckins(c,idx):subTab==="peakweek"?renderPeakWeek(c,idx):renderClientOverview(c,idx,cs,rev,info);
   html+='</div>';
+  if(subTab!=="peakweek"){
   html+='<div style="display:flex;gap:8px;margin-top:16px"><button class="btn" style="flex:1" onclick="navToLogFromClient(\''+c.id+'\',\''+c.rate+'\',\''+c.clientType+'\')">LOG SESSION</button><button class="btn2" style="flex:1" onclick="navToScheduleFromClient(\''+c.id+'\')">SCHEDULE</button></div>';
   html+='<div style="display:flex;gap:8px;margin-top:8px">';
   if(c.phone)html+='<button class="btn2" style="flex:1" onclick="sendQuickSMS(\''+c.id+'\')">SEND SMS</button>';
   if(c.phone)html+='<a href="tel:'+esc((c.phone||"").replace(/[^0-9+]/g,""))+'" style="flex:1"><button class="btn2" style="width:100%">CALL</button></a>';
   html+='</div>';
+  }
   html+='<button class="btn2" style="width:100%;margin-top:8px;border-color:var(--accB)" onclick="goToClientProgram('+idx+')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>BUILD PROGRAM & PDF</button>';
   html+='<div style="margin-top:24px;border:1px solid rgba(216,120,120,.2);border-radius:10px;overflow:hidden"><div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display===\'none\'?\'block\':\'none\'" style="cursor:pointer;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;background:rgba(216,120,120,.03)"><span style="font-size:10px;font-weight:700;color:var(--danger);font-family:var(--mono);letter-spacing:.1em">DANGER ZONE</span><span style="font-size:10px;color:var(--dm)">\u25bc</span></div><div style="display:none;padding:16px"><div style="font-size:11px;color:var(--dm);margin-bottom:12px">This cannot be undone. Session history will be preserved.</div><button class="btn-danger" onclick="deleteClient('+idx+')">DELETE CLIENT</button></div></div>';
   return html;
@@ -1888,12 +1890,6 @@ var ANABOLICS_DB=[
 {name:"Minoxidil (Oral)",doses:["1.25mg","2.5mg","5mg"],routes:["Oral"],freqs:["ED"]},
 {name:"Metformin",doses:["250mg","500mg","750mg","1000mg"],routes:["Oral"],freqs:["ED","2x/day","With meals"]},
 {name:"Berberine",doses:["500mg","1000mg","1500mg"],routes:["Oral"],freqs:["2-3x/day with meals"]},
-{name:"Liothyronine / T3 / Cytomel",doses:["12.5mcg","25mcg","37.5mcg","50mcg","75mcg","100mcg"],routes:["Oral"],freqs:["ED","Split AM/PM"]},
-{name:"Levothyroxine / T4 / Synthroid",doses:["25mcg","50mcg","75mcg","100mcg","150mcg","200mcg"],routes:["Oral"],freqs:["ED"]},
-{name:"Clenbuterol",doses:["20mcg","40mcg","60mcg","80mcg","100mcg","120mcg","140mcg","160mcg"],routes:["Oral"],freqs:["ED","2 weeks on/2 off","Titrate up"]},
-{name:"Salbutamol / Albuterol",doses:["2mg","4mg","8mg","12mg","16mg"],routes:["Oral"],freqs:["3x/day","2x/day"]},
-{name:"Ephedrine",doses:["12.5mg","25mg"],routes:["Oral"],freqs:["1-3x/day","EC Stack"]},
-{name:"2,4-Dinitrophenol / DNP",doses:["100mg","125mg","200mg","250mg"],routes:["Oral"],freqs:["ED"]},
 {name:"Insulin Lispro / Humalog",doses:["5 IU","8 IU","10 IU","12 IU","15 IU","20 IU"],routes:["SubQ Injection"],freqs:["Pre-workout","Post-workout","With meals"]},
 {name:"Insulin Regular / Humulin R",doses:["5 IU","10 IU","15 IU","20 IU"],routes:["SubQ Injection"],freqs:["Pre-workout","Post-workout","With meals"]},
 {name:"Insulin Glargine / Lantus",doses:["10 IU","15 IU","20 IU","30 IU","40 IU"],routes:["SubQ Injection"],freqs:["1x/day","Before bed"]},
@@ -1941,7 +1937,7 @@ var SUPP_DB=[
 {name:"Beef Protein Isolate",doses:["1 scoop","2 scoops"],timings:["Post-workout","Between meals"]}
 ]},
 {cat:"Pre-Workout & Performance",items:[
-{name:"Pre-Workout (stimulant)",doses:["u00bd scoop","1 scoop","1.5 scoops"],timings:["30 min pre-workout"]},
+{name:"Pre-Workout (stimulant)",doses:["\u00bd scoop","1 scoop","1.5 scoops"],timings:["30 min pre-workout"]},
 {name:"Pre-Workout (non-stim)",doses:["1 scoop"],timings:["30 min pre-workout"]},
 {name:"Citrulline Malate",doses:["3g","6g","8g","10g"],timings:["Pre-workout"]},
 {name:"Beta-Alanine",doses:["2g","3.2g","4g","6.4g"],timings:["Pre-workout","Split doses"]},
@@ -3931,7 +3927,7 @@ function renderPeakWeek(c,idx){
   }
   if(!pw.days.length)return html+'<div class="cd" style="padding:24px;text-align:center;border:1px dashed var(--border)"><div style="color:var(--dm);margin-bottom:8px;font-size:12px">No peak week protocol set up</div><button class="btn2" onclick="initPeakWeek('+idx+')">GENERATE PEAK WEEK</button></div>';
   // Notes field
-  html+='<div class="cd" style="padding:12px;margin-bottom:10px"><span class="lb">PEAK WEEK NOTES</span><textarea rows="2" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" placeholder="Overall strategy, posing practice schedule, tanning..." onchange="clients['+idx+'].peakWeek.notes=this.value;save();">'+(pw.notes?esc(pw.notes):'')+'</textarea></div>';
+  html+='<div class="cd" style="padding:12px;margin-bottom:10px"><span class="lb">PEAK WEEK NOTES</span><textarea rows="3" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" placeholder="Overall strategy, posing practice schedule, tanning..." onchange="clients['+idx+'].peakWeek.notes=this.value;save();">'+(pw.notes?esc(pw.notes):'')+'</textarea></div>';
   // Show Day Information
   html+='<div class="cd" style="padding:14px;margin-bottom:12px;border:1.5px solid var(--accB)">'
     +'<div style="font-size:11px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.12em;margin-bottom:10px">SHOW DAY INFORMATION</div>'
@@ -3943,7 +3939,7 @@ function renderPeakWeek(c,idx){
     +'<div><span class="lb" style="font-size:8px">PREJUDGING TIME</span><input value="'+esc(pw.prejudgingTime||"")+'" onchange="clients['+idx+'].peakWeek.prejudgingTime=this.value;save()" placeholder="e.g. Saturday 10:00 AM" style="font-size:11px;padding:6px"></div></div>'
     +'<div class="g2 field" style="margin-bottom:8px"><div><span class="lb" style="font-size:8px">FINALS TIME</span><input value="'+esc(pw.finalsTime||"")+'" onchange="clients['+idx+'].peakWeek.finalsTime=this.value;save()" placeholder="e.g. Saturday 6:00 PM" style="font-size:11px;padding:6px"></div>'
     +'<div><span class="lb" style="font-size:8px">ARRIVE EARLY BY</span><input value="'+esc(pw.arriveEarly||"")+'" onchange="clients['+idx+'].peakWeek.arriveEarly=this.value;save()" placeholder="e.g. 1 hour before, 30 min" style="font-size:11px;padding:6px"></div></div>'
-    +'<div class="field"><span class="lb" style="font-size:8px">SHOW DAY SCHEDULE / NOTES</span><textarea rows="2" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" onchange="clients['+idx+'].peakWeek.showSchedule=this.value;save()" placeholder="Night before: weigh-in at 5pm, bring trunks/suit for number assignment. Show day: arrive 8am, pump up backstage 9:30am...">'+esc(pw.showSchedule||"")+'</textarea></div></div>';
+    +'<div class="field"><span class="lb" style="font-size:8px">SHOW DAY SCHEDULE / NOTES</span><textarea rows="3" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" onchange="clients['+idx+'].peakWeek.showSchedule=this.value;save()" placeholder="Night before: weigh-in at 5pm, bring trunks/suit for number assignment. Show day: arrive 8am, pump up backstage 9:30am...">'+esc(pw.showSchedule||"")+'</textarea></div></div>';
   // Competition Class & Attire
   html+='<div class="cd" style="padding:14px;margin-bottom:12px;border:1.5px solid var(--borderH)">'
     +'<div style="font-size:11px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.12em;margin-bottom:10px">COMPETITION CLASS &amp; ATTIRE</div>'
@@ -3955,10 +3951,10 @@ function renderPeakWeek(c,idx){
   // Backstage Pump-Up Protocol
   html+='<div class="cd" style="padding:14px;margin-bottom:12px;border:1.5px solid var(--borderH)">'
     +'<div style="font-size:11px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.12em;margin-bottom:10px">BACKSTAGE PUMP-UP</div>'
-    +'<div class="field" style="margin-bottom:8px"><span class="lb" style="font-size:8px">PUMP-UP EQUIPMENT</span><textarea rows="2" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" onchange="clients['+idx+'].peakWeek.pumpEquipment=this.value;save()" placeholder="Resistance bands (light/medium/heavy)\nDumbbells if available\nTowel, yoga mat">'+esc(pw.pumpEquipment||"")+'</textarea></div>'
-    +'<div class="field" style="margin-bottom:8px"><span class="lb" style="font-size:8px">PUMP-UP EXERCISES</span><textarea rows="2" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" onchange="clients['+idx+'].peakWeek.pumpExercises=this.value;save()" placeholder="Band pull-aparts 3x20, Lateral raises 3x15, Pushups 3x15\nBand curls 3x20, Overhead press 2x15\nDO NOT pump legs — kills separation">'+esc(pw.pumpExercises||"")+'</textarea></div>'
-    +'<div class="field" style="margin-bottom:8px"><span class="lb" style="font-size:8px">BACKSTAGE FOOD &amp; DRINKS</span><textarea rows="2" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" onchange="clients['+idx+'].peakWeek.pumpFood=this.value;save()" placeholder="Rice cakes + honey + peanut butter (every 30-45min)\nSkittles / gummy bears for quick carbs\nSea salt on rice cakes for pump\nSip water or Gatorade (small amounts)\nCaffeine tabs 30min before stage">'+esc(pw.pumpFood||"")+'</textarea></div>'
-    +'<div class="field" style="margin-bottom:0"><span class="lb" style="font-size:8px">SHOW DAY COMPOUNDS</span><textarea rows="2" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" onchange="clients['+idx+'].peakWeek.showDayCompounds=this.value;save()" placeholder="e.g. Clenbuterol 40mcg AM, Halotestin 10mg pre-stage\nCaffeine 200mg, Evogen Super Dry, Dandelion root\nGlycerin for vascularity (optional)">'+esc(pw.showDayCompounds||"")+'</textarea></div></div>';
+    +'<div class="field" style="margin-bottom:8px"><span class="lb" style="font-size:8px">PUMP-UP EQUIPMENT</span><textarea rows="3" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" onchange="clients['+idx+'].peakWeek.pumpEquipment=this.value;save()" placeholder="Resistance bands (light/medium/heavy)\nDumbbells if available\nTowel, yoga mat">'+esc(pw.pumpEquipment||"")+'</textarea></div>'
+    +'<div class="field" style="margin-bottom:8px"><span class="lb" style="font-size:8px">PUMP-UP EXERCISES</span><textarea rows="3" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" onchange="clients['+idx+'].peakWeek.pumpExercises=this.value;save()" placeholder="Band pull-aparts 3x20, Lateral raises 3x15, Pushups 3x15\nBand curls 3x20, Overhead press 2x15\nDO NOT pump legs — kills separation">'+esc(pw.pumpExercises||"")+'</textarea></div>'
+    +'<div class="field" style="margin-bottom:8px"><span class="lb" style="font-size:8px">BACKSTAGE FOOD &amp; DRINKS</span><textarea rows="3" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" onchange="clients['+idx+'].peakWeek.pumpFood=this.value;save()" placeholder="Rice cakes + honey + peanut butter (every 30-45min)\nSkittles / gummy bears for quick carbs\nSea salt on rice cakes for pump\nSip water or Gatorade (small amounts)\nCaffeine tabs 30min before stage">'+esc(pw.pumpFood||"")+'</textarea></div>'
+    +'<div class="field" style="margin-bottom:0"><span class="lb" style="font-size:8px">SHOW DAY COMPOUNDS</span><textarea rows="3" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" onchange="clients['+idx+'].peakWeek.showDayCompounds=this.value;save()" placeholder="e.g. Clenbuterol 40mcg AM, Halotestin 10mg pre-stage\nCaffeine 200mg, Evogen Super Dry, Dandelion root\nGlycerin for vascularity (optional)">'+esc(pw.showDayCompounds||"")+'</textarea></div></div>';
   // Day-by-day protocol
   html+='<div class="sl" style="margin-top:4px;margin-bottom:8px">DAILY PROTOCOL</div>';
   var dayLabels=["Sunday (7 days out)","Monday (6 days out)","Tuesday (5 days out)","Wednesday (4 days out)","Thursday (3 days out)","Friday (2 days out)","Saturday (1 day out)","SHOW DAY"];
@@ -3977,13 +3973,13 @@ function renderPeakWeek(c,idx){
       +'<div style="flex:1;min-width:120px"><span class="lb" style="font-size:8px">WATER</span><input type="text" value="'+esc(day.water||"")+'" onchange="setPeakDay('+idx+','+d+',\'water\',this.value)" placeholder="e.g. 2gal, 128oz, sips only" style="font-size:11px;padding:6px;text-align:center"></div>'
       +'<div style="flex:1;min-width:120px"><span class="lb" style="font-size:8px">SODIUM</span><input type="text" value="'+esc(day.sodium||"")+'" onchange="setPeakDay('+idx+','+d+',\'sodium\',this.value)" placeholder="e.g. 5000mg, 2000mg, 0, Normal" style="font-size:11px;padding:6px;text-align:center"></div></div>';
     // Training, Cardio
-    html+='<div style="display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap"><div style="flex:1;min-width:150px"><span class="lb" style="font-size:8px">TRAINING</span><input value="'+esc(day.training||"")+'" onchange="setPeakDay('+idx+','+d+',\'training\',this.value)" placeholder="e.g. Depletion workout, Pump-up..." style="font-size:11px;padding:6px"></div>'
-      +'<div style="flex:1;min-width:150px"><span class="lb" style="font-size:8px">CARDIO</span><input value="'+esc(day.cardio||"")+'" onchange="setPeakDay('+idx+','+d+',\'cardio\',this.value)" placeholder="e.g. 20min easy walk, None..." style="font-size:11px;padding:6px"></div></div>';
+    html+='<div style="display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap"><div style="flex:1;min-width:150px"><span class="lb" style="font-size:8px">TRAINING</span><textarea rows="3" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" onchange="setPeakDay('+idx+','+d+',\'training\',this.value)" placeholder="e.g. Depletion workout - full body high rep\nChest/Back/Shoulders supersets 4x15\nLegs: leg press 4x20, extensions 3x20">'+esc(day.training||"")+'</textarea></div>'
+      +'<div style="flex:1;min-width:150px"><span class="lb" style="font-size:8px">CARDIO</span><textarea rows="3" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" onchange="setPeakDay('+idx+','+d+',\'cardio\',this.value)" placeholder="e.g. 30min fasted AM walk\n20min stairmaster post-workout\nNone">'+esc(day.cardio||"")+'</textarea></div></div>';
     // Supplements, Meal Plan
-    html+='<div style="display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap"><div style="flex:1;min-width:150px"><span class="lb" style="font-size:8px">SUPPLEMENTS</span><input value="'+esc(day.supplements||"")+'" onchange="setPeakDay('+idx+','+d+',\'supplements\',this.value)" placeholder="e.g. Dandelion root, Vitamin C, Potassium..." style="font-size:11px;padding:6px"></div>'
-      +'<div style="flex:1;min-width:150px"><span class="lb" style="font-size:8px">MEAL PLAN</span><input value="'+esc(day.mealPlan||"")+'" onchange="setPeakDay('+idx+','+d+',\'mealPlan\',this.value)" placeholder="e.g. 6 meals: rice/chicken, rice cakes + honey..." style="font-size:11px;padding:6px"></div></div>';
+    html+='<div style="display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap"><div style="flex:1;min-width:150px"><span class="lb" style="font-size:8px">SUPPLEMENTS</span><textarea rows="3" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" onchange="setPeakDay('+idx+','+d+',\'supplements\',this.value)" placeholder="e.g. Multivitamin, Vitamin C 2000mg\nDandelion root, Potassium\nElectrolytes intra-workout">'+esc(day.supplements||"")+'</textarea></div>'
+      +'<div style="flex:1;min-width:150px"><span class="lb" style="font-size:8px">MEAL PLAN</span><textarea rows="3" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" onchange="setPeakDay('+idx+','+d+',\'mealPlan\',this.value)" placeholder="e.g. Meal 1: 8oz chicken, 1.5c rice\nMeal 2: 6oz tilapia, 6oz sweet potato\nMeal 3: 8oz chicken, rice cakes + honey">'+esc(day.mealPlan||"")+'</textarea></div></div>';
     // Notes
-    html+='<div class="field" style="margin-bottom:0"><span class="lb" style="font-size:8px">NOTES</span><input value="'+esc(day.notes||"")+'" onchange="setPeakDay('+idx+','+d+',\'notes\',this.value)" placeholder="Posing practice, tanning, sleep, etc." style="font-size:11px;padding:6px"></div>';
+    html+='<div class="field" style="margin-bottom:0"><span class="lb" style="font-size:8px">NOTES</span><textarea rows="3" style="width:100%;box-sizing:border-box;font-size:11px;resize:vertical" onchange="setPeakDay('+idx+','+d+',\'notes\',this.value)" placeholder="Posing practice, tanning schedule, sleep targets, mental prep...">'+esc(day.notes||"")+'</textarea></div>';
     html+='</div>';
   }
   return html;
@@ -3993,14 +3989,14 @@ function initPeakWeek(idx){
   function _doPeakWeek(){
   c.peakWeek={notes:"",days:[]};
   var templates=[
-    {protein:"200",carbs:"300",fat:"50",water:"2 gal",sodium:"5000mg",training:"Full depletion workout",cardio:"30min fasted AM",supplements:"Multivitamin, Vitamin C, Electrolytes",mealPlan:"High protein, moderate carbs - chicken/rice/vegetables",notes:"Start carb depletion, high water & sodium loading"},
-    {protein:"200",carbs:"100",fat:"45",water:"2 gal",sodium:"5000mg",training:"Depletion - Upper body",cardio:"30min fasted AM",supplements:"Multivitamin, Vitamin C, Electrolytes",mealPlan:"High protein, low carbs - chicken/fish, green vegetables",notes:"Continue depletion, maintain water & sodium loading"},
-    {protein:"200",carbs:"75",fat:"40",water:"2 gal",sodium:"3000mg",training:"Depletion - Lower body",cardio:"20min fasted AM",supplements:"Multivitamin, Vitamin C, Potassium",mealPlan:"Protein focus, minimal carbs - egg whites, chicken, greens",notes:"Deep depletion, start reducing sodium"},
-    {protein:"180",carbs:"400",fat:"35",water:"1 gal",sodium:"2000mg",training:"Light pump workout",cardio:"None",supplements:"Multivitamin, Vitamin C, Potassium",mealPlan:"Begin carb load - rice, sweet potato, oats w/ chicken",notes:"Begin carb load, reduce water by half"},
-    {protein:"160",carbs:"500",fat:"30",water:"64oz",sodium:"1000mg",training:"Light pump workout",cardio:"None",supplements:"Dandelion root, Vitamin C",mealPlan:"Heavy carb load - white rice, rice cakes, cream of rice, honey",notes:"Heavy carb load, continue water reduction"},
-    {protein:"160",carbs:"350",fat:"25",water:"32oz",sodium:"500mg",training:"Final pump-up",cardio:"None",supplements:"Dandelion root, Vitamin C",mealPlan:"Moderate carbs - rice, rice cakes, small amounts through day",notes:"Reduce water significantly, tighten up"},
-    {protein:"150",carbs:"250",fat:"20",water:"Sips only",sodium:"0",training:"Posing practice only",cardio:"None",supplements:"Dandelion root, Glycerin (optional)",mealPlan:"Light meals - rice cakes, honey, peanut butter, small protein",notes:"Water cut, get tan, rest, practice posing, lay flat"},
-    {protein:"150",carbs:"200",fat:"20",water:"Sips only",sodium:"0",training:"Pump-up backstage",cardio:"None",supplements:"Per protocol",mealPlan:"Rice cakes, honey, jam, peanut butter backstage. Sip wine optional.",notes:"SHOW DAY - eat to fill out, pump up 20min before stage"}
+    {protein:"",carbs:"",fat:"",water:"",sodium:"",training:"",cardio:"",supplements:"",mealPlan:"",notes:""},
+    {protein:"",carbs:"",fat:"",water:"",sodium:"",training:"",cardio:"",supplements:"",mealPlan:"",notes:""},
+    {protein:"",carbs:"",fat:"",water:"",sodium:"",training:"",cardio:"",supplements:"",mealPlan:"",notes:""},
+    {protein:"",carbs:"",fat:"",water:"",sodium:"",training:"",cardio:"",supplements:"",mealPlan:"",notes:""},
+    {protein:"",carbs:"",fat:"",water:"",sodium:"",training:"",cardio:"",supplements:"",mealPlan:"",notes:""},
+    {protein:"",carbs:"",fat:"",water:"",sodium:"",training:"",cardio:"",supplements:"",mealPlan:"",notes:""},
+    {protein:"",carbs:"",fat:"",water:"",sodium:"",training:"",cardio:"",supplements:"",mealPlan:"",notes:""},
+    {protein:"",carbs:"",fat:"",water:"",sodium:"",training:"",cardio:"",supplements:"",mealPlan:"",notes:""}
   ];
   for(var i=0;i<8;i++)c.peakWeek.days.push(JSON.parse(JSON.stringify(templates[i])));
   save();render();toast("\u2713 Peak week template generated");}
