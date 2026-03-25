@@ -1284,7 +1284,7 @@ function renderSettings(){
     +(memberSince?'<div style="margin-top:10px;font-size:9px;color:var(--dm);font-family:var(--mono);text-align:center">Tracking since '+fmtDate(memberSince)+'</div>':'')+'</div>'
     +'<div class="sl" style="margin-top:18px">GYM SETTINGS</div><div class="cd" style="padding:16px"><div class="field"><span class="lb">GYM CUT (%)</span><div style="display:flex;gap:4px;flex-wrap:wrap">'+ph+'</div></div><div class="field"><span class="lb">DEFAULT SESSION RATE ($)</span><input id="defRate" type="number" min="0" value="'+LS.get("defaultRate","")+'" onchange="LS.set(\'defaultRate\',this.value)"></div></div>'
     +'<div class="sl" style="margin-top:18px">DISPLAY</div><div class="cd" style="padding:16px"><div class="field"><span class="lb">COLOR THEME</span><div style="display:flex;gap:4px"><div class="chip'+(LS.get("theme","crimson")==="gold"?" on":"")+'" onclick="setTheme(\'gold\')">GOLD</div><div class="chip'+(LS.get("theme","crimson")==="crimson"?" on":"")+'" onclick="setTheme(\'crimson\')">CRIMSON</div></div></div><div class="field"><span class="lb">TEXT SIZE</span><div style="display:flex;gap:4px"><div class="chip'+(LS.get("fontScale","medium")==="small"?" on":"")+'" onclick="setFontScale(\'small\')">SMALL</div><div class="chip'+(LS.get("fontScale","medium")==="medium"?" on":"")+'" onclick="setFontScale(\'medium\')">MEDIUM</div><div class="chip'+(LS.get("fontScale","medium")==="large"?" on":"")+'" onclick="setFontScale(\'large\')">LARGE</div><div class="chip'+(LS.get("fontScale","medium")==="xl"?" on":"")+'" onclick="setFontScale(\'xl\')">XL</div></div></div><div class="field"><span class="lb">TIME FORMAT</span><div style="display:flex;gap:4px"><div class="chip'+(is24Hr()?"":" on")+'" onclick="LS.set(\'timeFormat\',\'12\');render()">12-Hour</div><div class="chip'+(is24Hr()?" on":"")+'" onclick="LS.set(\'timeFormat\',\'24\');render()">24-Hour</div></div></div><div><span class="lb">TIMER SOUND</span><div style="display:flex;gap:4px"><div class="chip'+(LS.get("timerSound",true)?" on":"")+'" onclick="LS.set(\'timerSound\',true);render()">ON</div><div class="chip'+(!LS.get("timerSound",true)?" on":"")+'" onclick="LS.set(\'timerSound\',false);render()">OFF</div></div></div></div>'
-    +'<div class="sl" style="margin-top:18px">CLIENT BOOKING PAGE</div><div class="cd" style="padding:16px"><div class="field"><span class="lb">BOOKING PAGE COLOR</span><div style="font-size:10px;color:var(--dm);margin-bottom:8px">Controls the theme clients see on your booking page</div><div style="display:flex;gap:4px"><div class="chip'+(LS.get("portalTheme","gold")==="gold"?" on":"")+'" onclick="setPortalTheme(\'gold\')">GOLD</div><div class="chip'+(LS.get("portalTheme","gold")==="crimson"?" on":"")+'" onclick="setPortalTheme(\'crimson\')">CRIMSON</div></div></div></div>'
+    +renderBookingSettings()
     +'<div class="sl" style="margin-top:18px">SECURITY</div><div class="cd" style="padding:16px"><div style="margin-bottom:12px"><div style="font-size:13px;font-weight:500;color:var(--wh)">PIN Lock</div></div><button class="btn2" onclick="changePIN()" style="width:100%;margin-bottom:8px">CHANGE PIN</button><button class="btn2" onclick="LS.set(\'tutorialDone\',false);showTutorial()" style="width:100%">REPLAY TUTORIAL</button></div>'
     +'<div class="sl" style="margin-top:18px">ALERTS & NOTIFICATIONS</div><div class="cd" style="padding:16px">'
     +(function(){var nRet=LS.get("notif_retention",true),nSched=LS.get("notif_schedule",true);return '<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--borderS)"><div><div style="font-size:13px;font-weight:500;color:var(--wh)">PR Celebrations</div><div style="font-size:10px;color:var(--dm)">Toast when a client hits a new weight record</div></div><div class="chip'+(nPR?" on":"")+'" onclick="toggleNotif(\'notif_pr\',this)" style="min-width:40px;text-align:center">'+(nPR?"ON":"OFF")+'</div></div><div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--borderS)"><div><div style="font-size:13px;font-weight:500;color:var(--wh)">Retention Warnings</div><div style="font-size:10px;color:var(--dm)">Flag clients inactive 7+ days</div></div><div class="chip'+(nRet?" on":"")+'" onclick="toggleNotif(\'notif_retention\',this)" style="min-width:40px;text-align:center">'+(nRet?"ON":"OFF")+'</div></div><div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0"><div><div style="font-size:13px;font-weight:500;color:var(--wh)">Schedule Reminders</div><div style="font-size:10px;color:var(--dm)">Show upcoming sessions on home</div></div><div class="chip'+(nSched?" on":"")+'" onclick="toggleNotif(\'notif_schedule\',this)" style="min-width:40px;text-align:center">'+(nSched?"ON":"OFF")+'</div></div>'
@@ -3135,6 +3135,114 @@ function checkBrowserNotifications(){
 // ── THEME ──
 function setTheme(t){LS.set("theme",t);applyTheme();render();}
 function setPortalTheme(t){LS.set("portalTheme",t);var sb=getSupabase();if(sb){sb.from("app_settings").upsert({key:"portal_theme",value:t},{onConflict:"key"}).then(function(){});}toast("\u2713 Booking page set to "+t.toUpperCase());render();}
+
+// ── BOOKING PORTAL SETTINGS ──
+var _bookingAvail=null;
+function loadBookingSettings(cb){
+  var sb=getSupabase();
+  if(!sb){if(cb)cb();return;}
+  sb.from("app_settings").select("value").eq("key","coach_availability").single().then(function(res){
+    if(res.data&&res.data.value)_bookingAvail=res.data.value;
+    else _bookingAvail={days:{0:false,1:true,2:true,3:true,4:true,5:true,6:true},startHour:6,endHour:20,slotMinutes:60,blockedDates:[],maxAdvanceDays:30,sessionTypes:["training","team","spraytan","posing","massage","dinner","consultation"]};
+    if(cb)cb();
+  }).catch(function(){
+    if(!_bookingAvail)_bookingAvail={days:{0:false,1:true,2:true,3:true,4:true,5:true,6:true},startHour:6,endHour:20,slotMinutes:60,blockedDates:[],maxAdvanceDays:30,sessionTypes:["training","team","spraytan","posing","massage","dinner","consultation"]};
+    if(cb)cb();
+  });
+}
+function saveBookingSettings(){
+  if(!_bookingAvail)return;
+  var sb=getSupabase();
+  if(!sb){toast("Connect cloud sync first");return;}
+  sb.from("app_settings").upsert({key:"coach_availability",value:_bookingAvail},{onConflict:"key"}).then(function(res){
+    if(res.error)toast("Save failed");
+  });
+}
+function toggleBookingDay(dow){
+  if(!_bookingAvail)return;
+  if(!_bookingAvail.days)_bookingAvail.days={0:false,1:true,2:true,3:true,4:true,5:true,6:true};
+  _bookingAvail.days[dow]=!_bookingAvail.days[dow];
+  saveBookingSettings();render();
+}
+function setBookingStart(h){if(!_bookingAvail)return;_bookingAvail.startHour=parseInt(h);saveBookingSettings();render();}
+function setBookingEnd(h){if(!_bookingAvail)return;_bookingAvail.endHour=parseInt(h);saveBookingSettings();render();}
+function setBookingSlot(m){if(!_bookingAvail)return;_bookingAvail.slotMinutes=parseInt(m);saveBookingSettings();render();}
+function setBookingMaxDays(d){if(!_bookingAvail)return;_bookingAvail.maxAdvanceDays=parseInt(d);saveBookingSettings();render();}
+function toggleSessionType(id){
+  if(!_bookingAvail)return;
+  if(!_bookingAvail.sessionTypes)_bookingAvail.sessionTypes=["training","team","spraytan","posing","massage","dinner","consultation"];
+  var idx=_bookingAvail.sessionTypes.indexOf(id);
+  if(idx>=0)_bookingAvail.sessionTypes.splice(idx,1);
+  else _bookingAvail.sessionTypes.push(id);
+  saveBookingSettings();render();
+}
+function addBlockedDate(){
+  var inp=document.getElementById("blockDateInput");
+  if(!inp||!inp.value)return;
+  if(!_bookingAvail)return;
+  if(!_bookingAvail.blockedDates)_bookingAvail.blockedDates=[];
+  if(_bookingAvail.blockedDates.indexOf(inp.value)<0){
+    _bookingAvail.blockedDates.push(inp.value);
+    _bookingAvail.blockedDates.sort();
+    saveBookingSettings();
+  }
+  render();
+}
+function removeBlockedDate(iso){
+  if(!_bookingAvail||!_bookingAvail.blockedDates)return;
+  var idx=_bookingAvail.blockedDates.indexOf(iso);
+  if(idx>=0){_bookingAvail.blockedDates.splice(idx,1);saveBookingSettings();render();}
+}
+function copyBookingLink(){
+  var sb=getSupabase();
+  var url=window.location.origin+"/book.html";
+  if(sb){
+    var sbUrl=LS.get("sb_url","");
+    var sbKey=LS.get("sb_key","");
+    if(sbUrl&&sbKey)url+="?sb_url="+encodeURIComponent(sbUrl)+"&sb_key="+encodeURIComponent(sbKey);
+  }
+  if(navigator.clipboard){navigator.clipboard.writeText(url).then(function(){toast("\u2713 Link copied!");}).catch(function(){toast("Copy failed");});}
+  else{toast("Copy not supported");}
+}
+function renderBookingSettings(){
+  if(!_bookingAvail){loadBookingSettings(function(){render();});return '<div class="sl" style="margin-top:18px">CLIENT BOOKING PAGE</div><div class="cd" style="padding:16px;text-align:center;color:var(--dm);font-size:11px">Loading booking settings...</div>';}
+  var avail=_bookingAvail;
+  var dayNames=["S","M","T","W","T","F","S"];
+  var dayChips="";
+  for(var i=0;i<7;i++){
+    var on=avail.days?avail.days[i]:i>=1&&i<=6;
+    dayChips+='<div class="chip'+(on?" on":"")+'" onclick="toggleBookingDay('+i+')" style="min-width:32px;text-align:center">'+dayNames[i]+'</div>';
+  }
+  var startH=avail.startHour||6,endH=avail.endHour||20;
+  var hourOpts=function(sel){var h="";for(var hr=4;hr<=22;hr++){var ap=hr>=12?"PM":"AM";var h12=hr===0?12:hr>12?hr-12:hr;h+='<option value="'+hr+'"'+(hr===sel?" selected":"")+'>'+h12+":00 "+ap+'</option>';}return h;};
+  var slotMin=avail.slotMinutes||60;
+  var maxDays=avail.maxAdvanceDays||30;
+  var allTypes=[{id:"training",name:"Training"},{id:"team",name:"Team Workout"},{id:"spraytan",name:"Spray Tan"},{id:"posing",name:"Posing"},{id:"massage",name:"Massage"},{id:"dinner",name:"Dinner"},{id:"consultation",name:"Consultation"}];
+  var activeTypes=avail.sessionTypes||["training","team","spraytan","posing","massage","dinner","consultation"];
+  var typeChips="";
+  for(var ti=0;ti<allTypes.length;ti++){
+    var isOn=activeTypes.indexOf(allTypes[ti].id)>=0;
+    typeChips+='<div class="chip'+(isOn?" on":"")+'" onclick="toggleSessionType(\''+allTypes[ti].id+'\')" style="font-size:9px">'+allTypes[ti].name+'</div>';
+  }
+  var blockedHtml="";
+  var blocked=avail.blockedDates||[];
+  if(blocked.length){
+    for(var bi=0;bi<blocked.length;bi++){
+      blockedHtml+='<div style="display:inline-flex;align-items:center;gap:4px;background:var(--accS);border:1px solid var(--borderS);border-radius:6px;padding:3px 8px;font-size:10px;font-family:var(--mono);color:var(--ow)">'+blocked[bi]+'<span onclick="removeBlockedDate(\''+blocked[bi]+'\')" style="cursor:pointer;color:var(--danger);font-size:12px;padding:0 2px">\u2715</span></div>';
+    }
+  }
+  return '<div class="sl" style="margin-top:18px">CLIENT BOOKING PAGE</div><div class="cd" style="padding:16px">'
+    +'<div class="field"><span class="lb">AVAILABLE DAYS</span><div style="display:flex;gap:4px;flex-wrap:wrap">'+dayChips+'</div></div>'
+    +'<div class="field"><span class="lb">HOURS</span><div style="display:flex;gap:8px;align-items:center"><select onchange="setBookingStart(this.value)" style="font-size:11px;padding:8px 10px;width:auto">'+hourOpts(startH)+'</select><span style="color:var(--dm);font-size:11px">to</span><select onchange="setBookingEnd(this.value)" style="font-size:11px;padding:8px 10px;width:auto">'+hourOpts(endH)+'</select></div></div>'
+    +'<div class="field"><span class="lb">SLOT DURATION</span><div style="display:flex;gap:4px"><div class="chip'+(slotMin===30?" on":"")+'" onclick="setBookingSlot(30)">30 min</div><div class="chip'+(slotMin===45?" on":"")+'" onclick="setBookingSlot(45)">45 min</div><div class="chip'+(slotMin===60?" on":"")+'" onclick="setBookingSlot(60)">60 min</div><div class="chip'+(slotMin===90?" on":"")+'" onclick="setBookingSlot(90)">90 min</div></div></div>'
+    +'<div class="field"><span class="lb">MAX ADVANCE BOOKING</span><div style="display:flex;gap:4px;flex-wrap:wrap"><div class="chip'+(maxDays===7?" on":"")+'" onclick="setBookingMaxDays(7)">7 days</div><div class="chip'+(maxDays===14?" on":"")+'" onclick="setBookingMaxDays(14)">14 days</div><div class="chip'+(maxDays===30?" on":"")+'" onclick="setBookingMaxDays(30)">30 days</div><div class="chip'+(maxDays===60?" on":"")+'" onclick="setBookingMaxDays(60)">60 days</div><div class="chip'+(maxDays===90?" on":"")+'" onclick="setBookingMaxDays(90)">90 days</div></div></div>'
+    +'<div class="field"><span class="lb">SESSION TYPES</span><div style="display:flex;gap:4px;flex-wrap:wrap">'+typeChips+'</div></div>'
+    +'<div class="field"><span class="lb">BLOCKED DATES</span><div style="display:flex;gap:6px;align-items:center;margin-bottom:8px"><input type="date" id="blockDateInput" style="font-size:11px;padding:8px 10px;width:auto;flex:1"><button class="btn2" onclick="addBlockedDate()" style="padding:6px 12px;font-size:8px">BLOCK</button></div>'+(blockedHtml?'<div style="display:flex;gap:6px;flex-wrap:wrap">'+blockedHtml+'</div>':'')+'</div>'
+    +'<div class="field"><span class="lb">BOOKING PAGE COLOR</span><div style="font-size:10px;color:var(--dm);margin-bottom:8px">Controls the theme clients see on your booking page</div><div style="display:flex;gap:4px"><div class="chip'+(LS.get("portalTheme","gold")==="gold"?" on":"")+'" onclick="setPortalTheme(\'gold\')">GOLD</div><div class="chip'+(LS.get("portalTheme","gold")==="crimson"?" on":"")+'" onclick="setPortalTheme(\'crimson\')">CRIMSON</div></div></div>'
+    +'<div class="field" style="margin-bottom:0"><span class="lb">SHAREABLE BOOKING LINK</span><div style="font-size:10px;color:var(--dm);margin-bottom:8px">Send this to clients so they can book sessions</div><button class="btn2" onclick="copyBookingLink()" style="width:100%;display:flex;align-items:center;justify-content:center;gap:6px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> COPY BOOKING LINK</button></div>'
+    +'</div>';
+}
+
 function setFontScale(s){LS.set("fontScale",s);applyFontScale();render();}
 function applyFontScale(){var s=LS.get("fontScale","medium");var z=s==="small"?"0.92":s==="large"?"1.12":s==="xl"?"1.24":"1";document.body.style.zoom=z;}
 function applyTheme(){var t=LS.get("theme","crimson");if(t==="crimson")document.body.classList.add("theme-crimson");else document.body.classList.remove("theme-crimson");var mc=document.querySelector('meta[name="theme-color"]');if(mc)mc.content=t==="crimson"?"#1a0808":"#1a1408";generateThemeIcon(t);}
