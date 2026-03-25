@@ -29,7 +29,7 @@
   --accGlow:rgba(200,160,40,0.25);
   --ice:#f0e8d0;--wh:#f0ece4;--ow:#c8c0b0;--mu:#908878;--dm:#605848;--dmL:#3a3428;
   --glass:rgba(200,160,40,0.02);--glassB:rgba(200,160,40,0.04);
-  --warn:#e8b878;--danger:#d87878;--success:#78c878;
+  --warn:#e8b878;--danger:#d87878;--success:#78c878;--giant:#c87070;--noshow:#c4a070;
   --display:'Cinzel',serif;--body:'Rajdhani',sans-serif;--mono:'IBM Plex Mono',monospace;
   --sidebar:260px;
   --goldGrad:linear-gradient(135deg,#8B6914,#C49628,#E8C050,#C49628,#8B6914);
@@ -68,7 +68,7 @@ button{font-family:var(--body);cursor:pointer;border:none;outline:none;transitio
 .status-chip{display:inline-flex;padding:3px 8px;border-radius:4px;font-size:9px;font-weight:700;font-family:var(--mono);letter-spacing:.06em}
 .status-complete{background:rgba(120,200,120,.1);border:1px solid rgba(120,200,120,.2);color:var(--success)}
 .status-cancelled{background:rgba(216,120,120,.08);border:1px solid rgba(216,120,120,.25);color:var(--danger)}
-.status-noshow{background:rgba(180,140,100,.08);border:1px solid rgba(180,140,100,.2);color:#c4a070}
+.status-noshow{background:rgba(180,140,100,.08);border:1px solid rgba(180,140,100,.2);color:var(--noshow)}
 .status-latecancel{background:rgba(232,184,120,.08);border:1px solid rgba(232,184,120,.2);color:var(--warn)}
 #app{max-width:640px;margin:0 auto;min-height:100vh;position:relative;z-index:1}
 .hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 12px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(8,8,10,.97);backdrop-filter:blur(28px);z-index:10;-webkit-transform:translateZ(0);transform:translateZ(0)}
@@ -90,7 +90,7 @@ button{font-family:var(--body);cursor:pointer;border:none;outline:none;transitio
 .ex-summary{padding:12px 14px;background:var(--glassB);border-radius:10px;border:1px solid var(--borderS);margin-top:8px}
 .ex-summary-line{font-size:12px;color:var(--ow);font-family:var(--mono);line-height:1.9}
 .superset-card{border-left:3px solid var(--acc);padding-left:14px}
-.giant-card{border-left:3px solid #c87070;padding-left:14px}
+.giant-card{border-left:3px solid var(--giant);padding-left:14px}
 .desk-logo{display:none;align-items:center;gap:14px;padding:28px 24px 22px;border-bottom:1px solid var(--border);margin-bottom:8px}
 .timer-bar{position:fixed;top:0;left:0;right:0;height:2px;z-index:200;pointer-events:none;opacity:0;transition:opacity .3s}
 .timer-bar.active{opacity:1}
@@ -706,7 +706,7 @@ function clientFormFields(c){
   c=c||{};
   var levels=["Beginner","Intermediate","Advanced","Competitor"];
   var cTypes=["In-Person","Online","Hybrid"];
-  var svcs=["Training","Nutrition","Contest Prep","Posing","Full Coaching","Anabolics","Peptides","Fat Loss / GLPs","Group"];
+  var svcs=["Training","Nutrition","Contest Prep","Posing","Full Coaching","Anabolics","Peptides","Cutting Agents","Group"];
   var durs=["30 min","45 min","60 min","90 min"];
   var bills=["Per Session","Weekly","Bi-Weekly","Monthly","Prepaid"];
   var curSvcs=(c.services||"Training").split(",").map(function(s){return s.trim();});
@@ -931,7 +931,7 @@ function renderLogSession(){
     +'<div><span class="lb">DURATION</span><div style="display:flex;gap:3px;flex-wrap:wrap">'+buildDurationChips(pfDur)+'</div><input type="hidden" id="sDu" value="'+pfDur+'"></div></div>'
     +'<div class="field"><span class="lb">PRICE ($)</span><input id="sR" type="number" min="0" value="'+rate+'"></div>'
     +'<div><span class="lb">STATUS</span><div style="display:flex;gap:4px;flex-wrap:wrap">'+stOpts+'</div><input type="hidden" id="sSt" value="complete"></div></div>';
-  html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-top:18px"><div style="display:flex;align-items:center;gap:8px"><div class="sl" style="margin:0">EXERCISES</div><span id="exCountBadge" style="font-size:9px;color:var(--dm);font-family:var(--mono)">0 exercises</span></div><div style="display:flex;gap:4px;flex-wrap:wrap"><button class="btn2" onclick="showTemplateLoader()" style="padding:6px 10px;font-size:8px;color:var(--accVib);border-color:var(--accB)">\u2b07 TEMPLATE</button><button class="btn2" onclick="addExercise(\'normal\')" style="padding:6px 10px;font-size:8px">+ EXERCISE</button><button class="btn2" onclick="addExercise(\'superset\')" style="padding:6px 10px;font-size:8px;color:var(--acc);border-color:rgba(200,160,80,.3)">+ SUPERSET</button><button class="btn2" onclick="addExercise(\'giant\')" style="padding:6px 10px;font-size:8px;color:#c87070;border-color:rgba(200,112,112,.3)">+ GIANT SET</button></div></div>'
+  html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-top:18px"><div style="display:flex;align-items:center;gap:8px"><div class="sl" style="margin:0">EXERCISES</div><span id="exCountBadge" style="font-size:9px;color:var(--dm);font-family:var(--mono)">0 exercises</span></div><div style="display:flex;gap:4px;flex-wrap:wrap"><button class="btn2" onclick="showTemplateLoader()" style="padding:6px 10px;font-size:8px;color:var(--accVib);border-color:var(--accB)">\u2b07 TEMPLATE</button><button class="btn2" onclick="addExercise(\'normal\')" style="padding:6px 10px;font-size:8px">+ EXERCISE</button><button class="btn2" onclick="addExercise(\'superset\')" style="padding:6px 10px;font-size:8px;color:var(--acc);border-color:rgba(200,160,80,.3)">+ SUPERSET</button><button class="btn2" onclick="addExercise(\'giant\')" style="padding:6px 10px;font-size:8px;color:var(--giant);border-color:rgba(200,112,112,.3)">+ GIANT SET</button></div></div>'
     +'<div id="templateLoader" style="display:none;margin-top:8px"></div>'
     +'<div id="exList" style="margin-top:8px"></div>';
   html+='<div class="sl" style="margin-top:22px">SESSION NOTES</div><div class="cd" style="padding:18px"><div class="field"><span class="lb">NOTES</span><textarea id="sN" rows="3" placeholder="Form notes, adjustments, observations..."></textarea></div><div class="field"><span class="lb">CLIENT ENERGY LEVEL (1\u201310)</span><div style="display:flex;gap:4px">'+dots+'</div></div><div><span class="lb">NEXT SESSION PLAN</span><textarea id="sNx" rows="2" placeholder="Focus areas, progressions, notes for next time..."></textarea></div></div>';
@@ -984,10 +984,10 @@ function ensureExerciseDatalist(){
 function addExercise(mode){
   mode=mode||"normal";_exCount++;ensureExerciseDatalist();
   var d=document.createElement("div");d.className="cd";d.id="ex"+_exCount;d.style.padding="16px";d.dataset.mode=mode;
-  var badge=mode==="superset"?'<span style="font-size:8px;color:var(--acc);background:var(--accS);border:1px solid var(--border);padding:2px 6px;border-radius:4px;font-family:var(--mono)">SUPERSET</span>':mode==="giant"?'<span style="font-size:8px;color:#c87070;background:rgba(200,112,112,.1);border:1px solid rgba(200,112,112,.2);padding:2px 6px;border-radius:4px;font-family:var(--mono)">GIANT SET</span>':'';
+  var badge=mode==="superset"?'<span style="font-size:8px;color:var(--acc);background:var(--accS);border:1px solid var(--border);padding:2px 6px;border-radius:4px;font-family:var(--mono)">SUPERSET</span>':mode==="giant"?'<span style="font-size:8px;color:var(--giant);background:rgba(200,112,112,.1);border:1px solid rgba(200,112,112,.2);padding:2px 6px;border-radius:4px;font-family:var(--mono)">GIANT SET</span>':'';
   var exInputs='<div class="exGroup"><input class="xN" list="exHistory" placeholder="Exercise name" style="margin-bottom:6px;font-weight:600"><div class="xSets"></div><button class="btn2" onclick="addSet(this.closest(\'.exGroup\'))" style="margin-top:4px;padding:4px 10px;font-size:8px">+ SET</button></div>';
   if(mode==="superset")exInputs='<div class="exGroup"><input class="xN" list="exHistory" placeholder="Exercise A" style="margin-bottom:6px;font-weight:600"><div class="xSets"></div><button class="btn2" onclick="addSet(this.closest(\'.exGroup\'))" style="margin-top:4px;padding:4px 10px;font-size:8px">+ SET</button></div><div style="text-align:center;font-size:9px;color:var(--dm);font-family:var(--mono);margin:8px 0;letter-spacing:.1em">PAIRED WITH</div><div class="exGroup"><input class="xN" list="exHistory" placeholder="Exercise B" style="margin-bottom:6px;font-weight:600"><div class="xSets"></div><button class="btn2" onclick="addSet(this.closest(\'.exGroup\'))" style="margin-top:4px;padding:4px 10px;font-size:8px">+ SET</button></div><button class="btn2" onclick="addGiantExercise(this)" style="margin-top:6px;padding:4px 10px;font-size:8px;color:var(--acc);border-color:rgba(200,160,80,.2)">+ ADD EXERCISE TO SET</button>';
-  if(mode==="giant")exInputs='<div class="exGroup"><input class="xN" list="exHistory" placeholder="Exercise A" style="margin-bottom:6px;font-weight:600"><div class="xSets"></div><button class="btn2" onclick="addSet(this.closest(\'.exGroup\'))" style="margin-top:4px;padding:4px 10px;font-size:8px">+ SET</button></div><div style="text-align:center;font-size:8px;color:var(--dm);font-family:var(--mono);margin:6px 0">\u2193</div><div class="exGroup"><input class="xN" list="exHistory" placeholder="Exercise B" style="margin-bottom:6px;font-weight:600"><div class="xSets"></div><button class="btn2" onclick="addSet(this.closest(\'.exGroup\'))" style="margin-top:4px;padding:4px 10px;font-size:8px">+ SET</button></div><div style="text-align:center;font-size:8px;color:var(--dm);font-family:var(--mono);margin:6px 0">\u2193</div><div class="exGroup"><input class="xN" list="exHistory" placeholder="Exercise C" style="margin-bottom:6px;font-weight:600"><div class="xSets"></div><button class="btn2" onclick="addSet(this.closest(\'.exGroup\'))" style="margin-top:4px;padding:4px 10px;font-size:8px">+ SET</button></div><button class="btn2" onclick="addGiantExercise(this)" style="margin-top:6px;padding:4px 10px;font-size:8px;color:#c87070;border-color:rgba(200,112,112,.2)">+ ADD EXERCISE TO SET</button>';
+  if(mode==="giant")exInputs='<div class="exGroup"><input class="xN" list="exHistory" placeholder="Exercise A" style="margin-bottom:6px;font-weight:600"><div class="xSets"></div><button class="btn2" onclick="addSet(this.closest(\'.exGroup\'))" style="margin-top:4px;padding:4px 10px;font-size:8px">+ SET</button></div><div style="text-align:center;font-size:8px;color:var(--dm);font-family:var(--mono);margin:6px 0">\u2193</div><div class="exGroup"><input class="xN" list="exHistory" placeholder="Exercise B" style="margin-bottom:6px;font-weight:600"><div class="xSets"></div><button class="btn2" onclick="addSet(this.closest(\'.exGroup\'))" style="margin-top:4px;padding:4px 10px;font-size:8px">+ SET</button></div><div style="text-align:center;font-size:8px;color:var(--dm);font-family:var(--mono);margin:6px 0">\u2193</div><div class="exGroup"><input class="xN" list="exHistory" placeholder="Exercise C" style="margin-bottom:6px;font-weight:600"><div class="xSets"></div><button class="btn2" onclick="addSet(this.closest(\'.exGroup\'))" style="margin-top:4px;padding:4px 10px;font-size:8px">+ SET</button></div><button class="btn2" onclick="addGiantExercise(this)" style="margin-top:6px;padding:4px 10px;font-size:8px;color:var(--giant);border-color:rgba(200,112,112,.2)">+ ADD EXERCISE TO SET</button>';
   d.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:11px;font-weight:700;color:var(--acc);font-family:var(--mono)">EXERCISE '+_exCount+'</span>'+badge+'</div><span style="font-size:14px;color:var(--danger);cursor:pointer;padding:6px 10px" onclick="this.closest(\'.cd\').remove()">&#10005;</span></div>'+exInputs+'<div class="intensifier-wrap" style="margin-top:8px"><div style="display:flex;gap:3px;flex-wrap:wrap;align-items:center"><div class="chip chip-tempo on" onclick="pickIntensifier(this)">Normal</div><div class="chip chip-tempo" onclick="pickIntensifier(this)">Drop Set</div><div class="chip chip-tempo" onclick="pickIntensifier(this)">Rest-Pause</div><div class="chip chip-tempo" onclick="pickIntensifier(this)">Myo Reps</div><div class="chip chip-tempo" onclick="pickIntensifier(this)">FST-7</div><div class="chip chip-tempo" onclick="pickIntensifier(this)">Slow Ecc</div><span class="btn2" onclick="var m=this.closest(\'.intensifier-wrap\').querySelector(\'.more-tech\');m.style.display=m.style.display===\'none\'?\'flex\':\'none\';this.textContent=m.style.display===\'none\'?\'More \u25B8\':\'Less \u25BE\'" style="font-size:7px;padding:2px 6px;cursor:pointer;color:var(--dm)">More \u25B8</span></div><div class="more-tech" style="display:none;gap:3px;flex-wrap:wrap;margin-top:4px"><div class="chip chip-tempo" onclick="pickIntensifier(this)">Forced Reps</div><div class="chip chip-tempo" onclick="pickIntensifier(this)">Partial Reps</div><div class="chip chip-tempo" onclick="pickIntensifier(this)">Cluster Set</div><div class="chip chip-tempo" onclick="pickIntensifier(this)">Loaded Stretch</div><div class="chip chip-tempo" onclick="pickIntensifier(this)">Mech. Drop</div><div class="chip chip-tempo" onclick="pickIntensifier(this)">1.5 Reps</div><div class="chip chip-tempo" onclick="pickIntensifier(this)">Pause Rep</div><div class="chip chip-tempo" onclick="pickIntensifier(this)">Iso Hold</div><div class="chip chip-tempo" onclick="pickIntensifier(this)">BFR</div></div></div><div style="display:flex;gap:6px;margin-top:10px"><input class="xNote" placeholder="Notes, cues, substitutions..." style="flex:1;font-size:12px"><input class="xRest" placeholder="Rest" style="width:70px;font-size:12px;text-align:center"></div>';
   var exList=el("exList");if(!exList)return;
   exList.appendChild(d);
@@ -995,7 +995,7 @@ function addExercise(mode){
   updateExCount();
 }
 function updateExCount(){var c=document.querySelectorAll("#exList .cd").length;var badge=el("exCountBadge");if(badge)badge.textContent=c+" exercise"+(c!==1?"s":"");}
-function addGiantExercise(btn){var card=btn.closest(".cd"),groups=card.querySelectorAll(".exGroup"),n=groups.length+1;var div=document.createElement("div");div.innerHTML='<div style="text-align:center;font-size:8px;color:var(--dm);font-family:var(--mono);margin:6px 0">\u2193</div><div class="exGroup"><input class="xN" list="exHistory" placeholder="Exercise '+String.fromCharCode(64+n)+'" style="margin-bottom:6px;font-weight:600"><div class="xSets"></div><button class="btn2" onclick="addSet(this.closest(\'.exGroup\'))" style="margin-top:4px;padding:4px 10px;font-size:8px">+ SET</button></div>';card.insertBefore(div,btn);addSet(div.querySelector(".exGroup"));if(n>=3&&card.dataset.mode==="superset"){card.dataset.mode="giant";var badge=card.querySelector("span[style*='SUPERSET']")||card.querySelector("span");var badges=card.querySelectorAll("span[style*='font-size:8px']");for(var bi=0;bi<badges.length;bi++){if(badges[bi].textContent.trim()==="SUPERSET"){badges[bi].textContent="GIANT SET";badges[bi].style.color="#c87070";badges[bi].style.background="rgba(200,112,112,.1)";badges[bi].style.borderColor="rgba(200,112,112,.2)";break;}}}}
+function addGiantExercise(btn){var card=btn.closest(".cd"),groups=card.querySelectorAll(".exGroup"),n=groups.length+1;var div=document.createElement("div");div.innerHTML='<div style="text-align:center;font-size:8px;color:var(--dm);font-family:var(--mono);margin:6px 0">\u2193</div><div class="exGroup"><input class="xN" list="exHistory" placeholder="Exercise '+String.fromCharCode(64+n)+'" style="margin-bottom:6px;font-weight:600"><div class="xSets"></div><button class="btn2" onclick="addSet(this.closest(\'.exGroup\'))" style="margin-top:4px;padding:4px 10px;font-size:8px">+ SET</button></div>';card.insertBefore(div,btn);addSet(div.querySelector(".exGroup"));if(n>=3&&card.dataset.mode==="superset"){card.dataset.mode="giant";var badge=card.querySelector("span[style*='SUPERSET']")||card.querySelector("span");var badges=card.querySelectorAll("span[style*='font-size:8px']");for(var bi=0;bi<badges.length;bi++){if(badges[bi].textContent.trim()==="SUPERSET"){badges[bi].textContent="GIANT SET";badges[bi].style.color="var(--giant)";badges[bi].style.background="rgba(200,112,112,.1)";badges[bi].style.borderColor="rgba(200,112,112,.2)";break;}}}}
 function addSet(group){
   var rows=group.querySelector(".xSets");
   var n=rows.querySelectorAll(".set-row").length+1;
@@ -1099,7 +1099,7 @@ function renderExerciseSummary(ex){
     var modeLabel=ex.mode==="superset"?"SUPERSET":"GIANT SET";
     var groupNames=ex.grouped.map(function(g){return g.name||"";}).filter(function(n){return n;}).join(" + ");
     var tempoB=(ex.tempo&&ex.tempo!=="Normal")?'<span style="font-size:8px;color:var(--acc);background:var(--accS);border:1px solid var(--accB);padding:2px 6px;border-radius:4px;font-family:var(--mono)">'+ex.tempo+'</span>':'';
-    var h='<div class="ex-summary '+modeClass+'"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:8px;font-weight:700;color:'+(ex.mode==="superset"?"var(--acc)":"#c87070")+';font-family:var(--mono);letter-spacing:.1em">'+modeLabel+'</span>'+tempoB+'<span style="font-size:12px;font-weight:700;color:var(--wh)">'+esc(groupNames)+'</span></div>';
+    var h='<div class="ex-summary '+modeClass+'"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:8px;font-weight:700;color:'+(ex.mode==="superset"?"var(--acc)":"var(--giant)")+';font-family:var(--mono);letter-spacing:.1em">'+modeLabel+'</span>'+tempoB+'<span style="font-size:12px;font-weight:700;color:var(--wh)">'+esc(groupNames)+'</span></div>';
     for(var g=0;g<ex.grouped.length;g++){var grp=ex.grouped[g];h+='<div style="margin-top:4px"><div style="font-size:11px;font-weight:500;color:var(--wh)">'+esc(grp.name)+'</div>';var sts=grp.sets||[];for(var j=0;j<sts.length;j++)h+='<div class="ex-summary-line">S'+(j+1)+': '+(sts[j].w||"\u2014")+' lbs \u00d7 '+(sts[j].r||"\u2014")+' reps'+(sts[j].n?" \u00b7 "+esc(sts[j].n):"")+'</div>';h+='</div>';}
     if(ex.note)h+='<div style="font-size:10px;color:var(--mu);font-style:italic;margin-top:6px">'+esc(ex.note)+'</div>';
     return h+'</div>';
@@ -2041,7 +2041,7 @@ var _workouts=LS.get("workouts",[]),_editWorkout=null;
 var _programs=LS.get("programs",[]),_editProgram=null,_programSectionCollapsed={};
 function savePrograms(){LS.set("programs",_programs);}
 function newProgram(){var p={id:uid(),name:"New Program",clientId:"",sections:[],protocolNotes:"",created_at:new Date().toISOString()};_programs.push(p);savePrograms();_editProgram=p.id;render();}
-function goToClientProgram(idx){var c=clients[idx];if(!c)return;var existing=_programs.find(function(p){return p.clientId===c.id;});if(existing){_editProgram=existing.id;navStack=[];currentView={tab:"nutrition",view:"main",data:{}};render();window.scrollTo({top:0,behavior:"smooth"});return;}var svcs=(c.services||"").toLowerCase();var auto=[];if(svcs.indexOf("training")>=0||svcs.indexOf("full coaching")>=0)auto.push("training");if(svcs.indexOf("nutrition")>=0||svcs.indexOf("full coaching")>=0||svcs.indexOf("contest prep")>=0)auto.push("nutrition");if(svcs.indexOf("anabolics")>=0||svcs.indexOf("contest prep")>=0||svcs.indexOf("full coaching")>=0)auto.push("anabolics");if(svcs.indexOf("peptides")>=0||svcs.indexOf("contest prep")>=0)auto.push("peptides");if(svcs.indexOf("full coaching")>=0||svcs.indexOf("contest prep")>=0)auto.push("fatloss");if(svcs.indexOf("nutrition")>=0||svcs.indexOf("full coaching")>=0)auto.push("supplements");auto.push("protocol");var p={id:uid(),name:c.name+" Program",clientId:c.id,sections:auto,protocolNotes:"",created_at:new Date().toISOString()};_programs.push(p);savePrograms();_editProgram=p.id;navStack=[];currentView={tab:"nutrition",view:"main",data:{}};render();window.scrollTo({top:0,behavior:"smooth"});toast("\u2713 Program created \u2014 "+auto.length+" sections: "+auto.map(function(s){return s==="protocol"?"Coach Notes":s==="fatloss"?"Fat Loss":s.charAt(0).toUpperCase()+s.slice(1);}).join(", "));}
+function goToClientProgram(idx){var c=clients[idx];if(!c)return;var existing=_programs.find(function(p){return p.clientId===c.id;});if(existing){_editProgram=existing.id;navStack=[];currentView={tab:"nutrition",view:"main",data:{}};render();window.scrollTo({top:0,behavior:"smooth"});return;}var svcs=(c.services||"").toLowerCase();var auto=[];if(svcs.indexOf("training")>=0||svcs.indexOf("full coaching")>=0)auto.push("training");if(svcs.indexOf("nutrition")>=0||svcs.indexOf("full coaching")>=0||svcs.indexOf("contest prep")>=0)auto.push("nutrition");if(svcs.indexOf("anabolics")>=0||svcs.indexOf("contest prep")>=0||svcs.indexOf("full coaching")>=0)auto.push("anabolics");if(svcs.indexOf("peptides")>=0||svcs.indexOf("contest prep")>=0)auto.push("peptides");if(svcs.indexOf("full coaching")>=0||svcs.indexOf("contest prep")>=0)auto.push("fatloss");if(svcs.indexOf("nutrition")>=0||svcs.indexOf("full coaching")>=0)auto.push("supplements");auto.push("protocol");var p={id:uid(),name:c.name+" Program",clientId:c.id,sections:auto,protocolNotes:"",created_at:new Date().toISOString()};_programs.push(p);savePrograms();_editProgram=p.id;navStack=[];currentView={tab:"nutrition",view:"main",data:{}};render();window.scrollTo({top:0,behavior:"smooth"});toast("\u2713 Program created \u2014 "+auto.length+" sections: "+auto.map(function(s){return s==="protocol"?"Coach Notes":s==="fatloss"?"Cutting Agents":s==="anabolics"?"PED Protocol":s.charAt(0).toUpperCase()+s.slice(1);}).join(", "));}
 function deleteProgram(){showDoubleConfirm("Delete Program","Permanently delete this program?").then(function(ok){if(!ok)return;_programs=_programs.filter(function(p){return p.id!==_editProgram;});savePrograms();_editProgram=null;render();});}
 function duplicateProgram(){var p=_programs.find(function(x){return x.id===_editProgram;});if(!p)return;var c=JSON.parse(JSON.stringify(p));c.id=uid();c.name=p.name+" (Copy)";c.created_at=new Date().toISOString();_programs.push(c);savePrograms();_editProgram=c.id;render();toast("\u2713 Duplicated");}
 function progSet(k,v){var p=_programs.find(function(x){return x.id===_editProgram;});if(!p)return;p[k]=v;if(k==="clientId"&&v&&p.sections.length===0){var cl=clientById(v);if(cl){var svcs=(cl.services||"").toLowerCase();var auto=[];if(svcs.indexOf("training")>=0||svcs.indexOf("full coaching")>=0)auto.push("training");if(svcs.indexOf("nutrition")>=0||svcs.indexOf("full coaching")>=0||svcs.indexOf("contest prep")>=0)auto.push("nutrition");if(svcs.indexOf("anabolics")>=0||svcs.indexOf("contest prep")>=0||svcs.indexOf("full coaching")>=0)auto.push("anabolics");if(svcs.indexOf("peptides")>=0||svcs.indexOf("contest prep")>=0)auto.push("peptides");if(svcs.indexOf("full coaching")>=0||svcs.indexOf("contest prep")>=0)auto.push("fatloss");if(svcs.indexOf("nutrition")>=0||svcs.indexOf("full coaching")>=0)auto.push("supplements");auto.push("protocol");p.sections=auto;}}savePrograms();if(k==="clientId")render();}
@@ -2110,7 +2110,7 @@ function renderProgramBuilder(){
   var html='<button class="btn2" onclick="_editProgram=null;render()" style="margin-bottom:14px">\u2039 Back</button>'
     +'<div class="cd" style="padding:14px;margin-bottom:14px"><div class="g2 field"><div><span class="lb">PROGRAM NAME</span><input value="'+esc(pg.name)+'" onchange="progSet(\'name\',this.value)"></div><div><span class="lb">CLIENT</span><select onchange="progSet(\'clientId\',this.value)">'+cOpts+'</select></div></div></div>';
   // Sections
-  var SECTION_TYPES=[["training","Training"],["nutrition","Nutrition"],["anabolics","Anabolics"],["peptides","Peptides"],["fatloss","Fat Loss / GLPs"],["supplements","Supplements"],["water","Water"],["protocol","Coach Notes"]];
+  var SECTION_TYPES=[["training","Training"],["nutrition","Nutrition"],["anabolics","PED Protocol"],["peptides","Peptides"],["fatloss","Cutting Agents"],["supplements","Supplements"],["water","Water"],["protocol","Coach Notes"]];
   var _pgClient=pg.clientId?clientById(pg.clientId):null;
   for(var si=0;si<pg.sections.length;si++){
     var sType=pg.sections[si];
@@ -2165,7 +2165,7 @@ function renderProgramBuilder(){
 }
 function showAddSectionMenu(){
   var pg=_programs.find(function(x){return x.id===_editProgram;});if(!pg)return;
-  var SECTION_TYPES=[["training","Training","Workouts, exercises & cardio"],["nutrition","Nutrition","Meal plans & macros"],["anabolics","Anabolics","PED protocols"],["peptides","Peptides","BPC-157, TB-500, CJC, growth peptides"],["fatloss","Fat Loss / GLPs","Semaglutide, Retatrutide, L-Carnitine, thermogenics"],["supplements","Supplements","Supplement stack"],["water","Water","Hydration tracking"],["protocol","Coach Notes","General notes, instructions & comments"]];
+  var SECTION_TYPES=[["training","Training","Workouts, exercises & cardio"],["nutrition","Nutrition","Meal plans & macros"],["anabolics","PED Protocol","Anabolics, AIs, SERMs, ancillaries & health"],["peptides","Peptides","BPC-157, TB-500, CJC, HGH, growth peptides"],["fatloss","Cutting Agents","GLPs, thermogenics, fat burners, appetite suppressants"],["supplements","Supplements","Supplement stack"],["water","Water","Hydration tracking"],["protocol","Coach Notes","General notes, instructions & comments"]];
   var avail=SECTION_TYPES.filter(function(t){return pg.sections.indexOf(t[0])<0;});
   if(!avail.length){toast("All sections added");return;}
   var content='<div>';
@@ -2190,7 +2190,7 @@ function renderProgramTrainingSection(pg){
     html+='<div style="padding:12px;text-align:center;color:var(--dm);font-size:11px;font-family:var(--mono)">Select a client above to manage workouts</div>';
   } else {
     if(!clientWks.length)html+='<div style="padding:12px;text-align:center;color:var(--dm);font-size:11px;margin-bottom:8px">No workouts for this client</div>';
-    html+='<button class="btn2" onclick="newWorkoutForClient(\''+pg.clientId+'\')" style="width:100%;padding:8px;font-size:10px">+ NEW WORKOUT</button>';
+    html+='<div style="display:flex;gap:6px"><button class="btn2" onclick="newWorkoutForClient(\''+pg.clientId+'\')" style="flex:1;padding:8px;font-size:10px">+ NEW WORKOUT</button><button class="btn2" onclick="showFST7Presets(\''+pg.clientId+'\')" style="flex:1;padding:8px;font-size:10px">FST-7 TEMPLATES</button></div>';
   }
   // Also show client program (training days) if exists
   if(pg.clientId){
@@ -2252,7 +2252,7 @@ function renderProgramPeptidesSection(pg){
   return html;
 }
 function addPeptide(){showPeptidePicker();}
-function rmPeptide(i){var pg=_programs.find(function(x){return x.id===_editProgram;});if(!pg||!pg.clientId)return;var cl=clientById(pg.clientId);if(!cl)return;cl.peptides.splice(i,1);save();render();}
+function rmPeptide(i){var pg=_programs.find(function(x){return x.id===_editProgram;});if(!pg||!pg.clientId)return;var cl=clientById(pg.clientId);if(!cl||!cl.peptides)return;cl.peptides.splice(i,1);save();render();}
 function setPeptideNotes(v){var pg=_programs.find(function(x){return x.id===_editProgram;});if(!pg||!pg.clientId)return;var cl=clientById(pg.clientId);if(!cl)return;cl.peptideNotes=v;save();}
 function showPeptidePicker(){
   // Get peptides from ANABOLICS_DB
@@ -2311,9 +2311,9 @@ function renderProgramFatlossSection(pg){
   if(!pg.clientId)return '<div style="padding:12px;text-align:center;color:var(--dm);font-size:11px;font-family:var(--mono)">Select a client above</div>';
   var cl=clientById(pg.clientId);if(!cl)return '';
   if(!cl.fatloss)cl.fatloss=[];
-  var html='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><span class="sl" style="margin:0">FAT LOSS / GLP PROTOCOL</span><button class="btn2" onclick="addFatloss()" style="padding:5px 10px;font-size:8px">+ ADD</button></div>';
+  var html='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><span class="sl" style="margin:0">CUTTING AGENTS</span><button class="btn2" onclick="addFatloss()" style="padding:5px 10px;font-size:8px">+ ADD</button></div>';
   if(!cl.fatloss.length){
-    html+='<div class="cd" style="padding:20px;text-align:center;border:1px dashed var(--border)"><div style="color:var(--dm);font-size:11px;margin-bottom:8px">No fat loss compounds yet</div><div style="font-size:9px;color:var(--dmL);font-family:var(--mono);margin-bottom:10px">Tap + ADD for Semaglutide, Retatrutide, L-Carnitine, thermogenics, etc.</div><button class="btn2" onclick="addFatloss()" style="padding:6px 14px;font-size:9px">+ ADD COMPOUND</button></div>';
+    html+='<div class="cd" style="padding:20px;text-align:center;border:1px dashed var(--border)"><div style="color:var(--dm);font-size:11px;margin-bottom:8px">No fat loss compounds yet</div><div style="font-size:9px;color:var(--dmL);font-family:var(--mono);margin-bottom:10px">GLPs, Clenbuterol, T3, DNP, L-Carnitine, Yohimbine &amp; more</div><button class="btn2" onclick="addFatloss()" style="padding:6px 14px;font-size:9px">+ ADD COMPOUND</button></div>';
   } else {
     for(var i=0;i<cl.fatloss.length;i++){var p=cl.fatloss[i];
       html+='<div class="cd" style="display:flex;align-items:center;gap:10px;padding:12px 14px;margin-bottom:4px"><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--wh)">'+esc(p.name)+'</div><div style="font-size:10px;color:var(--dm);font-family:var(--mono)">'+esc(p.dose||"")+' \u00b7 '+esc(p.freq||"")+' \u00b7 '+esc(p.route||"")+'</div>'+(p.notes?'<div style="font-size:9px;color:var(--mu);margin-top:2px">'+esc(p.notes)+'</div>':'')+'</div><span style="font-size:12px;color:var(--danger);cursor:pointer;padding:2px 6px" onclick="rmFatloss('+i+')">\u2715</span></div>';
@@ -2323,7 +2323,7 @@ function renderProgramFatlossSection(pg){
   return html;
 }
 function addFatloss(){showFatlossPicker();}
-function rmFatloss(i){var pg=_programs.find(function(x){return x.id===_editProgram;});if(!pg||!pg.clientId)return;var cl=clientById(pg.clientId);if(!cl)return;cl.fatloss.splice(i,1);save();render();}
+function rmFatloss(i){var pg=_programs.find(function(x){return x.id===_editProgram;});if(!pg||!pg.clientId)return;var cl=clientById(pg.clientId);if(!cl||!cl.fatloss)return;cl.fatloss.splice(i,1);save();render();}
 function setFatlossNotes(v){var pg=_programs.find(function(x){return x.id===_editProgram;});if(!pg||!pg.clientId)return;var cl=clientById(pg.clientId);if(!cl)return;cl.fatlossNotes=v;save();}
 function showFatlossPicker(){
   var flCat=ANABOLICS_DB.find(function(c){return c.cat==="Fat Loss / GLPs";});
@@ -2403,7 +2403,7 @@ function renderMealPlanEdit(){
   function macroBar(pct,col){if(!pct)return"";var w=Math.min(pct,100);var over=pct>105;return '<div style="height:4px;background:var(--borderS);border-radius:2px;margin-top:4px;overflow:hidden"><div style="height:100%;width:'+w+'%;background:'+(over?"var(--danger)":col)+';border-radius:2px;transition:width .3s"></div></div>';}
   var html='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><button class="btn2" onclick="_editMealPlan=null;render()">\u2039 Back</button><button class="btn2" onclick="_foodUnitG=!_foodUnitG;LS.set(\'foodUnitG\',_foodUnitG);render()" style="padding:4px 10px;font-size:9px;font-family:var(--mono)">'+(_foodUnitG?"GRAMS":"OZ")+'</button></div>'
     +'<div class="cd" style="padding:14px;margin-bottom:14px"><div class="g2 field"><div><span class="lb">PLAN NAME</span><input id="mpN" value="'+esc(mp.name)+'" onchange="mpSet(\'name\',this.value)"></div><div><span class="lb">CLIENT</span><select onchange="mpSet(\'clientId\',this.value)">'+cOpts+'</select></div></div></div>'
-    +'<div class="cd" style="padding:14px;margin-bottom:14px;border:1px solid var(--accB)"><div style="display:flex;justify-content:space-around;text-align:center"><div style="flex:1"><div style="font-size:20px;font-weight:800;color:'+(tgt.cal>0&&calPct>105?"var(--danger)":"var(--acc)")+';font-family:var(--mono)">'+tot.cal+'</div>'+(tgt.cal>0?'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">/ '+tgt.cal+'</div>':'')+'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">CALORIES</div>'+macroBar(calPct,"var(--acc)")+'</div><div style="flex:1"><div style="font-size:18px;font-weight:700;color:'+(tgt.p>0&&pPct>105?"var(--danger)":"var(--success)")+';font-family:var(--mono)">'+tot.p+'g</div>'+(tgt.p>0?'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">/ '+tgt.p+'g</div>':'')+'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">PROTEIN</div>'+macroBar(pPct,"var(--success)")+'</div><div style="flex:1"><div style="font-size:18px;font-weight:700;color:'+(tgt.c>0&&cPct>105?"var(--danger)":"var(--warn)")+';font-family:var(--mono)">'+tot.c+'g</div>'+(tgt.c>0?'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">/ '+tgt.c+'g</div>':'')+'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">CARBS</div>'+macroBar(cPct,"var(--warn)")+'</div><div style="flex:1"><div style="font-size:18px;font-weight:700;color:'+(tgt.f>0&&fPct>105?"var(--danger)":"#c87070")+';font-family:var(--mono)">'+tot.f+'g</div>'+(tgt.f>0?'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">/ '+tgt.f+'g</div>':'')+'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">FAT</div>'+macroBar(fPct,"var(--danger)")+'</div></div></div>'
+    +'<div class="cd" style="padding:14px;margin-bottom:14px;border:1px solid var(--accB)"><div style="display:flex;justify-content:space-around;text-align:center"><div style="flex:1"><div style="font-size:20px;font-weight:800;color:'+(tgt.cal>0&&calPct>105?"var(--danger)":"var(--acc)")+';font-family:var(--mono)">'+tot.cal+'</div>'+(tgt.cal>0?'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">/ '+tgt.cal+'</div>':'')+'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">CALORIES</div>'+macroBar(calPct,"var(--acc)")+'</div><div style="flex:1"><div style="font-size:18px;font-weight:700;color:'+(tgt.p>0&&pPct>105?"var(--danger)":"var(--success)")+';font-family:var(--mono)">'+tot.p+'g</div>'+(tgt.p>0?'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">/ '+tgt.p+'g</div>':'')+'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">PROTEIN</div>'+macroBar(pPct,"var(--success)")+'</div><div style="flex:1"><div style="font-size:18px;font-weight:700;color:'+(tgt.c>0&&cPct>105?"var(--danger)":"var(--warn)")+';font-family:var(--mono)">'+tot.c+'g</div>'+(tgt.c>0?'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">/ '+tgt.c+'g</div>':'')+'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">CARBS</div>'+macroBar(cPct,"var(--warn)")+'</div><div style="flex:1"><div style="font-size:18px;font-weight:700;color:'+(tgt.f>0&&fPct>105?"var(--danger)":"var(--giant)")+';font-family:var(--mono)">'+tot.f+'g</div>'+(tgt.f>0?'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">/ '+tgt.f+'g</div>':'')+'<div style="font-size:8px;color:var(--dm);font-family:var(--mono)">FAT</div>'+macroBar(fPct,"var(--danger)")+'</div></div></div>'
     +'<div class="cd" style="padding:14px;margin-bottom:14px"><div onclick="var tf=document.getElementById(\'targetFields\');tf.style.display=tf.style.display===\'none\'?\'block\':\'none\'" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center"><span class="sl" style="margin:0">MACRO TARGETS</span><span style="font-size:10px;color:var(--dm)">\u25bc</span></div><div id="targetFields" style="display:'+(tgt.cal>0?"block":"none")+';margin-top:12px"><div class="g4"><div><span class="lb">CALORIES</span><input type="number" min="0" value="'+(tgt.cal||"")+'" onchange="mpSetTarget(\'cal\',this.value)" placeholder="kcal" style="text-align:center;font-size:13px;padding:10px 6px"></div><div><span class="lb">PROTEIN (g)</span><input type="number" min="0" value="'+(tgt.p||"")+'" onchange="mpSetTarget(\'p\',this.value)" placeholder="g" style="text-align:center;font-size:13px;padding:10px 6px"></div><div><span class="lb">CARBS (g)</span><input type="number" min="0" value="'+(tgt.c||"")+'" onchange="mpSetTarget(\'c\',this.value)" placeholder="g" style="text-align:center;font-size:13px;padding:10px 6px"></div><div><span class="lb">FAT (g)</span><input type="number" min="0" value="'+(tgt.f||"")+'" onchange="mpSetTarget(\'f\',this.value)" placeholder="g" style="text-align:center;font-size:13px;padding:10px 6px"></div></div><div style="font-size:9px;color:var(--dm);font-family:var(--mono);margin-top:8px">Set custom targets based on client needs. Adjust as protocol changes.</div></div></div>';
   for(var m=0;m<mp.meals.length;m++){var meal=mp.meals[m],mt=calcMealTotals(meal);
     html+='<div class="cd" style="padding:14px;margin-bottom:8px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><div style="display:flex;flex-direction:column;gap:1px;margin-right:6px;flex-shrink:0">'+(m>0?'<span style="cursor:pointer;font-size:9px;color:var(--dm);line-height:1" onclick="moveMeal('+m+',-1)">\u25b2</span>':'')+(m<mp.meals.length-1?'<span style="cursor:pointer;font-size:9px;color:var(--dm);line-height:1" onclick="moveMeal('+m+',1)">\u25bc</span>':'')+'</div><input value="'+esc(meal.name)+'" onchange="mealName('+m+',this.value)" style="font-size:14px;font-weight:700;border:none;background:none;color:var(--wh);padding:0;flex:1"><span style="font-size:9px;color:var(--acc);font-family:var(--mono)">'+mt.cal+'cal \u00b7 '+mt.p+'p \u00b7 '+mt.c+'c \u00b7 '+mt.f+'f</span><span style="font-size:14px;color:var(--danger);cursor:pointer;margin-left:8px" onclick="rmMeal('+m+')">\u2715</span></div>'
@@ -2418,6 +2418,23 @@ function renderMealPlanEdit(){
   html+='<button class="btn2" onclick="addMeal()" style="width:100%;margin-top:4px">+ ADD MEAL</button>'
     +'<div style="display:flex;gap:8px;margin-top:16px"><button class="btn" style="flex:1" onclick="openPDFFromMealPlan(\''+mp.id+'\')">GENERATE PDF</button><button class="btn2" style="flex:1" onclick="duplicatePlan(\''+mp.id+'\')">DUPLICATE</button></div>'
     +'<button class="btn-danger" style="margin-top:8px" onclick="delPlan()">DELETE PLAN</button>';
+  // Quick-jump to other program sections for this client
+  if(mp.clientId){
+    var _ci2=clients.findIndex(function(c){return c.id===mp.clientId;});
+    var _cl2=_ci2>=0?clients[_ci2]:null;
+    if(_cl2){
+      html+='<div style="height:1px;background:linear-gradient(90deg,transparent,var(--accDeep),var(--acc),var(--accDeep),transparent);margin:20px 0"></div>'
+        +'<div class="sl">BUILD '+esc(_cl2.name.toUpperCase())+'\'S PROGRAM</div>'
+        +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">'
+        +'<div class="cd cd-link" style="padding:12px;text-align:center;cursor:pointer" onclick="jumpToSection(\''+mp.clientId+'\',\'training\')"><div style="font-size:18px;margin-bottom:4px">\uD83C\uDFCB\uFE0F</div><div style="font-size:10px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.08em">TRAINING</div><div style="font-size:8px;color:var(--dm)">'+(_workouts.filter(function(w2){return w2.clientId===mp.clientId;}).length||"No")+' workout'+(_workouts.filter(function(w2){return w2.clientId===mp.clientId;}).length!==1?'s':'')+'</div></div>'
+        +'<div class="cd cd-link" style="padding:12px;text-align:center;cursor:pointer" onclick="jumpToSection(\''+mp.clientId+'\',\'anabolics\')"><div style="font-size:18px;margin-bottom:4px">\uD83D\uDC89</div><div style="font-size:10px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.08em">PED PROTOCOL</div><div style="font-size:8px;color:var(--dm)">'+(_cl2.anabolics?_cl2.anabolics.length:0)+' compound'+(_cl2.anabolics&&_cl2.anabolics.length===1?'':'s')+'</div></div>'
+        +'<div class="cd cd-link" style="padding:12px;text-align:center;cursor:pointer" onclick="jumpToSection(\''+mp.clientId+'\',\'peptides\')"><div style="font-size:18px;margin-bottom:4px">\uD83E\uDDEA</div><div style="font-size:10px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.08em">PEPTIDES</div><div style="font-size:8px;color:var(--dm)">'+(_cl2.peptides?_cl2.peptides.length:0)+' peptide'+(_cl2.peptides&&_cl2.peptides.length===1?'':'s')+'</div></div>'
+        +'<div class="cd cd-link" style="padding:12px;text-align:center;cursor:pointer" onclick="jumpToSection(\''+mp.clientId+'\',\'fatloss\')"><div style="font-size:18px;margin-bottom:4px">\uD83D\uDD25</div><div style="font-size:10px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.08em">CUTTING AGENTS</div><div style="font-size:8px;color:var(--dm)">'+(_cl2.fatloss?_cl2.fatloss.length:0)+' compound'+(_cl2.fatloss&&_cl2.fatloss.length===1?'':'s')+'</div></div>'
+        +'<div class="cd cd-link" style="padding:12px;text-align:center;cursor:pointer" onclick="jumpToSection(\''+mp.clientId+'\',\'supplements\')"><div style="font-size:18px;margin-bottom:4px">\uD83D\uDCAA</div><div style="font-size:10px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.08em">SUPPLEMENTS</div><div style="font-size:8px;color:var(--dm)">'+(_cl2.supplements?_cl2.supplements.length:0)+' supplement'+(_cl2.supplements&&_cl2.supplements.length===1?'':'s')+'</div></div>'
+        +'<div class="cd cd-link" style="padding:12px;text-align:center;cursor:pointer" onclick="jumpToSection(\''+mp.clientId+'\',\'water\')"><div style="font-size:18px;margin-bottom:4px">\uD83D\uDCA7</div><div style="font-size:10px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.08em">HYDRATION</div><div style="font-size:8px;color:var(--dm)">'+(_cl2.water&&_cl2.water.goal?_cl2.water.goal+'oz goal':'Not set')+'</div></div>'
+        +'</div>';
+    }
+  }
   return html;
 }
 function mpSet(k,v){var mp=mealPlans.find(function(p){return p.id===_editMealPlan;});if(mp){mp[k]=v;save();}}
@@ -2427,7 +2444,7 @@ function mealTime(mi,t){var mp=mealPlans.find(function(p){return p.id===_editMea
 function mealNote(mi,n){var mp=mealPlans.find(function(p){return p.id===_editMealPlan;});if(mp&&mp.meals[mi]){mp.meals[mi].notes=n;save();}}
 function addMeal(){var mp=mealPlans.find(function(p){return p.id===_editMealPlan;});if(!mp)return;mp.meals.push({name:"Meal "+(mp.meals.length+1),foods:[]});save();render();}
 function rmMeal(mi){var mp=mealPlans.find(function(p){return p.id===_editMealPlan;});if(!mp)return;mp.meals.splice(mi,1);save();render();}
-function rmFood(mi,fi){var mp=mealPlans.find(function(p){return p.id===_editMealPlan;});if(!mp)return;mp.meals[mi].foods.splice(fi,1);save();render();}
+function rmFood(mi,fi){var mp=mealPlans.find(function(p){return p.id===_editMealPlan;});if(!mp||!mp.meals[mi]||!mp.meals[mi].foods)return;mp.meals[mi].foods.splice(fi,1);save();render();}
 function fdQty(mi,fi,v){var mp=mealPlans.find(function(p){return p.id===_editMealPlan;});if(!mp||!mp.meals[mi]||!mp.meals[mi].foods[fi])return;mp.meals[mi].foods[fi].qty=Math.max(0,parseFrac(v));save();render();}
 function moveFood(mi,fi,dir){var mp=mealPlans.find(function(p){return p.id===_editMealPlan;});if(!mp||!mp.meals[mi])return;var foods=mp.meals[mi].foods;var ni=fi+dir;if(ni<0||ni>=foods.length)return;var tmp=foods[fi];foods[fi]=foods[ni];foods[ni]=tmp;save();render();}
 function moveMeal(mi,dir){var mp=mealPlans.find(function(p){return p.id===_editMealPlan;});if(!mp)return;var ni=mi+dir;if(ni<0||ni>=mp.meals.length)return;var tmp=mp.meals[mi];mp.meals[mi]=mp.meals[ni];mp.meals[ni]=tmp;save();render();}
@@ -2455,8 +2472,8 @@ function showFoodPicker(mealIdx){
   setTimeout(function(){var s=el("foodPickSearch");if(s)s.focus();},100);
 }
 function filterFoodPicker(){var q=(el("foodPickSearch")||{}).value||"";q=q.toLowerCase();var cats=document.querySelectorAll(".foodPickCat");cats.forEach(function(c){var items=c.querySelectorAll(".foodPickItem");var anyMatch=false;items.forEach(function(it){var match=it.textContent.toLowerCase().indexOf(q)>=0;it.style.display=match?"":"none";if(match)anyMatch=true;});c.style.display=anyMatch||!q?"":"none";if(q&&anyMatch){var itemsDiv=c.querySelector(".foodPickItems");if(itemsDiv)itemsDiv.style.display="block";}});}
-function pickFoodForMeal(di){var mp=mealPlans.find(function(p){return p.id===_editMealPlan;});if(!mp)return;var db=FOOD_DB[di];if(!db)return;mp.meals[_foodPickerMealIdx].foods.push({name:db.n,qty:db.per,unit:db.unit,di:di});save();closeModal();render();}
-function pickFoodCustom(){var n=val("customFoodName");if(!n){toast("Enter food name");return;}var mp=mealPlans.find(function(p){return p.id===_editMealPlan;});if(!mp)return;var cQty=numVal("customFoodQty")||1;var cUnit=val("customFoodUnit")||"oz";var cCal=numVal("customFoodCal");var cP=numVal("customFoodP");var cC=numVal("customFoodC");var cF=numVal("customFoodF");mp.meals[_foodPickerMealIdx].foods.push({name:n,qty:cQty,unit:cUnit,di:-1,custom:true,cal:cCal,p:cP,c:cC,f:cF,per:cQty});save();closeModal();render();}
+function pickFoodForMeal(di){var mp=mealPlans.find(function(p){return p.id===_editMealPlan;});if(!mp)return;var db=FOOD_DB[di];if(!db)return;if(!mp.meals[_foodPickerMealIdx])return;mp.meals[_foodPickerMealIdx].foods.push({name:db.n,qty:db.per,unit:db.unit,di:di});save();closeModal();render();}
+function pickFoodCustom(){var n=val("customFoodName");if(!n){toast("Enter food name");return;}var mp=mealPlans.find(function(p){return p.id===_editMealPlan;});if(!mp)return;if(!mp.meals[_foodPickerMealIdx])return;var cQty=numVal("customFoodQty")||1;var cUnit=val("customFoodUnit")||"oz";var cCal=numVal("customFoodCal");var cP=numVal("customFoodP");var cC=numVal("customFoodC");var cF=numVal("customFoodF");mp.meals[_foodPickerMealIdx].foods.push({name:n,qty:cQty,unit:cUnit,di:-1,custom:true,cal:cCal,p:cP,c:cC,f:cF,per:cQty});save();closeModal();render();}
 function delPlan(){showDoubleConfirm("Delete Meal Plan","This will permanently delete this meal plan.").then(function(ok){if(!ok)return;mealPlans=mealPlans.filter(function(p){return p.id!==_editMealPlan;});save();_editMealPlan=null;render();});}
 function duplicatePlan(mpId){
   var orig=mealPlans.find(function(p){return p.id===mpId;});if(!orig)return;
@@ -2467,6 +2484,102 @@ function duplicatePlan(mpId){
 
 // ── WORKOUT BUILDER ──
 function newWorkout(){var w={id:uid(),name:"New Workout",clientId:"",exercises:[],cardio:[],notes:"",created_at:new Date().toISOString()};_workouts.push(w);LS.set("workouts",_workouts);_editWorkout=w.id;render();}
+// ── FST-7 PRESET WORKOUTS (Hany Rambod) ──
+var FST7_PRESETS=[
+{name:"FST-7 Chest",notes:"Hany Rambod FST-7. Heavy compounds first, finish with 7 sets cable flyes 30-45s rest for fascia stretch.",exercises:[
+{name:"Incline Barbell Press",group:"Chest",sets:"4",reps:"8-12",rest:"90",notes:"Control the negative, full stretch at bottom"},
+{name:"Flat Dumbbell Press",group:"Chest",sets:"4",reps:"8-12",rest:"90",notes:"Deep stretch, squeeze at top"},
+{name:"Incline Dumbbell Flye",group:"Chest",sets:"3",reps:"10-12",rest:"60",notes:"Wide arc, feel the stretch"},
+{name:"Weighted Dip",group:"Chest",sets:"3",reps:"10-12",rest:"60",notes:"Lean forward, chest emphasis"},
+{name:"Cable Crossover (FST-7)",group:"Chest",sets:"7",reps:"10-12",rest:"30",notes:"FST-7 — 30s rest, squeeze & hold peak contraction 1 sec"}
+]},
+{name:"FST-7 Back Width",notes:"Hany Rambod FST-7. Vertical pulling emphasis for width. Finish with 7 sets machine pullover.",exercises:[
+{name:"Wide-Grip Lat Pulldown",group:"Back",sets:"4",reps:"10-12",rest:"90",notes:"Full stretch at top, squeeze lats at bottom"},
+{name:"Barbell Row",group:"Back",sets:"4",reps:"8-12",rest:"90",notes:"Overhand grip, pull to lower chest"},
+{name:"One-Arm Dumbbell Row",group:"Back",sets:"3",reps:"10-12",rest:"60",notes:"Full ROM, squeeze at top"},
+{name:"Seated Cable Row (Close Grip)",group:"Back",sets:"3",reps:"10-12",rest:"60",notes:"Lean forward for stretch, pull to navel"},
+{name:"Machine Pullover (FST-7)",group:"Back",sets:"7",reps:"10-12",rest:"30",notes:"FST-7 — 30s rest, deep stretch, hold contraction"}
+]},
+{name:"FST-7 Back Thickness",notes:"Hany Rambod FST-7. Horizontal pulling for thickness. Finish with 7 sets seated cable row.",exercises:[
+{name:"Deadlift",group:"Back",sets:"4",reps:"6-8",rest:"120",notes:"Hip hinge, flat back, drive through heels"},
+{name:"T-Bar Row",group:"Back",sets:"4",reps:"8-10",rest:"90",notes:"Chest supported if available, squeeze scapula"},
+{name:"Rack Pull",group:"Back",sets:"3",reps:"6-8",rest:"90",notes:"Just below knee, overload the top"},
+{name:"Reverse-Grip Barbell Row",group:"Back",sets:"3",reps:"10-12",rest:"60",notes:"Underhand, pull to lower abs"},
+{name:"Seated Cable Row (Wide) (FST-7)",group:"Back",sets:"7",reps:"10-12",rest:"30",notes:"FST-7 — 30s rest, wide grip, hold contraction"}
+]},
+{name:"FST-7 Shoulders",notes:"Hany Rambod FST-7. All three heads, finish with 7 sets lateral raises for capped delts.",exercises:[
+{name:"Seated Dumbbell Press",group:"Shoulders",sets:"4",reps:"8-12",rest:"90",notes:"Full ROM, don't lock out at top"},
+{name:"Barbell Upright Row",group:"Shoulders",sets:"3",reps:"10-12",rest:"60",notes:"Wide grip, pull to chin level"},
+{name:"Bent-Over Rear Delt Flye",group:"Shoulders",sets:"4",reps:"12-15",rest:"60",notes:"Chest on incline bench, squeeze rear delts"},
+{name:"Cable Front Raise",group:"Shoulders",sets:"3",reps:"12-15",rest:"45",notes:"Alternating arms, control the negative"},
+{name:"Dumbbell Lateral Raise (FST-7)",group:"Shoulders",sets:"7",reps:"10-12",rest:"30",notes:"FST-7 — 30s rest, slight lean forward, pinky up"}
+]},
+{name:"FST-7 Quads",notes:"Hany Rambod FST-7. Heavy compound quad work, finish with 7 sets leg extension for the pump of your life.",exercises:[
+{name:"Leg Extension (Warm-Up)",group:"Legs",sets:"3",reps:"15-20",rest:"45",notes:"Pre-exhaust, light weight, feel the quads"},
+{name:"Barbell Squat",group:"Legs",sets:"4",reps:"8-12",rest:"120",notes:"Shoulder-width stance, below parallel"},
+{name:"Hack Squat",group:"Legs",sets:"4",reps:"10-12",rest:"90",notes:"Feet low & close for quad sweep"},
+{name:"Walking Lunges",group:"Legs",sets:"3",reps:"12-14 steps",rest:"60",notes:"Long stride, upright torso"},
+{name:"Leg Press",group:"Legs",sets:"4",reps:"10-15",rest:"90",notes:"Feet low & narrow, deep ROM"},
+{name:"Leg Extension (FST-7)",group:"Legs",sets:"7",reps:"10-15",rest:"30",notes:"FST-7 — 30s rest, squeeze & hold at top 1 sec, controlled negative"}
+]},
+{name:"FST-7 Hamstrings & Glutes",notes:"Hany Rambod FST-7. Posterior chain, finish with 7 sets lying leg curl.",exercises:[
+{name:"Lying Leg Curl",group:"Legs",sets:"4",reps:"10-12",rest:"60",notes:"Full stretch at bottom, squeeze at top"},
+{name:"Romanian Deadlift",group:"Legs",sets:"4",reps:"8-12",rest:"90",notes:"Slight knee bend, feel the stretch in hamstrings"},
+{name:"Glute-Ham Raise",group:"Legs",sets:"3",reps:"8-12",rest:"60",notes:"Control the eccentric, bodyweight or weighted"},
+{name:"Single-Leg Leg Press",group:"Legs",sets:"3",reps:"12-15",rest:"60",notes:"Foot high on platform for glute emphasis"},
+{name:"Seated Leg Curl (FST-7)",group:"Legs",sets:"7",reps:"10-12",rest:"30",notes:"FST-7 — 30s rest, squeeze at peak contraction"}
+]},
+{name:"FST-7 Biceps",notes:"Hany Rambod FST-7. Heavy curls first, finish with 7 sets EZ bar or cable curl for the fascia stretch.",exercises:[
+{name:"Barbell Curl",group:"Arms",sets:"4",reps:"8-12",rest:"60",notes:"Strict form, no swinging, controlled negative"},
+{name:"Alternating Dumbbell Curl",group:"Arms",sets:"3",reps:"10-12",rest:"60",notes:"Supinate at top, full stretch at bottom"},
+{name:"Preacher Curl (EZ Bar)",group:"Arms",sets:"3",reps:"10-12",rest:"60",notes:"Full extension at bottom, squeeze at top"},
+{name:"Hammer Curl",group:"Arms",sets:"3",reps:"10-12",rest:"60",notes:"Brachialis & forearm emphasis"},
+{name:"EZ Bar Cable Curl (FST-7)",group:"Arms",sets:"7",reps:"10-12",rest:"30",notes:"FST-7 — 30s rest, constant tension, squeeze at top"}
+]},
+{name:"FST-7 Triceps",notes:"Hany Rambod FST-7. Heavy presses first, finish with 7 sets overhead cable extension for long head stretch.",exercises:[
+{name:"Close-Grip Bench Press",group:"Arms",sets:"4",reps:"8-12",rest:"90",notes:"Elbows tucked, lockout for full contraction"},
+{name:"Skull Crusher (EZ Bar)",group:"Arms",sets:"3",reps:"10-12",rest:"60",notes:"Lower to forehead, full extension"},
+{name:"Dip Machine",group:"Arms",sets:"3",reps:"10-12",rest:"60",notes:"Upright torso, tricep emphasis"},
+{name:"Single-Arm Cable Pushdown",group:"Arms",sets:"3",reps:"12-15",rest:"45",notes:"Full extension, squeeze at bottom"},
+{name:"Overhead Cable Extension (FST-7)",group:"Arms",sets:"7",reps:"10-12",rest:"30",notes:"FST-7 — 30s rest, deep stretch overhead, squeeze at extension"}
+]},
+{name:"FST-7 Calves",notes:"Hany Rambod FST-7. Hit both seated & standing, finish with 7 sets for the pump.",exercises:[
+{name:"Standing Calf Raise",group:"Legs",sets:"4",reps:"10-15",rest:"60",notes:"Full stretch at bottom, hold contraction at top 2 sec"},
+{name:"Seated Calf Raise",group:"Legs",sets:"4",reps:"12-15",rest:"60",notes:"Soleus focus, deep stretch, pause at top"},
+{name:"Leg Press Calf Raise",group:"Legs",sets:"3",reps:"12-15",rest:"45",notes:"Full ROM, slow negative"},
+{name:"Standing Calf Raise (FST-7)",group:"Legs",sets:"7",reps:"12-15",rest:"30",notes:"FST-7 — 30s rest, 2 sec hold at top, full stretch at bottom"}
+]},
+{name:"FST-7 Arms (Bi + Tri)",notes:"Hany Rambod FST-7 arm day. Superset style, finish each with 7 sets.",exercises:[
+{name:"EZ Bar Curl",group:"Arms",sets:"4",reps:"8-12",rest:"60",notes:"Strict form, squeeze at top"},
+{name:"Close-Grip Bench Press",group:"Arms",sets:"4",reps:"8-12",rest:"60",notes:"Elbows in, full lockout"},
+{name:"Incline Dumbbell Curl",group:"Arms",sets:"3",reps:"10-12",rest:"60",notes:"Arms behind torso for long head stretch"},
+{name:"Overhead Dumbbell Extension",group:"Arms",sets:"3",reps:"10-12",rest:"60",notes:"Deep stretch, both hands one dumbbell"},
+{name:"Concentration Curl",group:"Arms",sets:"3",reps:"10-12",rest:"45",notes:"Peak contraction, no momentum"},
+{name:"Rope Pushdown",group:"Arms",sets:"3",reps:"12-15",rest:"45",notes:"Spread rope at bottom, squeeze"},
+{name:"Cable Curl (FST-7)",group:"Arms",sets:"7",reps:"10-12",rest:"30",notes:"FST-7 — 30s rest, constant tension"},
+{name:"Overhead Cable Extension (FST-7)",group:"Arms",sets:"7",reps:"10-12",rest:"30",notes:"FST-7 — 30s rest, deep stretch, full extension"}
+]},
+{name:"FST-7 Abs",notes:"Hany Rambod FST-7 core work. Weighted movements, finish with 7 sets cable crunch.",exercises:[
+{name:"Hanging Leg Raise",group:"Core",sets:"4",reps:"12-15",rest:"45",notes:"Control the swing, curl pelvis up"},
+{name:"Cable Woodchop",group:"Core",sets:"3",reps:"12-15 each",rest:"45",notes:"Rotate through core, not arms"},
+{name:"Weighted Decline Crunch",group:"Core",sets:"3",reps:"15-20",rest:"45",notes:"Hold plate on chest, squeeze at top"},
+{name:"Cable Crunch (FST-7)",group:"Core",sets:"7",reps:"15-20",rest:"30",notes:"FST-7 — 30s rest, crunch down hard, squeeze abs"}
+]}
+];
+function showFST7Presets(clientId){
+  var content='<div><div style="font-size:11px;color:var(--mu);margin-bottom:14px;line-height:1.5">Hany Rambod\'s FST-7 workouts for every muscle group. Each workout ends with 7 sets, 30 sec rest for fascia stretch.</div>';
+  for(var i=0;i<FST7_PRESETS.length;i++){var p=FST7_PRESETS[i];
+    content+='<div onclick="loadFST7Preset('+i+',\''+(clientId||"")+'\')" style="padding:12px 14px;cursor:pointer;border-bottom:1px solid var(--borderS);transition:background .15s" onmouseover="this.style.background=\'var(--accS)\'" onmouseout="this.style.background=\'none\'"><div style="font-size:13px;font-weight:600;color:var(--wh)">'+esc(p.name)+'</div><div style="font-size:9px;color:var(--dm);font-family:var(--mono)">'+p.exercises.length+' exercises</div></div>';
+  }
+  content+='</div>';
+  showModal("FST-7 WORKOUT TEMPLATES",content);
+}
+function loadFST7Preset(idx,clientId){
+  var p=FST7_PRESETS[idx];if(!p)return;
+  var w={id:uid(),name:p.name,clientId:clientId||"",exercises:JSON.parse(JSON.stringify(p.exercises)),cardio:[],notes:p.notes,created_at:new Date().toISOString()};
+  _workouts.push(w);saveWorkouts();_editWorkout=w.id;closeModal();render();
+  toast("\u2713 Loaded "+p.name);
+}
 function saveWorkouts(){LS.set("workouts",_workouts);}
 function renderWorkoutEdit(){
   var w=_workouts.find(function(x){return x.id===_editWorkout;});if(!w){_editWorkout=null;return '';}
@@ -2494,6 +2607,24 @@ function renderWorkoutEdit(){
   // Actions
   html+='<div style="display:flex;gap:8px"><button class="btn" style="flex:1" onclick="openPDFFromWorkout()">GENERATE PDF</button><button class="btn2" style="flex:1" onclick="duplicateWorkout()">DUPLICATE</button></div>'
     +'<div style="display:flex;gap:8px;margin-top:8px">'+(w.clientId?'<button class="btn2" style="flex:1" onclick="assignWorkoutToProgram()">ASSIGN TO PROGRAM</button>':'')+'<button class="btn-danger" style="flex:1" onclick="deleteWorkout()">DELETE</button></div>';
+  // Quick-jump to other program sections for this client
+  if(w.clientId){
+    var _ci=clients.findIndex(function(c){return c.id===w.clientId;});
+    var _cl=_ci>=0?clients[_ci]:null;
+    var _pg=_programs.find(function(p){return p.clientId===w.clientId;});
+    if(_cl){
+      html+='<div style="height:1px;background:linear-gradient(90deg,transparent,var(--accDeep),var(--acc),var(--accDeep),transparent);margin:20px 0"></div>'
+        +'<div class="sl">BUILD '+esc(_cl.name.toUpperCase())+'\'S PROGRAM</div>'
+        +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">'
+        +'<div class="cd cd-link" style="padding:12px;text-align:center;cursor:pointer" onclick="jumpToSection(\''+w.clientId+'\',\'nutrition\')"><div style="font-size:18px;margin-bottom:4px">\uD83C\uDF7D\uFE0F</div><div style="font-size:10px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.08em">NUTRITION</div><div style="font-size:8px;color:var(--dm)">'+(mealPlans.filter(function(m){return m.clientId===w.clientId;}).length||"No")+' meal plan'+(mealPlans.filter(function(m){return m.clientId===w.clientId;}).length!==1?'s':'')+'</div></div>'
+        +'<div class="cd cd-link" style="padding:12px;text-align:center;cursor:pointer" onclick="jumpToSection(\''+w.clientId+'\',\'anabolics\')"><div style="font-size:18px;margin-bottom:4px">\uD83D\uDC89</div><div style="font-size:10px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.08em">PED PROTOCOL</div><div style="font-size:8px;color:var(--dm)">'+(_cl.anabolics?_cl.anabolics.length:0)+' compound'+(_cl.anabolics&&_cl.anabolics.length===1?'':'s')+'</div></div>'
+        +'<div class="cd cd-link" style="padding:12px;text-align:center;cursor:pointer" onclick="jumpToSection(\''+w.clientId+'\',\'peptides\')"><div style="font-size:18px;margin-bottom:4px">\uD83E\uDDEA</div><div style="font-size:10px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.08em">PEPTIDES</div><div style="font-size:8px;color:var(--dm)">'+(_cl.peptides?_cl.peptides.length:0)+' peptide'+(_cl.peptides&&_cl.peptides.length===1?'':'s')+'</div></div>'
+        +'<div class="cd cd-link" style="padding:12px;text-align:center;cursor:pointer" onclick="jumpToSection(\''+w.clientId+'\',\'fatloss\')"><div style="font-size:18px;margin-bottom:4px">\uD83D\uDD25</div><div style="font-size:10px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.08em">CUTTING AGENTS</div><div style="font-size:8px;color:var(--dm)">'+(_cl.fatloss?_cl.fatloss.length:0)+' compound'+(_cl.fatloss&&_cl.fatloss.length===1?'':'s')+'</div></div>'
+        +'<div class="cd cd-link" style="padding:12px;text-align:center;cursor:pointer" onclick="jumpToSection(\''+w.clientId+'\',\'supplements\')"><div style="font-size:18px;margin-bottom:4px">\uD83D\uDCAA</div><div style="font-size:10px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.08em">SUPPLEMENTS</div><div style="font-size:8px;color:var(--dm)">'+(_cl.supplements?_cl.supplements.length:0)+' supplement'+(_cl.supplements&&_cl.supplements.length===1?'':'s')+'</div></div>'
+        +'<div class="cd cd-link" style="padding:12px;text-align:center;cursor:pointer" onclick="jumpToSection(\''+w.clientId+'\',\'water\')"><div style="font-size:18px;margin-bottom:4px">\uD83D\uDCA7</div><div style="font-size:10px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.08em">HYDRATION</div><div style="font-size:8px;color:var(--dm)">'+(_cl.water&&_cl.water.goal?_cl.water.goal+'oz goal':'Not set')+'</div></div>'
+        +'</div>';
+    }
+  }
   return html;
 }
 function wkSet(k,v){var w=_workouts.find(function(x){return x.id===_editWorkout;});if(w){w[k]=v;saveWorkouts();}}
@@ -2504,6 +2635,25 @@ function setWkCardio(i,k,v){var w=_workouts.find(function(x){return x.id===_edit
 function rmWkCardio(i){var w=_workouts.find(function(x){return x.id===_editWorkout;});if(!w)return;w.cardio.splice(i,1);saveWorkouts();render();}
 function duplicateWorkout(){var w=_workouts.find(function(x){return x.id===_editWorkout;});if(!w)return;var c=JSON.parse(JSON.stringify(w));c.id=uid();c.name=w.name+" (Copy)";c.created_at=new Date().toISOString();_workouts.push(c);saveWorkouts();_editWorkout=c.id;render();toast("\u2713 Duplicated");}
 function deleteWorkout(){showDoubleConfirm("Delete Workout","Permanently delete this workout?").then(function(ok){if(!ok)return;_workouts=_workouts.filter(function(x){return x.id!==_editWorkout;});saveWorkouts();_editWorkout=null;render();});}
+function jumpToSection(clientId,section){
+  // Find or create a program for this client, ensure the section exists, navigate to it
+  var pg=_programs.find(function(p){return p.clientId===clientId;});
+  if(!pg){
+    var cl=clientById(clientId);
+    pg={id:uid(),name:(cl?cl.name:"Client")+" Program",clientId:clientId,sections:[section],protocolNotes:"",created_at:new Date().toISOString()};
+    _programs.push(pg);savePrograms();
+  }
+  if(pg.sections.indexOf(section)<0){pg.sections.push(section);savePrograms();}
+  _editWorkout=null;_editMealPlan=null;
+  _editProgram=pg.id;
+  _programSectionCollapsed={};
+  // Collapse all except the target section so it's front and center
+  for(var i=0;i<pg.sections.length;i++){
+    if(pg.sections[i]!==section)_programSectionCollapsed[pg.sections[i]]=true;
+  }
+  navStack=[];currentView={tab:"nutrition",view:"main",data:{}};
+  render();window.scrollTo({top:0,behavior:"smooth"});
+}
 function assignWorkoutToProgram(){var w=_workouts.find(function(x){return x.id===_editWorkout;});if(!w||!w.clientId)return;var ci=clients.findIndex(function(c){return c.id===w.clientId;});if(ci<0)return;var c=clients[ci];if(!c.program)c.program={days:[]};var day={name:w.name,exercises:[]};for(var i=0;i<w.exercises.length;i++){var ex=w.exercises[i];day.exercises.push({name:ex.name,scheme:(ex.sets||"")+"x"+(ex.reps||""),type:"resistance",rest:ex.rest||"",notes:ex.notes||""});}for(var j=0;j<w.cardio.length;j++){var cd=w.cardio[j];day.exercises.push({name:cd.name,scheme:(cd.duration||"")+" min "+(cd.mode||""),type:"cardio",cardioDur:parseInt(cd.duration)||0,cardioTiming:"",notes:cd.notes||""});}c.program.days.push(day);save();toast("\u2713 Added to "+c.name+"'s program");}
 function showExercisePicker(){
   var content='<div>';
@@ -2575,7 +2725,7 @@ function renderAnabolics(){
   html+='</select></div>';}
   if(!cl)return html+'<div class="cd" style="padding:20px;text-align:center;color:var(--dm)">Select a client</div>';
   if(!cl.anabolics)cl.anabolics=[];
-  html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><span class="sl" style="margin:0">PROTOCOL</span><div style="display:flex;gap:4px"><button class="btn2" onclick="addAnabolic()" style="padding:5px 10px;font-size:8px">+ ADD</button>'+(cl.anabolics.length?'<button class="btn2" onclick="openPDFFromAnabolics()" style="padding:5px 10px;font-size:8px">PDF</button>':'')+'</div></div>';
+  html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><span class="sl" style="margin:0">PED PROTOCOL</span><div style="display:flex;gap:4px"><button class="btn2" onclick="addAnabolic()" style="padding:5px 10px;font-size:8px">+ ADD</button>'+(cl.anabolics.length?'<button class="btn2" onclick="openPDFFromAnabolics()" style="padding:5px 10px;font-size:8px">PDF</button>':'')+'</div></div>';
   if(!cl.anabolics.length)return html+'<div class="cd" style="padding:20px;text-align:center;border:1px dashed var(--border)"><div style="color:var(--dm);font-size:11px;margin-bottom:8px">No protocol yet</div><div style="font-size:9px;color:var(--dmL);font-family:var(--mono);margin-bottom:10px">Tap + ADD to create a protocol</div><button class="btn2" onclick="addAnabolic()" style="padding:6px 14px;font-size:9px">+ ADD COMPOUND</button></div>';
   // Group by category
   var grouped={};cl.anabolics.forEach(function(a,idx){
@@ -2594,7 +2744,7 @@ function renderAnabolics(){
   return html;
 }
 function addAnabolic(){showAnabolicPicker();}
-function rmAnabolic(i){var cl=clientById(_nutClientId);if(!cl)return;cl.anabolics.splice(i,1);save();render();}
+function rmAnabolic(i){var cl=clientById(_nutClientId);if(!cl||!cl.anabolics)return;cl.anabolics.splice(i,1);save();render();}
 function setAnabolicNotes(v){var cl=clientById(_nutClientId);if(!cl)return;cl.anabolicNotes=v;save();}
 function showAnabolicPicker(){
   var content='<div>';
@@ -2740,7 +2890,7 @@ function setSuppNote(target,targetIdx,suppIdx,val2){
 function addClientSupp(idx){showSuppPicker("client",idx);}
 function rmClientSupp(idx,i){var cl=clients[idx];if(!cl)return;cl.supplements.splice(i,1);save();render();}
 function addSupp(){showSuppPicker("nut",0);}
-function rmSupp(i){var cl=clientById(_nutClientId);if(!cl)return;cl.supplements.splice(i,1);save();render();}
+function rmSupp(i){var cl=clientById(_nutClientId);if(!cl||!cl.supplements)return;cl.supplements.splice(i,1);save();render();}
 function renderWaterTracker(){
   if(!clients.length)return'<div class="cd" style="padding:24px;text-align:center;color:var(--dm)">Add a client first</div>';
   if(!_nutClientId)_nutClientId=clients[0].id;
@@ -3466,9 +3616,9 @@ function showPDFBuilder(idx){
   secs.push({k:"nutrition",l:"Nutrition / Meal Plans",d:"Meals, macros & daily totals",has:hasMeals});
   secs.push({k:"cardio",l:"Cardio Program",d:"Cardio from training days",has:hasProg});
   secs.push({group:"PROTOCOLS"});
-  secs.push({k:"anabolics",l:"Anabolics Protocol",d:"PED compounds & cycle details",has:hasAna});
-  secs.push({k:"peptides",l:"Peptide Protocol",d:"BPC-157, TB-500, CJC, etc.",has:hasPep});
-  secs.push({k:"fatloss",l:"Fat Loss / GLPs",d:"Semaglutide, Retatrutide, L-Carnitine, thermogenics",has:hasFatloss});
+  secs.push({k:"anabolics",l:"PED Protocol",d:"Anabolics, AIs, SERMs, ancillaries & cycle details",has:hasAna});
+  secs.push({k:"peptides",l:"Peptide Protocol",d:"BPC-157, TB-500, CJC, HGH, etc.",has:hasPep});
+  secs.push({k:"fatloss",l:"Cutting Agents",d:"GLPs, thermogenics, fat burners, appetite suppressants",has:hasFatloss});
   secs.push({k:"supplements",l:"Supplement Stack",d:"Supplements, doses & timing",has:hasSupp});
   secs.push({k:"water",l:"Water Intake",d:"Hydration goal & tracking",has:hasWater});
   secs.push({group:"OTHER"});
@@ -3656,7 +3806,7 @@ function buildCustomPDF(idx){
   if(isChecked("fatloss")){
     var flItems=c.fatloss&&c.fatloss.length?c.fatloss:[];
     if(flItems.length){hasAnything=true;
-      body+='<div style="margin-bottom:24px"><div style="font-size:14px;font-weight:800;color:'+accent+';letter-spacing:.2em;margin-bottom:14px;padding-bottom:6px;border-bottom:2px solid '+accent+'40">FAT LOSS / GLP PROTOCOL</div>'
+      body+='<div style="margin-bottom:24px"><div style="font-size:14px;font-weight:800;color:'+accent+';letter-spacing:.2em;margin-bottom:14px;padding-bottom:6px;border-bottom:2px solid '+accent+'40">CUTTING AGENTS</div>'
         +'<table style="width:100%;border-collapse:collapse"><tr style="background:'+accent+'10"><th style="padding:6px 12px;text-align:left;color:'+accent+';font-size:9px;letter-spacing:.1em">COMPOUND</th><th style="padding:6px 10px;text-align:center;color:'+accent+';font-size:9px;letter-spacing:.1em">DOSE</th><th style="padding:6px 10px;text-align:center;color:'+accent+';font-size:9px;letter-spacing:.1em">FREQUENCY</th><th style="padding:6px 10px;text-align:left;color:'+accent+';font-size:9px;letter-spacing:.1em">ROUTE</th></tr>';
       for(var fli=0;fli<flItems.length;fli++){var fl=flItems[fli];
         body+='<tr style="border-bottom:1px solid #161616;background:'+(fli%2===0?"#0a0a0a":"#080808")+'"><td style="padding:7px 12px;color:#ddd;font-size:12px;font-weight:500">'+esc(fl.name)+'</td><td style="padding:7px 10px;text-align:center;color:#bbb;font-size:11px;font-family:IBM Plex Mono,monospace">'+esc(fl.dose)+'</td><td style="padding:7px 10px;text-align:center;color:#bbb;font-size:11px;font-family:IBM Plex Mono,monospace">'+esc(fl.freq)+'</td><td style="padding:7px 10px;color:#aaa;font-size:11px">'+esc(fl.route)+'</td></tr>';}
@@ -3758,7 +3908,7 @@ function buildCustomPDF(idx){
     if(isChecked("training"))parts.push("Training");
     if(isChecked("nutrition"))parts.push("Nutrition");
     if(isChecked("anabolics")||isChecked("peptides"))parts.push("Protocol");
-    if(isChecked("fatloss"))parts.push("Fat Loss");
+    if(isChecked("fatloss"))parts.push("Cutting Agents");
     if(isChecked("peakweek"))parts.push("Peak Week");
     if(isChecked("supplements"))parts.push("Supplements");
     coverSub=parts.join(" \u00b7 ")||"Complete Program";
