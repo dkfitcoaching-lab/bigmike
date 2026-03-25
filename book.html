@@ -366,9 +366,6 @@ button{font-family:var(--body);cursor:pointer;border:none;outline:none;transitio
     <div class="confirm-card" id="confirmCard"></div>
 
     <button class="btn" id="bookBtn" onclick="confirmBooking()">BOOK SESSION</button>
-    <div style="text-align:center;margin-top:12px;font-size:10px;color:var(--dm);font-family:var(--mono)">
-      You'll receive an SMS confirmation
-    </div>
   </div>
 
   <!-- STEP 5: SUCCESS -->
@@ -463,7 +460,6 @@ function loadPortalThemeFromSupabase(){
 
 /* ── INIT ── */
 function init(){
-  applyPortalTheme();
   var sb=getSupabase();
   if(!sb){
     showSection("setup");
@@ -479,39 +475,37 @@ function init(){
 /* Load coach availability settings from Supabase */
 function loadAvailability(){
   var sb=getSupabase();if(!sb)return;
+  /* Default availability: Mon-Sat 6am-8pm, 1hr slots */
+  var defaultAvail={days:{0:false,1:true,2:true,3:true,4:true,5:true,6:true},startHour:6,endHour:20,slotMinutes:60,blockedDates:[],maxAdvanceDays:30};
   sb.from("app_settings").select("value").eq("key","coach_availability").single().then(function(res){
-    if(res.data&&res.data.value){
-      _availability=res.data.value;
-    }else{
-      /* Default availability: Mon-Sat 6am-8pm, 1hr slots */
-      _availability={
-        days:{0:false,1:true,2:true,3:true,4:true,5:true,6:true},
-        startHour:6,endHour:20,
-        slotMinutes:60,
-        blockedDates:[],
-        maxAdvanceDays:30
-      };
-    }
-  });
+    if(res.error||!res.data||!res.data.value){_availability=defaultAvail;}
+    else{_availability=res.data.value;}
+    if(_selectedDate)renderCalendar();
+  }).catch(function(){_availability=defaultAvail;});
 }
 
 /* Load existing bookings to show which slots are taken */
 function loadBookedSlots(){
   var sb=getSupabase();if(!sb)return;
-  var today=new Date().toISOString().split("T")[0];
+  var n=new Date();var today=n.getFullYear()+"-"+pad2(n.getMonth()+1)+"-"+pad2(n.getDate());
   sb.from("schedule").select("data").then(function(res){
+    if(res.error){console.warn("Failed to load booked slots:",res.error);return;}
     if(res.data){
       _bookedSlots=res.data.map(function(r){return r.data;}).filter(function(s){
-        return s.date>=today&&s.status!=="cancelled";
+        return s&&s.date>=today&&s.status!=="cancelled";
       });
     }
-  });
+    if(_selectedDate)renderCalendar();
+  }).catch(function(e){console.warn("Failed to load booked slots:",e);});
 }
 
 /* ── NAVIGATION ── */
 function goStep(n){
   if(!_configReady&&n!==0){init();return;}
   _step=n;
+  /* Hide setup section when entering the booking flow */
+  var setup=document.getElementById("sec-setup");
+  if(setup)setup.classList.remove("active");
   STEPS.forEach(function(s,i){
     var sec=document.getElementById("sec-"+s);
     if(sec){
@@ -605,7 +599,7 @@ function renderCalendar(){
 
   for(var d=1;d<=daysInMonth;d++){
     var dt=new Date(_calYear,_calMonth,d);
-    var iso=dt.toISOString().split("T")[0];
+    var iso=_calYear+"-"+pad2(_calMonth+1)+"-"+pad2(d);
     var isPast=dt<today;
     var isBeyond=dt>maxDate;
     var dow=dt.getDay();
@@ -641,15 +635,12 @@ function getSlotsForDate(dateIso){
   var slotMin=_availability.slotMinutes||60;
   var booked=_bookedSlots.filter(function(s){return s.date===dateIso;});
   var total=0,avail=0;
-  for(var h=startH;h<endH;h++){
-    for(var m=0;m<60;m+=slotMin){
-      if(h===startH&&m===0||h+(m+slotMin)/60<=endH){
-        total++;
-        var timeStr=pad2(h)+":"+pad2(m);
-        var isBooked=booked.some(function(s){return s.time===timeStr;});
-        if(!isBooked)avail++;
-      }
-    }
+  var startMin=startH*60,endMin=endH*60;
+  for(var t=startMin;t+slotMin<=endMin;t+=slotMin){
+    total++;
+    var timeStr=pad2(Math.floor(t/60))+":"+pad2(t%60);
+    var isBooked=booked.some(function(s){return s.time===timeStr;});
+    if(!isBooked)avail++;
   }
   return{total:total,available:avail};
 }
@@ -677,17 +668,16 @@ function renderTimeSlots(dateIso){
   var booked=_bookedSlots.filter(function(s){return s.date===dateIso;});
 
   var morning=[],afternoon=[],evening=[];
+  var startMin=startH*60,endMin=endH*60;
 
-  for(var h=startH;h<endH;h++){
-    for(var m=0;m<60;m+=slotMin){
-      if(h+(m+slotMin)/60>endH)continue;
-      var timeStr=pad2(h)+":"+pad2(m);
-      var isBooked=booked.some(function(s){return s.time===timeStr;});
-      var slot={time:timeStr,display:fmtTime(timeStr),booked:isBooked};
-      if(h<12)morning.push(slot);
-      else if(h<17)afternoon.push(slot);
-      else evening.push(slot);
-    }
+  for(var t=startMin;t+slotMin<=endMin;t+=slotMin){
+    var h=Math.floor(t/60),m=t%60;
+    var timeStr=pad2(h)+":"+pad2(m);
+    var isBooked=booked.some(function(s){return s.time===timeStr;});
+    var slot={time:timeStr,display:fmtTime(timeStr),booked:isBooked};
+    if(h<12)morning.push(slot);
+    else if(h<17)afternoon.push(slot);
+    else evening.push(slot);
   }
 
   var html="";

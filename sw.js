@@ -1,7 +1,8 @@
-var CACHE_NAME = 'bigmike-v12';
+var CACHE_NAME = 'bigmike-v13';
 var APP_SHELL = [
   './',
-  './index.html'
+  './index.html',
+  './book.html'
 ];
 
 self.addEventListener('install', function(event) {
