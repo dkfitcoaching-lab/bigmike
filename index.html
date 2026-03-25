@@ -145,32 +145,68 @@ button{font-family:var(--body);cursor:pointer;border:none;outline:none;transitio
   .search-bar{padding:10px 12px;margin-bottom:10px}
 }
 @media(max-width:380px){.g2{grid-template-columns:1fr}.g4{grid-template-columns:1fr 1fr}}
-/* ── RESPONSIVE: Phone-frame container for wider viewports ── */
-@media(min-width:768px){
-  body{display:flex;flex-direction:column;align-items:center;background:var(--bg)}
-  #app{max-width:480px;width:100%;position:relative;border-left:1px solid var(--borderS);border-right:1px solid var(--borderS);box-shadow:0 0 60px rgba(0,0,0,.5),0 0 120px rgba(0,0,0,.3)}
-  .tabs{max-width:480px}
-  .hdr{max-width:480px}
-  /* Earnings cards: 2x2 grid inside phone frame */
-  .g4{grid-template-columns:1fr 1fr;gap:10px}
-  .modal-box{max-width:440px}
-  .qnote-fab{right:calc(50% - 224px)}
-  #swFab{right:calc(50% - 164px)!important}
-  .toast{max-width:460px}
-  /* Constrain quick-note modal to phone frame */
-  #qnoteModal>div{max-width:480px!important}
-  /* Desktop grid layouts within phone frame */
-  .desk-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  .desk-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
-}
-/* Enhanced frame at 1024px+ */
-@media(min-width:1024px){
-  #app{box-shadow:0 0 80px rgba(0,0,0,.6),0 0 160px rgba(0,0,0,.3),0 0 0 1px var(--borderS)}
+/* Tablet/Desktop */
+@media(min-width:900px){
+  #app{max-width:100%}
+  .hdr{display:none}
+  .tabs{position:fixed;left:0;top:0;bottom:0;width:var(--sidebar);max-width:var(--sidebar);flex-direction:column;justify-content:flex-start;padding:0;border-top:none;border-right:1px solid var(--border);background:rgba(10,9,12,.99);transform:none;backdrop-filter:blur(40px)}
+  .ti{flex-direction:row;justify-content:flex-start;gap:14px;padding:14px 26px;font-size:12px;letter-spacing:.08em;width:100%;border-radius:0;min-height:48px;transition:all .2s}
+  .ti:hover{color:var(--ow);background:var(--glassB)}
+  .ti.on{color:var(--acc);background:var(--accS)}
+  .ti.on::before{top:50%;left:0;transform:translateY(-50%);width:3px;height:60%;border-radius:0 3px 3px 0}
+  .ct{margin-left:var(--sidebar);padding:44px 48px 60px;min-height:100vh;max-width:none}
+  .desk-logo{display:flex!important}
+  .timer-bar{left:var(--sidebar)}
+  .pt{font-size:30px}
+  .stat b{font-size:32px}
+  .stat{padding:24px 14px;border-radius:14px}
+  .cd{padding:20px;border-radius:16px;transition:border-color .2s,box-shadow .2s,transform .15s}
   .cd-link:hover{transform:translateY(-1px)}
+  .g2{gap:14px}.g3{gap:12px}.g4{gap:10px;grid-template-columns:repeat(4,1fr)}.field{margin-bottom:20px}
+  .qnote-fab{right:40px;bottom:40px}
+  .btn{padding:18px 24px;font-size:13px;border-radius:14px;max-width:480px}
+  .btn2{padding:12px 18px;font-size:11px;border-radius:12px}
+  .chip{padding:8px 16px;font-size:11px;border-radius:10px}
+  .search-bar{padding:14px 18px;border-radius:14px;max-width:600px}
+  .search-bar input{font-size:15px}
+  input,textarea,select{font-size:15px;padding:14px 18px;border-radius:12px;min-height:48px}
+  .modal-box{max-width:580px;padding:32px 28px 26px;border-radius:20px}
+  .set-row{padding:8px 12px;border-radius:8px}
+  .toast{left:calc(var(--sidebar) + 50%);transform:translateX(-50%)}
+  /* Desktop grid layouts */
+  .desk-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .desk-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+  .desk-wide{max-width:900px}
+  .desk-full{max-width:none}
+  .sl{font-size:12px}
+  .lb{font-size:11px}
+  .ex-summary-line{font-size:13px}
 }
-/* Subtle ambient glow at very large viewports */
-@media(min-width:1440px){
-  #app{box-shadow:0 0 100px rgba(0,0,0,.6),0 0 200px rgba(0,0,0,.35),0 0 0 1px var(--borderS),0 0 300px var(--accS)}
+@media(min-width:1200px){
+  .ct{padding:48px 64px 60px}
+  .desk-grid-3{grid-template-columns:1fr 1fr 1fr}
+  .modal-box{max-width:640px}
+}
+@media(min-width:1600px){
+  .ct{padding:48px 80px 60px;max-width:1400px}
+  .pt{font-size:34px}
+  .stat b{font-size:36px}
+  .modal-box{max-width:720px;padding:36px 32px 30px}
+  .btn{max-width:520px}
+  .search-bar{max-width:680px}
+}
+@media(min-width:1920px){
+  .ct{padding:52px 100px 60px;max-width:1600px}
+  .pt{font-size:38px}
+  .stat b{font-size:40px}
+  .stat{padding:28px 18px}
+  .modal-box{max-width:780px}
+  .btn{max-width:560px;font-size:14px}
+  .search-bar{max-width:720px}
+  .cd{padding:24px;border-radius:18px}
+  .sl{font-size:13px}
+  .lb{font-size:12px}
+  input,textarea,select{font-size:16px;padding:16px 20px}
 }
 
 @keyframes goldShimmer{0%{background-position:200% center}100%{background-position:-200% center}}
