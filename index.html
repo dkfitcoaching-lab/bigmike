@@ -2190,7 +2190,7 @@ function renderProgramTrainingSection(pg){
     html+='<div style="padding:12px;text-align:center;color:var(--dm);font-size:11px;font-family:var(--mono)">Select a client above to manage workouts</div>';
   } else {
     if(!clientWks.length)html+='<div style="padding:12px;text-align:center;color:var(--dm);font-size:11px;margin-bottom:8px">No workouts for this client</div>';
-    html+='<button class="btn2" onclick="newWorkoutForClient(\''+pg.clientId+'\')" style="width:100%;padding:8px;font-size:10px">+ NEW WORKOUT</button>';
+    html+='<div style="display:flex;gap:6px"><button class="btn2" onclick="newWorkoutForClient(\''+pg.clientId+'\')" style="flex:1;padding:8px;font-size:10px">+ NEW WORKOUT</button><button class="btn2" onclick="showFST7Presets(\''+pg.clientId+'\')" style="flex:1;padding:8px;font-size:10px">FST-7 TEMPLATES</button></div>';
   }
   // Also show client program (training days) if exists
   if(pg.clientId){
@@ -2467,6 +2467,102 @@ function duplicatePlan(mpId){
 
 // ── WORKOUT BUILDER ──
 function newWorkout(){var w={id:uid(),name:"New Workout",clientId:"",exercises:[],cardio:[],notes:"",created_at:new Date().toISOString()};_workouts.push(w);LS.set("workouts",_workouts);_editWorkout=w.id;render();}
+// ── FST-7 PRESET WORKOUTS (Hany Rambod) ──
+var FST7_PRESETS=[
+{name:"FST-7 Chest",notes:"Hany Rambod FST-7. Heavy compounds first, finish with 7 sets cable flyes 30-45s rest for fascia stretch.",exercises:[
+{name:"Incline Barbell Press",group:"Chest",sets:"4",reps:"8-12",rest:"90",notes:"Control the negative, full stretch at bottom"},
+{name:"Flat Dumbbell Press",group:"Chest",sets:"4",reps:"8-12",rest:"90",notes:"Deep stretch, squeeze at top"},
+{name:"Incline Dumbbell Flye",group:"Chest",sets:"3",reps:"10-12",rest:"60",notes:"Wide arc, feel the stretch"},
+{name:"Weighted Dip",group:"Chest",sets:"3",reps:"10-12",rest:"60",notes:"Lean forward, chest emphasis"},
+{name:"Cable Crossover (FST-7)",group:"Chest",sets:"7",reps:"10-12",rest:"30",notes:"FST-7 — 30s rest, squeeze & hold peak contraction 1 sec"}
+]},
+{name:"FST-7 Back Width",notes:"Hany Rambod FST-7. Vertical pulling emphasis for width. Finish with 7 sets machine pullover.",exercises:[
+{name:"Wide-Grip Lat Pulldown",group:"Back",sets:"4",reps:"10-12",rest:"90",notes:"Full stretch at top, squeeze lats at bottom"},
+{name:"Barbell Row",group:"Back",sets:"4",reps:"8-12",rest:"90",notes:"Overhand grip, pull to lower chest"},
+{name:"One-Arm Dumbbell Row",group:"Back",sets:"3",reps:"10-12",rest:"60",notes:"Full ROM, squeeze at top"},
+{name:"Seated Cable Row (Close Grip)",group:"Back",sets:"3",reps:"10-12",rest:"60",notes:"Lean forward for stretch, pull to navel"},
+{name:"Machine Pullover (FST-7)",group:"Back",sets:"7",reps:"10-12",rest:"30",notes:"FST-7 — 30s rest, deep stretch, hold contraction"}
+]},
+{name:"FST-7 Back Thickness",notes:"Hany Rambod FST-7. Horizontal pulling for thickness. Finish with 7 sets seated cable row.",exercises:[
+{name:"Deadlift",group:"Back",sets:"4",reps:"6-8",rest:"120",notes:"Hip hinge, flat back, drive through heels"},
+{name:"T-Bar Row",group:"Back",sets:"4",reps:"8-10",rest:"90",notes:"Chest supported if available, squeeze scapula"},
+{name:"Rack Pull",group:"Back",sets:"3",reps:"6-8",rest:"90",notes:"Just below knee, overload the top"},
+{name:"Reverse-Grip Barbell Row",group:"Back",sets:"3",reps:"10-12",rest:"60",notes:"Underhand, pull to lower abs"},
+{name:"Seated Cable Row (Wide) (FST-7)",group:"Back",sets:"7",reps:"10-12",rest:"30",notes:"FST-7 — 30s rest, wide grip, hold contraction"}
+]},
+{name:"FST-7 Shoulders",notes:"Hany Rambod FST-7. All three heads, finish with 7 sets lateral raises for capped delts.",exercises:[
+{name:"Seated Dumbbell Press",group:"Shoulders",sets:"4",reps:"8-12",rest:"90",notes:"Full ROM, don't lock out at top"},
+{name:"Barbell Upright Row",group:"Shoulders",sets:"3",reps:"10-12",rest:"60",notes:"Wide grip, pull to chin level"},
+{name:"Bent-Over Rear Delt Flye",group:"Shoulders",sets:"4",reps:"12-15",rest:"60",notes:"Chest on incline bench, squeeze rear delts"},
+{name:"Cable Front Raise",group:"Shoulders",sets:"3",reps:"12-15",rest:"45",notes:"Alternating arms, control the negative"},
+{name:"Dumbbell Lateral Raise (FST-7)",group:"Shoulders",sets:"7",reps:"10-12",rest:"30",notes:"FST-7 — 30s rest, slight lean forward, pinky up"}
+]},
+{name:"FST-7 Quads",notes:"Hany Rambod FST-7. Heavy compound quad work, finish with 7 sets leg extension for the pump of your life.",exercises:[
+{name:"Leg Extension (Warm-Up)",group:"Legs",sets:"3",reps:"15-20",rest:"45",notes:"Pre-exhaust, light weight, feel the quads"},
+{name:"Barbell Squat",group:"Legs",sets:"4",reps:"8-12",rest:"120",notes:"Shoulder-width stance, below parallel"},
+{name:"Hack Squat",group:"Legs",sets:"4",reps:"10-12",rest:"90",notes:"Feet low & close for quad sweep"},
+{name:"Walking Lunges",group:"Legs",sets:"3",reps:"12-14 steps",rest:"60",notes:"Long stride, upright torso"},
+{name:"Leg Press",group:"Legs",sets:"4",reps:"10-15",rest:"90",notes:"Feet low & narrow, deep ROM"},
+{name:"Leg Extension (FST-7)",group:"Legs",sets:"7",reps:"10-15",rest:"30",notes:"FST-7 — 30s rest, squeeze & hold at top 1 sec, controlled negative"}
+]},
+{name:"FST-7 Hamstrings & Glutes",notes:"Hany Rambod FST-7. Posterior chain, finish with 7 sets lying leg curl.",exercises:[
+{name:"Lying Leg Curl",group:"Legs",sets:"4",reps:"10-12",rest:"60",notes:"Full stretch at bottom, squeeze at top"},
+{name:"Romanian Deadlift",group:"Legs",sets:"4",reps:"8-12",rest:"90",notes:"Slight knee bend, feel the stretch in hamstrings"},
+{name:"Glute-Ham Raise",group:"Legs",sets:"3",reps:"8-12",rest:"60",notes:"Control the eccentric, bodyweight or weighted"},
+{name:"Single-Leg Leg Press",group:"Legs",sets:"3",reps:"12-15",rest:"60",notes:"Foot high on platform for glute emphasis"},
+{name:"Seated Leg Curl (FST-7)",group:"Legs",sets:"7",reps:"10-12",rest:"30",notes:"FST-7 — 30s rest, squeeze at peak contraction"}
+]},
+{name:"FST-7 Biceps",notes:"Hany Rambod FST-7. Heavy curls first, finish with 7 sets EZ bar or cable curl for the fascia stretch.",exercises:[
+{name:"Barbell Curl",group:"Arms",sets:"4",reps:"8-12",rest:"60",notes:"Strict form, no swinging, controlled negative"},
+{name:"Alternating Dumbbell Curl",group:"Arms",sets:"3",reps:"10-12",rest:"60",notes:"Supinate at top, full stretch at bottom"},
+{name:"Preacher Curl (EZ Bar)",group:"Arms",sets:"3",reps:"10-12",rest:"60",notes:"Full extension at bottom, squeeze at top"},
+{name:"Hammer Curl",group:"Arms",sets:"3",reps:"10-12",rest:"60",notes:"Brachialis & forearm emphasis"},
+{name:"EZ Bar Cable Curl (FST-7)",group:"Arms",sets:"7",reps:"10-12",rest:"30",notes:"FST-7 — 30s rest, constant tension, squeeze at top"}
+]},
+{name:"FST-7 Triceps",notes:"Hany Rambod FST-7. Heavy presses first, finish with 7 sets overhead cable extension for long head stretch.",exercises:[
+{name:"Close-Grip Bench Press",group:"Arms",sets:"4",reps:"8-12",rest:"90",notes:"Elbows tucked, lockout for full contraction"},
+{name:"Skull Crusher (EZ Bar)",group:"Arms",sets:"3",reps:"10-12",rest:"60",notes:"Lower to forehead, full extension"},
+{name:"Dip Machine",group:"Arms",sets:"3",reps:"10-12",rest:"60",notes:"Upright torso, tricep emphasis"},
+{name:"Single-Arm Cable Pushdown",group:"Arms",sets:"3",reps:"12-15",rest:"45",notes:"Full extension, squeeze at bottom"},
+{name:"Overhead Cable Extension (FST-7)",group:"Arms",sets:"7",reps:"10-12",rest:"30",notes:"FST-7 — 30s rest, deep stretch overhead, squeeze at extension"}
+]},
+{name:"FST-7 Calves",notes:"Hany Rambod FST-7. Hit both seated & standing, finish with 7 sets for the pump.",exercises:[
+{name:"Standing Calf Raise",group:"Legs",sets:"4",reps:"10-15",rest:"60",notes:"Full stretch at bottom, hold contraction at top 2 sec"},
+{name:"Seated Calf Raise",group:"Legs",sets:"4",reps:"12-15",rest:"60",notes:"Soleus focus, deep stretch, pause at top"},
+{name:"Leg Press Calf Raise",group:"Legs",sets:"3",reps:"12-15",rest:"45",notes:"Full ROM, slow negative"},
+{name:"Standing Calf Raise (FST-7)",group:"Legs",sets:"7",reps:"12-15",rest:"30",notes:"FST-7 — 30s rest, 2 sec hold at top, full stretch at bottom"}
+]},
+{name:"FST-7 Arms (Bi + Tri)",notes:"Hany Rambod FST-7 arm day. Superset style, finish each with 7 sets.",exercises:[
+{name:"EZ Bar Curl",group:"Arms",sets:"4",reps:"8-12",rest:"60",notes:"Strict form, squeeze at top"},
+{name:"Close-Grip Bench Press",group:"Arms",sets:"4",reps:"8-12",rest:"60",notes:"Elbows in, full lockout"},
+{name:"Incline Dumbbell Curl",group:"Arms",sets:"3",reps:"10-12",rest:"60",notes:"Arms behind torso for long head stretch"},
+{name:"Overhead Dumbbell Extension",group:"Arms",sets:"3",reps:"10-12",rest:"60",notes:"Deep stretch, both hands one dumbbell"},
+{name:"Concentration Curl",group:"Arms",sets:"3",reps:"10-12",rest:"45",notes:"Peak contraction, no momentum"},
+{name:"Rope Pushdown",group:"Arms",sets:"3",reps:"12-15",rest:"45",notes:"Spread rope at bottom, squeeze"},
+{name:"Cable Curl (FST-7)",group:"Arms",sets:"7",reps:"10-12",rest:"30",notes:"FST-7 — 30s rest, constant tension"},
+{name:"Overhead Cable Extension (FST-7)",group:"Arms",sets:"7",reps:"10-12",rest:"30",notes:"FST-7 — 30s rest, deep stretch, full extension"}
+]},
+{name:"FST-7 Abs",notes:"Hany Rambod FST-7 core work. Weighted movements, finish with 7 sets cable crunch.",exercises:[
+{name:"Hanging Leg Raise",group:"Core",sets:"4",reps:"12-15",rest:"45",notes:"Control the swing, curl pelvis up"},
+{name:"Cable Woodchop",group:"Core",sets:"3",reps:"12-15 each",rest:"45",notes:"Rotate through core, not arms"},
+{name:"Weighted Decline Crunch",group:"Core",sets:"3",reps:"15-20",rest:"45",notes:"Hold plate on chest, squeeze at top"},
+{name:"Cable Crunch (FST-7)",group:"Core",sets:"7",reps:"15-20",rest:"30",notes:"FST-7 — 30s rest, crunch down hard, squeeze abs"}
+]}
+];
+function showFST7Presets(clientId){
+  var content='<div><div style="font-size:11px;color:var(--mu);margin-bottom:14px;line-height:1.5">Hany Rambod\'s FST-7 workouts for every muscle group. Each workout ends with 7 sets, 30 sec rest for fascia stretch.</div>';
+  for(var i=0;i<FST7_PRESETS.length;i++){var p=FST7_PRESETS[i];
+    content+='<div onclick="loadFST7Preset('+i+',\''+(clientId||"")+'\')" style="padding:12px 14px;cursor:pointer;border-bottom:1px solid var(--borderS);transition:background .15s" onmouseover="this.style.background=\'var(--accS)\'" onmouseout="this.style.background=\'none\'"><div style="font-size:13px;font-weight:600;color:var(--wh)">'+esc(p.name)+'</div><div style="font-size:9px;color:var(--dm);font-family:var(--mono)">'+p.exercises.length+' exercises</div></div>';
+  }
+  content+='</div>';
+  showModal("FST-7 WORKOUT TEMPLATES",content);
+}
+function loadFST7Preset(idx,clientId){
+  var p=FST7_PRESETS[idx];if(!p)return;
+  var w={id:uid(),name:p.name,clientId:clientId||"",exercises:JSON.parse(JSON.stringify(p.exercises)),cardio:[],notes:p.notes,created_at:new Date().toISOString()};
+  _workouts.push(w);saveWorkouts();_editWorkout=w.id;closeModal();render();
+  toast("\u2713 Loaded "+p.name);
+}
 function saveWorkouts(){LS.set("workouts",_workouts);}
 function renderWorkoutEdit(){
   var w=_workouts.find(function(x){return x.id===_editWorkout;});if(!w){_editWorkout=null;return '';}
