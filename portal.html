@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<title>My Program · Big Mike Ely Coaching</title>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="theme-color" content="#020202"/>
+<meta name="description" content="View your coaching program from IFBB Pro Big Mike Ely."/>
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png"/>
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+:root{
+  --bg:#020202;--bg2:#050505;--card:#0a0a0c;--cardH:#111114;
+  --border:rgba(212,168,48,.28);--borderH:rgba(212,168,48,.35);--borderS:rgba(212,168,48,.15);
+  --acc:#D4A830;--accD:#A07818;--accDeep:#886018;--accVib:#ECC850;--accBright:#ECC850;
+  --accS:rgba(200,160,40,0.06);--accB:rgba(212,168,48,.45);--accM:rgba(200,160,40,0.30);
+  --accGlow:rgba(200,160,40,0.25);
+  --ice:#f0e8d0;--wh:#f0ece4;--ow:#c8c0b0;--mu:#908878;--dm:#605848;--dmL:#3a3428;
+  --glass:rgba(200,160,40,0.02);--glassB:rgba(200,160,40,0.04);
+  --warn:#e8b878;--danger:#d87878;--success:#78c878;
+  --display:'Cinzel',serif;--body:'Rajdhani',sans-serif;--mono:'IBM Plex Mono',monospace;
+  --goldGrad:linear-gradient(135deg,#8B6914,#C49628,#E8C050,#C49628,#8B6914);
+}
+body.theme-crimson{
+  --acc:#D03030;--accD:#A01818;--accDeep:#881818;--accVib:#F04040;--accBright:#F05050;
+  --accS:rgba(210,40,40,0.06);--accB:rgba(210,40,40,.45);--accM:rgba(210,40,40,0.30);
+  --accGlow:rgba(210,40,40,0.25);
+  --border:rgba(210,40,40,.28);--borderH:rgba(210,40,40,.35);--borderS:rgba(210,40,40,.15);
+  --goldGrad:linear-gradient(135deg,#8B1414,#C42828,#E84040,#C42828,#8B1414);
+  --ice:#f0e0e0;--wh:#f0e8e8;--ow:#c8b8b8;
+  --glass:rgba(210,40,40,0.02);--glassB:rgba(210,40,40,0.04);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{height:100%;overflow-x:hidden;overscroll-behavior:none}
+body{min-height:100dvh;min-height:100vh;overflow-x:hidden;overscroll-behavior:none;background:var(--bg);color:var(--wh);font-family:var(--body);-webkit-font-smoothing:antialiased;touch-action:manipulation}
+input{font-family:var(--body);color:var(--wh);background:var(--glassB);border:1.5px solid var(--borderH);border-radius:10px;padding:13px 16px;font-size:14px;outline:none;width:100%;box-sizing:border-box;-webkit-appearance:none;appearance:none;transition:border-color .2s,box-shadow .2s;min-height:46px}
+input:focus{border-color:var(--acc);box-shadow:0 0 0 3px var(--accGlow)}
+input::placeholder{color:var(--dm);opacity:.6;font-style:italic}
+.btn{background:var(--goldGrad);background-size:200% 100%;color:var(--bg);font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.12em;padding:16px 20px;border-radius:12px;width:100%;border:none;cursor:pointer;box-shadow:0 4px 24px var(--accM);text-transform:uppercase;animation:shimmer 3s ease-in-out infinite;min-height:50px}
+.btn:disabled{opacity:.4;pointer-events:none;animation:none}
+.btn2{background:var(--accS);color:var(--acc);border:1.5px solid var(--borderH);font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;padding:10px 16px;border-radius:10px;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.cd{background:linear-gradient(160deg,rgba(12,12,12,.99),rgba(6,6,6,.99));border:1.5px solid var(--borderS);border-radius:14px;padding:16px;margin-bottom:10px;box-shadow:0 2px 12px rgba(0,0,0,.3),inset 0 1px 0 var(--glass)}
+.lb{font-size:10px;font-weight:700;color:var(--mu);font-family:var(--mono);letter-spacing:.1em;display:block;margin-bottom:8px;text-transform:uppercase}
+.sl{font-size:10px;font-weight:700;color:var(--acc);letter-spacing:.18em;font-family:var(--mono);margin-bottom:12px;text-transform:uppercase;text-shadow:0 0 20px var(--accGlow)}
+.gw{height:1px;background:linear-gradient(90deg,transparent,var(--accDeep),var(--acc),var(--accDeep),transparent);margin:20px 0}
+#app{max-width:520px;margin:0 auto;min-height:100vh;position:relative;z-index:1;padding:0 16px}
+.bg-glow{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:var(--bg)}
+.bg-glow::before{content:'';position:absolute;top:-10%;left:50%;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,var(--accGlow),var(--accS) 40%,transparent 65%);transform:translate(-50%,-50%);filter:blur(60px);opacity:.8}
+.portal-hdr{text-align:center;padding:48px 0 14px}
+.logo-mark{width:72px;height:72px;border-radius:20px;background:linear-gradient(145deg,#0c0c0c,#060606);border:1.5px solid var(--accB);display:inline-flex;align-items:center;justify-content:center;font-family:var(--display);font-size:38px;font-weight:900;box-shadow:0 0 12px var(--accM),0 0 30px var(--accGlow),0 0 60px var(--accS);margin-bottom:20px}
+.logo-mark span{background:var(--goldGrad);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 20px var(--accM))}
+.portal-title{font-family:var(--display);font-size:24px;font-weight:700;color:var(--ice);letter-spacing:.06em;margin-bottom:6px}
+.portal-sub{font-size:9px;color:var(--dm);font-family:var(--mono);letter-spacing:.22em;text-transform:uppercase}
+.section{display:none}
+.section.active{display:block}
+.toast{position:fixed;top:24px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,rgba(12,12,18,.99),rgba(8,8,14,.99));color:var(--accBright);border:1px solid var(--accB);font-family:var(--mono);font-size:11px;font-weight:700;padding:11px 28px;border-radius:10px;z-index:1000;box-shadow:0 8px 32px rgba(0,0,0,.5);pointer-events:none}
+.portal-footer{text-align:center;padding:30px 0 40px;font-size:9px;color:var(--dmL);font-family:var(--mono);letter-spacing:.1em}
+.tab-bar{display:flex;gap:4px;margin-bottom:20px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px}
+.tab-btn{flex-shrink:0;padding:8px 14px;border-radius:8px;background:var(--glassB);border:1px solid var(--borderS);font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--dm);cursor:pointer;text-transform:uppercase;transition:all .2s;white-space:nowrap}
+.tab-btn.active{background:var(--accGlow);border-color:var(--accB);color:var(--accBright)}
+@keyframes shimmer{0%{background-position:100% 50%}50%{background-position:0% 50%}100%{background-position:100% 50%}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:0.01ms !important}}
+@supports(padding-top:env(safe-area-inset-top)){
+  body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
+}
+@media(max-width:480px){
+  #app{padding:0 12px}
+  .portal-hdr{padding:28px 0 6px}
+  .portal-title{font-size:20px}
+  .logo-mark{width:60px;height:60px;font-size:32px;border-radius:16px}
+}
+</style>
+</head>
+<body>
+<div class="bg-glow"></div>
+<div id="app">
+  <div class="portal-hdr">
+    <div class="logo-mark"><span>M</span></div>
+    <div class="portal-title">My Program</div>
+    <div class="portal-sub">BIG MIKE ELY COACHING</div>
+  </div>
+
+  <!-- LOGIN SECTION -->
+  <div class="section active" id="sec-login">
+    <div class="cd" style="padding:24px;text-align:center;margin-bottom:16px">
+      <div class="sl">Client Portal</div>
+      <div style="font-size:13px;color:var(--mu);line-height:1.6;margin-bottom:20px">Enter your phone number to view your coaching program, meal plans, and upcoming sessions.</div>
+    </div>
+    <div style="margin-bottom:16px">
+      <label for="portalPhone" class="lb">PHONE NUMBER</label>
+      <div style="position:relative">
+        <span style="position:absolute;left:16px;top:50%;transform:translateY(-50%);font-family:var(--mono);font-size:14px;color:var(--mu);font-weight:600;pointer-events:none">+1</span>
+        <input type="tel" id="portalPhone" style="padding-left:44px;font-family:var(--mono);font-size:16px;letter-spacing:.06em" placeholder="(555) 123-4567" maxlength="14" inputmode="tel" autocomplete="tel">
+      </div>
+    </div>
+    <button class="btn" id="loginBtn" onclick="portalLogin()">VIEW MY PROGRAM</button>
+    <div style="text-align:center;margin-top:14px;font-size:10px;color:var(--dmL);font-family:var(--mono)">Only clients with active programs can access</div>
+  </div>
+
+  <!-- PROGRAM VIEW -->
+  <div class="section" id="sec-program">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <div>
+        <div style="font-size:16px;font-weight:700;color:var(--ice)" id="clientName"></div>
+        <div style="font-size:10px;color:var(--dm);font-family:var(--mono)" id="clientServices"></div>
+      </div>
+      <button class="btn2" onclick="portalLogout()" style="padding:6px 12px;font-size:8px">LOG OUT</button>
+    </div>
+    <div class="gw" style="margin:12px 0 16px"></div>
+
+    <!-- Program Tabs -->
+    <div class="tab-bar" id="progTabs"></div>
+    <div id="progContent"></div>
+
+    <!-- Upcoming Sessions -->
+    <div style="margin-top:20px">
+      <div class="sl">UPCOMING SESSIONS</div>
+      <div id="upcomingSessions"></div>
+    </div>
+
+    <!-- Book Another -->
+    <div style="margin-top:20px;text-align:center">
+      <a href="https://big-mike-108395.square.site/" target="_blank" rel="noopener" class="btn2" style="display:inline-flex;align-items:center;gap:8px;padding:12px 24px;text-decoration:none">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l2 2"/></svg>
+        BOOK A SESSION
+      </a>
+    </div>
+  </div>
+
+  <!-- NO PROGRAM / SETUP ERROR -->
+  <div class="section" id="sec-noprogram">
+    <div class="cd" style="padding:24px;text-align:center">
+      <div class="sl">No Program Found</div>
+      <div style="font-size:13px;color:var(--mu);line-height:1.6;margin-bottom:16px" id="noProgramMsg">We couldn't find an active program for this number. Contact Coach Mike to get set up.</div>
+      <a href="https://instagram.com/ifbbprobigmikeely" target="_blank" rel="noopener" class="btn2" style="display:inline-flex;align-items:center;gap:8px;padding:12px 24px;text-decoration:none">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor"/></svg>
+        @IFBBPROBIGMIKEELY
+      </a>
+      <div style="margin-top:16px"><button class="btn2" onclick="showSection('login')">TRY ANOTHER NUMBER</button></div>
+    </div>
+  </div>
+
+  <div class="portal-footer">
+    <div class="gw" style="max-width:100px;margin:0 auto 14px"></div>
+    IFBB PRO BIG MIKE ELY'S COACHING LAB
+  </div>
+</div>
+
+<script>
+var _sb=null,_clientData=null,_activeTab="overview";
+
+/* Phone formatting */
+var phoneInput=document.getElementById("portalPhone");
+if(phoneInput)phoneInput.addEventListener("input",function(){
+  var v=this.value.replace(/\D/g,"");
+  if(v.length>10)v=v.substring(0,10);
+  if(v.length>=7)this.value="("+v.substring(0,3)+") "+v.substring(3,6)+"-"+v.substring(6);
+  else if(v.length>=4)this.value="("+v.substring(0,3)+") "+v.substring(3);
+  else if(v.length>0)this.value="("+v;
+  else this.value="";
+});
+phoneInput.addEventListener("keydown",function(e){if(e.key==="Enter")portalLogin();});
+
+/* Supabase init */
+function getSupabase(){
+  if(_sb)return _sb;
+  var params=new URLSearchParams(window.location.search);
+  var url=params.get("sb_url")||localStorage.getItem("bm_sb_url")||"";
+  var key=params.get("sb_key")||localStorage.getItem("bm_sb_key")||"";
+  if(!url||!key)return null;
+  localStorage.setItem("bm_sb_url",url);
+  localStorage.setItem("bm_sb_key",key);
+  try{_sb=supabase.createClient(url,key);return _sb;}catch(e){return null;}
+}
+
+/* Theme */
+function applyTheme(){
+  var params=new URLSearchParams(window.location.search);
+  var t=params.get("theme")||localStorage.getItem("bm_portal_theme")||"gold";
+  if(t==="crimson")document.body.classList.add("theme-crimson");
+  localStorage.setItem("bm_portal_theme",t);
+}
+applyTheme();
+
+/* Portal Login */
+function portalLogin(){
+  var raw=document.getElementById("portalPhone").value.replace(/\D/g,"");
+  if(raw.length<10){toast("Enter a valid phone number");return;}
+  var phone="+1"+raw;
+  var sb=getSupabase();
+  if(!sb){
+    showSection("noprogram");
+    document.getElementById("noProgramMsg").textContent="The client portal is currently being set up. Contact Coach Mike directly for your program.";
+    return;
+  }
+  document.getElementById("loginBtn").disabled=true;
+  document.getElementById("loginBtn").textContent="LOADING...";
+  sb.from("clients").select("*").eq("phone",phone).single().then(function(res){
+    document.getElementById("loginBtn").disabled=false;
+    document.getElementById("loginBtn").textContent="VIEW MY PROGRAM";
+    if(res.error||!res.data){
+      showSection("noprogram");
+      document.getElementById("noProgramMsg").textContent="No active program found for this number. If you're a new client, contact Coach Mike to get started.";
+      return;
+    }
+    _clientData=res.data;
+    localStorage.setItem("bm_portal_phone",phone);
+    renderProgram();
+    showSection("program");
+  });
+}
+
+/* Auto-login if returning */
+function tryAutoLogin(){
+  var phone=localStorage.getItem("bm_portal_phone");
+  if(!phone)return;
+  var sb=getSupabase();
+  if(!sb)return;
+  sb.from("clients").select("*").eq("phone",phone).single().then(function(res){
+    if(res.data){_clientData=res.data;renderProgram();showSection("program");}
+  });
+}
+
+/* Render program view */
+function renderProgram(){
+  var c=_clientData;if(!c)return;
+  document.getElementById("clientName").textContent=c.name||"Client";
+  document.getElementById("clientServices").textContent=(c.services||"Training").toUpperCase();
+
+  /* Build tabs */
+  var tabs=[{k:"overview",l:"Overview"}];
+  if(c.program&&c.program.days&&c.program.days.length)tabs.push({k:"training",l:"Training"});
+  if(c.anabolics&&c.anabolics.length)tabs.push({k:"peds",l:"Protocol"});
+  if(c.peptides&&c.peptides.length)tabs.push({k:"peptides",l:"Peptides"});
+  if(c.fatloss&&c.fatloss.length)tabs.push({k:"fatloss",l:"Cutting"});
+  if(c.supplements&&c.supplements.length)tabs.push({k:"supps",l:"Supplements"});
+  if(c.organsupport&&c.organsupport.length)tabs.push({k:"organ",l:"Organ Support"});
+  if(c.water)tabs.push({k:"water",l:"Water"});
+
+  var tabHtml="";
+  for(var i=0;i<tabs.length;i++){
+    tabHtml+='<div class="tab-btn'+(_activeTab===tabs[i].k?" active":"")+'" onclick="switchTab(\''+tabs[i].k+'\')">'+tabs[i].l+'</div>';
+  }
+  document.getElementById("progTabs").innerHTML=tabHtml;
+  renderTabContent();
+  renderUpcomingSessions();
+}
+
+function switchTab(t){_activeTab=t;renderProgram();}
+
+function renderTabContent(){
+  var c=_clientData;if(!c)return;
+  var html="";
+  if(_activeTab==="overview")html=renderOverview(c);
+  else if(_activeTab==="training")html=renderTraining(c);
+  else if(_activeTab==="peds")html=renderPEDs(c);
+  else if(_activeTab==="peptides")html=renderPeptides(c);
+  else if(_activeTab==="fatloss")html=renderFatloss(c);
+  else if(_activeTab==="supps")html=renderSupps(c);
+  else if(_activeTab==="organ")html=renderOrgan(c);
+  else if(_activeTab==="water")html=renderWater(c);
+  document.getElementById("progContent").innerHTML=html;
+}
+
+function renderOverview(c){
+  var html='<div class="cd" style="padding:20px"><div class="sl">PROGRAM OVERVIEW</div>';
+  html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">';
+  html+='<div style="text-align:center;padding:12px;background:var(--glassB);border:1px solid var(--borderS);border-radius:10px"><div style="font-size:20px;font-weight:800;color:var(--acc);font-family:var(--mono)">'+(c.program&&c.program.days?c.program.days.length:0)+'</div><div style="font-size:8px;color:var(--dm);font-family:var(--mono);letter-spacing:.08em">TRAINING DAYS</div></div>';
+  html+='<div style="text-align:center;padding:12px;background:var(--glassB);border:1px solid var(--borderS);border-radius:10px"><div style="font-size:20px;font-weight:800;color:var(--ow);font-family:var(--mono)">'+(c.anabolics?c.anabolics.length:0)+'</div><div style="font-size:8px;color:var(--dm);font-family:var(--mono);letter-spacing:.08em">COMPOUNDS</div></div>';
+  html+='<div style="text-align:center;padding:12px;background:var(--glassB);border:1px solid var(--borderS);border-radius:10px"><div style="font-size:20px;font-weight:800;color:var(--success);font-family:var(--mono)">'+(c.supplements?c.supplements.length:0)+'</div><div style="font-size:8px;color:var(--dm);font-family:var(--mono);letter-spacing:.08em">SUPPLEMENTS</div></div>';
+  html+='<div style="text-align:center;padding:12px;background:var(--glassB);border:1px solid var(--borderS);border-radius:10px"><div style="font-size:20px;font-weight:800;color:var(--warn);font-family:var(--mono)">'+(c.water?c.water.goal||128:128)+'</div><div style="font-size:8px;color:var(--dm);font-family:var(--mono);letter-spacing:.08em">OZ WATER/DAY</div></div>';
+  html+='</div></div>';
+  if(c.notes){html+='<div class="cd" style="padding:16px"><div class="sl">COACH NOTES</div><div style="font-size:12px;color:var(--ow);line-height:1.6;white-space:pre-wrap">'+esc(c.notes)+'</div></div>';}
+  return html;
+}
+
+function renderTraining(c){
+  if(!c.program||!c.program.days||!c.program.days.length)return '<div class="cd" style="padding:20px;text-align:center;color:var(--dm)">No training program assigned yet</div>';
+  var html="";
+  for(var d=0;d<c.program.days.length;d++){
+    var day=c.program.days[d];
+    html+='<div class="cd" style="padding:16px;margin-bottom:8px"><div style="font-size:14px;font-weight:700;color:var(--ice);margin-bottom:8px">'+esc(day.name||"Day "+(d+1))+'</div>';
+    if(day.exercises&&day.exercises.length){
+      for(var e=0;e<day.exercises.length;e++){
+        var ex=day.exercises[e];
+        html+='<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--borderS)"><span style="font-size:12px;color:var(--ow)">'+esc(ex.name||"Exercise")+'</span><span style="font-size:10px;color:var(--dm);font-family:var(--mono)">'+(ex.sets||3)+'x'+(ex.reps||"10-12")+'</span></div>';
+      }
+    }
+    if(day.cardio){html+='<div style="margin-top:8px;font-size:10px;color:var(--mu);font-family:var(--mono)">Cardio: '+esc(day.cardio.type||"")+" "+esc(day.cardio.duration||"")+'</div>';}
+    html+='</div>';
+  }
+  return html;
+}
+
+function renderPEDs(c){
+  if(!c.anabolics||!c.anabolics.length)return '';
+  var html='<div class="sl">PED PROTOCOL</div>';
+  for(var i=0;i<c.anabolics.length;i++){var a=c.anabolics[i];
+    html+='<div class="cd" style="padding:12px 14px"><div style="font-size:13px;font-weight:500;color:var(--wh)">'+esc(a.name)+'</div><div style="font-size:10px;color:var(--dm);font-family:var(--mono)">'+esc(a.dose||"")+' &middot; '+esc(a.freq||"")+' &middot; '+esc(a.route||"")+'</div>'+(a.notes?'<div style="font-size:9px;color:var(--mu);margin-top:2px">'+esc(a.notes)+'</div>':'')+'</div>';}
+  return html;
+}
+
+function renderPeptides(c){
+  if(!c.peptides||!c.peptides.length)return '';
+  var html='<div class="sl">PEPTIDE PROTOCOL</div>';
+  for(var i=0;i<c.peptides.length;i++){var p=c.peptides[i];
+    html+='<div class="cd" style="padding:12px 14px"><div style="font-size:13px;font-weight:500;color:var(--wh)">'+esc(p.name)+'</div><div style="font-size:10px;color:var(--dm);font-family:var(--mono)">'+esc(p.dose||"")+' &middot; '+esc(p.freq||"")+' &middot; '+esc(p.route||"")+'</div></div>';}
+  return html;
+}
+
+function renderFatloss(c){
+  if(!c.fatloss||!c.fatloss.length)return '';
+  var html='<div class="sl">CUTTING AGENTS</div>';
+  for(var i=0;i<c.fatloss.length;i++){var f=c.fatloss[i];
+    html+='<div class="cd" style="padding:12px 14px"><div style="font-size:13px;font-weight:500;color:var(--wh)">'+esc(f.name)+'</div><div style="font-size:10px;color:var(--dm);font-family:var(--mono)">'+esc(f.dose||"")+' &middot; '+esc(f.freq||"")+' &middot; '+esc(f.route||"")+'</div></div>';}
+  return html;
+}
+
+function renderSupps(c){
+  if(!c.supplements||!c.supplements.length)return '';
+  var html='<div class="sl">SUPPLEMENT STACK</div>';
+  for(var i=0;i<c.supplements.length;i++){var s=c.supplements[i];
+    html+='<div class="cd" style="padding:12px 14px"><div style="font-size:13px;font-weight:500;color:var(--wh)">'+esc(s.name)+'</div><div style="font-size:10px;color:var(--dm);font-family:var(--mono)">'+esc(s.dose||"")+' &middot; '+esc(s.timing||"")+'</div></div>';}
+  return html;
+}
+
+function renderOrgan(c){
+  if(!c.organsupport||!c.organsupport.length)return '';
+  var html='<div class="sl">ORGAN SUPPORT</div>';
+  var grouped={};
+  for(var i=0;i<c.organsupport.length;i++){var o=c.organsupport[i];var cat=o.cat||"General";if(!grouped[cat])grouped[cat]=[];grouped[cat].push(o);}
+  var cats=Object.keys(grouped);
+  for(var g=0;g<cats.length;g++){
+    html+='<div style="font-size:9px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.1em;margin:12px 0 6px">'+esc(cats[g]).toUpperCase()+'</div>';
+    for(var j=0;j<grouped[cats[g]].length;j++){var item=grouped[cats[g]][j];
+      html+='<div class="cd" style="padding:10px 14px"><div style="font-size:12px;color:var(--wh)">'+esc(item.name)+'</div><div style="font-size:10px;color:var(--dm);font-family:var(--mono)">'+esc(item.dose||"")+' &middot; '+esc(item.timing||"")+'</div></div>';}
+  }
+  return html;
+}
+
+function renderWater(c){
+  if(!c.water)return '';
+  var goal=c.water.goal||128;
+  return '<div class="cd" style="padding:20px;text-align:center"><div class="sl">DAILY WATER GOAL</div><div style="font-size:48px;font-weight:800;color:var(--acc);font-family:var(--mono)">'+goal+'</div><div style="font-size:11px;color:var(--dm);font-family:var(--mono);letter-spacing:.08em">OUNCES PER DAY</div><div style="margin-top:12px;font-size:11px;color:var(--mu)">Track your intake throughout the day. Hydration is critical for performance and recovery.</div></div>';
+}
+
+function renderUpcomingSessions(){
+  var sb=getSupabase();
+  var container=document.getElementById("upcomingSessions");
+  if(!sb||!_clientData){container.innerHTML='<div style="font-size:11px;color:var(--dm);font-family:var(--mono);text-align:center;padding:16px">No upcoming sessions</div>';return;}
+  var phone=localStorage.getItem("bm_portal_phone")||"";
+  sb.from("schedule").select("*").eq("phone",phone).gte("date",new Date().toISOString().split("T")[0]).order("date",{ascending:true}).limit(5).then(function(res){
+    if(!res.data||!res.data.length){container.innerHTML='<div style="font-size:11px;color:var(--dm);font-family:var(--mono);text-align:center;padding:16px">No upcoming sessions</div>';return;}
+    var html="";
+    for(var i=0;i<res.data.length;i++){var s=res.data[i];
+      html+='<div class="cd" style="display:flex;align-items:center;gap:12px;padding:12px 14px"><div style="text-align:center;min-width:44px"><div style="font-size:18px;font-weight:800;color:var(--acc);font-family:var(--mono)">'+new Date(s.date+"T12:00:00").getDate()+'</div><div style="font-size:8px;color:var(--dm);font-family:var(--mono)">'+["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"][new Date(s.date+"T12:00:00").getMonth()]+'</div></div><div style="flex:1"><div style="font-size:12px;font-weight:600;color:var(--wh)">'+(s.type||"Session")+'</div><div style="font-size:10px;color:var(--dm);font-family:var(--mono)">'+(s.time||"")+'</div></div></div>';}
+    container.innerHTML=html;
+  });
+}
+
+/* Helpers */
+function showSection(name){
+  document.querySelectorAll(".section").forEach(function(s){s.classList.remove("active");});
+  var sec=document.getElementById("sec-"+name);
+  if(sec)sec.classList.add("active");
+}
+
+function portalLogout(){
+  _clientData=null;_activeTab="overview";
+  localStorage.removeItem("bm_portal_phone");
+  showSection("login");
+}
+
+function esc(s){if(!s)return"";return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+
+function toast(msg){
+  var existing=document.querySelector(".toast");if(existing)existing.remove();
+  var t=document.createElement("div");t.className="toast";t.setAttribute("role","status");t.setAttribute("aria-live","polite");t.textContent=msg;
+  document.body.appendChild(t);setTimeout(function(){t.remove();},3000);
+}
+
+/* Init */
+tryAutoLogin();
+
+/* iOS keyboard dismiss */
+document.addEventListener("focusout",function(e){
+  if(e.target.tagName==="INPUT"){setTimeout(function(){window.scrollTo(0,window.scrollY);},100);}
+});
+</script>
+</body>
+</html>
