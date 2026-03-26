@@ -140,8 +140,8 @@ button{font-family:var(--body);cursor:pointer;border:none;outline:none;transitio
   .sl{font-size:9px;letter-spacing:.14em;margin-bottom:10px}
   .hdr{padding:10px 12px 8px}
   .tabs{padding:6px 0 max(6px,env(safe-area-inset-bottom))}
-  .ti{padding:5px 8px;font-size:8px;gap:2px;min-width:38px;min-height:40px}
-  .ti svg{width:18px;height:18px}
+  .ti{padding:4px 4px;font-size:7px;gap:2px;min-width:0;min-height:40px;flex:1}
+  .ti svg{width:17px;height:17px}
   .search-bar{padding:10px 12px;margin-bottom:10px}
 }
 @media(max-width:380px){.g2{grid-template-columns:1fr}.g4{grid-template-columns:1fr 1fr}}
@@ -331,7 +331,8 @@ var MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","D
 var LS={get:function(k,d){try{var v=JSON.parse(localStorage.getItem("fm_"+k));return v!=null?v:d;}catch(e){return d;}},set:function(k,v){try{localStorage.setItem("fm_"+k,JSON.stringify(v));}catch(e){if(e.name==="QuotaExceededError"){toast("\u26a0 Storage full! Export backup now.",5000);}}},space:function(){try{var total=0;for(var k in localStorage){if(localStorage.hasOwnProperty(k))total+=localStorage[k].length;}return{used:Math.round(total/1024),max:5120,pct:Math.round((total/1024/5120)*100)};}catch(e){return{used:0,max:5120,pct:0};}}};
 var clients=LS.get("clients",[]),sessions=LS.get("sessions",[]),schedule=LS.get("schedule",[]),templates=LS.get("templates",[]),mealPlans=LS.get("mealPlans",[]);
 function getGymCut(){return LS.get("gymCut",20)/100;}
-function save(){try{LS.set("clients",clients);LS.set("sessions",sessions);LS.set("schedule",schedule);LS.set("templates",templates);LS.set("mealPlans",mealPlans);LS.set("programs",_programs);LS.set("workouts",_workouts);}catch(e){console.error("Save error:",e);toast("Storage full! Export your data.");}cloudSync();}
+function save(){try{LS.set("clients",clients);LS.set("sessions",sessions);LS.set("schedule",schedule);LS.set("templates",templates);LS.set("mealPlans",mealPlans);LS.set("programs",_programs);LS.set("workouts",_workouts);LS.set("blockedTimes",_blockedTimes);}catch(e){console.error("Save error:",e);toast("Storage full! Export your data.");}cloudSync();}
+function saveBlockedTimes(){LS.set("blockedTimes",_blockedTimes);cloudSync();}
 // ── CLOUD SYNC ──
 var _syncDebounce=null;
 function cloudSync(){
@@ -379,7 +380,7 @@ function cloudPull(callback){
   });
 }
 var navStack=[],currentView={tab:"home",view:"main",data:{}};
-var scheduleWeekOffset=0,_selectedDay=null;
+var scheduleWeekOffset=0,_selectedDay=null,_blockedTimes=LS.get("blockedTimes",[]);
 var _clientSearch="",_sessionSearch="";
 function go(tab){if(currentView.view==="new"&&tab!==currentView.tab){var exCount=document.querySelectorAll("#exList .cd").length;var hasData=val("sC")||val("sN")||exCount>0;if(hasData){showConfirm("Unsaved Session","Leave session log?\nUnsaved data will be lost.","Leave").then(function(ok){if(!ok)return;_doGoTab(tab);});return;}}_doGoTab(tab);}
 function _doGoTab(tab){haptic("tap");navStack=[];if(tab!=="schedule")scheduleWeekOffset=0;_selectedDay=null;_clientSearch="";_sessionSearch="";_editMealPlan=null;_editProgram=null;_editWorkout=null;_programSectionCollapsed={};currentView={tab:tab,view:"main",data:{}};render();window.scrollTo({top:0,behavior:"smooth"});}
@@ -503,7 +504,8 @@ var TABS=[
 {k:"clients",l:"Clients",svg:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>'},
 {k:"schedule",l:"Schedule",svg:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>'},
 {k:"sessions",l:"Log",svg:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>'},
-{k:"nutrition",l:"Programs",svg:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16v16H4z"/><path d="M4 4l4-2h8l4 2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>'}
+{k:"nutrition",l:"Programs",svg:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16v16H4z"/><path d="M4 4l4-2h8l4 2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>'},
+{k:"settings",l:"Settings",svg:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>'}
 ];
 function render(){
   var tabsEl=el("tabs");
@@ -545,6 +547,8 @@ function renderHome(){
   html+='<div style="display:flex;align-items:baseline;gap:0;margin-bottom:6px;margin-top:20px"><div class="sl" style="margin:0">'+t.toLocaleDateString("en-US",{month:"long"}).toUpperCase()+' EARNINGS</div>'+deltaHTML+'</div>';
   html+='<div class="g4" style="margin-top:4px;margin-bottom:'+(projected>0?8:20)+'px"><div class="stat stat-highlight"><b style="color:var(--acc)">'+moS.length+'</b><small>SESSIONS</small></div><div class="stat stat-highlight"><b style="color:var(--ow)">$'+gross+'</b><small>GROSS</small></div><div class="stat stat-highlight"><b style="color:var(--dm)"><span style="font-size:50%;vertical-align:super;opacity:.5;margin-right:1px">-</span>$'+cut+'</b><small>GYM SPLIT ('+Math.round(getGymCut()*100)+'%)</small></div><div class="stat stat-highlight" style="border-color:var(--accB);box-shadow:0 0 12px var(--accS)"><b style="color:var(--accVib)">$'+take+'</b><small>YOUR TAKE</small></div></div>';
   if(projected>0)html+='<div style="display:flex;align-items:center;gap:10px;padding:9px 14px;border-radius:8px;background:var(--glassB);border:1px solid var(--borderS);margin-bottom:16px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--acc);flex-shrink:0"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span style="font-size:11px;color:var(--mu);font-family:var(--mono)">+$'+projected+' projected from '+projSched.length+' upcoming session'+(projSched.length!==1?"s":"")+'</span></div>';
+  // Backup reminder (show when clients exist, no Supabase, and not dismissed)
+  if(clients.length&&!LS.get("backupDismissed",false)&&!LS.get("supaUrl","")){html+='<div class="alert-banner" style="border:1px solid var(--borderH);background:linear-gradient(135deg,rgba(200,160,40,.03),transparent);margin-bottom:12px;display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:10px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="2" style="flex-shrink:0"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><div style="flex:1"><div style="font-size:11px;font-weight:600;color:var(--acc)">Backup Your Data</div><div style="font-size:9px;color:var(--dm);font-family:var(--mono)">Data is stored locally. Export a backup in Settings.</div></div><button class="btn2" onclick="go(\'settings\')" style="padding:4px 8px;font-size:7px;flex-shrink:0">EXPORT</button><span onclick="LS.set(\'backupDismissed\',true);render()" style="cursor:pointer;font-size:14px;color:var(--dm);padding:2px 4px">&times;</span></div>';}
   // Unpaid sessions alert
   var unpaid=sessions.filter(function(s){return !s.paid&&s.status!=="cancelled";});
   if(unpaid.length){var unpaidTotal=unpaid.reduce(function(a,s){return a+parseFloat(s.rate||0);},0);
@@ -1192,7 +1196,7 @@ function renderSchedule(){
   var wl=days[0].toLocaleDateString("en-US",{month:"short",day:"numeric"})+" \u2014 "+days[6].toLocaleDateString("en-US",{month:"short",day:"numeric"});
   var ws=0,wr=0;for(var di=0;di<days.length;di++){var dayIso=days[di].toISOString().split("T")[0];schedule.filter(function(s){return s.date===dayIso&&s.status!=="cancelled";}).forEach(function(s){ws++;wr+=parseFloat(s.rate||0);});}
   var completedWeek=0;for(var di2=0;di2<days.length;di2++){var di2Iso=days[di2].toISOString().split("T")[0];schedule.filter(function(s){return s.date===di2Iso&&s.status==="complete";}).forEach(function(){completedWeek++;});}
-  var html='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><div class="pt" style="margin-bottom:0">Schedule</div><button class="btn2" onclick="var f=document.getElementById(\'schForm\');if(f){f.style.display=\'block\';f.scrollIntoView({behavior:\'smooth\'});}" style="display:flex;align-items:center;gap:5px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>ADD</button></div>'
+  var html='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><div class="pt" style="margin-bottom:0">Schedule</div><div style="display:flex;gap:6px"><button class="btn2" onclick="showBlockTimeModal()" style="display:flex;align-items:center;gap:5px;padding:8px 12px;font-size:9px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>BLOCK</button><button class="btn2" onclick="var f=document.getElementById(\'schForm\');if(f){f.style.display=\'block\';f.scrollIntoView({behavior:\'smooth\'});}" style="display:flex;align-items:center;gap:5px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>ADD</button></div></div>'
     +'<div style="height:1px;background:linear-gradient(90deg,transparent,var(--accDeep),var(--acc),var(--accDeep),transparent);margin-bottom:12px"></div>';
   if(ws)html+='<div style="display:flex;gap:8px;align-items:center;margin-bottom:14px;font-family:var(--mono);font-size:10px"><span style="color:var(--mu)">'+ws+' session'+(ws!==1?"s":"")+'</span><span style="color:var(--borderH)">\u00b7</span><span style="color:var(--acc)">$'+wr+'</span>'+(completedWeek?'<span style="color:var(--borderH)">\u00b7</span><span style="color:var(--success)">'+completedWeek+' completed</span>':'')+'</div>';
   html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><button class="btn2" onclick="scheduleWeekOffset--;_selectedDay=null;render()" style="padding:6px 12px">\u2039</button><div style="font-size:11px;color:var(--mu);font-family:var(--mono)">'+wl+(scheduleWeekOffset===0?" \u00b7 THIS WEEK":"")+'</div><button class="btn2" onclick="scheduleWeekOffset++;_selectedDay=null;render()" style="padding:6px 12px">\u203a</button></div>';
@@ -1208,7 +1212,9 @@ function renderSchedule(){
     var d=days[i],di=d.toISOString().split("T")[0];
     if(_selectedDay&&_selectedDay!==di)continue;
     var ds=schedule.filter(function(s){return s.date===di;}).sort(function(a,b){return(a.time||"").localeCompare(b.time||"");});
+    var dayBlocks=_blockedTimes.filter(function(bt){return bt.date===di;});
     html+='<div id="day-'+di+'" style="margin-bottom:14px"><div style="font-size:10px;color:var(--dm);font-family:var(--mono);margin-bottom:6px">'+DN[d.getDay()].toUpperCase()+' \u00b7 '+(d.getMonth()+1)+'/'+d.getDate()+'</div>';
+    for(var bi=0;bi<dayBlocks.length;bi++){var bt=dayBlocks[bi];html+='<div class="cd" style="display:flex;align-items:center;gap:12px;border-left:3px solid var(--danger);opacity:.7;background:rgba(216,120,120,.03)"><div style="min-width:48px;font-family:var(--mono);font-size:11px;font-weight:700;color:var(--danger)">'+fmtTimeStr(bt.start)+'</div><div style="flex:1"><div style="font-size:12px;font-weight:500;color:var(--danger)">BLOCKED'+(bt.reason?' \u00b7 '+esc(bt.reason):'')+'</div><div style="font-size:10px;color:var(--dm)">'+fmtTimeStr(bt.start)+' \u2013 '+fmtTimeStr(bt.end)+'</div></div><span style="font-size:13px;color:var(--danger);cursor:pointer;padding:4px" onclick="removeBlockTime(\''+bt.id+'\')">&times;</span></div>';}
     if(ds.length){
       for(var j=0;j<ds.length;j++){
         var s=ds[j],ic=s.status==="complete",ix=s.status==="cancelled",bc=ic?"var(--success)":ix?"var(--danger)":"var(--acc)";
@@ -1273,6 +1279,27 @@ function deleteScheduled(id){
   save();render();toast("Removed \u00b7 ",2600,function(){if(removed){schedule.push(removed);save();render();}});});
 }
 function cancelScheduled(id){var sched=schedule.find(function(s){return s.id===id;});if(!sched)return;sched.status="cancelled";save();toast("Cancelled");pop();}
+function showBlockTimeModal(){
+  var dateVal=_selectedDay||todayISO();
+  showModal("Block Time",'<div class="field"><span class="lb">DATE</span><input id="btDate" type="date" value="'+dateVal+'"></div>'
+    +'<div class="g2 field"><div><span class="lb">FROM</span><input id="btStart" type="time" value="09:00"></div><div><span class="lb">TO</span><input id="btEnd" type="time" value="12:00"></div></div>'
+    +'<div class="field"><span class="lb">REASON (optional)</span><input id="btReason" placeholder="e.g. Personal, Meeting, Travel"></div>'
+    +'<button class="btn" onclick="confirmBlockTime()">BLOCK THIS TIME</button>');
+}
+function confirmBlockTime(){
+  var d=val("btDate"),s=val("btStart"),e=val("btEnd"),r=val("btReason");
+  if(!d){toast("Select a date");return;}if(!s||!e){toast("Set start & end times");return;}
+  if(s>=e){toast("End must be after start");return;}
+  _blockedTimes.push({id:uid(),date:d,start:s,end:e,reason:r||""});
+  _blockedTimes.sort(function(a,b){return a.date.localeCompare(b.date)||a.start.localeCompare(b.start);});
+  saveBlockedTimes();closeModal();toast("\u2713 Time blocked");render();
+  var sb=getSupabase();if(sb)sb.from("app_settings").upsert({key:"blocked_times",value:_blockedTimes},{onConflict:"key"});
+}
+function removeBlockTime(id){
+  _blockedTimes=_blockedTimes.filter(function(bt){return bt.id!==id;});
+  saveBlockedTimes();render();toast("Block removed");
+  var sb=getSupabase();if(sb)sb.from("app_settings").upsert({key:"blocked_times",value:_blockedTimes},{onConflict:"key"});
+}
 
 // ── SETTINGS ──
 function renderSettings(){
@@ -1311,7 +1338,7 @@ function renderSettings(){
     +'<input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)"></div>'
     +'<div class="sl" style="margin-top:18px">DANGER ZONE</div><div class="cd" style="padding:16px;border:1px solid rgba(216,120,120,.25)"><div style="font-size:11px;color:var(--danger);margin-bottom:12px">Cannot be undone. Export first.</div><div class="g2"><button class="btn-danger" onclick="clearAllSessions()">CLEAR ALL SESSIONS</button><button class="btn-danger" onclick="factoryReset()">FACTORY RESET</button></div></div>'
     +'<div class="cd" style="padding:16px;text-align:center;margin-top:10px;margin-bottom:16px"><div class="g2"><button class="btn2" onclick="sessionStorage.removeItem(\'fm_unlocked\');showLockScreen()" style="width:100%;padding:14px">LOCK APP</button><button class="btn2" onclick="signOut()" style="width:100%;color:var(--danger);border-color:rgba(216,120,120,.15)">SIGN OUT</button></div></div>'
-    +'<div style="text-align:center;padding:24px 0 16px"><div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#080808,#0e0e10);border:1px solid var(--borderH);display:inline-flex;align-items:center;justify-content:center;font-family:var(--display);font-size:18px;font-weight:900;margin-bottom:8px"><span style="background:var(--goldGrad);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">M</span></div><div style="font-size:8px;color:var(--dmL);font-family:var(--mono);letter-spacing:.25em;margin-bottom:4px">BIG MIKE ELY\'S COACHING LAB</div><div style="font-size:7px;color:var(--dmL);font-family:var(--mono);letter-spacing:.15em">v'+VERSION+' \u00b7 IFBB PRO COACHING PLATFORM</div></div>';
+    +'<div style="text-align:center;padding:24px 0 16px"><div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#080808,#0e0e10);border:1px solid var(--borderH);display:inline-flex;align-items:center;justify-content:center;font-family:var(--display);font-size:18px;font-weight:900;margin-bottom:8px"><span style="background:var(--goldGrad);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">M</span></div><div style="font-size:8px;color:var(--dmL);font-family:var(--mono);letter-spacing:.25em;margin-bottom:4px">BIG MIKE ELY\'S COACHING LAB</div><div style="font-size:7px;color:var(--dmL);font-family:var(--mono);letter-spacing:.15em">v'+VERSION+' \u00b7 IFBB PRO COACHING PLATFORM</div><div style="margin-top:8px;font-size:6px;color:var(--dmL);font-family:var(--mono);letter-spacing:.12em"><a href="https://vermillionaxis.tech" target="_blank" rel="noopener" style="color:var(--dmL);text-decoration:none">BUILT BY VERMILLION AXIS TECHNOLOGIES</a></div></div>';
 }
 function toggleNotif(key,el_){var def=key.indexOf("sms")>=0?false:true;var cur=LS.get(key,def);LS.set(key,!cur);el_.textContent=!cur?"ON":"OFF";if(!cur)el_.classList.add("on");else el_.classList.remove("on");}
 function setGymCut(p){LS.set("gymCut",p);toast("\u2713 Gym cut "+p+"%");render();}
@@ -3497,6 +3524,24 @@ function removeBlockedDate(iso){
   var idx=_bookingAvail.blockedDates.indexOf(iso);
   if(idx>=0){_bookingAvail.blockedDates.splice(idx,1);saveBookingSettings();render();}
 }
+function setCancelPolicy(hours){if(!_bookingAvail)return;_bookingAvail.cancelHours=hours;saveBookingSettings();render();}
+function addBlockedRange(){
+  var d=val("blockRangeDate"),s=val("blockRangeStart"),e=val("blockRangeEnd");
+  if(!d){toast("Select a date");return;}if(!s||!e){toast("Set start & end times");return;}
+  if(!_bookingAvail)return;if(!_bookingAvail.blockedRanges)_bookingAvail.blockedRanges=[];
+  _bookingAvail.blockedRanges.push({date:d,start:s,end:e});
+  _bookingAvail.blockedRanges.sort(function(a,b){return a.date.localeCompare(b.date)||a.start.localeCompare(b.start);});
+  saveBookingSettings();render();
+}
+function removeBlockedRange(idx){
+  if(!_bookingAvail||!_bookingAvail.blockedRanges)return;
+  _bookingAvail.blockedRanges.splice(idx,1);saveBookingSettings();render();
+}
+function saveDailySchedPref(){
+  var sb=getSupabase();if(!sb)return;
+  sb.from("app_settings").upsert({key:"daily_schedule_sms",value:{enabled:LS.get("daily_sched_sms",false),phone:LS.get("coach_phone","")}},{onConflict:"key"}).then(function(res){if(!res.error)toast("\u2713 Saved");});
+}
+function setPortalTheme(t){LS.set("portalTheme",t);render();}
 function copyBookingLink(){
   var sb=getSupabase();
   var url=window.location.origin+"/book.html";
@@ -3543,6 +3588,14 @@ function renderBookingSettings(){
     +'<div class="field"><span class="lb">SESSION TYPES</span><div style="display:flex;gap:4px;flex-wrap:wrap">'+typeChips+'</div></div>'
     +'<div class="field"><span class="lb">BLOCKED DATES</span><div style="display:flex;gap:6px;align-items:center;margin-bottom:8px"><input type="date" id="blockDateInput" style="font-size:11px;padding:8px 10px;width:auto;flex:1"><button class="btn2" onclick="addBlockedDate()" style="padding:6px 12px;font-size:8px">BLOCK</button></div>'+(blockedHtml?'<div style="display:flex;gap:6px;flex-wrap:wrap">'+blockedHtml+'</div>':'')+'</div>'
     +'<div class="field"><span class="lb">BOOKING PAGE COLOR</span><div style="font-size:10px;color:var(--dm);margin-bottom:8px">Controls the theme clients see on your booking page</div><div style="display:flex;gap:4px"><div class="chip'+(LS.get("portalTheme","gold")==="gold"?" on":"")+'" onclick="setPortalTheme(\'gold\')">GOLD</div><div class="chip'+(LS.get("portalTheme","gold")==="crimson"?" on":"")+'" onclick="setPortalTheme(\'crimson\')">CRIMSON</div></div></div>'
+    +'<div class="field"><span class="lb">CANCELLATION POLICY</span><div style="font-size:10px;color:var(--dm);margin-bottom:8px">Clients who cancel within this window will be charged</div>'
+    +'<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px"><div class="chip'+((avail.cancelHours||24)===12?" on":"")+'" onclick="setCancelPolicy(12)">12 hrs</div><div class="chip'+((avail.cancelHours||24)===24?" on":"")+'" onclick="setCancelPolicy(24)">24 hrs</div><div class="chip'+((avail.cancelHours||24)===48?" on":"")+'" onclick="setCancelPolicy(48)">48 hrs</div></div>'
+    +'<div style="font-size:10px;color:var(--mu);padding:8px;background:var(--glass);border-radius:6px;border:1px solid var(--borderS)">\u26a0 Cancellations within '+(avail.cancelHours||24)+' hours of the session will be charged</div></div>'
+    +'<div class="field"><span class="lb">BLOCKED TIME RANGES</span><div style="font-size:10px;color:var(--dm);margin-bottom:8px">Block specific hours on specific dates (e.g. morning meetings)</div>'
+    +'<div style="display:flex;gap:6px;align-items:center;margin-bottom:8px;flex-wrap:wrap"><input type="date" id="blockRangeDate" style="font-size:11px;padding:8px 10px;width:auto;flex:1"><input type="time" id="blockRangeStart" value="09:00" style="font-size:11px;padding:8px 10px;width:auto"><span style="color:var(--dm);font-size:10px">to</span><input type="time" id="blockRangeEnd" value="12:00" style="font-size:11px;padding:8px 10px;width:auto"><button class="btn2" onclick="addBlockedRange()" style="padding:6px 12px;font-size:8px">BLOCK</button></div>'
+    +(function(){var br=avail.blockedRanges||[];if(!br.length)return"";var h="";for(var ri=0;ri<br.length;ri++){h+='<div style="display:inline-flex;align-items:center;gap:4px;background:var(--accS);border:1px solid var(--borderS);border-radius:6px;padding:3px 8px;font-size:9px;font-family:var(--mono);color:var(--ow)">'+br[ri].date+' '+br[ri].start+'-'+br[ri].end+'<span onclick="removeBlockedRange('+ri+')" style="cursor:pointer;color:var(--danger);font-size:12px;padding:0 2px">\u2715</span></div>';}return '<div style="display:flex;gap:6px;flex-wrap:wrap">'+h+'</div>';}())
+    +'</div>'
+    +'<div class="field"><span class="lb">DAILY SCHEDULE TEXT</span><div style="font-size:10px;color:var(--dm);margin-bottom:8px">Get a text at 5am with your schedule for the day (Mon\u2013Sat)</div><div style="display:flex;gap:4px"><div class="chip'+(LS.get("daily_sched_sms",false)?" on":"")+'" onclick="toggleNotif(\'daily_sched_sms\',this);saveDailySchedPref()" style="min-width:40px;text-align:center">'+(LS.get("daily_sched_sms",false)?"ON":"OFF")+'</div></div></div>'
     +'<div class="field" style="margin-bottom:0"><span class="lb">SHAREABLE BOOKING LINK</span><div style="font-size:10px;color:var(--dm);margin-bottom:8px">Send this to clients so they can book sessions</div><button class="btn2" onclick="copyBookingLink()" style="width:100%;display:flex;align-items:center;justify-content:center;gap:6px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> COPY BOOKING LINK</button></div>'
     +'</div>';
 }

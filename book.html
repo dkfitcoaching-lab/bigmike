@@ -403,7 +403,7 @@ button{font-family:var(--body);cursor:pointer;border:none;outline:none;transitio
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor"/></svg>
       @IFBBPROBIGMIKEELY
     </a>
-    <div style="margin-top:10px"><a href="https://big-mike-108395.square.site/" target="_blank" rel="noopener" style="color:var(--dmL);text-decoration:none;font-size:8px;letter-spacing:.06em">ALSO BOOK VIA SQUARE &rsaquo;</a></div>
+    <div style="margin-top:10px"><a href="https://vermillionaxis.tech" target="_blank" rel="noopener" style="color:var(--dmL);text-decoration:none;font-size:7px;letter-spacing:.08em">BUILT BY VERMILLION AXIS TECHNOLOGIES</a></div>
   </div>
 </div>
 
@@ -438,6 +438,7 @@ var _selectedType=null;
 var _notes="";
 var _bookedSlots=[];
 var _availability={};
+var _blockedTimeRanges=[];
 var _sb=null;
 var _configReady=false;
 
@@ -497,8 +498,13 @@ function loadAvailability(){
   sb.from("app_settings").select("value").eq("key","coach_availability").single().then(function(res){
     if(res.error||!res.data||!res.data.value){_availability=defaultAvail;}
     else{_availability=res.data.value;}
-    if(_selectedDate)renderCalendar();
-  }).catch(function(){_availability=defaultAvail;});
+    /* Also load blocked time ranges from coach app */
+    _blockedTimeRanges=_availability.blockedRanges||[];
+    sb.from("app_settings").select("value").eq("key","blocked_times").single().then(function(bt){
+      if(bt.data&&bt.data.value)_blockedTimeRanges=_blockedTimeRanges.concat(bt.data.value);
+      if(_selectedDate)renderCalendar();
+    }).catch(function(){if(_selectedDate)renderCalendar();});
+  }).catch(function(){_availability=defaultAvail;if(_selectedDate)renderCalendar();});
 }
 
 /* Load existing bookings to show which slots are taken */
@@ -698,6 +704,16 @@ function renderCalendar(){
   if(_selectedDate)renderTimeSlots(_selectedDate);
 }
 
+function isTimeBlocked(dateIso,timeStr){
+  var tMin=parseInt(timeStr.split(":")[0])*60+parseInt(timeStr.split(":")[1]);
+  for(var i=0;i<_blockedTimeRanges.length;i++){
+    var bt=_blockedTimeRanges[i];if(bt.date!==dateIso)continue;
+    var bStart=parseInt(bt.start.split(":")[0])*60+parseInt(bt.start.split(":")[1]);
+    var bEnd=parseInt(bt.end.split(":")[0])*60+parseInt(bt.end.split(":")[1]);
+    if(tMin>=bStart&&tMin<bEnd)return true;
+  }
+  return false;
+}
 function getSlotsForDate(dateIso){
   var startH=_availability.startHour||6;
   var endH=_availability.endHour||20;
@@ -708,7 +724,7 @@ function getSlotsForDate(dateIso){
   for(var t=startMin;t+slotMin<=endMin;t+=slotMin){
     total++;
     var timeStr=pad2(Math.floor(t/60))+":"+pad2(t%60);
-    var isBooked=booked.some(function(s){return s.time===timeStr;});
+    var isBooked=booked.some(function(s){return s.time===timeStr;})||isTimeBlocked(dateIso,timeStr);
     if(!isBooked)avail++;
   }
   return{total:total,available:avail};
@@ -742,7 +758,7 @@ function renderTimeSlots(dateIso){
   for(var t=startMin;t+slotMin<=endMin;t+=slotMin){
     var h=Math.floor(t/60),m=t%60;
     var timeStr=pad2(h)+":"+pad2(m);
-    var isBooked=booked.some(function(s){return s.time===timeStr;});
+    var isBooked=booked.some(function(s){return s.time===timeStr;})||isTimeBlocked(dateIso,timeStr);
     var slot={time:timeStr,display:fmtTime(timeStr),booked:isBooked};
     if(h<12)morning.push(slot);
     else if(h<17)afternoon.push(slot);

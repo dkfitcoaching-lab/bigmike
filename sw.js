@@ -1,8 +1,10 @@
-var CACHE_NAME = 'bigmike-v16';
+var CACHE_NAME = 'bigmike-v17';
 var APP_SHELL = [
   './',
   './index.html',
   './book.html',
+  './site.html',
+  './portal.html',
   './book-manifest.json'
 ];
 
