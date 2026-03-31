@@ -4,15 +4,19 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>IFBB Pro Big Mike Ely | Elite Bodybuilding Coach</title>
-<meta name="description" content="2x IFBB Pro Masters World Champion. 2x Olympian. Three decades transforming thousands of athletes. Elite bodybuilding coaching, nutrition, contest prep, and posing with Big Mike Ely."/>
+<meta name="description" content="2x IFBB Pro Masters World Champion. 2x Olympian. Coached by Hany Rambod. Hundreds of pro cards. Thousands of athletes transformed. Elite bodybuilding coaching with Big Mike Ely."/>
 <meta name="theme-color" content="#020202"/>
 <meta property="og:title" content="IFBB Pro Big Mike Ely | Elite Bodybuilding Coach"/>
 <meta property="og:description" content="2x IFBB Pro Masters World Champion. 2x Olympian. Elite bodybuilding coaching with Big Mike Ely."/>
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://ifbbprobigmikeely.com"/>
+<meta property="og:image" content="img/hero-stage-2025.jpg"/>
+<meta property="og:image:width" content="800"/>
+<meta property="og:image:height" content="600"/>
+<link rel="preload" as="image" href="img/hero-stage-2025.jpg"/>
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png"/>
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png"/>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet" crossorigin="anonymous">
 <style>
 :root{
   --bg:#020202;--bg2:#050505;--card:#0a0a0c;
@@ -59,10 +63,7 @@ img{max-width:100%;display:block}
 .mobile-menu a{font-family:var(--display);font-size:20px;color:var(--ice);letter-spacing:.08em}
 
 /* Hero */
-.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:120px 24px 80px;background:linear-gradient(to bottom,rgba(2,2,2,.55) 0%,rgba(2,2,2,.7) 50%,var(--bg) 100%),url('img/hero-stage-2025.jpg') center 15%/cover no-repeat}
-.hero-bg{position:absolute;inset:0;z-index:0}
-.hero-bg::before{content:'';position:absolute;top:-20%;left:50%;width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,var(--accGlow),var(--accS) 35%,transparent 60%);transform:translate(-50%,-50%);filter:blur(80px);animation:heroOrb 12s ease-in-out infinite}
-.hero-bg::after{content:'';position:absolute;bottom:-10%;right:20%;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,var(--accS),transparent 50%);filter:blur(60px);animation:heroOrb2 8s ease-in-out infinite 2s}
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:120px 24px 80px;background:linear-gradient(to bottom,rgba(2,2,2,.55) 0%,rgba(2,2,2,.7) 50%,var(--bg) 100%),url('img/hero-stage-2025.jpg') center 15%/cover no-repeat;background-attachment:scroll,fixed}
 .hero-vignette{position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse 70% 50% at 50% 50%,transparent 40%,var(--bg) 100%)}
 .hero-content{position:relative;z-index:1;text-align:center;max-width:700px}
 .hero-badge{display:inline-flex;align-items:center;gap:12px;margin-bottom:28px}
@@ -74,7 +75,6 @@ img{max-width:100%;display:block}
 .hero-scroll svg{opacity:.5}
 .hero h1{font-family:var(--display);font-size:clamp(36px,8vw,64px);font-weight:800;color:var(--ice);letter-spacing:.06em;line-height:1.1;margin-bottom:16px}
 .hero h1 em{font-style:normal;background:var(--goldGrad);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s ease-in-out infinite}
-.hero-sub{font-size:clamp(14px,2.5vw,18px);color:var(--mu);line-height:1.7;margin-bottom:40px;max-width:520px;margin-left:auto;margin-right:auto}
 .hero-ctas{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
 .hero-ctas .btn-primary{background:var(--goldGrad);background-size:200% 100%;color:var(--bg);font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.12em;padding:18px 36px;border-radius:12px;border:none;cursor:pointer;text-transform:uppercase;box-shadow:0 4px 24px var(--accM);animation:shimmer 3s ease-in-out infinite;text-decoration:none;min-height:50px;display:inline-flex;align-items:center}
 .hero-ctas .btn-secondary{background:var(--accS);color:var(--acc);border:1.5px solid var(--borderH);font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.1em;padding:18px 36px;border-radius:12px;text-transform:uppercase;text-decoration:none;display:inline-flex;align-items:center;transition:all .2s}
@@ -89,7 +89,9 @@ img{max-width:100%;display:block}
 
 /* Services */
 .services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;max-width:1100px;margin:0 auto}
-.svc-card{background:linear-gradient(160deg,rgba(12,12,12,.99),rgba(6,6,6,.99));border:1.5px solid var(--borderS);border-radius:16px;padding:32px 24px;transition:border-color .3s,box-shadow .3s,transform .3s;position:relative;overflow:hidden;backdrop-filter:blur(8px)}
+.svc-card{background:linear-gradient(160deg,rgba(12,12,12,.99),rgba(6,6,6,.99));border:1.5px solid var(--borderS);border-radius:16px;padding:32px 24px;transition:border-color .3s,box-shadow .3s,transform .3s;position:relative;overflow:hidden;backdrop-filter:blur(8px);contain:layout style paint}
+.svc-featured{border-color:var(--accB);box-shadow:0 0 24px var(--accS)}
+.svc-featured .svc-name::after{content:'MOST POPULAR';display:inline-block;margin-left:10px;font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.1em;padding:3px 8px;border-radius:4px;background:var(--goldGrad);background-size:200% 100%;color:var(--bg);vertical-align:middle;animation:shimmer 3s ease-in-out infinite}
 .svc-card:hover{border-color:var(--accB);box-shadow:0 8px 40px var(--accS),inset 0 1px 0 var(--borderS);transform:translateY(-4px)}
 .svc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--acc),transparent);opacity:0;transition:opacity .3s}
 .svc-card:hover::before{opacity:.5}
@@ -118,24 +120,25 @@ img{max-width:100%;display:block}
 
 /* Numbers Grid */
 .numbers-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:900px;margin:0 auto 48px}
-.number-card{text-align:center;padding:28px 16px;background:linear-gradient(160deg,var(--glassB),rgba(2,2,2,.8));border:1px solid var(--borderS);border-radius:14px;position:relative;overflow:hidden;transition:border-color .3s,transform .3s}
+.number-card{text-align:center;padding:28px 16px;background:linear-gradient(160deg,var(--glassB),rgba(2,2,2,.8));border:1px solid var(--borderS);border-radius:14px;position:relative;overflow:hidden;transition:border-color .3s,transform .3s;contain:layout style paint}
 .number-card:hover{border-color:var(--borderH);transform:translateY(-4px)}
 .number-card::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1px;background:linear-gradient(90deg,transparent,var(--acc),transparent);opacity:.4}
-.number-val{font-size:clamp(24px,4vw,36px);font-weight:800;color:var(--acc);font-family:var(--mono);line-height:1;margin-bottom:6px}
+.number-val{font-size:clamp(24px,4vw,36px);font-weight:800;background:var(--goldGrad);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s ease-in-out infinite;font-family:var(--mono);line-height:1;margin-bottom:6px}
 .number-val.text-val{font-size:clamp(16px,2.5vw,22px);letter-spacing:.04em}
 .number-label{font-size:9px;color:var(--dm);font-family:var(--mono);letter-spacing:.12em;text-transform:uppercase}
 .results-liner{font-size:14px;color:var(--mu);text-align:center;max-width:600px;margin:0 auto 48px;line-height:1.7}
 
 /* Photo Gallery */
 .photo-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;max-width:1000px;margin:0 auto}
-.photo-card{border-radius:14px;overflow:hidden;border:1.5px solid var(--borderS);transition:border-color .3s,transform .3s,box-shadow .3s;position:relative}
-.photo-card:hover{border-color:var(--borderH);transform:translateY(-4px);box-shadow:0 8px 32px var(--accS)}
+.photo-card{border-radius:14px;overflow:hidden;border:1.5px solid var(--borderS);transition:border-color .3s,transform .3s,box-shadow .3s;position:relative;contain:layout style paint}
+.photo-card:hover{border-color:var(--accB);transform:translateY(-4px);box-shadow:0 8px 32px var(--accS),0 0 0 1px var(--accGlow)}
 .photo-card img{width:100%;height:240px;object-fit:cover;filter:contrast(1.05) brightness(.95);transition:transform .4s}
 .photo-card:hover img{transform:scale(1.04)}
-.photo-card .photo-label{position:absolute;bottom:0;left:0;right:0;padding:12px 14px;background:linear-gradient(transparent,rgba(2,2,2,.9));font-family:var(--mono);font-size:9px;color:var(--ow);letter-spacing:.06em}
+.photo-card .photo-label{position:absolute;bottom:0;left:0;right:0;padding:12px 14px;background:linear-gradient(transparent,rgba(2,2,2,.9));font-family:var(--mono);font-size:9px;color:var(--ow);letter-spacing:.06em;transform:translateY(4px);opacity:.7;transition:transform .3s,opacity .3s}
+.photo-card:hover .photo-label{transform:translateY(0);opacity:1}
 
 /* About Photo */
-.about-photo{border-radius:16px;overflow:hidden;border:1.5px solid var(--borderS);max-width:400px;margin:0 auto}
+.about-photo{border-radius:16px;overflow:hidden;border:1.5px solid var(--borderS);max-width:100%;margin:0 auto}
 .about-photo img{width:100%;height:auto;filter:contrast(1.05) brightness(.95)}
 
 /* Legends Strip */
@@ -150,7 +153,7 @@ img{max-width:100%;display:block}
 .cta-trust{font-family:var(--mono);font-size:10px;color:var(--dm);letter-spacing:.08em;margin-top:20px}
 
 /* CTA Section */
-.cta-section{background:linear-gradient(160deg,rgba(14,14,16,.99),rgba(6,6,8,.99));border-top:1px solid var(--borderS);border-bottom:1px solid var(--borderS);position:relative;overflow:hidden}
+.cta-section{background:linear-gradient(160deg,rgba(2,2,2,.92),rgba(2,2,2,.88)),url('img/about-back-gym.jpg') center/cover no-repeat;border-top:1px solid var(--borderS);border-bottom:1px solid var(--borderS);position:relative;overflow:hidden}
 .cta-section::before{content:'';position:absolute;top:50%;left:50%;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,var(--accS),transparent 60%);transform:translate(-50%,-50%);filter:blur(80px);pointer-events:none}
 .cta-inner{max-width:600px;margin:0 auto;text-align:center}
 .cta-inner .btn-primary{background:var(--goldGrad);background-size:200% 100%;color:var(--bg);font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.12em;padding:20px 48px;border-radius:14px;border:none;cursor:pointer;text-transform:uppercase;box-shadow:0 4px 24px var(--accM);animation:shimmer 3s ease-in-out infinite;text-decoration:none;display:inline-block;min-height:54px}
@@ -163,19 +166,16 @@ img{max-width:100%;display:block}
 .footer-links a{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--dm);text-transform:uppercase;transition:color .2s}
 .footer-links a:hover{color:var(--acc)}
 .footer-social{display:flex;justify-content:center;gap:16px;margin-bottom:24px}
-.footer-social a{width:40px;height:40px;border-radius:10px;background:var(--glassB);border:1px solid var(--borderS);display:flex;align-items:center;justify-content:center;color:var(--dm);transition:all .2s}
+.footer-social a{width:48px;height:48px;border-radius:10px;background:var(--glassB);border:1px solid var(--borderS);display:flex;align-items:center;justify-content:center;color:var(--dm);transition:all .2s}
 .footer-social a:hover{border-color:var(--accB);color:var(--acc)}
 .footer-copy{font-size:10px;color:var(--dmL);font-family:var(--mono);letter-spacing:.06em}
-.vat-badge{display:inline-flex;align-items:center;gap:10px;margin-top:12px;text-decoration:none;transition:opacity .2s;opacity:.35}
+.vat-badge{display:inline-flex;align-items:center;gap:10px;margin-top:12px;text-decoration:none;transition:opacity .2s;opacity:.45}
 .vat-badge:hover{opacity:.7}
 .vat-badge svg{flex-shrink:0}
-.vat-badge span{font-size:7px;color:var(--dmL);font-family:var(--mono);letter-spacing:.14em;line-height:1.5}
+.vat-badge span{font-size:8px;color:var(--dmL);font-family:var(--mono);letter-spacing:.14em;line-height:1.5}
 
 /* Animations */
 @keyframes shimmer{0%{background-position:100% 50%}50%{background-position:0% 50%}100%{background-position:100% 50%}}
-@keyframes neonBreathe{0%,100%{box-shadow:0 0 15px var(--accGlow),0 0 40px var(--accS),0 0 80px var(--accS);border-color:var(--accB)}50%{box-shadow:0 0 25px var(--accM),0 0 60px var(--accGlow),0 0 100px var(--accS);border-color:var(--accB)}}
-@keyframes heroOrb{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.6}50%{transform:translate(-50%,-50%) scale(1.2);opacity:.9}}
-@keyframes heroOrb2{0%,100%{transform:scale(1);opacity:.3}50%{transform:scale(1.15);opacity:.5}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
 @keyframes scrollBounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:0.01ms !important}}
@@ -185,7 +185,7 @@ img{max-width:100%;display:block}
   .nav-links{display:none}
   .nav-menu-btn{display:block}
   .site-nav{backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
-  .hero{padding:100px 20px 80px;min-height:90vh}
+  .hero{padding:100px 20px 80px;min-height:90vh;background-attachment:scroll,scroll}
   .hero-proof{font-size:10px}
   .section-pad{padding:60px 20px}
   .services-grid{grid-template-columns:1fr}
@@ -235,7 +235,6 @@ img{max-width:100%;display:block}
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-bg"></div>
   <div class="hero-vignette"></div>
   <div class="hero-content">
     <div class="hero-badge">
@@ -293,7 +292,7 @@ img{max-width:100%;display:block}
       <div class="svc-desc">Full remote coaching with weekly check-ins, program adjustments, and direct access. Same level of detail and attention as in-person &mdash; from anywhere in the world.</div>
       <a href="book.html" class="svc-book">Book &rarr;</a>
     </div>
-    <div class="svc-card">
+    <div class="svc-card svc-featured">
       <div class="svc-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6z"/></svg></div>
       <div class="svc-name">Full Coaching Package</div>
       <div class="svc-desc">Training, nutrition, supplementation, cardio, progress tracking, and unlimited direct access. The complete Big Mike experience &mdash; everything under one roof.</div>
@@ -371,11 +370,11 @@ img{max-width:100%;display:block}
   <div class="results-liner">From first-time competitors to national champions. From weight loss transformations to world championship stages.</div>
   <div class="photo-gallery">
     <div class="photo-card">
-      <img src="img/results-procard-rob.jpg" alt="Mike with athlete earning IFBB Pro Card" loading="lazy"/>
+      <img src="img/results-procard-rob.jpg" alt="Big Mike Ely with Rob after earning his IFBB Pro Card" loading="lazy"/>
       <div class="photo-label">IFBB Pro Card Earned</div>
     </div>
     <div class="photo-card">
-      <img src="img/results-procard-female.jpg" alt="Mike with female athlete earning IFBB Pro Card" loading="lazy"/>
+      <img src="img/results-procard-female.jpg" alt="Big Mike Ely with female athlete after earning her IFBB Pro Card" loading="lazy"/>
       <div class="photo-label">IFBB Pro Card Earned</div>
     </div>
     <div class="photo-card">
@@ -383,7 +382,7 @@ img{max-width:100%;display:block}
       <div class="photo-label">Center Stage Athletes</div>
     </div>
     <div class="photo-card">
-      <img src="img/results-procard-backstage.jpg" alt="Backstage pro card celebration" loading="lazy"/>
+      <img src="img/results-procard-backstage.jpg" alt="Big Mike Ely backstage celebrating athlete's IFBB Pro Card" loading="lazy"/>
       <div class="photo-label">IFBB Pro Card Earned</div>
     </div>
   </div>
@@ -440,6 +439,10 @@ img{max-width:100%;display:block}
 </footer>
 
 <script>
+/* Fix: scroll to top on page load */
+if('scrollRestoration' in history) history.scrollRestoration='manual';
+window.scrollTo(0,0);
+
 /* Theme: read from coach's portal theme setting */
 (function(){
   var t=localStorage.getItem("bm_portal_theme")||localStorage.getItem("fm_theme")||"gold";
@@ -477,6 +480,34 @@ var observer=new IntersectionObserver(function(entries){
     }
   });
 },{threshold:0.1});
+/* Animated number reveal */
+var numObserver=new IntersectionObserver(function(entries){
+  entries.forEach(function(entry){
+    if(entry.isIntersecting){
+      var el=entry.target;
+      var text=el.getAttribute("data-text");
+      var dur=600;
+      var start=performance.now();
+      el.style.opacity="1";
+      function tick(now){
+        var p=Math.min((now-start)/dur,1);
+        var ease=1-Math.pow(1-p,3);
+        var len=Math.ceil(text.length*ease);
+        el.textContent=text.substring(0,len);
+        if(p<1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+      numObserver.unobserve(el);
+    }
+  });
+},{threshold:0.3});
+document.querySelectorAll(".number-val").forEach(function(el){
+  el.setAttribute("data-text",el.textContent);
+  el.textContent="";
+  el.style.opacity="0";
+  numObserver.observe(el);
+});
+
 var groups={};
 document.querySelectorAll(".svc-card,.number-card,.photo-card,.about-stat,.cred-chip").forEach(function(el){
   el.style.opacity="0";
