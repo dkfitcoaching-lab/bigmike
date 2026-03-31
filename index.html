@@ -58,9 +58,16 @@ img{max-width:100%;display:block}
 .nav-links a:hover{color:var(--acc)}
 .nav-cta{background:var(--goldGrad);background-size:200% 100%;color:var(--bg);font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.12em;padding:10px 20px;border-radius:8px;border:none;cursor:pointer;text-transform:uppercase;animation:shimmer 3s ease-in-out infinite;text-decoration:none;display:inline-block}
 .nav-menu-btn{display:none;background:none;border:none;color:var(--dm);cursor:pointer;padding:8px}
-.mobile-menu{display:none;position:fixed;inset:0;z-index:99;background:rgba(2,2,2,.97);backdrop-filter:blur(32px);flex-direction:column;align-items:center;justify-content:center;gap:32px}
+.mobile-menu{display:none;position:fixed;inset:0;z-index:200;background:rgba(2,2,2,.99);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);flex-direction:column;align-items:center;justify-content:center;gap:0;padding:80px 40px}
 .mobile-menu.open{display:flex}
-.mobile-menu a{font-family:var(--display);font-size:20px;color:var(--ice);letter-spacing:.08em}
+.mobile-menu .mm-cta{display:block;background:var(--goldGrad);background-size:200% 100%;color:var(--bg);font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.14em;padding:18px 48px;border-radius:12px;text-transform:uppercase;text-decoration:none;animation:shimmer 3s ease-in-out infinite;box-shadow:0 4px 24px var(--accM);margin-bottom:48px;min-width:240px;text-align:center}
+.mobile-menu .mm-divider{width:80px;height:1px;background:linear-gradient(90deg,transparent,var(--accDeep),var(--acc),var(--accDeep),transparent);margin-bottom:40px}
+.mobile-menu .mm-link{display:block;font-family:var(--mono);font-size:12px;font-weight:600;color:var(--dm);letter-spacing:.2em;text-transform:uppercase;text-decoration:none;padding:16px 0;transition:color .2s;border-bottom:1px solid rgba(255,255,255,.04)}
+.mobile-menu .mm-link:last-of-type{border-bottom:none}
+.mobile-menu .mm-link:hover,.mobile-menu .mm-link:active{color:var(--acc)}
+.mobile-menu .mm-close{position:absolute;top:20px;right:24px;background:none;border:1px solid var(--borderS);border-radius:10px;color:var(--dm);width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px;transition:border-color .2s}
+.mobile-menu .mm-close:hover{border-color:var(--acc);color:var(--acc)}
+.mobile-menu .mm-badge{font-family:var(--mono);font-size:8px;color:var(--dmL);letter-spacing:.2em;text-transform:uppercase;margin-top:48px}
 
 /* Hero */
 .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:120px 24px 80px;background:linear-gradient(to bottom,rgba(2,2,2,.55) 0%,rgba(2,2,2,.7) 50%,var(--bg) 100%),url('img/hero-stage-2025.jpg') center 15%/cover no-repeat;background-attachment:scroll,fixed}
@@ -226,11 +233,13 @@ img{max-width:100%;display:block}
 
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#services" onclick="toggleMenu()">Services</a>
-  <a href="#about" onclick="toggleMenu()">About</a>
-  <a href="#results" onclick="toggleMenu()">Results</a>
-  <a href="book.html" style="background:var(--goldGrad);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 3s ease-in-out infinite">Book a Session</a>
-  <button onclick="toggleMenu()" style="position:absolute;top:20px;right:24px;background:none;border:none;color:var(--dm);font-size:28px;cursor:pointer">&times;</button>
+  <a href="book.html" class="mm-cta" onclick="toggleMenu()">Book a Session</a>
+  <div class="mm-divider"></div>
+  <a href="#services" class="mm-link" onclick="toggleMenu()">Services</a>
+  <a href="#about" class="mm-link" onclick="toggleMenu()">About</a>
+  <a href="#results" class="mm-link" onclick="toggleMenu()">Results</a>
+  <div class="mm-badge">IFBB Pro Big Mike Ely</div>
+  <button class="mm-close" onclick="toggleMenu()" aria-label="Close menu">&times;</button>
 </div>
 
 <!-- HERO -->
