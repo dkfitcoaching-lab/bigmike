@@ -1,0 +1,141 @@
+---
+const bookingUrl = 'https://big-mike-108395.square.site/';
+
+const services = [
+  {
+    name: '1-on-1 Training',
+    icon: `<path d="M6.5 6.5v11M17.5 6.5v11M6.5 12h11M2 8v8M22 8v8"/>`,
+  },
+  {
+    name: 'Contest Prep',
+    icon: `<path d="M8 21h8m-4-4v4m-4-9a4 4 0 0 1-4-4V4h4m4 8a4 4 0 0 0 4-4V4h-4m-4 0h8M4 4v4a4 4 0 0 0 4 4m4 0a4 4 0 0 0 4-4V4"/>`,
+  },
+  {
+    name: 'Nutrition Planning',
+    icon: `<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 7h6M9 11h6M9 15h3"/>`,
+  },
+  {
+    name: 'Posing Sessions',
+    icon: `<path d="M12 2a3 3 0 100 6 3 3 0 000-6zM12 10v4m-3 7l1.5-5h3L15 21M9 14h6"/>`,
+  },
+  {
+    name: 'Online Coaching',
+    icon: `<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>`,
+  },
+  {
+    name: 'Full Coaching Package',
+    icon: `<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>`,
+  },
+];
+---
+
+<section class="section-pad" id="services">
+  <div class="section-title">Services</div>
+  <div class="services-grid">
+    {services.map((svc, i) => (
+      <div class="svc-card">
+        <div class="svc-num">{String(i + 1).padStart(2, '0')}</div>
+        <div class="svc-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" set:html={svc.icon} />
+        </div>
+        <div class="svc-name">{svc.name}</div>
+        <a href={bookingUrl} target="_blank" rel="noopener" class="svc-book">Book &rarr;</a>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .svc-card {
+    background: linear-gradient(160deg, rgba(12,12,12,.99), rgba(6,6,6,.99));
+    border: 1.5px solid var(--borderS);
+    border-radius: 16px;
+    padding: 32px 24px;
+    transition: border-color .3s, box-shadow .3s, transform .3s;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(8px);
+    contain: layout style paint;
+  }
+  .svc-card:hover {
+    border-color: var(--accB);
+    box-shadow: 0 8px 40px var(--accS), inset 0 1px 0 var(--borderS);
+    transform: translateY(-4px);
+  }
+  .svc-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--acc), transparent);
+    opacity: 0;
+    transition: opacity .3s;
+  }
+  .svc-card:hover::before { opacity: .5; }
+  .svc-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 16px;
+    background: radial-gradient(circle at 50% 0%, var(--accS), transparent 60%);
+    opacity: 0;
+    transition: opacity .3s;
+    pointer-events: none;
+  }
+  .svc-card:hover::after { opacity: 1; }
+
+  .svc-num {
+    position: absolute;
+    top: 16px;
+    right: 18px;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--dmL);
+    letter-spacing: .08em;
+    transition: color .3s;
+  }
+  .svc-card:hover .svc-num { color: var(--acc); }
+
+  .svc-icon {
+    margin-bottom: 16px;
+    color: var(--acc);
+    filter: drop-shadow(0 0 8px var(--accGlow));
+  }
+  .svc-name {
+    font-family: var(--display);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ice);
+    margin-bottom: 8px;
+    letter-spacing: .04em;
+  }
+  .svc-book {
+    display: inline-block;
+    margin-top: 14px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--acc);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    transition: color .2s;
+  }
+  .svc-book:hover { color: var(--accVib); }
+
+  @media (max-width: 768px) {
+    .services-grid { grid-template-columns: 1fr; }
+  }
+</style>

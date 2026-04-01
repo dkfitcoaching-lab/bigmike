@@ -1,0 +1,161 @@
+---
+/*
+  About section — facts only, no editorial, no guidance counselor story.
+  Every fact verified against the credentials table.
+*/
+---
+
+<section class="section-pad" id="about" style="background:linear-gradient(180deg,var(--bg),rgba(8,8,6,1),var(--bg))">
+  <div class="section-title">About</div>
+  <div class="about-wrap">
+    <div class="about-text">
+      <p>
+        Mike Ely earned his IFBB Pro card in 2013 at the NPC Masters Nationals with Hany Rambod in his corner. He is a 2x IFBB Pro Masters World Champion, Olympian, and NPC Judge with over three decades in the sport.
+      </p>
+      <p>
+        He holds a BS in Nutritional Science and an MS in Exercise Science from Bowling Green State University. Since 1996, he has coached athletes across every division — bodybuilding, figure, bikini, physique, and wellness — with over 30 athletes earning their IFBB Pro status under his guidance.
+      </p>
+      <p>
+        His programs are built on real science, refined by decades of competition, and custom to every athlete.
+      </p>
+      <div class="about-stats">
+        <div class="about-stat">
+          <div class="about-stat-num">2x</div>
+          <div class="about-stat-label">World Champion</div>
+        </div>
+        <div class="about-stat">
+          <div class="about-stat-num">30+</div>
+          <div class="about-stat-label">Years Competing</div>
+        </div>
+        <div class="about-stat">
+          <div class="about-stat-num stat-text">Thousands</div>
+          <div class="about-stat-label">Athletes Coached</div>
+        </div>
+      </div>
+    </div>
+    <div class="about-media">
+      <div class="about-photo">
+        <img src="/img/gallery-gym-recent.jpg" alt="IFBB Pro Big Mike Ely" loading="lazy" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    align-items: center;
+  }
+
+  .about-text p {
+    font-size: 15px;
+    color: var(--mu);
+    line-height: 1.8;
+    margin-bottom: 16px;
+  }
+
+  .about-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 36px;
+    flex-wrap: wrap;
+  }
+  .about-stat {
+    text-align: center;
+    position: relative;
+    padding: 0 20px;
+  }
+  .about-stat:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: -1px;
+    top: 10%;
+    bottom: 10%;
+    width: 1px;
+    background: linear-gradient(180deg, transparent, var(--accDeep), transparent);
+  }
+  .about-stat-num {
+    font-size: 36px;
+    font-weight: 800;
+    font-family: var(--mono);
+    line-height: 1;
+    background: var(--goldGrad);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 4s ease-in-out infinite;
+  }
+  .about-stat-num.stat-text {
+    font-size: 22px;
+    letter-spacing: .06em;
+  }
+  .about-stat-label {
+    font-size: 9px;
+    color: var(--dm);
+    font-family: var(--mono);
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    margin-top: 8px;
+  }
+
+  .about-photo {
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1.5px solid var(--borderS);
+    max-width: 100%;
+    margin: 0 auto;
+    position: relative;
+    box-shadow: 0 8px 40px rgba(0,0,0,.5), 0 0 60px var(--accS);
+  }
+  .about-photo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    border: 1.5px solid var(--accB);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity .3s;
+  }
+  .about-photo:hover::after { opacity: 1; }
+  .about-photo img {
+    width: 100%;
+    height: auto;
+    filter: contrast(1.05) brightness(.95);
+    transition: transform .6s ease;
+  }
+  .about-photo:hover img { transform: scale(1.02); }
+
+  @media (max-width: 768px) {
+    .about-stats { gap: 24px; }
+    .about-stat { padding: 0 12px; }
+    .about-stat-num { font-size: 28px; }
+    .about-stat-num.stat-text { font-size: 16px; }
+    .about-stat:not(:last-child)::after { display: none; }
+    .about-stat {
+      position: relative;
+    }
+    .about-stat::before {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accDeep), transparent);
+      margin: 0 auto;
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (min-width: 900px) {
+    .about-wrap { grid-template-columns: 1.1fr 0.9fr; gap: 60px; }
+  }
+</style>

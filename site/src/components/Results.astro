@@ -1,0 +1,186 @@
+---
+/*
+  Results section — real verifiable numbers only.
+  30+ Pro Cards, 2x World Champion, Olympian, Since 1996.
+  No "Hundreds" of unverified claims.
+*/
+
+const stats = [
+  { value: '30+', label: 'Pro Cards Earned' },
+  { value: '2x', label: 'World Champion' },
+  { value: 'Olympian', label: 'Masters Mr. Olympia', isText: true },
+  { value: '1996', label: 'Coaching Since' },
+];
+
+const photos = [
+  { src: '/img/results-procard-lindsay.jpg', alt: 'Mike with Lindsay after earning her IFBB Pro Card', label: 'IFBB Pro Card — Lindsay' },
+  { src: '/img/results-procard-lindsay-stage.jpg', alt: 'Lindsay on stage earning her IFBB Pro Card', label: 'Pro Card Earned on Stage' },
+  { src: '/img/results-group.jpg', alt: 'Center Stage Aesthetics team at Old School Iron Gym', label: 'Center Stage Athletes' },
+  { src: '/img/results-procard-backstage.jpg', alt: 'Mike backstage celebrating athlete IFBB Pro Card', label: 'IFBB Pro Card Earned' },
+  { src: '/img/results-procard-female.jpg', alt: 'Mike with female athlete after earning her IFBB Pro Card', label: 'IFBB Pro Card Earned' },
+  { src: '/img/results-procard-ladies.jpg', alt: 'Mike with figure competitors backstage', label: 'Figure Athletes' },
+];
+---
+
+<section class="section-pad" id="results">
+  <div class="section-title">Results</div>
+  <div class="numbers-grid">
+    {stats.map(s => (
+      <div class="number-card">
+        <div class={`number-val ${s.isText ? 'text-val' : ''}`} data-text={s.value}>{s.value}</div>
+        <div class="number-label">{s.label}</div>
+      </div>
+    ))}
+  </div>
+  <div class="photo-gallery">
+    {photos.map(p => (
+      <div class="photo-card">
+        <img src={p.src} alt={p.alt} loading="lazy" />
+        <div class="photo-label">{p.label}</div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .numbers-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    max-width: 900px;
+    margin: 0 auto 48px;
+  }
+  .number-card {
+    text-align: center;
+    padding: 28px 16px;
+    background: linear-gradient(160deg, var(--glassB), rgba(2,2,2,.8));
+    border: 1px solid var(--borderS);
+    border-radius: 14px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color .3s, transform .3s;
+    contain: layout style paint;
+  }
+  .number-card:hover {
+    border-color: var(--borderH);
+    transform: translateY(-4px);
+  }
+  .number-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20%;
+    right: 20%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--acc), transparent);
+    opacity: .4;
+  }
+  .number-val {
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 800;
+    background: var(--goldGrad);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 4s ease-in-out infinite;
+    font-family: var(--mono);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .number-val.text-val {
+    font-size: clamp(16px, 2.5vw, 22px);
+    letter-spacing: .04em;
+  }
+  .number-label {
+    font-size: 9px;
+    color: var(--dm);
+    font-family: var(--mono);
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  .photo-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .photo-card {
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1.5px solid var(--borderS);
+    transition: border-color .3s, transform .3s, box-shadow .3s;
+    position: relative;
+    contain: layout style paint;
+  }
+  .photo-card:hover {
+    border-color: var(--accB);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 32px var(--accS), 0 0 0 1px var(--accGlow);
+  }
+  .photo-card img {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    filter: contrast(1.05) brightness(.95);
+    transition: transform .4s;
+  }
+  .photo-card:hover img { transform: scale(1.04); }
+  .photo-label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 12px 14px;
+    background: linear-gradient(transparent, rgba(2,2,2,.9));
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--ow);
+    letter-spacing: .06em;
+    transform: translateY(4px);
+    opacity: .7;
+    transition: transform .3s, opacity .3s;
+  }
+  .photo-card:hover .photo-label {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  @media (max-width: 768px) {
+    .numbers-grid { grid-template-columns: repeat(2, 1fr); }
+    .photo-gallery { grid-template-columns: repeat(2, 1fr); }
+    .photo-card img { height: 180px; }
+  }
+</style>
+
+<script>
+  const numObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target as HTMLElement;
+        const text = el.getAttribute('data-text') || '';
+        const dur = 600;
+        const start = performance.now();
+        el.style.opacity = '1';
+        function tick(now: number) {
+          const p = Math.min((now - start) / dur, 1);
+          const ease = 1 - Math.pow(1 - p, 3);
+          const len = Math.ceil(text.length * ease);
+          el.textContent = text.substring(0, len);
+          if (p < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+        numObserver.unobserve(el);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.number-val').forEach(el => {
+    el.setAttribute('data-text', el.textContent || '');
+    el.textContent = '';
+    (el as HTMLElement).style.opacity = '0';
+    numObserver.observe(el);
+  });
+</script>

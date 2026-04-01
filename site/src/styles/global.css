@@ -1,0 +1,204 @@
+/* ============================================
+   BIG MIKE ELY — GLOBAL DESIGN SYSTEM
+   Built by Vermillion Axis Technologies
+   ============================================ */
+
+:root {
+  /* Core palette — Gold */
+  --bg: #020202;
+  --bg2: #050505;
+  --card: #0a0a0c;
+
+  /* Accent */
+  --acc: #D4A830;
+  --accD: #A07818;
+  --accDeep: #886018;
+  --accVib: #ECC850;
+  --accBright: #ECC850;
+
+  /* Accent transparencies */
+  --accS: rgba(200,160,40,0.06);
+  --accB: rgba(212,168,48,.45);
+  --accM: rgba(200,160,40,0.30);
+  --accGlow: rgba(200,160,40,0.25);
+
+  /* Borders */
+  --border: rgba(212,168,48,.28);
+  --borderH: rgba(212,168,48,.35);
+  --borderS: rgba(212,168,48,.15);
+
+  /* Text scale */
+  --ice: #f0e8d0;
+  --wh: #f0ece4;
+  --ow: #c8c0b0;
+  --mu: #908878;
+  --dm: #605848;
+  --dmL: #3a3428;
+
+  /* Glass */
+  --glass: rgba(200,160,40,0.02);
+  --glassB: rgba(200,160,40,0.04);
+
+  /* Status */
+  --warn: #e8b878;
+  --danger: #d87878;
+  --success: #78c878;
+
+  /* Typography */
+  --display: 'Cinzel', serif;
+  --body: 'Rajdhani', sans-serif;
+  --mono: 'IBM Plex Mono', monospace;
+
+  /* Gradients */
+  --goldGrad: linear-gradient(135deg, #8B6914, #C49628, #E8C050, #C49628, #8B6914);
+}
+
+/* Crimson theme override */
+body.theme-crimson {
+  --acc: #D03030;
+  --accD: #A01818;
+  --accDeep: #881414;
+  --accVib: #E84040;
+  --accBright: #E84040;
+  --accS: rgba(208,48,48,0.06);
+  --accB: rgba(208,48,48,.45);
+  --accM: rgba(208,48,48,0.30);
+  --accGlow: rgba(208,48,48,0.25);
+  --border: rgba(208,48,48,.28);
+  --borderH: rgba(208,48,48,.35);
+  --borderS: rgba(208,48,48,.15);
+  --ice: #f0e0e0;
+  --ow: #c8b0b0;
+  --mu: #907070;
+  --dm: #584040;
+  --dmL: #3a2828;
+  --glass: rgba(208,48,48,0.02);
+  --glassB: rgba(208,48,48,0.04);
+  --goldGrad: linear-gradient(135deg, #8B1414, #C42828, #E84040, #C42828, #8B1414);
+}
+
+/* Reset */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  background: var(--bg);
+  color: var(--wh);
+  font-family: var(--body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a { color: var(--acc); text-decoration: none; }
+img { max-width: 100%; display: block; }
+
+/* Shared section styles */
+.section-pad { padding: 100px 24px; }
+.section-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .3em;
+  color: var(--acc);
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 12px;
+  text-shadow: 0 0 20px var(--accGlow);
+}
+.section-title {
+  font-family: var(--display);
+  font-size: clamp(28px, 5vw, 44px);
+  font-weight: 700;
+  color: var(--ice);
+  text-align: center;
+  letter-spacing: .06em;
+}
+.section-sub {
+  font-size: 15px;
+  color: var(--mu);
+  text-align: center;
+  max-width: 560px;
+  margin: 0 auto 48px;
+  line-height: 1.6;
+}
+
+/* Gold wire divider */
+.gw {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accDeep), var(--acc), var(--accDeep), transparent);
+  box-shadow: 0 0 12px var(--accS), 0 0 4px var(--accS);
+}
+
+/* Section titles — premium underline */
+.section-title {
+  position: relative;
+  padding-bottom: 20px;
+  margin-bottom: 48px;
+}
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 2px;
+  background: var(--goldGrad);
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+  box-shadow: 0 0 12px var(--accGlow);
+}
+
+/* Film grain overlay — subtle texture */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: .025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 200px;
+}
+
+/* Animations */
+@keyframes shimmer {
+  0% { background-position: 100% 50%; }
+  50% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scrollBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(8px); }
+}
+@keyframes glowPulse {
+  0%, 100% { filter: drop-shadow(0 0 8px var(--accGlow)); }
+  50% { filter: drop-shadow(0 0 20px var(--accM)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Responsive base */
+@media (max-width: 768px) {
+  .section-pad { padding: 60px 20px; }
+}

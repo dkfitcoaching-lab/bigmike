@@ -1,0 +1,84 @@
+---
+interface Props {
+  title: string;
+  description: string;
+}
+const { title, description } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta name="theme-color" content="#020202" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://ifbbprobigmikeely.com" />
+  <meta property="og:image" content="/img/hero-stage-2025.jpg" />
+  <meta property="og:image:width" content="800" />
+  <meta property="og:image:height" content="600" />
+
+  <!-- Preload critical assets -->
+  <link rel="preload" as="image" href="/img/hero-stage-2025.jpg" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <!-- Font preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+    crossorigin="anonymous"
+  />
+
+  <!-- Global styles -->
+  <style is:global>
+    @import '../styles/global.css';
+  </style>
+</head>
+<body>
+  <slot />
+
+  <!-- Theme (sync, must run before paint) + deferred content -->
+  <script is:inline>
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    window.scrollTo(0, 0);
+    // Instant local theme — no fetch, no flash
+    (function(){
+      var t=localStorage.getItem('bm_website_theme')||localStorage.getItem('fm_theme')||'gold';
+      if(t==='crimson')document.body.classList.add('theme-crimson');
+    })();
+    // Deferred: cloud theme + content overrides (after paint)
+    window.addEventListener('load',function(){
+      var SUPA='https://sjwosrwfoubvqpzmxhoe.supabase.co';
+      var KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNqd29zcndmb3VidnFwem14aG9lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5OTgzMDMsImV4cCI6MjA5MDU3NDMwM30.iPPJrXX8igS8ymskqRZmkTAP7_okd3XHIeaCcrDlXPo';
+      var H={'apikey':KEY,'Authorization':'Bearer '+KEY};
+      fetch(SUPA+'/rest/v1/app_settings?key=eq.website_theme&select=value',{headers:H})
+      .then(function(r){return r.json();}).then(function(rows){
+        if(rows&&rows.length&&rows[0].value){
+          var t=rows[0].value;
+          if(t==='crimson')document.body.classList.add('theme-crimson');
+          else document.body.classList.remove('theme-crimson');
+        }
+      }).catch(function(){});
+      fetch(SUPA+'/rest/v1/app_settings?key=eq.website_content&select=value',{headers:H})
+      .then(function(r){return r.json();}).then(function(rows){
+        if(!rows||!rows.length||!rows[0].value)return;
+        var wc=rows[0].value;
+        if(wc.heroSubtitle){var el=document.querySelector('[data-wc="hero-subtitle"]');if(el)el.textContent=wc.heroSubtitle;}
+        if(wc.ctaHeading){var el=document.querySelector('[data-wc="cta-heading"]');if(el)el.textContent=wc.ctaHeading;}
+        if(wc.ctaButton){var el=document.querySelector('[data-wc="cta-button"]');if(el)el.textContent=wc.ctaButton;}
+        if(wc.footerTagline){var el=document.querySelector('[data-wc="footer-tagline"]');if(el){el.textContent=wc.footerTagline;el.style.display='block';}}
+      }).catch(function(){});
+    });
+  </script>
+</body>
+</html>
