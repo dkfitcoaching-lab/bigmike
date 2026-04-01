@@ -105,3 +105,25 @@ const photos = [
     .gallery-featured { grid-column: span 1; }
   }
 </style>
+
+<script>
+  (function(){
+    var SUPA_URL='https://sjwosrwfoubvqpzmxhoe.supabase.co';
+    var SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNqd29zcndmb3VidnFwem14aG9lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5OTgzMDMsImV4cCI6MjA5MDU3NDMwM30.iPPJrXX8igS8ymskqRZmkTAP7_okd3XHIeaCcrDlXPo';
+    fetch(SUPA_URL+'/rest/v1/app_settings?key=eq.gallery_photos&select=value',{headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY}})
+    .then(function(r){return r.json();})
+    .then(function(rows){
+      if(!rows||!rows.length||!rows[0].value)return;
+      var photos=rows[0].value;
+      var grid=document.querySelector('.gallery-grid');
+      if(!grid)return;
+      for(var i=0;i<photos.length;i++){
+        var p=photos[i];
+        var div=document.createElement('div');
+        div.className='gallery-item';
+        div.innerHTML='<img src="'+p.url+'" alt="'+(p.label||'Gallery photo')+'" loading="lazy" /><div class="gallery-label">'+(p.label||'')+'</div>';
+        grid.appendChild(div);
+      }
+    }).catch(function(){});
+  })();
+</script>

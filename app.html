@@ -1277,7 +1277,24 @@ function deleteScheduled(id){
   schedule=schedule.filter(function(x){return x.id!==id;});
   save();render();toast("Removed \u00b7 ",2600,function(){if(removed){schedule.push(removed);save();render();}});});
 }
-function cancelScheduled(id){var sched=schedule.find(function(s){return s.id===id;});if(!sched)return;sched.status="cancelled";save();toast("Cancelled");pop();}
+function cancelScheduled(id){
+  var sched=schedule.find(function(s){return s.id===id;});if(!sched)return;
+  var sessDate=new Date(sched.date+"T"+(sched.time||"12:00")+":00");
+  var now=new Date();
+  var hoursUntil=(sessDate-now)/(1e3*3600);
+  var fee=0,msg="";
+  if(hoursUntil>=48){fee=0;msg="No cancellation fee (48+ hours notice).";}
+  else{
+    var cancelHour=now.getHours();
+    if(cancelHour>=20){fee=parseFloat(sched.rate||0);msg="Full session charge ($"+fee+") — cancelled after 8 PM.";}
+    else{fee=10;msg="$10 cancellation fee — cancelled with less than 48 hours notice.";}
+  }
+  showConfirm("Cancel Session",msg+"\n\nProceed with cancellation?","Confirm Cancel").then(function(ok){
+    if(!ok)return;
+    sched.status="cancelled";sched.cancelFee=fee;sched.cancelledAt=now.toISOString();save();
+    toast(fee>0?"Cancelled \u00b7 $"+fee+" fee applied":"Cancelled \u00b7 No fee");pop();
+  });
+}
 function showBlockTimeModal(){
   var dateVal=_selectedDay||todayISO();
   showModal("Block Time",'<div class="field"><span class="lb">DATE</span><input id="btDate" type="date" value="'+dateVal+'"></div>'
@@ -1313,8 +1330,10 @@ function renderSettings(){
     +'<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px"><div style="text-align:center;padding:10px 6px;background:var(--glass);border-radius:8px;border:1px solid var(--borderS)"><div style="font-size:18px;font-weight:700;color:var(--acc);font-family:var(--mono)">'+totalClients+'</div><div style="font-size:8px;color:var(--dm);font-family:var(--mono);letter-spacing:.08em">CLIENTS</div></div><div style="text-align:center;padding:10px 6px;background:var(--glass);border-radius:8px;border:1px solid var(--borderS)"><div style="font-size:18px;font-weight:700;color:var(--wh);font-family:var(--mono)">'+totalSess+'</div><div style="font-size:8px;color:var(--dm);font-family:var(--mono);letter-spacing:.08em">SESSIONS</div></div><div style="text-align:center;padding:10px 6px;background:var(--glass);border-radius:8px;border:1px solid var(--borderS)"><div style="font-size:18px;font-weight:700;color:var(--accVib);font-family:var(--mono)">$'+tr+'</div><div style="font-size:8px;color:var(--dm);font-family:var(--mono);letter-spacing:.08em">REVENUE</div></div></div>'
     +(memberSince?'<div style="margin-top:10px;font-size:9px;color:var(--dm);font-family:var(--mono);text-align:center">Tracking since '+fmtDate(memberSince)+'</div>':'')+'</div>'
     +'<div class="sl" style="margin-top:18px">GYM SETTINGS</div><div class="cd" style="padding:16px"><div class="field"><span class="lb">GYM CUT (%)</span><div style="display:flex;gap:4px;flex-wrap:wrap">'+ph+'</div></div><div class="field"><span class="lb">DEFAULT SESSION RATE ($)</span><input id="defRate" type="number" min="0" value="'+LS.get("defaultRate","")+'" onchange="LS.set(\'defaultRate\',this.value)"></div></div>'
-    +'<div class="sl" style="margin-top:18px">DISPLAY</div><div class="cd" style="padding:16px"><div class="field"><span class="lb">COLOR THEME</span><div style="display:flex;gap:4px"><div class="chip'+(LS.get("theme","crimson")==="gold"?" on":"")+'" onclick="setTheme(\'gold\')">GOLD</div><div class="chip'+(LS.get("theme","crimson")==="crimson"?" on":"")+'" onclick="setTheme(\'crimson\')">CRIMSON</div></div></div><div class="field"><span class="lb">TEXT SIZE</span><div style="display:flex;gap:4px"><div class="chip'+(LS.get("fontScale","medium")==="small"?" on":"")+'" onclick="setFontScale(\'small\')">SMALL</div><div class="chip'+(LS.get("fontScale","medium")==="medium"?" on":"")+'" onclick="setFontScale(\'medium\')">MEDIUM</div><div class="chip'+(LS.get("fontScale","medium")==="large"?" on":"")+'" onclick="setFontScale(\'large\')">LARGE</div><div class="chip'+(LS.get("fontScale","medium")==="xl"?" on":"")+'" onclick="setFontScale(\'xl\')">XL</div></div></div><div class="field"><span class="lb">TIME FORMAT</span><div style="display:flex;gap:4px"><div class="chip'+(is24Hr()?"":" on")+'" onclick="LS.set(\'timeFormat\',\'12\');render()">12-Hour</div><div class="chip'+(is24Hr()?" on":"")+'" onclick="LS.set(\'timeFormat\',\'24\');render()">24-Hour</div></div></div><div><span class="lb">TIMER SOUND</span><div style="display:flex;gap:4px"><div class="chip'+(LS.get("timerSound",true)?" on":"")+'" onclick="LS.set(\'timerSound\',true);render()">ON</div><div class="chip'+(!LS.get("timerSound",true)?" on":"")+'" onclick="LS.set(\'timerSound\',false);render()">OFF</div></div></div></div>'
+    +'<div class="sl" style="margin-top:18px">DISPLAY</div><div class="cd" style="padding:16px"><div class="field"><span class="lb">PORTAL THEME</span><div style="font-size:10px;color:var(--dm);margin-bottom:8px">Controls the colors of this coaching portal</div><div style="display:flex;gap:4px"><div class="chip'+(LS.get("theme","crimson")==="gold"?" on":"")+'" onclick="setTheme(\'gold\')">GOLD</div><div class="chip'+(LS.get("theme","crimson")==="crimson"?" on":"")+'" onclick="setTheme(\'crimson\')">CRIMSON</div></div></div><div class="field"><span class="lb">WEBSITE THEME</span><div style="font-size:10px;color:var(--dm);margin-bottom:8px">Controls the colors of your public website</div><div style="display:flex;gap:4px"><div class="chip'+(LS.get("bm_website_theme","gold")==="gold"?" on":"")+'" onclick="setWebsiteTheme(\'gold\')">GOLD</div><div class="chip'+(LS.get("bm_website_theme","gold")==="crimson"?" on":"")+'" onclick="setWebsiteTheme(\'crimson\')">CRIMSON</div></div></div><div class="field"><span class="lb">TEXT SIZE</span><div style="display:flex;gap:4px"><div class="chip'+(LS.get("fontScale","medium")==="small"?" on":"")+'" onclick="setFontScale(\'small\')">SMALL</div><div class="chip'+(LS.get("fontScale","medium")==="medium"?" on":"")+'" onclick="setFontScale(\'medium\')">MEDIUM</div><div class="chip'+(LS.get("fontScale","medium")==="large"?" on":"")+'" onclick="setFontScale(\'large\')">LARGE</div><div class="chip'+(LS.get("fontScale","medium")==="xl"?" on":"")+'" onclick="setFontScale(\'xl\')">XL</div></div></div><div class="field"><span class="lb">TIME FORMAT</span><div style="display:flex;gap:4px"><div class="chip'+(is24Hr()?"":" on")+'" onclick="LS.set(\'timeFormat\',\'12\');render()">12-Hour</div><div class="chip'+(is24Hr()?" on":"")+'" onclick="LS.set(\'timeFormat\',\'24\');render()">24-Hour</div></div></div><div><span class="lb">TIMER SOUND</span><div style="display:flex;gap:4px"><div class="chip'+(LS.get("timerSound",true)?" on":"")+'" onclick="LS.set(\'timerSound\',true);render()">ON</div><div class="chip'+(!LS.get("timerSound",true)?" on":"")+'" onclick="LS.set(\'timerSound\',false);render()">OFF</div></div></div></div>'
     +renderBookingSettings()
+    +renderGalleryManager()
+    +renderWebsiteContent()
     +'<div class="sl" style="margin-top:18px">SECURITY</div><div class="cd" style="padding:16px"><div style="margin-bottom:12px"><div style="font-size:13px;font-weight:500;color:var(--wh)">PIN Lock</div></div><button class="btn2" onclick="changePIN()" style="width:100%;margin-bottom:8px">CHANGE PIN</button><button class="btn2" onclick="LS.set(\'tutorialDone\',false);showTutorial()" style="width:100%">REPLAY TUTORIAL</button></div>'
     +'<div class="sl" style="margin-top:18px">ALERTS & NOTIFICATIONS</div><div class="cd" style="padding:16px">'
     +(function(){var nRet=LS.get("notif_retention",true),nSched=LS.get("notif_schedule",true);return '<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--borderS)"><div><div style="font-size:13px;font-weight:500;color:var(--wh)">PR Celebrations</div><div style="font-size:10px;color:var(--dm)">Toast when a client hits a new weight record</div></div><div class="chip'+(nPR?" on":"")+'" onclick="toggleNotif(\'notif_pr\',this)" style="min-width:40px;text-align:center">'+(nPR?"ON":"OFF")+'</div></div><div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--borderS)"><div><div style="font-size:13px;font-weight:500;color:var(--wh)">Retention Warnings</div><div style="font-size:10px;color:var(--dm)">Flag clients inactive 7+ days</div></div><div class="chip'+(nRet?" on":"")+'" onclick="toggleNotif(\'notif_retention\',this)" style="min-width:40px;text-align:center">'+(nRet?"ON":"OFF")+'</div></div><div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0"><div><div style="font-size:13px;font-weight:500;color:var(--wh)">Schedule Reminders</div><div style="font-size:10px;color:var(--dm)">Show upcoming sessions on home</div></div><div class="chip'+(nSched?" on":"")+'" onclick="toggleNotif(\'notif_schedule\',this)" style="min-width:40px;text-align:center">'+(nSched?"ON":"OFF")+'</div></div>'
@@ -2134,7 +2153,7 @@ function addProgramSection(type){var p=_programs.find(function(x){return x.id===
 function removeProgramSection(type){var p=_programs.find(function(x){return x.id===_editProgram;});if(!p)return;p.sections=p.sections.filter(function(s){return s!==type;});savePrograms();render();}
 function moveProgramSection(idx,dir){var p=_programs.find(function(x){return x.id===_editProgram;});if(!p)return;var ni=idx+dir;if(ni<0||ni>=p.sections.length)return;var tmp=p.sections[idx];p.sections[idx]=p.sections[ni];p.sections[ni]=tmp;savePrograms();render();}
 function toggleProgramSection(type){_programSectionCollapsed[type]=!_programSectionCollapsed[type];render();}
-function foodPrepBadge(db){if(!db||db.di===-1)return"";if(db.ck===1)return' <span style="font-size:8px;color:var(--warn);font-family:var(--mono)">(cooked)</span>';if(db.ck===0&&(db.cat==="P"||db.cat==="C"))return' <span style="font-size:8px;color:var(--mu);font-family:var(--mono)">(dry/raw)</span>';return"";}
+function foodPrepBadge(db){if(!db)return"";if(db.ck===1)return' <span style="font-size:8px;color:var(--warn);font-family:var(--mono)">(cooked)</span>';if(db.ck===0&&(db.cat==="P"||db.cat==="C"))return' <span style="font-size:8px;color:var(--mu);font-family:var(--mono)">(dry/raw)</span>';return"";}
 function foodPrepBadgePDF(db){if(!db)return"";if(db.ck===1)return' <span style="font-size:9px;color:#b88030;font-family:IBM Plex Mono,monospace">(cooked)</span>';if(db.ck===0&&(db.cat==="P"||db.cat==="C"))return' <span style="font-size:9px;color:#999;font-family:IBM Plex Mono,monospace">(dry/raw)</span>';return"";}
 function calcMealTotals(meal){var t={cal:0,p:0,c:0,f:0};(meal.foods||[]).forEach(function(fd){var db=fd.custom?fd:FOOD_DB[fd.di];if(!db)return;var per=db.per||1;var m=(fd.qty||0)/per;t.cal+=Math.round((db.cal||0)*m);t.p+=Math.round((db.p||0)*m);t.c+=Math.round((db.c||0)*m);t.f+=Math.round((db.f||0)*m);});return t;}
 function calcPlanTotals(mp){var t={cal:0,p:0,c:0,f:0};(mp.meals||[]).forEach(function(ml){var mt=calcMealTotals(ml);t.cal+=mt.cal;t.p+=mt.p;t.c+=mt.c;t.f+=mt.f;});return t;}
@@ -3523,7 +3542,6 @@ function removeBlockedDate(iso){
   var idx=_bookingAvail.blockedDates.indexOf(iso);
   if(idx>=0){_bookingAvail.blockedDates.splice(idx,1);saveBookingSettings();render();}
 }
-function setCancelPolicy(hours){if(!_bookingAvail)return;_bookingAvail.cancelHours=hours;saveBookingSettings();render();}
 function addBlockedRange(){
   var d=val("blockRangeDate"),s=val("blockRangeStart"),e=val("blockRangeEnd");
   if(!d){toast("Select a date");return;}if(!s||!e){toast("Set start & end times");return;}
@@ -3540,7 +3558,116 @@ function saveDailySchedPref(){
   var sb=getSupabase();if(!sb)return;
   sb.from("app_settings").upsert({key:"daily_schedule_sms",value:{enabled:LS.get("daily_sched_sms",false),phone:LS.get("coach_phone","")}},{onConflict:"key"}).then(function(res){if(!res.error)toast("\u2713 Saved");});
 }
-function setPortalTheme(t){LS.set("portalTheme",t);render();}
+function setWebsiteTheme(t){LS.set("bm_website_theme",t);var sb=getSupabase();if(sb){sb.from("app_settings").upsert({key:"website_theme",value:t},{onConflict:"key"}).then(function(){});}toast("\u2713 Website theme set to "+t.toUpperCase());render();}
+
+// ── GALLERY MANAGEMENT ──
+var _galleryPhotos=null;
+function loadGalleryPhotos(cb){
+  var sb=getSupabase();if(!sb){if(cb)cb();return;}
+  sb.from("app_settings").select("value").eq("key","gallery_photos").single().then(function(res){
+    if(res.data&&res.data.value)_galleryPhotos=res.data.value;
+    else _galleryPhotos=[];
+    if(cb)cb();
+  });
+}
+function renderGalleryManager(){
+  if(_galleryPhotos===null){loadGalleryPhotos(function(){render();});return '<div class="sl" style="margin-top:18px">WEBSITE GALLERY</div><div class="cd" style="padding:16px;text-align:center;color:var(--dm);font-size:11px">Loading gallery...</div>';}
+  var photos=_galleryPhotos||[];
+  var grid="";
+  for(var i=0;i<photos.length;i++){
+    var p=photos[i];
+    grid+='<div style="position:relative;border-radius:8px;overflow:hidden;border:1px solid var(--borderS);aspect-ratio:1">'
+      +'<img src="'+esc(p.url)+'" alt="'+esc(p.label||"")+'" style="width:100%;height:100%;object-fit:cover">'
+      +'<div style="position:absolute;bottom:0;left:0;right:0;padding:4px 6px;background:linear-gradient(transparent,rgba(0,0,0,.85));font-size:8px;color:var(--ow);font-family:var(--mono)">'+(p.label||"Photo "+(i+1))+'</div>'
+      +'<div onclick="removeGalleryPhoto('+i+')" style="position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.7);color:var(--danger);display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;border:1px solid rgba(216,120,120,.3)">\u2715</div></div>';
+  }
+  return '<div class="sl" style="margin-top:18px">WEBSITE GALLERY</div><div class="cd" style="padding:16px">'
+    +'<div style="font-size:11px;color:var(--mu);margin-bottom:14px;line-height:1.6">Upload photos to your public website gallery. Photos are stored in Supabase and appear on your site automatically.</div>'
+    +(photos.length?'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px">'+grid+'</div>':'<div style="text-align:center;padding:20px;color:var(--dm);font-size:11px;border:1px dashed var(--borderS);border-radius:8px;margin-bottom:14px">No photos uploaded yet</div>')
+    +'<div style="display:flex;gap:8px"><button class="btn" onclick="pickGalleryPhoto()" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg> UPLOAD PHOTO</button></div>'
+    +'<input type="file" id="galleryFileInput" accept="image/*" style="display:none" onchange="handleGalleryUpload(event)">'
+    +'</div>';
+}
+function pickGalleryPhoto(){
+  var sb=getSupabase();if(!sb){toast("Configure Supabase first");return;}
+  el("galleryFileInput").click();
+}
+function handleGalleryUpload(evt){
+  var file=evt.target.files[0];if(!file)return;
+  if(!file.type.startsWith("image/")){toast("Only image files");return;}
+  if(file.size>10*1024*1024){toast("Max 10MB");return;}
+  var sb=getSupabase();if(!sb){toast("Configure Supabase first");return;}
+  toast("Uploading...");
+  var ext=file.name.split(".").pop()||"jpg";
+  var path="gallery/"+Date.now()+"_"+Math.random().toString(36).slice(2,8)+"."+ext;
+  sb.storage.from("gallery").upload(path,file,{cacheControl:"3600",upsert:false}).then(function(res){
+    if(res.error){toast("\u2717 Upload failed: "+res.error.message);return;}
+    var publicUrl=sb.storage.from("gallery").getPublicUrl(path).data.publicUrl;
+    showModal("Photo Details",'<div class="field"><span class="lb">LABEL</span><input id="galLabel" placeholder="e.g. 2024 Masters World Pro"></div>'
+      +'<div style="margin:12px 0;border-radius:8px;overflow:hidden;border:1px solid var(--borderS)"><img src="'+esc(publicUrl)+'" style="width:100%;max-height:300px;object-fit:cover"></div>'
+      +'<button class="btn" onclick="saveGalleryPhoto(\''+esc(publicUrl)+'\')">ADD TO GALLERY</button>');
+  });
+  evt.target.value="";
+}
+function saveGalleryPhoto(url){
+  var label=val("galLabel")||"";
+  if(!_galleryPhotos)_galleryPhotos=[];
+  _galleryPhotos.push({url:url,label:label,added:new Date().toISOString()});
+  var sb=getSupabase();
+  if(sb)sb.from("app_settings").upsert({key:"gallery_photos",value:_galleryPhotos},{onConflict:"key"}).then(function(){});
+  closeModal();toast("\u2713 Added to gallery");render();
+}
+function removeGalleryPhoto(idx){
+  showConfirm("Remove Photo","Remove this photo from your website gallery?","Remove").then(function(ok){
+    if(!ok)return;
+    var removed=_galleryPhotos.splice(idx,1)[0];
+    var sb=getSupabase();
+    if(sb){
+      sb.from("app_settings").upsert({key:"gallery_photos",value:_galleryPhotos},{onConflict:"key"}).then(function(){});
+      if(removed&&removed.url){
+        var match=removed.url.match(/gallery\/(.+)$/);
+        if(match)sb.storage.from("gallery").remove([match[1]]);
+      }
+    }
+    toast("Removed");render();
+  });
+}
+
+// ── WEBSITE CONTENT MANAGEMENT ──
+var _websiteContent=null;
+function loadWebsiteContent(cb){
+  var sb=getSupabase();if(!sb){if(cb)cb();return;}
+  sb.from("app_settings").select("value").eq("key","website_content").single().then(function(res){
+    _websiteContent=(res.data&&res.data.value)?res.data.value:{};
+    if(cb)cb();
+  });
+}
+function renderWebsiteContent(){
+  if(_websiteContent===null){loadWebsiteContent(function(){render();});return '<div class="sl" style="margin-top:18px">WEBSITE CONTENT</div><div class="cd" style="padding:16px;text-align:center;color:var(--dm);font-size:11px">Loading...</div>';}
+  var wc=_websiteContent||{};
+  return '<div class="sl" style="margin-top:18px">WEBSITE CONTENT</div><div class="cd" style="padding:16px">'
+    +'<div style="font-size:11px;color:var(--mu);margin-bottom:14px;line-height:1.6">Edit the text that appears on your public website. Changes are saved to the cloud and appear on your site automatically.</div>'
+    +'<div class="field"><span class="lb">HERO SUBTITLE</span><input id="wcHeroSub" value="'+esc(wc.heroSubtitle||"2x IFBB Pro Masters World Champion")+'" placeholder="2x IFBB Pro Masters World Champion"></div>'
+    +'<div class="field"><span class="lb">ABOUT BIO</span><textarea id="wcAboutBio" rows="4" style="resize:vertical" placeholder="Bio text for the About section">'+esc(wc.aboutBio||"")+'</textarea></div>'
+    +'<div class="field"><span class="lb">CTA HEADING</span><input id="wcCtaHead" value="'+esc(wc.ctaHeading||"Book a Session")+'" placeholder="Book a Session"></div>'
+    +'<div class="field"><span class="lb">CTA BUTTON TEXT</span><input id="wcCtaBtn" value="'+esc(wc.ctaButton||"BOOK YOUR SESSION")+'" placeholder="BOOK YOUR SESSION"></div>'
+    +'<div class="field"><span class="lb">FOOTER TAGLINE</span><input id="wcFooterTag" value="'+esc(wc.footerTagline||"")+'" placeholder="Optional footer tagline"></div>'
+    +'<button class="btn" onclick="saveWebsiteContent()" style="width:100%;margin-top:4px">SAVE WEBSITE CONTENT</button>'
+    +'</div>';
+}
+function saveWebsiteContent(){
+  _websiteContent={
+    heroSubtitle:val("wcHeroSub")||"",
+    aboutBio:val("wcAboutBio")||"",
+    ctaHeading:val("wcCtaHead")||"",
+    ctaButton:val("wcCtaBtn")||"",
+    footerTagline:val("wcFooterTag")||""
+  };
+  var sb=getSupabase();
+  if(sb){sb.from("app_settings").upsert({key:"website_content",value:_websiteContent},{onConflict:"key"}).then(function(res){if(!res.error)toast("\u2713 Website content saved");else toast("\u2717 Save failed");});}
+  else toast("\u2717 Configure Supabase first");
+}
+
 function copyBookingLink(){
   var sb=getSupabase();
   var url=window.location.origin+"/book.html";
@@ -3587,9 +3714,14 @@ function renderBookingSettings(){
     +'<div class="field"><span class="lb">SESSION TYPES</span><div style="display:flex;gap:4px;flex-wrap:wrap">'+typeChips+'</div></div>'
     +'<div class="field"><span class="lb">BLOCKED DATES</span><div style="display:flex;gap:6px;align-items:center;margin-bottom:8px"><input type="date" id="blockDateInput" style="font-size:11px;padding:8px 10px;width:auto;flex:1"><button class="btn2" onclick="addBlockedDate()" style="padding:6px 12px;font-size:8px">BLOCK</button></div>'+(blockedHtml?'<div style="display:flex;gap:6px;flex-wrap:wrap">'+blockedHtml+'</div>':'')+'</div>'
     +'<div class="field"><span class="lb">BOOKING PAGE COLOR</span><div style="font-size:10px;color:var(--dm);margin-bottom:8px">Controls the theme clients see on your booking page</div><div style="display:flex;gap:4px"><div class="chip'+(LS.get("portalTheme","gold")==="gold"?" on":"")+'" onclick="setPortalTheme(\'gold\')">GOLD</div><div class="chip'+(LS.get("portalTheme","gold")==="crimson"?" on":"")+'" onclick="setPortalTheme(\'crimson\')">CRIMSON</div></div></div>'
-    +'<div class="field"><span class="lb">CANCELLATION POLICY</span><div style="font-size:10px;color:var(--dm);margin-bottom:8px">Clients who cancel within this window will be charged</div>'
-    +'<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px"><div class="chip'+((avail.cancelHours||24)===12?" on":"")+'" onclick="setCancelPolicy(12)">12 hrs</div><div class="chip'+((avail.cancelHours||24)===24?" on":"")+'" onclick="setCancelPolicy(24)">24 hrs</div><div class="chip'+((avail.cancelHours||24)===48?" on":"")+'" onclick="setCancelPolicy(48)">48 hrs</div></div>'
-    +'<div style="font-size:10px;color:var(--mu);padding:8px;background:var(--glass);border-radius:6px;border:1px solid var(--borderS)">\u26a0 Cancellations within '+(avail.cancelHours||24)+' hours of the session will be charged</div></div>'
+    +'<div class="field"><span class="lb">CANCELLATION POLICY</span><div style="font-size:10px;color:var(--dm);margin-bottom:8px">Applied automatically when cancelling sessions</div>'
+    +'<div style="padding:10px;background:var(--glass);border-radius:8px;border:1px solid var(--borderS);font-size:11px;line-height:1.8;color:var(--ow)">'
+    +'<div style="font-weight:600;color:var(--acc);margin-bottom:4px;font-size:10px;letter-spacing:.08em;font-family:var(--mono)">FEE SCHEDULE</div>'
+    +'<div>\u2022 <b style="color:var(--success)">48+ hours notice</b> \u2014 No charge</div>'
+    +'<div>\u2022 <b style="color:var(--warn)">Less than 48 hours, before 8 PM</b> \u2014 $10 fee</div>'
+    +'<div>\u2022 <b style="color:var(--danger)">After 8 PM (day before)</b> \u2014 Full session charge</div>'
+    +'<div style="margin-top:6px;font-size:9px;color:var(--dm);font-style:italic">Payment is due the day before to secure the session.</div>'
+    +'</div></div>'
     +'<div class="field"><span class="lb">BLOCKED TIME RANGES</span><div style="font-size:10px;color:var(--dm);margin-bottom:8px">Block specific hours on specific dates (e.g. morning meetings)</div>'
     +'<div style="display:flex;gap:6px;align-items:center;margin-bottom:8px;flex-wrap:wrap"><input type="date" id="blockRangeDate" style="font-size:11px;padding:8px 10px;width:auto;flex:1"><input type="time" id="blockRangeStart" value="09:00" style="font-size:11px;padding:8px 10px;width:auto"><span style="color:var(--dm);font-size:10px">to</span><input type="time" id="blockRangeEnd" value="12:00" style="font-size:11px;padding:8px 10px;width:auto"><button class="btn2" onclick="addBlockedRange()" style="padding:6px 12px;font-size:8px">BLOCK</button></div>'
     +(function(){var br=avail.blockedRanges||[];if(!br.length)return"";var h="";for(var ri=0;ri<br.length;ri++){h+='<div style="display:inline-flex;align-items:center;gap:4px;background:var(--accS);border:1px solid var(--borderS);border-radius:6px;padding:3px 8px;font-size:9px;font-family:var(--mono);color:var(--ow)">'+br[ri].date+' '+br[ri].start+'-'+br[ri].end+'<span onclick="removeBlockedRange('+ri+')" style="cursor:pointer;color:var(--danger);font-size:12px;padding:0 2px">\u2715</span></div>';}return '<div style="display:flex;gap:6px;flex-wrap:wrap">'+h+'</div>';}())

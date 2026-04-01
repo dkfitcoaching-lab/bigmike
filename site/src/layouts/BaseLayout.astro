@@ -43,13 +43,35 @@ const { title, description } = Astro.props;
 <body>
   <slot />
 
-  <!-- Theme initialization -->
+  <!-- Theme initialization + dynamic content -->
   <script is:inline>
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     window.scrollTo(0, 0);
     (function() {
-      var t = localStorage.getItem('bm_website_theme') || localStorage.getItem('bm_portal_theme') || localStorage.getItem('fm_theme') || 'gold';
-      if (t === 'crimson') document.body.classList.add('theme-crimson');
+      var SUPA='https://sjwosrwfoubvqpzmxhoe.supabase.co';
+      var KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNqd29zcndmb3VidnFwem14aG9lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5OTgzMDMsImV4cCI6MjA5MDU3NDMwM30.iPPJrXX8igS8ymskqRZmkTAP7_okd3XHIeaCcrDlXPo';
+      // Theme
+      fetch(SUPA+'/rest/v1/app_settings?key=eq.website_theme&select=value',{headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}})
+      .then(function(r){return r.json();}).then(function(rows){
+        if(rows&&rows.length&&rows[0].value){
+          var t=rows[0].value;
+          if(t==='crimson')document.body.classList.add('theme-crimson');
+          else document.body.classList.remove('theme-crimson');
+        }
+      }).catch(function(){});
+      // Fallback local theme
+      var t=localStorage.getItem('bm_website_theme')||localStorage.getItem('fm_theme')||'gold';
+      if(t==='crimson')document.body.classList.add('theme-crimson');
+      // Dynamic content overrides
+      fetch(SUPA+'/rest/v1/app_settings?key=eq.website_content&select=value',{headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}})
+      .then(function(r){return r.json();}).then(function(rows){
+        if(!rows||!rows.length||!rows[0].value)return;
+        var wc=rows[0].value;
+        if(wc.heroSubtitle){var el=document.querySelector('[data-wc="hero-subtitle"]');if(el)el.textContent=wc.heroSubtitle;}
+        if(wc.ctaHeading){var el=document.querySelector('[data-wc="cta-heading"]');if(el)el.textContent=wc.ctaHeading;}
+        if(wc.ctaButton){var el=document.querySelector('[data-wc="cta-button"]');if(el)el.textContent=wc.ctaButton;}
+        if(wc.footerTagline){var el=document.querySelector('[data-wc="footer-tagline"]');if(el){el.textContent=wc.footerTagline;el.style.display='block';}}
+      }).catch(function(){});
     })();
   </script>
 </body>
