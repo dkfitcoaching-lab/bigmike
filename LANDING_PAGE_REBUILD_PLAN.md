@@ -27,7 +27,11 @@ If staying vanilla for deployment simplicity (GitHub Pages), at minimum: proper 
 
 ### Mike's Square Booking URL
 
-Mike's booking runs through Square, linked from his Instagram bio (@ifbbpromikeely). The services on the landing page MUST match exactly what's on his Square booking page. The URL was discussed extensively — the developer has it and will provide it. ALL "Book" links across the entire site (nav, hero, service cards, CTA, footer, mobile menu) must point to this same Square URL. It is NOT book.html — that's a placeholder.
+Mike's booking runs through Square, linked from his Instagram bio (@ifbbpromikeely).
+
+**Square URL:** `https://big-mike-108395.square.site/`
+
+The services on the landing page MUST match exactly what's on his Square booking page. ALL "Book" links across the entire site (nav, hero, service cards, CTA, footer, mobile menu) must point to this Square URL. It is NOT book.html — that's a placeholder. The developer will confirm the exact services list from the Square page before execution, since Square blocks automated scraping.
 
 ### Hero Section
 
