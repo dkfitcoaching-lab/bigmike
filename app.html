@@ -798,7 +798,7 @@ function renderClientDetail(){
   html+=subTab==="progress"?renderClientProgress(c,idx):subTab==="notes"?renderClientNotes(c,idx):subTab==="program"?renderClientProgram(c,idx):subTab==="checkins"?renderClientCheckins(c,idx):subTab==="peakweek"?renderPeakWeek(c,idx):renderClientOverview(c,idx,cs,rev,info);
   html+='</div>';
   if(subTab!=="peakweek"){
-  html+='<div style="display:flex;gap:8px;margin-top:16px"><button class="btn" style="flex:1" onclick="navToLogFromClient(\''+c.id+'\',\''+c.rate+'\',\''+c.clientType+'\')">LOG SESSION</button><button class="btn2" style="flex:1" onclick="navToScheduleFromClient(\''+c.id+'\')">SCHEDULE</button></div>';
+  html+='<div style="display:flex;gap:8px;margin-top:16px"><button class="btn" style="flex:1" onclick="navToLogFromClient(\''+c.id+'\',\''+(c.rate||"")+'\',\''+c.clientType+'\')">LOG SESSION</button><button class="btn2" style="flex:1" onclick="navToScheduleFromClient(\''+c.id+'\')">SCHEDULE</button></div>';
   html+='<div style="display:flex;gap:8px;margin-top:8px">';
   if(c.phone)html+='<button class="btn2" style="flex:1" onclick="sendQuickSMS(\''+c.id+'\')">SEND SMS</button>';
   if(c.phone)html+='<a href="tel:'+esc((c.phone||"").replace(/[^0-9+]/g,""))+'" style="flex:1"><button class="btn2" style="width:100%">CALL</button></a>';
@@ -877,7 +877,7 @@ function toggleMeasForm(){var f=el("measForm");if(f){f.classList.toggle("expande
 function saveMeasurement(idx){var c=clients[idx];if(!c)return;var FIELDS=["Weight (lbs)","Body Fat %","Waist (in)","Hips (in)","Chest (in)","Left Arm (in)","Right Arm (in)","Left Thigh (in)","Right Thigh (in)"];var fields=[],hasAny=false;for(var i=0;i<FIELDS.length;i++){var v=(el("measF"+i)||{}).value||"";fields.push(v);if(v)hasAny=true;}if(!hasAny){toast("Enter at least one measurement");return;}if(!c.measurements)c.measurements=[];c.measurements.push({id:uid(),date:val("measDate")||todayISO(),fields:fields});save();toast("\u2713 Measurements saved");renderClientDetailInPlace();}
 function deleteMeasurement(idx,mid){var c=clients[idx];if(!c||!c.measurements)return;c.measurements=c.measurements.filter(function(m){return m.id!==mid;});save();renderClientDetailInPlace();}
 function deleteQNote(cidx,nid){var c=clients[parseInt(cidx)];if(!c||!c.quickNotes)return;var removed=c.quickNotes.find(function(n){return n.id===nid;});c.quickNotes=c.quickNotes.filter(function(n){return n.id!==nid;});save();toast("Note deleted \u00b7 ",2600,function(){if(removed){c.quickNotes.push(removed);save();render();}});render();}
-function deleteClient(idx){var c=clients[idx];if(!c)return;showDoubleConfirm("Delete "+c.name+"?","Session history will be preserved but quick notes will be lost.").then(function(ok){if(!ok)return;var id=c.id,name=c.name;clients=clients.filter(function(x){return x.id!==id;});sessions.forEach(function(s){if(s.clientId===id)s.clientName=name+" (removed)";});schedule.forEach(function(s){if(s.clientId===id){s.clientName=name+" (removed)";s.clientId="";}});mealPlans.forEach(function(mp){if(mp.clientId===id)mp.clientId="";});_programs=_programs.filter(function(p){return p.clientId!==id;});savePrograms();_workouts=_workouts.filter(function(w){return w.clientId!==id;});saveWorkouts();var rems=LS.get("reminders",[]);LS.set("reminders",rems.filter(function(r){return r.clientId!==id;}));save();toast("Client removed");navStack=[];currentView={tab:"clients",view:"main",data:{}};render();});}
+function deleteClient(idx){var c=clients[idx];if(!c)return;showDoubleConfirm("Delete "+c.name+"?","Session history will be preserved but quick notes will be lost.").then(function(ok){if(!ok)return;var id=c.id,name=c.name;if(_nutClientId===id)_nutClientId="";clients=clients.filter(function(x){return x.id!==id;});sessions.forEach(function(s){if(s.clientId===id)s.clientName=name+" (removed)";});schedule.forEach(function(s){if(s.clientId===id){s.clientName=name+" (removed)";s.clientId="";}});mealPlans.forEach(function(mp){if(mp.clientId===id)mp.clientId="";});_programs=_programs.filter(function(p){return p.clientId!==id;});savePrograms();_workouts=_workouts.filter(function(w){return w.clientId!==id;});saveWorkouts();var rems=LS.get("reminders",[]);LS.set("reminders",rems.filter(function(r){return r.clientId!==id;}));save();toast("Client removed");navStack=[];currentView={tab:"clients",view:"main",data:{}};render();});}
 function navToLogFromClient(cid,rate,type){var c=clientById(cid);var dur=c&&c.duration?parseInt(c.duration):60;var svcs=c?(c.services||"Training"):"Training";var bestType="Training";if(svcs.indexOf("Contest Prep")>=0)bestType="Contest Prep";else if(svcs.indexOf("Nutrition")>=0)bestType="Nutrition Check-In";else if(svcs.indexOf("Posing")>=0)bestType="Posing Lesson";else if(svcs.indexOf("Group")>=0)bestType="Team Workout";navStack=[];currentView={tab:"sessions",view:"main",data:{}};push("new",{prefillClientId:cid,prefillRate:rate,prefillType:bestType,prefillDuration:String(dur||60)});}
 function navToScheduleFromClient(cid){navStack=[];currentView={tab:"schedule",view:"main",data:{prefillClientId:cid}};render();setTimeout(function(){var e=el("schC");if(e&&cid){e.value=cid;onScheduleClientSelect();}var f=el("schForm");if(f)f.style.display="block";},100);}
 function navToSession(sid){navStack=[];currentView={tab:"sessions",view:"main",data:{}};push("detail",{sessionId:sid});}
@@ -907,7 +907,7 @@ function setDuration(m,elRef){el("sDu").value=m;elRef.parentElement.querySelecto
 function buildDurationChips(current){var opts=[30,45,60,75,90];var html="";for(var i=0;i<opts.length;i++){html+='<div class="chip'+(parseInt(current)===opts[i]?" on":"")+'" onclick="setDuration('+opts[i]+',this)">'+opts[i]+'m</div>';}if(opts.indexOf(parseInt(current))===-1&&current){html='<div class="chip on" onclick="setDuration('+current+',this)">'+current+'m</div>'+html;}return html;}
 function toggleLastSess(){var body=el("lastSessBody"),arrow=el("lastSessArrow");if(body){body.classList.toggle("expanded");if(arrow)arrow.style.transform=body.classList.contains("expanded")?"rotate(180deg)":"rotate(0)";}}
 function renderLogSession(){
-  _exCount=0;_sessionRating=0;
+  if(!currentView.data._initialized){_exCount=0;_sessionRating=0;currentView.data._initialized=true;}
   if(!clients.length){return '<button class="btn2" onclick="pop()" style="margin-bottom:14px">\u2039 Back</button><div style="text-align:center;padding:40px 20px"><div style="width:56px;height:56px;border-radius:16px;background:linear-gradient(145deg,#0c0c0c,#060606);border:2px solid var(--accB);display:inline-flex;align-items:center;justify-content:center;margin-bottom:16px;box-shadow:0 0 20px var(--accS)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div style="font-size:14px;font-weight:600;color:var(--ow);margin-bottom:6px">No clients</div><div style="font-size:12px;color:var(--dm);margin-bottom:20px">Add a client first.</div><button class="btn" onclick="go(\'clients\')" style="max-width:200px;margin:0 auto">ADD CLIENT</button></div>';}
   var data=currentView.data||{},pfId=data.prefillClientId||"",pfT=data.prefillType||"",pfR=data.prefillRate||"",pfD=data.prefillDate||todayISO(),pfDur=data.prefillDuration||"60";
   var opts="";for(var i=0;i<clients.length;i++){var c=clients[i];opts+='<option value="'+c.id+'"'+(pfId===c.id?" selected":"")+'>'+esc(c.name)+'</option>';}
@@ -1324,9 +1324,9 @@ function renderSettings(){
     +'</div>'
     +'<div class="sl" style="margin-top:18px">SMS REMINDERS</div><div class="cd" style="padding:16px">'
     +'<div style="font-size:11px;color:var(--mu);margin-bottom:14px;line-height:1.6">Send SMS reminders to your phone before sessions. Requires Supabase project + Twilio credentials configured as Edge Function secrets.</div>'
-    +'<div class="field"><span class="lb">SUPABASE PROJECT URL</span><input id="supaUrl" placeholder="https://xxxx.supabase.co" value="'+esc(LS.get("supa_url",""))+'"></div>'
-    +'<div class="field"><span class="lb">SUPABASE ANON KEY</span><input id="supaKey" placeholder="eyJ..." value="'+esc(LS.get("supa_key",""))+'"></div>'
-    +'<div class="field"><span class="lb">COACH PHONE (receives reminders)</span><input id="coachPhone" placeholder="+1 555-123-4567" value="'+esc(LS.get("coach_phone",""))+'"></div>'
+    +'<div class="field"><span class="lb">SUPABASE PROJECT URL</span><input id="supaUrl" placeholder="https://xxxx.supabase.co" value="'+esc(LS.get("supa_url","https://sjwosrwfoubvqpzmxhoe.supabase.co"))+'"></div>'
+    +'<div class="field"><span class="lb">SUPABASE ANON KEY</span><input id="supaKey" placeholder="eyJ..." value="'+esc(LS.get("supa_key","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNqd29zcndmb3VidnFwem14aG9lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5OTgzMDMsImV4cCI6MjA5MDU3NDMwM30.iPPJrXX8igS8ymskqRZmkTAP7_okd3XHIeaCcrDlXPo"))+'"></div>'
+    +'<div class="field"><span class="lb">COACH PHONE (receives reminders)</span><input id="coachPhone" placeholder="+1 555-123-4567" value="'+esc(LS.get("coach_phone","+14403093886"))+'"></div>'
     +'<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:1px solid var(--borderS)"><div><div style="font-size:13px;font-weight:500;color:var(--wh)">Send Coach Reminders</div><div style="font-size:10px;color:var(--dm)">SMS before each session</div></div><div class="chip'+(LS.get("sms_reminders",false)?" on":"")+'" onclick="toggleNotif(\'sms_reminders\',this);startSMSChecker()" style="min-width:40px;text-align:center">'+(LS.get("sms_reminders",false)?"ON":"OFF")+'</div></div>'
     +'<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:1px solid var(--borderS)"><div><div style="font-size:13px;font-weight:500;color:var(--wh)">Send Client Reminders</div><div style="font-size:10px;color:var(--dm)">Also text clients before sessions</div></div><div class="chip'+(LS.get("sms_client_reminders",false)?" on":"")+'" onclick="toggleNotif(\'sms_client_reminders\',this)" style="min-width:40px;text-align:center">'+(LS.get("sms_client_reminders",false)?"ON":"OFF")+'</div></div>'
     +'<div style="display:flex;gap:8px;margin-top:12px"><button class="btn" onclick="saveSMSConfig()" style="flex:1">SAVE & CONNECT</button><button class="btn2" onclick="testSMS()" style="flex:1">TEST SMS</button></div></div>'
@@ -1873,14 +1873,14 @@ var ANABOLICS_DB=[
 {name:"Pramipexole / Prami",doses:["0.125mg","0.25mg","0.5mg","1mg"],routes:["Oral"],freqs:["ED","Before bed"]}
 ]},
 {cat:"Peptides",items:[
-{name:"BPC-157",doses:["250mcg","500mcg","750mcg"],routes:["SubQ Injection","IM Injection","Oral"],freqs:["1x/day","2x/day"]},
-{name:"TB-500 / Thymosin Beta-4",doses:["2mg","2.5mg","5mg","10mg"],routes:["SubQ Injection"],freqs:["2x/week","1x/week","EOD"]},
-{name:"CJC-1295 (w/ DAC)",doses:["1mg","2mg"],routes:["SubQ Injection"],freqs:["1x/week","2x/week"]},
+{name:"BPC-157 / Body Protection Compound",doses:["250mcg","500mcg","750mcg"],routes:["SubQ Injection","IM Injection","Oral"],freqs:["1x/day","2x/day"]},
+{name:"Thymosin Beta-4 / TB-500",doses:["2mg","2.5mg","5mg","10mg"],routes:["SubQ Injection"],freqs:["2x/week","1x/week","EOD"]},
+{name:"CJC-1295 (w/ DAC) / Drug Affinity Complex",doses:["1mg","2mg"],routes:["SubQ Injection"],freqs:["1x/week","2x/week"]},
 {name:"CJC-1295 (no DAC) / Mod GRF 1-29",doses:["100mcg","200mcg","300mcg"],routes:["SubQ Injection"],freqs:["1-3x/day","Pre-bed"]},
-{name:"Ipamorelin",doses:["100mcg","200mcg","300mcg"],routes:["SubQ Injection"],freqs:["1-3x/day","Pre-bed"]},
-{name:"GHRP-6",doses:["100mcg","200mcg","300mcg"],routes:["SubQ Injection"],freqs:["1-3x/day"]},
-{name:"GHRP-2",doses:["100mcg","200mcg","300mcg"],routes:["SubQ Injection"],freqs:["1-3x/day"]},
-{name:"Hexarelin",doses:["100mcg","200mcg"],routes:["SubQ Injection"],freqs:["1-3x/day"]},
+{name:"Ipamorelin / IPA",doses:["100mcg","200mcg","300mcg"],routes:["SubQ Injection"],freqs:["1-3x/day","Pre-bed"]},
+{name:"GHRP-6 / Growth Hormone Releasing Peptide-6",doses:["100mcg","200mcg","300mcg"],routes:["SubQ Injection"],freqs:["1-3x/day"]},
+{name:"GHRP-2 / Growth Hormone Releasing Peptide-2",doses:["100mcg","200mcg","300mcg"],routes:["SubQ Injection"],freqs:["1-3x/day"]},
+{name:"Hexarelin / Examorelin",doses:["100mcg","200mcg"],routes:["SubQ Injection"],freqs:["1-3x/day"]},
 {name:"Ibutamoren / MK-677",doses:["10mg","15mg","25mg","50mg"],routes:["Oral"],freqs:["1x/day","Before bed"]},
 {name:"Somatropin / HGH",doses:["2 IU","3 IU","4 IU","5 IU","6 IU","8 IU","10 IU","12 IU","15 IU","20 IU"],routes:["SubQ Injection","IM Injection"],freqs:["ED","5 on/2 off","EOD","Split AM/PM"]},
 {name:"IGF-1 LR3",doses:["20mcg","40mcg","50mcg","80mcg","100mcg"],routes:["IM Injection","SubQ Injection"],freqs:["ED","Bilateral post-workout"]},
@@ -1892,9 +1892,9 @@ var ANABOLICS_DB=[
 {name:"AOD-9604",doses:["250mcg","300mcg","500mcg"],routes:["SubQ Injection"],freqs:["1x/day","2x/day"]},
 {name:"GHK-Cu",doses:["1mg","2mg","5mg"],routes:["SubQ Injection"],freqs:["1x/day"]},
 {name:"Epithalon / Epitalon",doses:["5mg","10mg"],routes:["SubQ Injection","IM Injection"],freqs:["ED for 10-20 days","1x/day"]},
-{name:"Kisspeptin-10",doses:["100mcg","200mcg"],routes:["SubQ Injection"],freqs:["1x/day"]},
-{name:"Selank",doses:["250mcg","500mcg","750mcg"],routes:["SubQ Injection","Nasal"],freqs:["1-3x/day"]},
-{name:"Semax",doses:["200mcg","400mcg","600mcg"],routes:["Nasal","SubQ Injection"],freqs:["1-3x/day"]},
+{name:"Kisspeptin-10 / KP-10",doses:["100mcg","200mcg"],routes:["SubQ Injection"],freqs:["1x/day"]},
+{name:"Selank / TP-7",doses:["250mcg","500mcg","750mcg"],routes:["SubQ Injection","Nasal"],freqs:["1-3x/day"]},
+{name:"Semax / ACTH 4-10",doses:["200mcg","400mcg","600mcg"],routes:["Nasal","SubQ Injection"],freqs:["1-3x/day"]},
 {name:"Human Chorionic Gonadotropin / HCG",doses:["250 IU","500 IU","1000 IU","1500 IU","2000 IU","2500 IU","5000 IU"],routes:["SubQ Injection","IM Injection"],freqs:["2x/week","3x/week","EOD","ED"]},
 {name:"Human Menopausal Gonadotropin / HMG",doses:["75 IU","150 IU"],routes:["IM Injection","SubQ Injection"],freqs:["EOD","3x/week"]}
 ]},
@@ -1910,23 +1910,23 @@ var ANABOLICS_DB=[
 {name:"Accadrine / AC-262",doses:["10mg","20mg","30mg"],routes:["Oral"],freqs:["1x/day"]}
 ]},
 {cat:"Ancillaries & Health",items:[
-{name:"TUDCA",doses:["250mg","500mg","1000mg"],routes:["Oral"],freqs:["ED","With hepatotoxic orals"]},
-{name:"NAC / N-Acetyl Cysteine",doses:["600mg","1200mg","1800mg"],routes:["Oral"],freqs:["ED","2x/day"]},
-{name:"Milk Thistle / Silymarin",doses:["250mg","500mg","1000mg"],routes:["Oral"],freqs:["ED","2x/day"]},
+{name:"Tauroursodeoxycholic Acid / TUDCA",doses:["250mg","500mg","1000mg"],routes:["Oral"],freqs:["ED","With hepatotoxic orals"]},
+{name:"N-Acetyl Cysteine / NAC",doses:["600mg","1200mg","1800mg"],routes:["Oral"],freqs:["ED","2x/day"]},
+{name:"Silymarin / Milk Thistle",doses:["250mg","500mg","1000mg"],routes:["Oral"],freqs:["ED","2x/day"]},
 {name:"Tadalafil / Cialis",doses:["2.5mg","5mg","10mg","20mg"],routes:["Oral"],freqs:["ED","As needed","EOD"]},
 {name:"Sildenafil / Viagra",doses:["25mg","50mg","100mg"],routes:["Oral"],freqs:["As needed"]},
-{name:"Finasteride",doses:["0.25mg","0.5mg","1mg"],routes:["Oral"],freqs:["ED"]},
-{name:"Dutasteride",doses:["0.5mg"],routes:["Oral"],freqs:["ED","EOD","3x/week"]},
-{name:"Minoxidil (Oral)",doses:["1.25mg","2.5mg","5mg"],routes:["Oral"],freqs:["ED"]},
-{name:"Metformin",doses:["250mg","500mg","750mg","1000mg"],routes:["Oral"],freqs:["ED","2x/day","With meals"]},
-{name:"Berberine",doses:["500mg","1000mg","1500mg"],routes:["Oral"],freqs:["2-3x/day with meals"]},
+{name:"Finasteride / Propecia / Proscar",doses:["0.25mg","0.5mg","1mg"],routes:["Oral"],freqs:["ED"]},
+{name:"Dutasteride / Avodart",doses:["0.5mg"],routes:["Oral"],freqs:["ED","EOD","3x/week"]},
+{name:"Minoxidil / Rogaine (Oral)",doses:["1.25mg","2.5mg","5mg"],routes:["Oral"],freqs:["ED"]},
+{name:"Metformin / Glucophage",doses:["250mg","500mg","750mg","1000mg"],routes:["Oral"],freqs:["ED","2x/day","With meals"]},
+{name:"Berberine / Goldenseal Extract",doses:["500mg","1000mg","1500mg"],routes:["Oral"],freqs:["2-3x/day with meals"]},
 {name:"Insulin Lispro / Humalog",doses:["5 IU","8 IU","10 IU","12 IU","15 IU","20 IU"],routes:["SubQ Injection"],freqs:["Pre-workout","Post-workout","With meals"]},
 {name:"Insulin Regular / Humulin R",doses:["5 IU","10 IU","15 IU","20 IU"],routes:["SubQ Injection"],freqs:["Pre-workout","Post-workout","With meals"]},
 {name:"Insulin Glargine / Lantus",doses:["10 IU","15 IU","20 IU","30 IU","40 IU"],routes:["SubQ Injection"],freqs:["1x/day","Before bed"]},
 {name:"Modafinil / Provigil",doses:["50mg","100mg","200mg"],routes:["Oral"],freqs:["ED","As needed"]},
 {name:"Raloxifene / Evista (Gyno Protocol)",doses:["60mg","120mg"],routes:["Oral"],freqs:["ED"]},
-{name:"Niacin",doses:["250mg","500mg","1000mg"],routes:["Oral"],freqs:["ED","With meals"]},
-{name:"Citrus Bergamot",doses:["500mg","1000mg"],routes:["Oral"],freqs:["ED","2x/day"]},
+{name:"Niacin / Vitamin B3",doses:["250mg","500mg","1000mg"],routes:["Oral"],freqs:["ED","With meals"]},
+{name:"Citrus Bergamot / Bergamot Extract",doses:["500mg","1000mg"],routes:["Oral"],freqs:["ED","2x/day"]},
 {name:"Ezetimibe / Zetia",doses:["10mg"],routes:["Oral"],freqs:["ED"]},
 {name:"Telmisartan / Micardis",doses:["20mg","40mg","80mg"],routes:["Oral"],freqs:["ED"]},
 {name:"Nebivolol / Bystolic",doses:["2.5mg","5mg","10mg"],routes:["Oral"],freqs:["ED"]}
@@ -1941,9 +1941,9 @@ var ANABOLICS_DB=[
 {name:"5-Amino-1MQ",doses:["50mg","100mg","150mg"],routes:["Oral"],freqs:["1x/day","2x/day"]},
 {name:"HGH Fragment 176-191 / Frag",doses:["250mcg","500mcg"],routes:["SubQ Injection"],freqs:["1x/day","2x/day"]},
 {name:"MOTS-c",doses:["5mg","10mg"],routes:["SubQ Injection"],freqs:["1x/week","3x/week"]},
-{name:"Clenbuterol",doses:["20mcg","40mcg","60mcg","80mcg","100mcg","120mcg","140mcg","160mcg"],routes:["Oral"],freqs:["ED","2 weeks on/2 off","Titrate up"]},
+{name:"Clenbuterol / Clen",doses:["20mcg","40mcg","60mcg","80mcg","100mcg","120mcg","140mcg","160mcg"],routes:["Oral"],freqs:["ED","2 weeks on/2 off","Titrate up"]},
 {name:"Salbutamol / Albuterol",doses:["2mg","4mg","8mg","12mg","16mg"],routes:["Oral"],freqs:["3x/day","2x/day"]},
-{name:"Ephedrine",doses:["12.5mg","25mg"],routes:["Oral"],freqs:["1-3x/day","EC Stack"]},
+{name:"Ephedrine / Ephedra",doses:["12.5mg","25mg"],routes:["Oral"],freqs:["1-3x/day","EC Stack"]},
 {name:"Yohimbine HCL",doses:["2.5mg","5mg","10mg","15mg","20mg"],routes:["Oral"],freqs:["Pre-fasted cardio","1-2x/day"]},
 {name:"Alpha-Yohimbine / Rauwolscine",doses:["1mg","1.5mg","2mg","2.5mg","3mg","5mg"],routes:["Oral"],freqs:["Pre-fasted cardio","1-2x/day"]},
 {name:"2,4-Dinitrophenol / DNP",doses:["100mg","125mg","200mg","250mg"],routes:["Oral"],freqs:["ED"]},
@@ -1955,9 +1955,9 @@ var ANABOLICS_DB=[
 
 var ORGAN_SUPPORT_DB=[
 {cat:"Liver Support",items:[
-{name:"TUDCA",doses:["250mg","500mg","1000mg"],timings:["ED","With hepatotoxic orals","Split AM/PM"]},
-{name:"NAC / N-Acetyl Cysteine",doses:["600mg","1200mg","1800mg"],timings:["ED","2x/day","With hepatotoxic orals"]},
-{name:"Milk Thistle / Silymarin",doses:["250mg","500mg","1000mg"],timings:["ED","2x/day"]},
+{name:"Tauroursodeoxycholic Acid / TUDCA",doses:["250mg","500mg","1000mg"],timings:["ED","With hepatotoxic orals","Split AM/PM"]},
+{name:"N-Acetyl Cysteine / NAC",doses:["600mg","1200mg","1800mg"],timings:["ED","2x/day","With hepatotoxic orals"]},
+{name:"Silymarin / Milk Thistle",doses:["250mg","500mg","1000mg"],timings:["ED","2x/day"]},
 {name:"Liver Support Complex",doses:["1 serving","2 servings"],timings:["ED","With hepatotoxic orals"]},
 {name:"Glutathione (Oral)",doses:["250mg","500mg","1000mg"],timings:["Empty stomach","Morning"]},
 {name:"Glutathione (IV/Push)",doses:["200mg","400mg","600mg","1000mg","2000mg"],timings:["1x/week","2x/week","As prescribed"]},
@@ -1973,10 +1973,10 @@ var ORGAN_SUPPORT_DB=[
 {name:"Adequate Hydration Protocol",doses:["1 gal/day","1.5 gal/day","2 gal/day"],timings:["Throughout day"]}
 ]},
 {cat:"Cardiovascular / Blood Pressure",items:[
-{name:"Telmisartan",doses:["20mg","40mg","80mg"],timings:["ED"]},
-{name:"Nebivolol",doses:["2.5mg","5mg","10mg"],timings:["ED"]},
-{name:"Lisinopril",doses:["5mg","10mg","20mg","40mg"],timings:["ED"]},
-{name:"Amlodipine",doses:["2.5mg","5mg","10mg"],timings:["ED"]},
+{name:"Telmisartan / Micardis",doses:["20mg","40mg","80mg"],timings:["ED"]},
+{name:"Nebivolol / Bystolic",doses:["2.5mg","5mg","10mg"],timings:["ED"]},
+{name:"Lisinopril / Zestril / Prinivil",doses:["5mg","10mg","20mg","40mg"],timings:["ED"]},
+{name:"Amlodipine / Norvasc",doses:["2.5mg","5mg","10mg"],timings:["ED"]},
 {name:"CoQ10 / Ubiquinol",doses:["100mg","200mg","300mg","400mg"],timings:["With meal","Morning","Split AM/PM"]},
 {name:"Fish Oil / Omega-3 (high-dose)",doses:["2g","3g","4g","5g","6g"],timings:["With meals","Split doses"]},
 {name:"Citrus Bergamot",doses:["500mg","1000mg","1500mg"],timings:["ED","2x/day"]},
@@ -1992,8 +1992,8 @@ var ORGAN_SUPPORT_DB=[
 {name:"Atorvastatin / Lipitor",doses:["10mg","20mg","40mg","80mg"],timings:["ED"]}
 ]},
 {cat:"Prostate Support",items:[
-{name:"Finasteride",doses:["0.25mg","0.5mg","1mg"],timings:["ED"]},
-{name:"Dutasteride",doses:["0.5mg"],timings:["ED","EOD","3x/week"]},
+{name:"Finasteride / Propecia / Proscar",doses:["0.25mg","0.5mg","1mg"],timings:["ED"]},
+{name:"Dutasteride / Avodart",doses:["0.5mg"],timings:["ED","EOD","3x/week"]},
 {name:"Saw Palmetto",doses:["320mg","640mg"],timings:["With meal"]},
 {name:"Pygeum",doses:["50mg","100mg","200mg"],timings:["ED","2x/day"]},
 {name:"Beta-Sitosterol",doses:["60mg","130mg","300mg"],timings:["With meals","2x/day"]},
@@ -2085,9 +2085,9 @@ var SUPP_DB=[
 {name:"Phosphatidylserine",doses:["100mg","200mg","300mg"],timings:["Before bed","Post-workout"]}
 ]},
 {cat:"Liver & Organ Support",items:[
-{name:"TUDCA",doses:["250mg","500mg","1000mg"],timings:["ED","With hepatotoxic orals"]},
-{name:"NAC / N-Acetyl Cysteine",doses:["600mg","1200mg","1800mg"],timings:["ED","2x/day"]},
-{name:"Milk Thistle / Silymarin",doses:["250mg","500mg","1000mg"],timings:["ED","2x/day"]},
+{name:"Tauroursodeoxycholic Acid / TUDCA",doses:["250mg","500mg","1000mg"],timings:["ED","With hepatotoxic orals"]},
+{name:"N-Acetyl Cysteine / NAC",doses:["600mg","1200mg","1800mg"],timings:["ED","2x/day"]},
+{name:"Silymarin / Milk Thistle",doses:["250mg","500mg","1000mg"],timings:["ED","2x/day"]},
 {name:"Liver Support Complex",doses:["1 serving"],timings:["ED","With hepatotoxic orals"]},
 {name:"CoQ10 / Ubiquinol",doses:["100mg","200mg","300mg"],timings:["With meal","Morning"]},
 {name:"Citrus Bergamot",doses:["500mg","1000mg"],timings:["ED","2x/day"]},
@@ -2125,7 +2125,7 @@ var SUPP_DB=[
 var _nutClientId="",_editMealPlan=null,_foodUnitG=LS.get("foodUnitG",false),_inProgramBuilder=false;
 var _workouts=LS.get("workouts",[]),_editWorkout=null;
 var _programs=LS.get("programs",[]),_editProgram=null,_programSectionCollapsed={};
-function savePrograms(){LS.set("programs",_programs);}
+function savePrograms(){LS.set("programs",_programs);cloudSync();}
 function newProgram(){var p={id:uid(),name:"New Program",clientId:"",sections:[],protocolNotes:"",created_at:new Date().toISOString()};_programs.push(p);savePrograms();_editProgram=p.id;render();}
 function goToClientProgram(idx){var c=clients[idx];if(!c)return;var existing=_programs.find(function(p){return p.clientId===c.id;});if(existing){_editProgram=existing.id;navStack=[];currentView={tab:"nutrition",view:"main",data:{}};render();window.scrollTo({top:0,behavior:"smooth"});return;}var svcs=(c.services||"").toLowerCase();var auto=[];if(svcs.indexOf("training")>=0||svcs.indexOf("full coaching")>=0)auto.push("training");if(svcs.indexOf("nutrition")>=0||svcs.indexOf("full coaching")>=0||svcs.indexOf("contest prep")>=0)auto.push("nutrition");if(svcs.indexOf("anabolics")>=0||svcs.indexOf("contest prep")>=0||svcs.indexOf("full coaching")>=0)auto.push("anabolics");if(svcs.indexOf("peptides")>=0||svcs.indexOf("contest prep")>=0)auto.push("peptides");if(svcs.indexOf("full coaching")>=0||svcs.indexOf("contest prep")>=0)auto.push("fatloss");if(svcs.indexOf("nutrition")>=0||svcs.indexOf("full coaching")>=0)auto.push("supplements");if(svcs.indexOf("anabolics")>=0||svcs.indexOf("contest prep")>=0||svcs.indexOf("full coaching")>=0)auto.push("organsupport");auto.push("protocol");var p={id:uid(),name:c.name+" Program",clientId:c.id,sections:auto,protocolNotes:"",created_at:new Date().toISOString()};_programs.push(p);savePrograms();_editProgram=p.id;navStack=[];currentView={tab:"nutrition",view:"main",data:{}};render();window.scrollTo({top:0,behavior:"smooth"});toast("\u2713 Program created \u2014 "+auto.length+" sections: "+auto.map(function(s){return s==="protocol"?"Coach Notes":s==="fatloss"?"Cutting Agents":s==="anabolics"?"PED Protocol":s==="organsupport"?"Organ Support":s.charAt(0).toUpperCase()+s.slice(1);}).join(", "));}
 function deleteProgram(){showDoubleConfirm("Delete Program","Permanently delete this program?").then(function(ok){if(!ok)return;_programs=_programs.filter(function(p){return p.id!==_editProgram;});savePrograms();_editProgram=null;render();});}
@@ -2135,7 +2135,7 @@ function addProgramSection(type){var p=_programs.find(function(x){return x.id===
 function removeProgramSection(type){var p=_programs.find(function(x){return x.id===_editProgram;});if(!p)return;p.sections=p.sections.filter(function(s){return s!==type;});savePrograms();render();}
 function moveProgramSection(idx,dir){var p=_programs.find(function(x){return x.id===_editProgram;});if(!p)return;var ni=idx+dir;if(ni<0||ni>=p.sections.length)return;var tmp=p.sections[idx];p.sections[idx]=p.sections[ni];p.sections[ni]=tmp;savePrograms();render();}
 function toggleProgramSection(type){_programSectionCollapsed[type]=!_programSectionCollapsed[type];render();}
-function foodPrepBadge(db){if(!db||db.di===-1)return"";if(db.ck===1)return' <span style="font-size:8px;color:var(--warn);font-family:var(--mono)">(cooked)</span>';if(db.ck===0&&(db.cat==="P"||db.cat==="C"))return' <span style="font-size:8px;color:var(--mu);font-family:var(--mono)">(dry/raw)</span>';return"";}
+function foodPrepBadge(db){if(!db)return"";if(db.ck===1)return' <span style="font-size:8px;color:var(--warn);font-family:var(--mono)">(cooked)</span>';if(db.ck===0&&(db.cat==="P"||db.cat==="C"))return' <span style="font-size:8px;color:var(--mu);font-family:var(--mono)">(dry/raw)</span>';return"";}
 function foodPrepBadgePDF(db){if(!db)return"";if(db.ck===1)return' <span style="font-size:9px;color:#b88030;font-family:IBM Plex Mono,monospace">(cooked)</span>';if(db.ck===0&&(db.cat==="P"||db.cat==="C"))return' <span style="font-size:9px;color:#999;font-family:IBM Plex Mono,monospace">(dry/raw)</span>';return"";}
 function calcMealTotals(meal){var t={cal:0,p:0,c:0,f:0};(meal.foods||[]).forEach(function(fd){var db=fd.custom?fd:FOOD_DB[fd.di];if(!db)return;var per=db.per||1;var m=(fd.qty||0)/per;t.cal+=Math.round((db.cal||0)*m);t.p+=Math.round((db.p||0)*m);t.c+=Math.round((db.c||0)*m);t.f+=Math.round((db.f||0)*m);});return t;}
 function calcPlanTotals(mp){var t={cal:0,p:0,c:0,f:0};(mp.meals||[]).forEach(function(ml){var mt=calcMealTotals(ml);t.cal+=mt.cal;t.p+=mt.p;t.c+=mt.c;t.f+=mt.f;});return t;}
@@ -2291,7 +2291,7 @@ function renderProgramTrainingSection(pg){
   }
   return html;
 }
-function newWorkoutForClient(clientId){var w={id:uid(),name:"New Workout",clientId:clientId,exercises:[],cardio:[],notes:"",created_at:new Date().toISOString()};_workouts.push(w);LS.set("workouts",_workouts);_editWorkout=w.id;render();}
+function newWorkoutForClient(clientId){var w={id:uid(),name:"New Workout",clientId:clientId,exercises:[],cardio:[],notes:"",created_at:new Date().toISOString()};_workouts.push(w);saveWorkouts();_editWorkout=w.id;render();}
 function renderProgramNutritionSection(pg){
   var clientPlans=mealPlans.filter(function(mp){return mp.clientId===pg.clientId;});
   var html='';
@@ -2648,7 +2648,6 @@ function duplicatePlan(mpId){
 }
 
 // ── WORKOUT BUILDER ──
-function newWorkout(){var w={id:uid(),name:"New Workout",clientId:"",exercises:[],cardio:[],notes:"",created_at:new Date().toISOString()};_workouts.push(w);LS.set("workouts",_workouts);_editWorkout=w.id;render();}
 // ── FST-7 PRESET WORKOUTS (Hany Rambod) ──
 var FST7_PRESETS=[
 {name:"FST-7 Chest",notes:"Hany Rambod FST-7. Heavy compounds first, finish with 7 sets cable flyes 30-45s rest for fascia stretch.",exercises:[
@@ -2745,7 +2744,7 @@ function loadFST7Preset(idx,clientId){
   _workouts.push(w);saveWorkouts();_editWorkout=w.id;closeModal();render();
   toast("\u2713 Loaded "+p.name);
 }
-function saveWorkouts(){LS.set("workouts",_workouts);}
+function saveWorkouts(){LS.set("workouts",_workouts);cloudSync();}
 function renderWorkoutEdit(){
   var w=_workouts.find(function(x){return x.id===_editWorkout;});if(!w){_editWorkout=null;return '';}
   var cOpts='<option value="">Unassigned</option>';for(var i=0;i<clients.length;i++)cOpts+='<option value="'+clients[i].id+'"'+(w.clientId===clients[i].id?' selected':'')+'>'+esc(clients[i].name)+'</option>';
@@ -3464,7 +3463,7 @@ function checkBrowserNotifications(){
   });
 }
 // ── THEME ──
-function setTheme(t){LS.set("theme",t);applyTheme();render();}
+function setTheme(t){LS.set("theme",t);applyTheme();var sb=getSupabase();if(sb){sb.from("app_settings").upsert({key:"app_theme",value:t},{onConflict:"key"}).then(function(){});}render();}
 function setPortalTheme(t){LS.set("portalTheme",t);var sb=getSupabase();if(sb){sb.from("app_settings").upsert({key:"portal_theme",value:t},{onConflict:"key"}).then(function(){});}toast("\u2713 Booking page set to "+t.toUpperCase());render();}
 
 // ── BOOKING PORTAL SETTINGS ──
@@ -3541,7 +3540,6 @@ function saveDailySchedPref(){
   var sb=getSupabase();if(!sb)return;
   sb.from("app_settings").upsert({key:"daily_schedule_sms",value:{enabled:LS.get("daily_sched_sms",false),phone:LS.get("coach_phone","")}},{onConflict:"key"}).then(function(res){if(!res.error)toast("\u2713 Saved");});
 }
-function setPortalTheme(t){LS.set("portalTheme",t);render();}
 function copyBookingLink(){
   var sb=getSupabase();
   var url=window.location.origin+"/book.html";
@@ -4296,7 +4294,6 @@ function showTutorial(){
 }
 function finishTutorial(){LS.set("tutorialDone",true);var ov=el("tutOverlay");if(ov)ov.remove();document.querySelectorAll(".ti").forEach(function(t){t.style.outline="";t.style.outlineOffset="";t.style.zIndex="";});_doGoTab("home");}
 // ── BIRTHDAY GIFT UNWRAP ──
-var _bdayLaunch=1773705600000;
 var _bdayExpiry=1773936000000;
 function showBirthdayPopup(){
   var now=Date.now();
