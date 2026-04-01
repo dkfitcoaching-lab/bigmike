@@ -32,8 +32,9 @@ const services = [
 <section class="section-pad" id="services">
   <div class="section-title">Services</div>
   <div class="services-grid">
-    {services.map(svc => (
+    {services.map((svc, i) => (
       <div class="svc-card">
+        <div class="svc-num">{String(i + 1).padStart(2, '0')}</div>
         <div class="svc-icon">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" set:html={svc.icon} />
         </div>
@@ -95,6 +96,19 @@ const services = [
     pointer-events: none;
   }
   .svc-card:hover::after { opacity: 1; }
+
+  .svc-num {
+    position: absolute;
+    top: 16px;
+    right: 18px;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--dmL);
+    letter-spacing: .08em;
+    transition: color .3s;
+  }
+  .svc-card:hover .svc-num { color: var(--acc); }
 
   .svc-icon {
     margin-bottom: 16px;
