@@ -1,4 +1,6 @@
 node_modules/
-package-lock.json
-package.json
 supabase/.temp/
+site/node_modules/
+site/.astro/
+site/src/env.d.ts
+dist/

@@ -1,0 +1,39 @@
+---
+/*
+  Intersection Observer with staggered reveal animation.
+  Applies to service cards, number cards, photo cards, gallery items, about stats.
+*/
+---
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target as HTMLElement;
+        const delay = parseInt(el.dataset.delay || '0', 10);
+        setTimeout(() => {
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+        }, delay);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  const groups: Record<string, number> = {};
+
+  document.querySelectorAll(
+    '.svc-card, .number-card, .photo-card, .gallery-item, .about-stat'
+  ).forEach(el => {
+    const htmlEl = el as HTMLElement;
+    htmlEl.style.opacity = '0';
+    htmlEl.style.transform = 'translateY(30px)';
+    htmlEl.style.transition = 'opacity .6s cubic-bezier(.22,1,.36,1), transform .6s cubic-bezier(.22,1,.36,1)';
+
+    const parentKey = (el.parentElement as HTMLElement)?.className || 'default';
+    if (!groups[parentKey]) groups[parentKey] = 0;
+    htmlEl.dataset.delay = String(groups[parentKey] * 80);
+    groups[parentKey]++;
+
+    observer.observe(el);
+  });
+</script>
