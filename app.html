@@ -797,7 +797,7 @@ function renderClientDetail(){
   html+=subTab==="progress"?renderClientProgress(c,idx):subTab==="notes"?renderClientNotes(c,idx):subTab==="program"?renderClientProgram(c,idx):subTab==="checkins"?renderClientCheckins(c,idx):subTab==="peakweek"?renderPeakWeek(c,idx):renderClientOverview(c,idx,cs,rev,info);
   html+='</div>';
   if(subTab!=="peakweek"){
-  html+='<div style="display:flex;gap:8px;margin-top:16px"><button class="btn" style="flex:1" onclick="navToLogFromClient(\''+c.id+'\',\''+c.rate+'\',\''+c.clientType+'\')">LOG SESSION</button><button class="btn2" style="flex:1" onclick="navToScheduleFromClient(\''+c.id+'\')">SCHEDULE</button></div>';
+  html+='<div style="display:flex;gap:8px;margin-top:16px"><button class="btn" style="flex:1" onclick="navToLogFromClient(\''+c.id+'\',\''+(c.rate||"")+'\',\''+c.clientType+'\')">LOG SESSION</button><button class="btn2" style="flex:1" onclick="navToScheduleFromClient(\''+c.id+'\')">SCHEDULE</button></div>';
   html+='<div style="display:flex;gap:8px;margin-top:8px">';
   if(c.phone)html+='<button class="btn2" style="flex:1" onclick="sendQuickSMS(\''+c.id+'\')">SEND SMS</button>';
   if(c.phone)html+='<a href="tel:'+esc((c.phone||"").replace(/[^0-9+]/g,""))+'" style="flex:1"><button class="btn2" style="width:100%">CALL</button></a>';
@@ -906,7 +906,7 @@ function setDuration(m,elRef){el("sDu").value=m;elRef.parentElement.querySelecto
 function buildDurationChips(current){var opts=[30,45,60,75,90];var html="";for(var i=0;i<opts.length;i++){html+='<div class="chip'+(parseInt(current)===opts[i]?" on":"")+'" onclick="setDuration('+opts[i]+',this)">'+opts[i]+'m</div>';}if(opts.indexOf(parseInt(current))===-1&&current){html='<div class="chip on" onclick="setDuration('+current+',this)">'+current+'m</div>'+html;}return html;}
 function toggleLastSess(){var body=el("lastSessBody"),arrow=el("lastSessArrow");if(body){body.classList.toggle("expanded");if(arrow)arrow.style.transform=body.classList.contains("expanded")?"rotate(180deg)":"rotate(0)";}}
 function renderLogSession(){
-  _exCount=0;_sessionRating=0;
+  if(!currentView.data._initialized){_exCount=0;_sessionRating=0;currentView.data._initialized=true;}
   if(!clients.length){return '<button class="btn2" onclick="pop()" style="margin-bottom:14px">\u2039 Back</button><div style="text-align:center;padding:40px 20px"><div style="width:56px;height:56px;border-radius:16px;background:linear-gradient(145deg,#0c0c0c,#060606);border:2px solid var(--accB);display:inline-flex;align-items:center;justify-content:center;margin-bottom:16px;box-shadow:0 0 20px var(--accS)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div style="font-size:14px;font-weight:600;color:var(--ow);margin-bottom:6px">No clients</div><div style="font-size:12px;color:var(--dm);margin-bottom:20px">Add a client first.</div><button class="btn" onclick="go(\'clients\')" style="max-width:200px;margin:0 auto">ADD CLIENT</button></div>';}
   var data=currentView.data||{},pfId=data.prefillClientId||"",pfT=data.prefillType||"",pfR=data.prefillRate||"",pfD=data.prefillDate||todayISO(),pfDur=data.prefillDuration||"60";
   var opts="";for(var i=0;i<clients.length;i++){var c=clients[i];opts+='<option value="'+c.id+'"'+(pfId===c.id?" selected":"")+'>'+esc(c.name)+'</option>';}
@@ -2143,7 +2143,7 @@ var SUPP_DB=[
 var _nutClientId="",_editMealPlan=null,_foodUnitG=LS.get("foodUnitG",false),_inProgramBuilder=false;
 var _workouts=LS.get("workouts",[]),_editWorkout=null;
 var _programs=LS.get("programs",[]),_editProgram=null,_programSectionCollapsed={};
-function savePrograms(){LS.set("programs",_programs);}
+function savePrograms(){LS.set("programs",_programs);cloudSync();}
 function newProgram(){var p={id:uid(),name:"New Program",clientId:"",sections:[],protocolNotes:"",created_at:new Date().toISOString()};_programs.push(p);savePrograms();_editProgram=p.id;render();}
 function goToClientProgram(idx){var c=clients[idx];if(!c)return;var existing=_programs.find(function(p){return p.clientId===c.id;});if(existing){_editProgram=existing.id;navStack=[];currentView={tab:"nutrition",view:"main",data:{}};render();window.scrollTo({top:0,behavior:"smooth"});return;}var svcs=(c.services||"").toLowerCase();var auto=[];if(svcs.indexOf("training")>=0||svcs.indexOf("full coaching")>=0)auto.push("training");if(svcs.indexOf("nutrition")>=0||svcs.indexOf("full coaching")>=0||svcs.indexOf("contest prep")>=0)auto.push("nutrition");if(svcs.indexOf("anabolics")>=0||svcs.indexOf("contest prep")>=0||svcs.indexOf("full coaching")>=0)auto.push("anabolics");if(svcs.indexOf("peptides")>=0||svcs.indexOf("contest prep")>=0)auto.push("peptides");if(svcs.indexOf("full coaching")>=0||svcs.indexOf("contest prep")>=0)auto.push("fatloss");if(svcs.indexOf("nutrition")>=0||svcs.indexOf("full coaching")>=0)auto.push("supplements");if(svcs.indexOf("anabolics")>=0||svcs.indexOf("contest prep")>=0||svcs.indexOf("full coaching")>=0)auto.push("organsupport");auto.push("protocol");var p={id:uid(),name:c.name+" Program",clientId:c.id,sections:auto,protocolNotes:"",created_at:new Date().toISOString()};_programs.push(p);savePrograms();_editProgram=p.id;navStack=[];currentView={tab:"nutrition",view:"main",data:{}};render();window.scrollTo({top:0,behavior:"smooth"});toast("\u2713 Program created \u2014 "+auto.length+" sections: "+auto.map(function(s){return s==="protocol"?"Coach Notes":s==="fatloss"?"Cutting Agents":s==="anabolics"?"PED Protocol":s==="organsupport"?"Organ Support":s.charAt(0).toUpperCase()+s.slice(1);}).join(", "));}
 function deleteProgram(){showDoubleConfirm("Delete Program","Permanently delete this program?").then(function(ok){if(!ok)return;_programs=_programs.filter(function(p){return p.id!==_editProgram;});savePrograms();_editProgram=null;render();});}
@@ -2309,7 +2309,7 @@ function renderProgramTrainingSection(pg){
   }
   return html;
 }
-function newWorkoutForClient(clientId){var w={id:uid(),name:"New Workout",clientId:clientId,exercises:[],cardio:[],notes:"",created_at:new Date().toISOString()};_workouts.push(w);LS.set("workouts",_workouts);_editWorkout=w.id;render();}
+function newWorkoutForClient(clientId){var w={id:uid(),name:"New Workout",clientId:clientId,exercises:[],cardio:[],notes:"",created_at:new Date().toISOString()};_workouts.push(w);saveWorkouts();_editWorkout=w.id;render();}
 function renderProgramNutritionSection(pg){
   var clientPlans=mealPlans.filter(function(mp){return mp.clientId===pg.clientId;});
   var html='';
@@ -2763,7 +2763,7 @@ function loadFST7Preset(idx,clientId){
   _workouts.push(w);saveWorkouts();_editWorkout=w.id;closeModal();render();
   toast("\u2713 Loaded "+p.name);
 }
-function saveWorkouts(){LS.set("workouts",_workouts);}
+function saveWorkouts(){LS.set("workouts",_workouts);cloudSync();}
 function renderWorkoutEdit(){
   var w=_workouts.find(function(x){return x.id===_editWorkout;});if(!w){_editWorkout=null;return '';}
   var cOpts='<option value="">Unassigned</option>';for(var i=0;i<clients.length;i++)cOpts+='<option value="'+clients[i].id+'"'+(w.clientId===clients[i].id?' selected':'')+'>'+esc(clients[i].name)+'</option>';
