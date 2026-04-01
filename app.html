@@ -839,7 +839,7 @@ function renderClientOverview(c,idx,cs,rev,info){
     if(cMPs.length){
       html+='<div class="sl" style="margin-top:18px">MEAL PLANS</div>';
       for(var mpi=0;mpi<cMPs.length;mpi++){var mp3=cMPs[mpi],tot3=calcPlanTotals(mp3);
-        html+='<div class="cd cd-link" style="display:flex;align-items:center;gap:10px" onclick="_editMealPlan=\''+mp3.id+'\';go(\'nutrition\')"><div style="flex:1"><div style="font-size:12px;font-weight:600;color:var(--wh)">'+esc(mp3.name)+'</div><div style="font-size:9px;color:var(--dm);font-family:var(--mono)">'+tot3.cal+' cal \u00b7 '+tot3.p+'p \u00b7 '+tot3.c+'c \u00b7 '+tot3.f+'f \u00b7 '+(mp3.meals||[]).length+' meals</div></div><div style="color:var(--dm)">\u203a</div></div>';}
+        html+='<div class="cd cd-link" style="display:flex;align-items:center;gap:10px" onclick="navStack=[];currentView={tab:\'nutrition\',view:\'main\',data:{}};_editMealPlan=\''+mp3.id+'\';render()"><div style="flex:1"><div style="font-size:12px;font-weight:600;color:var(--wh)">'+esc(mp3.name)+'</div><div style="font-size:9px;color:var(--dm);font-family:var(--mono)">'+tot3.cal+' cal \u00b7 '+tot3.p+'p \u00b7 '+tot3.c+'c \u00b7 '+tot3.f+'f \u00b7 '+(mp3.meals||[]).length+' meals</div></div><div style="color:var(--dm)">\u203a</div></div>';}
     }
     html+=renderClientSupplements(c,idx);
   html+='<div class="sl" style="margin-top:18px">COACH NOTES</div><div class="cd" style="padding:12px"><textarea id="clientNotes" rows="3" style="width:100%;box-sizing:border-box;font-size:12px;resize:vertical" placeholder="Quick notes..." onchange="clients['+idx+'].notes=this.value;save();">'+(c.notes?esc(c.notes):'')+'</textarea></div>';
