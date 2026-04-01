@@ -1,79 +1,38 @@
-# Big Mike Ely Landing Page — Complete Rebuild Plan
+# Big Mike Ely — Complete Project Plan (Landing Page + Coaching Portal)
 
-## Context
-This is a $50K agency-quality landing page for IFBB Pro Big Mike Ely, built by Vermillion Axis Technologies. The current build is a single-file vanilla HTML page at `/home/user/bigmike/index.html` (~535 lines). The client (developer) has reviewed every section on mobile and identified critical issues with copy, architecture, photo usage, service accuracy, and overall professionalism. This plan documents every issue and the exact fix required.
+## WHO THIS IS FOR
+This plan is for a fresh Claude Code session to pick up and execute. Read this entire document before writing a single line of code. The developer will add their own notes before execution begins.
 
-**Quality bar:** Match or exceed the sophistication of vermillionaxis.tech. Every metric — visual, performance, accessibility, SEO, copy accuracy, architecture — must score 100/100.
+## WHAT THIS IS
+A birthday gift and $50K agency engagement for IFBB Pro Big Mike Ely — built by Vermillion Axis Technologies (vermillionaxis.tech). Two deliverables:
+
+1. **Landing page** (`index.html`) — the public-facing website at ifbbprobigmikeely.com
+2. **Coaching portal** (`app.html`, ~4400 lines) — Mike's private coaching software (single-file vanilla JS SPA)
+
+Both must be 100/100 on every metric. Zero bugs. Zero errors. Absolute perfection.
 
 **Branch:** `claude/improve-landing-page-ofiCu`
 **Live URL:** https://ifbbprobigmikeely.com
-**Coaching app:** `/home/user/bigmike/app.html` (separate, do not touch in this plan)
+**Repo:** `/home/user/bigmike/`
 
 ---
 
-## ARCHITECTURE DECISION
+## PART 1: LANDING PAGE REBUILD
 
-The current build is a single HTML file with inline CSS and JS. This is not agency-quality. The rebuild should use a proper modern stack:
+### Architecture
 
-**Recommended:** Astro or Next.js static export — component-based, optimized images, scoped styles, deployed as static HTML. If staying vanilla for simplicity/speed of deployment (GitHub Pages), at minimum split into proper file structure with build step for optimization.
+The current landing page is a single HTML file (~535 lines) with inline CSS/JS. **This is not agency-quality architecture.** The developer wants this built the way a $100M agency would build it for a $50K client. That means a proper modern framework — Astro, Next.js static export, or similar — with components, scoped styles, optimized images, and a build step. The developer will confirm the framework choice before execution.
 
-**Developer to decide:** Framework choice before execution begins. The plan below is architecture-agnostic — it defines WHAT needs to exist regardless of HOW it's built.
+If staying vanilla for deployment simplicity (GitHub Pages), at minimum: proper file separation (CSS, JS, HTML), image optimization pipeline, and clean architecture.
 
----
+### Mike's Square Booking URL
 
-## MIKE'S VERIFIED CREDENTIALS (use ONLY these facts)
+Mike's booking runs through Square, linked from his Instagram bio (@ifbbpromikeely). The services on the landing page MUST match exactly what's on his Square booking page. The URL was discussed extensively — the developer has it and will provide it. ALL "Book" links across the entire site (nav, hero, service cards, CTA, footer, mobile menu) must point to this same Square URL. It is NOT book.html — that's a placeholder.
 
-| Fact | Source |
-|------|--------|
-| IFBB Pro Card earned at **2013 NPC Teen/Collegiate/Masters Nationals** (Super-Heavyweight, Over 40) | NPC News Online, USAMuscle |
-| **2x IFBB Pro Masters World Champion** (2024, 2025) | Instagram bio, NPC News Online |
-| **2x Olympian** (2023 Masters Olympia 12th, plus one more) | Instagram bio |
-| 1st Place — 2019 IFBB Baltimore Classic Masters Pro | NPC News Online |
-| 2nd Place — 2022 IFBB Masters World Pro | NPC News Online |
-| 14th — 2015 IFBB Wings of Strength Chicago Pro | NPC News Online |
-| 14th — 2015 IFBB Ferrigno Legacy Pro | NPC News Online |
-| BS Nutritional Science — Bowling Green State University | Old School Iron, Facebook |
-| MS Exercise Science — Bowling Green State University | Old School Iron, Facebook |
-| NPC Judge | Current site |
-| Coached by Hany Rambod (Pro Creator) | Instagram, photos |
-| Personal trainer/coach since 1996 | Old School Iron |
-| 30+ clients to IFBB Pro status | Facebook |
-| 40+ clients with 100lb+ weight loss | Old School Iron |
-| Associated with Center Stage Aesthetics / Old School Iron Gym | Instagram |
-| Coaches all divisions: bodybuilding, figure, bikini, physique, wellness | Facebook |
+### Hero Section
 
-**DO NOT fabricate or assume any facts not listed above. If unsure, leave it out.**
+**The hero currently has way too much text.** It should be exactly:
 
----
-
-## MIKE'S ACTUAL SERVICES (from Square booking — developer to confirm)
-
-The services section MUST match what Mike actually offers on his Square booking page linked from Instagram. The developer needs to provide the Square URL or confirm these services:
-
-**Known from research:**
-- 1-on-1 Training
-- Contest Prep
-- Posing Sessions / Posing Clinics
-- Online Coaching
-- Nutrition Planning
-- Full Coaching Package (training + nutrition + everything)
-
-**CRITICAL:** Do NOT assume how Mike runs any service. Keep descriptions factual and service-oriented only. No commentary. No "learn how to highlight your strengths" type copy. Just: what it is, that's it.
-
-**Developer action required:** Provide Mike's Square booking link so services can be verified and matched exactly.
-
----
-
-## SECTION-BY-SECTION FIXES
-
-### 1. HERO (lines 247-266)
-
-**Current problems:**
-- "IFBB PRO • 2x WORLD CHAMPION • 2x OLYMPIAN" — too much crammed into one line
-- "Coached by Hany Rambod • Pro since 2013 • Hundreds of pro cards earned" — makes Mike sound like a fanboy, unprofessional
-- All credential dumping belongs in About, not Hero
-
-**Fix — Hero should be exactly:**
 ```
 IFBB PRO
 BIG MIKE ELY
@@ -82,152 +41,165 @@ WORLD CHAMPION
 [BOOK A SESSION]   [VIEW SERVICES]
 ```
 
-- Kill `hero-badge` with the bullet-separated credentials line
-- Kill `hero-proof` line entirely
-- Above the name: just "IFBB PRO" in small gold text
-- The name: "BIG MIKE ELY" large, "MIKE" in gold gradient
-- Below the name: just "WORLD CHAMPION" in small text
-- Keep both CTA buttons
-- Keep the background image (hero-stage-2025.jpg) — it's good
+That's it. Nothing else. No "Coached by Hany Rambod." No "Pro since 2013." No "Hundreds of pro cards earned." No bullet-separated credential dumps. Mike IS the brand — the hero should hit you with who he is and what to do. All credentials belong in the About section.
+
+- Keep the background image (`hero-stage-2025.jpg`) — it's great
+- "IFBB PRO" above the name in small gold text
+- "BIG MIKE ELY" large, "MIKE" in gold gradient shimmer
+- "WORLD CHAMPION" below the name in small text
+- Two CTA buttons: BOOK A SESSION (gold/primary) + VIEW SERVICES (outline/secondary)
 - Keep the scroll indicator arrow
+- He is an Olympian — that's enough. Don't itemize how many times.
 
-### 2. SERVICES (lines 270-313)
+### Services Section
 
-**Current problems:**
-- "ELITE SERVICES" + "Coaching Services" = redundant double header
-- Subtitle paragraph is commentary, not needed
-- Service card descriptions are too long and presumptuous — telling Mike how to run his business
-- Icons for posing (ankh thing) and online coaching (globe) are terrible
-- Missing services that may be on his actual Square page
-- "MOST POPULAR" badge on Full Coaching Package — don't assume this
+**Current problems:** Redundant "ELITE SERVICES" + "Coaching Services" double header. Service descriptions are way too long, presumptuous, and tell Mike how to run his business. Icons for posing coaching (ankh thing) and online coaching (globe) are terrible. "MOST POPULAR" badge is assumed.
 
-**Fix:**
-- Single section title only. Either "Services" or "Coaching Services" — not both
+**Rules:**
+- ONE section title. "Services" or "Coaching Services" — not both.
 - Kill the subtitle paragraph entirely
-- Each service card: **Service name + 1 short factual sentence MAX** (or just the name alone)
-- Example: "1-on-1 Training" with "In-person sessions at Old School Iron Gym, Brook Park." or just "1-on-1 Training" alone
-- Replace all icons with masculine, clean SVGs — dumbbells, shield, simple geometric. Nothing that looks like an ankh or a globe
-- Match services to Square booking exactly
-- Remove "MOST POPULAR" badge unless Mike confirms
-- "BOOK →" links should all go to Mike's actual Square booking URL (not book.html placeholder)
+- Each service card: **service name only, or name + 1 short factual sentence MAX**
+- Do NOT describe how Mike runs his coaching. No "learn how to highlight your strengths." No "weekly check-ins, program adjustments, and direct access." Just what the service IS.
+- Icons must be masculine and clean — dumbbells, simple geometric shapes. Nothing feminine, nothing that looks like a globe or an ankh.
+- Match services to what's actually on Mike's Square booking page
+- Remove "MOST POPULAR" badge
+- If Square has "Posing Session" — call it that. If it has "Posing Clinic" — call it that. Match exactly.
 
-### 3. ABOUT (lines 317-355)
+### About Section
 
-**Current problems:**
-- Opens with guidance counselor story — weird, unprofessional, out of nowhere
-- Flow jumps around: guidance counselor → nationals → titles → degrees → coaching
-- Credential chips (2x World Champion, 2x Olympian, IFBB Pro, etc.) are redundant with the text above them
-- "Hany Rambod • Tom Platz • Roelly Winklaar • Branch Warren • Derek Lunsford follows" — listing random names is 0/100, terrible
-- Photo is cropped badly (no lower body)
-- Photo has IG chrome (about-gym-olympia.jpg)
+**Current problems:** Opens with a guidance counselor story (weird, unprofessional). Flow jumps around. Credential chips repeat information already in the text. A strip of random bodybuilder names listed as decoration ("Hany Rambod • Tom Platz • Roelly Winklaar • Branch Warren • Derek Lunsford follows") is literally 0/100. Photo is cropped with no legs and has Instagram chrome.
 
 **Fix:**
-- Kill the guidance counselor opener
-- Write a clean professional bio — facts only, no editorial commentary:
-  - IFBB Pro since 2013 (NPC Masters Nationals)
+- Kill the guidance counselor opener entirely
+- Write a clean, professional bio. Facts only. No editorial. No "Mike even went on to..." No storytelling. Just credentials and what he does:
+  - IFBB Pro since 2013 (earned at NPC Masters Nationals)
   - 2x IFBB Pro Masters World Champion (2024, 2025)
-  - 2x Olympian
-  - BS Nutritional Science, MS Exercise Science — BGSU
+  - Olympian
+  - BS Nutritional Science, MS Exercise Science — Bowling Green State University
   - NPC Judge
-  - Coaches all divisions
-  - 30+ athletes to IFBB Pro status
-  - Training/coaching since 1996
-- The three stat emblems below are GOOD — keep those (2x World Champion, 30+ Years, Thousands Athletes)
-- Kill the credential chips — they repeat the stats above
-- Kill the legends strip entirely (the name-dropping line)
-- Replace photo with `gallery-gym-recent.jpg` (full body, recent, bald Mike in gym) — this shows current Mike, great conditioning, full body visible
-- Move Hany Rambod mention to a natural place in the bio text — "Earned his IFBB Pro card in 2013, coached by Hany Rambod" — as context, not a headline
+  - Coached by Hany Rambod (mentioned naturally in bio, not as a headline)
+  - Coaches all divisions: bodybuilding, figure, bikini, physique, wellness
+  - 30+ athletes coached to IFBB Pro status
+  - Training and coaching since 1996
+  - "Bodybuilding, figure, bikini, physique, wellness. His programs are built on real science, refined by decades of competition, and custom to every athlete." — this line is GOOD, keep it
+- The **three stat emblems** (2x World Champion / 30+ Years / Thousands Athletes Coached) are GOOD — keep those
+- Kill the credential chips (redundant with stats above)
+- Kill the legends strip entirely
+- Replace photo with `gallery-gym-recent.jpg` — full body, recent, shows current Mike with great conditioning. NOT the cropped IG-chrome shot currently there.
 
-### 4. RESULTS / TRACK RECORD (lines 359-400)
+### Results Section
 
-**Current problems:**
-- "The Track Record" + "The Numbers" = redundant again
-- Number cards say "Hundreds" for pro cards and competition wins — unverified, vague
-- "Every Division / Bikini to Bodybuilding" — doesn't need its own card
-- Results liner text: "From first-time competitors to national champions..." doesn't match the photos (all pro cards and posing clinics shown)
-- Photos below are good but labels are generic/repetitive ("IFBB Pro Card Earned" x3)
+**Current problems:** "The Track Record" + "The Numbers" double header again. Number cards use vague "Hundreds" for unverified claims. Results liner copy doesn't match the photos shown (talks about "first-time competitors" but shows all pro cards). Photo labels are generic/repetitive.
 
 **Fix:**
 - Single section title
-- Number cards should use real verifiable numbers where possible:
-  - "30+" Pro Cards Earned (verified)
-  - "2x" World Champion
-  - "2x" Olympian
-  - "Since 1996" or "30+" Years Coaching
-- Results liner should match the photos shown — if showing pro cards, talk about pro cards
-- Photo labels should be specific: athlete name if known, or the event
-- Replace `results-procard-rob.jpg` (has IG chrome) with a clean version — use `results-procard-lindsay.jpg` (Mike & Lindsay with pro card) which is clean
-- Add new photos: Lindsay on stage with card, group photo stays
+- Use real verifiable numbers: 30+ Pro Cards, 2x World Champion, Olympian, Since 1996
+- Copy must match photos. If showing pro cards, talk about pro cards.
+- Photo labels should be specific where possible (athlete names, events)
+- Replace `results-procard-rob.jpg` (has IG chrome) with `results-procard-lindsay.jpg` (clean)
+- Add `results-procard-lindsay-stage.jpg` (Lindsay on stage earning her card)
 
-### 5. CTA SECTION (lines 404-413)
+### CTA Section
 
-**Current problems:**
-- "Done With Guesswork?" — corny
-- "Free initial consultation • No commitment required" — don't promise things that may not be true
+- Kill "Done With Guesswork?" — corny
+- Kill "Free initial consultation • No commitment required" — don't promise what Mike hasn't confirmed
+- Clean CTA with just the BOOK YOUR SESSION button. Background image stays.
 
-**Fix:**
-- Clean CTA: "Ready to Start?" or just the Book button with no headline fluff
-- Remove trust line unless Mike confirms he offers free consultations
-- Keep background image (about-back-gym.jpg) — it works
-- Keep the BOOK YOUR SESSION button
+### Footer
 
-### 6. FOOTER (lines 416-450)
+- Fine as-is. Ensure all Book links go to Square URL.
+- VAT badge stays.
 
-**Current problems:** Mostly fine. Minor issues:
-- "Coach Login" link at opacity .4 is fine
-- VAT badge is good
+### Meta / SEO
 
-**Fix:**
-- Keep as-is, just ensure all links work
-- Book link should go to Square URL
-
-### 7. NAVIGATION
-
-**Current:** Fine structurally. Mobile menu was already fixed.
-
-**Fix:**
-- Ensure "Book a Session" links to actual Square booking URL everywhere
-- Nav CTA, mobile menu CTA, all service card "Book →" links, hero buttons, CTA section button — ALL must go to the same Square booking URL
-
-### 8. META / SEO
-
-**Current problems:**
-- Meta description still says "Coached by Hany Rambod" as a lead credential
-- OG description similar
-
-**Fix:**
-- Meta description: "IFBB Pro Big Mike Ely — 2x Masters World Champion, 2x Olympian. Elite bodybuilding coaching for every division. Book a session today."
+- Kill "Coached by Hany Rambod" from meta description
+- Meta description: "IFBB Pro Big Mike Ely — 2x Masters World Champion. Olympian. Elite bodybuilding coaching. Book a session today."
 - OG title: "IFBB Pro Big Mike Ely | World Champion"
-- Keep OG image (hero shot)
+
+### Copy Rules (CRITICAL — apply everywhere)
+
+1. **No editorial commentary.** No "who lives it," no "every calorie has a purpose," no "the complete championship blueprint." Just facts.
+2. **No assuming how Mike runs his business.** Don't describe his coaching process.
+3. **No name-dropping as decoration.** Hany Rambod is mentioned in the bio as context. Tom Platz, Roelly, etc. go in photo alt text only.
+4. **No redundant headers.** One title per section.
+5. **No corny motivational copy.** No "Done with guesswork?" No "Your Move." No "Just results."
+6. **Verify every fact.** If you can't verify it, don't include it.
+7. **Not corny is more important than clever.** Professional, clean, factual.
 
 ---
 
-## PHOTOS INVENTORY (30 files in /home/user/bigmike/img/)
+## PART 2: COACHING PORTAL (app.html)
 
-### New photos from this session (saved and pushed):
-| File | Description | Use |
-|------|-------------|-----|
-| `gallery-back-dbl-bicep.jpg` | Back double bicep, Muscular Development 2013 | Gallery or background |
-| `gallery-side-chest-stage.jpg` | Side chest, Muscular Development 2013 | Gallery or background |
-| `about-back-gym.jpg` | Rear lat spread, gym, 2023 Olympia prep | CTA background (already used) |
-| `about-tom-platz.jpg` | Mike with Tom Platz, Pittsburgh Jul 2022 | About section or gallery |
-| `about-lifestyle.jpg` | Mike and wife poolside | About section |
-| `gallery-gym-recent.jpg` | Gym pose, recent/bald, Cleveland | About section photo (replace current) |
-| `gallery-most-muscular-stage.jpg` | Most muscular on stage | Gallery or hero candidate |
-| `about-hany-rambod.jpg` | Mike with Hany Rambod backstage, 2014 pro card show | About section |
-| `gallery-most-muscular-crab.jpg` | Most muscular crab pose, stage | Gallery |
-| `gallery-wings-chicago-2015.jpg` | Back double bicep, Wings of Strength Chicago Pro 2015 | Gallery |
-| `gallery-gym-side-tricep.jpg` | Side tricep gym, vintage filter | Gallery or background |
-| `results-procard-lindsay-stage.jpg` | Lindsay earning IFBB Pro Card on stage (#55) | Results section |
-| `results-procard-lindsay.jpg` | Mike with Lindsay backstage, Pro Card | Results section |
+The coaching portal at `/home/user/bigmike/app.html` is a ~4400 line single-file vanilla JS SPA. It uses localStorage for persistence with optional Supabase cloud sync. This is Mike's private tool — he uses it daily. **It must be absolutely perfect. Zero bugs. Every button works. Every view is logically architected.**
 
-### Existing photos (from previous sessions):
-| File | Description | Issue |
-|------|-------------|-------|
-| `hero-stage-2025.jpg` | Front pose with crown, champion | GOOD — keep as hero |
-| `about-gym-olympia.jpg` | Gym shot | HAS IG CHROME — needs replacement or re-crop |
+### Critical Requirements
+
+1. **Full bug audit:** Every single clickable element on every single view must work perfectly. Mike has complained about small bugs, missing backspace handling, things not logically placed, nonsensical flows. Test EVERY button, EVERY input, EVERY navigation path. Zero tolerance for errors.
+
+2. **PDF output:** Program builder generates PDFs. These must be properly color-coded, correct text sizes, with logos. The PDF output must look professional and match the app's visual quality.
+
+3. **Photo/Video Gallery Upload:** Mike needs the ability to upload photos and videos to his website's gallery directly from his coaching portal. When he taps an icon, it should show options (photo library, files, camera) and let him upload media that appears on the public gallery section of the landing page. This requires Supabase Storage integration.
+
+4. **Full website control from portal:** Mike should be able to control the entire website and platform UI from his portal. This includes:
+   - **Independent theme control:** Mike can set one theme for the public website (e.g., crimson) and a different theme for his internal portal (e.g., gold). These are independent settings.
+   - Site content management capabilities from the portal
+
+5. **Cancellation Policy:** Mike's actual policy must be reflected in the scheduling/booking section:
+   - Payments due day before to secure session
+   - Cancel after 8PM = full charge
+   - Cancel before 8PM = $10 fee
+   - 48+ hours notice = no charge
+
+6. **Render chain integrity:** `renderNutrition()` → checks `_editProgram` → `_editWorkout` → `_editMealPlan` in order. The program builder checks `_editWorkout` and `_editMealPlan` BEFORE rendering sections. Do not break this.
+
+7. **Modal scroll:** `showModal` handles all scrolling. Do NOT add `max-height` + `overflow-y:auto` to content inside modals — it breaks iOS.
+
+8. **iOS keyboard:** `focusout` listener resets scroll position after keyboard dismiss. Don't break this.
+
+### Key Data Structures (in app.html)
+- `clients` — array of client objects (localStorage key: `fm_clients`)
+- `sessions` — session logs
+- `schedule` — scheduled sessions with reminders
+- `mealPlans` — meal plans referencing FOOD_DB
+- `_programs` — program builder data
+- `_workouts` — workout templates
+- Client fields: `anabolics[]`, `peptides[]`, `fatloss[]`, `supplements[]`, `water{}`, `program{}`
+
+### Birthday System
+- `_bdayExpiry=1773936000000` — hard deadline ~March 19, 2026 16:00 UTC
+- Gift wrap + popup auto-disappears after this timestamp
+- DO NOT modify the birthday message text
+
+---
+
+## PART 3: PHOTOS INVENTORY
+
+### 30 photos in `/home/user/bigmike/img/`:
+
+**New photos (this session):**
+| File | Description |
+|------|-------------|
+| `gallery-back-dbl-bicep.jpg` | Back double bicep, Muscular Development 2013 |
+| `gallery-side-chest-stage.jpg` | Side chest, Muscular Development 2013 |
+| `about-back-gym.jpg` | Rear lat spread, gym, 2023 Olympia prep |
+| `about-tom-platz.jpg` | Mike with Tom Platz, Pittsburgh Jul 2022 |
+| `about-lifestyle.jpg` | Mike and wife poolside |
+| `gallery-gym-recent.jpg` | Gym pose, bald Mike, recent (#4 on trunks) |
+| `gallery-most-muscular-stage.jpg` | Most muscular on stage |
+| `about-hany-rambod.jpg` | Mike with Hany Rambod backstage |
+| `gallery-most-muscular-crab.jpg` | Most muscular crab pose, stage (early career, has hair) |
+| `gallery-wings-chicago-2015.jpg` | Back double bicep, Wings of Strength Chicago Pro 2015 |
+| `gallery-gym-side-tricep.jpg` | Side tricep gym, vintage filter |
+| `results-procard-lindsay-stage.jpg` | Lindsay earning IFBB Pro Card on stage (#55) |
+| `results-procard-lindsay.jpg` | Mike with Lindsay backstage, Pro Card |
+
+**Existing photos:**
+| File | Description | Status |
+|------|-------------|--------|
+| `hero-stage-2025.jpg` | Front pose with crown | GOOD — hero background |
+| `about-gym-olympia.jpg` | Gym shot | BAD — has IG chrome, needs replacement |
 | `about-roelly.jpg` | Mike with Roelly Winklaar | GOOD |
-| `gallery-champion-2024.jpg` | 2024 Masters World Champion stage | GOOD |
+| `gallery-champion-2024.jpg` | 2024 Masters World Champion | GOOD |
 | `gallery-ferrigno-prep.jpg` | Ferrigno Legacy prep 2015 | GOOD |
 | `gallery-muscular-dev-2013.jpg` | Muscular Development 2013 | GOOD |
 | `gallery-posing-clinic.jpg` | Posing clinic flyer | GOOD |
@@ -236,47 +208,26 @@ WORLD CHAMPION
 | `gallery-transformation.jpg` | Before/after transformation | GOOD |
 | `gallery-wings-stage.jpg` | Back double on stage | GOOD |
 | `gallery-gym-prep-2014.jpg` | Gym prep 2014 | GOOD |
-| `results-group.jpg` | Big group photo at gym | GOOD |
+| `results-group.jpg` | Group photo at Old School Iron Gym | GOOD |
 | `results-procard-backstage.jpg` | Pro card backstage | GOOD |
 | `results-procard-female.jpg` | Female athlete pro card | GOOD |
 | `results-procard-ladies.jpg` | Figure ladies | GOOD |
-| `results-procard-rob.jpg` | Rob's pro card | HAS IG CHROME — replace with Lindsay photos |
+| `results-procard-rob.jpg` | Rob's pro card | BAD — has IG chrome |
 
 ---
 
-## COPY RULES
+## PART 4: CREDENTIALS & INTEGRATIONS
 
-1. **No editorial commentary.** No "who lives it," "the complete championship blueprint," "every calorie has a purpose." Just facts.
-2. **No assuming how Mike runs his business.** Don't describe his coaching process unless he's confirmed it.
-3. **No name-dropping as decoration.** Hany Rambod belongs in bio context ("coached by Hany Rambod"). Tom Platz, Roelly, etc. belong in photo alt text only, not displayed as a flex strip.
-4. **No redundant headers.** One title per section. Not "Elite Services" + "Coaching Services."
-5. **No corny motivational copy.** No "Done with guesswork?" No "Your Move." No "Just results."
-6. **Verify every fact.** Year Mike turned pro = 2013. Degrees from BGSU. 2x World Champion (2024, 2025). If you're not sure, don't include it.
+### Supabase
+- URL: `https://sjwosrwfoubvqpzmxhoe.supabase.co`
+- Anon key: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNqd29zcndmb3VidnFwem14aG9lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5OTgzMDMsImV4cCI6MjA5MDU3NDMwM30.iPPJrXX8igS8ymskqRZmkTAP7_okd3XHIeaCcrDlXPo`
+- Pre-populated as defaults in app.html Settings
 
----
-
-## CANCELLATION POLICY (for app.html, NOT landing page)
-
-Mike's actual policy:
-- Payments due day before to secure session
-- Cancel after 8PM = full charge
-- Cancel before 8PM = $10 fee
-- 48+ hours notice = no charge
-
-This goes in the coaching app's scheduling/booking section only.
-
----
-
-## SUPABASE / TWILIO (deferred)
-
-Credentials saved in app.html settings defaults:
-- Supabase URL: `https://sjwosrwfoubvqpzmxhoe.supabase.co`
-- Anon key: pre-populated in app
-- Coach phone: `+14403093886`
-- Twilio phone: `+18663293169`
+### Twilio SMS (Edge Function)
 - Edge function code: `/home/user/bigmike/supabase/functions/send-sms/index.ts`
-
-Deploy commands (for developer to run locally):
+- Twilio phone: `+18663293169`
+- Coach phone: `+14403093886`
+- Deploy commands (developer runs locally):
 ```
 npx supabase login
 npx supabase link --project-ref sjwosrwfoubvqpzmxhoe
@@ -286,25 +237,57 @@ npx supabase secrets set TWILIO_ACCOUNT_SID=AC91e7082ee2... TWILIO_AUTH_TOKEN=c0
 
 ---
 
-## DEVELOPER ACTION ITEMS BEFORE EXECUTION
+## PART 5: MIKE'S VERIFIED FACTS (use ONLY these)
 
-1. **Provide Mike's Square booking URL** (from his Instagram bio link) so services can be matched exactly
-2. **Decide on architecture:** Stay vanilla HTML or move to Astro/Next.js?
-3. **Confirm services list** matches what's on Square
-4. **Confirm "2x Olympian"** — we have 2023 Masters Olympia confirmed, need the second year
-5. **Send any remaining photos** — especially a clean replacement for `about-gym-olympia.jpg` (has IG chrome)
+| Fact | Source |
+|------|--------|
+| IFBB Pro Card — 2013 NPC Masters Nationals (Super-Heavyweight, Over 40) | NPC News Online |
+| 2x IFBB Pro Masters World Champion (2024, 2025) | Instagram, NPC News Online |
+| Olympian (Masters Mr. Olympia) | Instagram bio |
+| 1st — 2019 IFBB Baltimore Classic Masters Pro | NPC News Online |
+| 2nd — 2022 IFBB Masters World Pro | NPC News Online |
+| 14th — 2015 Wings of Strength Chicago Pro | NPC News Online |
+| 14th — 2015 IFBB Ferrigno Legacy Pro | NPC News Online |
+| BS Nutritional Science — BGSU | Old School Iron |
+| MS Exercise Science — BGSU | Old School Iron |
+| NPC Judge | Site |
+| Coached by Hany Rambod | Photos, Instagram |
+| Training/coaching since 1996 | Old School Iron |
+| 30+ clients to IFBB Pro status | Facebook |
+| 40+ clients with 100lb+ weight loss | Old School Iron |
+| Center Stage Aesthetics / Old School Iron Gym, Brook Park | Instagram |
+| All divisions: bodybuilding, figure, bikini, physique, wellness | Facebook |
+
+**If a fact is not in this table, do not put it on the site.**
 
 ---
 
-## VERIFICATION CHECKLIST (after rebuild)
+## VERIFICATION CHECKLIST (before pushing to main)
 
-1. Every fact on the page cross-referenced against verified sources above
-2. Every photo has correct alt text with verified show name and year
-3. All "Book" links go to actual Square URL
-4. Services match Square exactly
-5. No IG chrome visible in any photo
-6. JS syntax check: `node -c`
-7. Mobile test: every section looks correct on 375px viewport
-8. Performance: Lighthouse 95+ on all metrics
-9. No dead CSS, no dead JS, no unused images referenced
-10. Push to `claude/improve-landing-page-ofiCu`, merge to `main`
+### Landing Page
+- [ ] Every fact cross-referenced against verified table above
+- [ ] Every photo has correct alt text
+- [ ] All "Book" links go to Square URL
+- [ ] Services match Square exactly
+- [ ] No IG chrome visible in any photo
+- [ ] Mobile: every section correct at 375px
+- [ ] Performance: Lighthouse 95+ all metrics
+- [ ] No dead CSS/JS/image references
+- [ ] Hero is exactly: IFBB PRO / BIG MIKE ELY / WORLD CHAMPION
+- [ ] No corny copy anywhere
+
+### Coaching Portal
+- [ ] Every button on every view tested and working
+- [ ] PDF output: color-coded, proper text sizes, logos
+- [ ] Photo gallery upload functional (Supabase Storage)
+- [ ] Independent theme control (website vs portal)
+- [ ] Cancellation policy in scheduling section
+- [ ] JS syntax check passes: `sed -n '/<script>/,/<\/script>/p' app.html | sed '1d;$d' > /tmp/bigmike_js.js && node -c /tmp/bigmike_js.js`
+- [ ] Render chain intact (renderNutrition → renderProgramBuilder → sub-editors)
+- [ ] No iOS modal scroll issues
+- [ ] No iOS keyboard issues
+
+### Final
+- [ ] Push to `claude/improve-landing-page-ofiCu`
+- [ ] Merge to `main`
+- [ ] Live site verified at ifbbprobigmikeely.com
