@@ -505,8 +505,7 @@ var TABS=[
 {k:"clients",l:"Clients",svg:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>'},
 {k:"schedule",l:"Schedule",svg:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>'},
 {k:"sessions",l:"Log",svg:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>'},
-{k:"nutrition",l:"Programs",svg:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16v16H4z"/><path d="M4 4l4-2h8l4 2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>'},
-{k:"settings",l:"Settings",svg:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>'}
+{k:"nutrition",l:"Programs",svg:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16v16H4z"/><path d="M4 4l4-2h8l4 2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>'}
 ];
 function render(){
   var tabsEl=el("tabs");
@@ -1346,7 +1345,7 @@ function renderSettings(){
     +'<div style="font-size:11px;color:var(--mu);margin-bottom:14px;line-height:1.6">Send SMS reminders to your phone before sessions. Requires Supabase project + Twilio credentials configured as Edge Function secrets.</div>'
     +'<div class="field"><span class="lb">SUPABASE PROJECT URL</span><input id="supaUrl" placeholder="https://xxxx.supabase.co" value="'+esc(LS.get("supa_url",""))+'"></div>'
     +'<div class="field"><span class="lb">SUPABASE ANON KEY</span><input id="supaKey" placeholder="eyJ..." value="'+esc(LS.get("supa_key",""))+'"></div>'
-    +'<div class="field"><span class="lb">COACH PHONE (receives reminders)</span><input id="coachPhone" placeholder="+1 555-123-4567" value="'+esc(LS.get("coach_phone","+14403093886"))+'"></div>'
+    +'<div class="field"><span class="lb">COACH PHONE (receives reminders)</span><input id="coachPhone" placeholder="+1 555-123-4567" value="'+esc(LS.get("coach_phone",""))+'"></div>'
     +'<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:1px solid var(--borderS)"><div><div style="font-size:13px;font-weight:500;color:var(--wh)">Send Coach Reminders</div><div style="font-size:10px;color:var(--dm)">SMS before each session</div></div><div class="chip'+(LS.get("sms_reminders",false)?" on":"")+'" onclick="toggleNotif(\'sms_reminders\',this);startSMSChecker()" style="min-width:40px;text-align:center">'+(LS.get("sms_reminders",false)?"ON":"OFF")+'</div></div>'
     +'<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:1px solid var(--borderS)"><div><div style="font-size:13px;font-weight:500;color:var(--wh)">Send Client Reminders</div><div style="font-size:10px;color:var(--dm)">Also text clients before sessions</div></div><div class="chip'+(LS.get("sms_client_reminders",false)?" on":"")+'" onclick="toggleNotif(\'sms_client_reminders\',this)" style="min-width:40px;text-align:center">'+(LS.get("sms_client_reminders",false)?"ON":"OFF")+'</div></div>'
     +'<div style="display:flex;gap:8px;margin-top:12px"><button class="btn" onclick="saveSMSConfig()" style="flex:1">SAVE & CONNECT</button><button class="btn2" onclick="testSMS()" style="flex:1">TEST SMS</button></div></div>'
@@ -3563,6 +3562,7 @@ function setWebsiteTheme(t){LS.set("bm_website_theme",t);var sb=getSupabase();if
 
 // ── GALLERY MANAGEMENT ──
 var _galleryPhotos=null;
+var _galleryDragFrom=-1;
 function loadGalleryPhotos(cb){
   var sb=getSupabase();if(!sb){if(cb)cb();return;}
   sb.from("app_settings").select("value").eq("key","gallery_photos").single().then(function(res){
@@ -3571,21 +3571,41 @@ function loadGalleryPhotos(cb){
     if(cb)cb();
   });
 }
+function _gallerySyncToSupabase(){
+  var sb=getSupabase();
+  if(sb)sb.from("app_settings").upsert({key:"gallery_photos",value:_galleryPhotos},{onConflict:"key"}).then(function(){});
+}
 function renderGalleryManager(){
   if(_galleryPhotos===null){loadGalleryPhotos(function(){render();});return '<div class="sl" style="margin-top:18px">WEBSITE GALLERY</div><div class="cd" style="padding:16px;text-align:center;color:var(--dm);font-size:11px">Loading gallery...</div>';}
   var photos=_galleryPhotos||[];
   var grid="";
   for(var i=0;i<photos.length;i++){
     var p=photos[i];
-    grid+='<div style="position:relative;border-radius:8px;overflow:hidden;border:1px solid var(--borderS);aspect-ratio:1">'
-      +'<img src="'+esc(p.url)+'" alt="'+esc(p.label||"")+'" style="width:100%;height:100%;object-fit:cover">'
-      +'<div style="position:absolute;bottom:0;left:0;right:0;padding:4px 6px;background:linear-gradient(transparent,rgba(0,0,0,.85));font-size:8px;color:var(--ow);font-family:var(--mono)">'+(p.label||"Photo "+(i+1))+'</div>'
-      +'<div onclick="removeGalleryPhoto('+i+')" style="position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.7);color:var(--danger);display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;border:1px solid rgba(216,120,120,.3)">\u2715</div></div>';
+    grid+='<div draggable="true" ondragstart="galleryDragStart('+i+')" ondragover="event.preventDefault();this.style.outline=\'2px solid var(--acc)\'" ondragleave="this.style.outline=\'none\'" ondrop="galleryDrop('+i+');this.style.outline=\'none\'" style="position:relative;border-radius:10px;overflow:hidden;border:1px solid var(--borderS);aspect-ratio:1;cursor:grab;transition:transform .15s">'
+      +'<img src="'+esc(p.url)+'" alt="'+esc(p.label||"")+'" style="width:100%;height:100%;object-fit:cover" onerror="this.style.background=\'var(--glass)\';this.alt=\'Image failed to load\'">'
+      +'<div style="position:absolute;bottom:0;left:0;right:0;padding:6px 8px;background:linear-gradient(transparent,rgba(0,0,0,.9));font-size:9px;color:var(--ow);font-family:var(--mono);line-height:1.4">'+(p.label||"Photo "+(i+1))+'</div>'
+      +'<div style="position:absolute;top:4px;left:4px;display:flex;gap:3px">'
+        +'<div onclick="editGalleryPhoto('+i+')" style="width:24px;height:24px;border-radius:50%;background:rgba(0,0,0,.7);color:var(--acc);display:flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer;border:1px solid var(--accM)" title="Edit">\u270E</div>'
+      +'</div>'
+      +'<div style="position:absolute;top:4px;right:4px;display:flex;gap:3px">'
+        +(i>0?'<div onclick="galleryMovePhoto('+i+',-1)" style="width:24px;height:24px;border-radius:50%;background:rgba(0,0,0,.7);color:var(--ow);display:flex;align-items:center;justify-content:center;font-size:12px;cursor:pointer;border:1px solid var(--borderS)" title="Move left">\u2039</div>':'')
+        +(i<photos.length-1?'<div onclick="galleryMovePhoto('+i+',1)" style="width:24px;height:24px;border-radius:50%;background:rgba(0,0,0,.7);color:var(--ow);display:flex;align-items:center;justify-content:center;font-size:12px;cursor:pointer;border:1px solid var(--borderS)" title="Move right">\u203A</div>':'')
+        +'<div onclick="removeGalleryPhoto('+i+')" style="width:24px;height:24px;border-radius:50%;background:rgba(0,0,0,.7);color:var(--danger);display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;border:1px solid rgba(216,120,120,.3)" title="Delete">\u2715</div>'
+      +'</div>'
+      +'</div>';
   }
   return '<div class="sl" style="margin-top:18px">WEBSITE GALLERY</div><div class="cd" style="padding:16px">'
-    +'<div style="font-size:11px;color:var(--mu);margin-bottom:14px;line-height:1.6">Upload photos to your public website gallery. Photos are stored in Supabase and appear on your site automatically.</div>'
-    +(photos.length?'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px">'+grid+'</div>':'<div style="text-align:center;padding:20px;color:var(--dm);font-size:11px;border:1px dashed var(--borderS);border-radius:8px;margin-bottom:14px">No photos uploaded yet</div>')
-    +'<div style="display:flex;gap:8px"><button class="btn" onclick="pickGalleryPhoto()" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg> UPLOAD PHOTO</button></div>'
+    +'<div style="font-size:11px;color:var(--mu);margin-bottom:14px;line-height:1.6">Manage your public website gallery. Upload photos, add captions, and drag to reorder. Changes sync to your site automatically.</div>'
+    +(photos.length?'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px">'+grid+'</div><div style="font-size:9px;color:var(--dm);text-align:center;margin-bottom:14px;font-family:var(--mono)">'+photos.length+' photo'+(photos.length!==1?'s':'')+' \u2022 Drag to reorder</div>':'<div style="text-align:center;padding:28px 20px;color:var(--dm);font-size:11px;border:2px dashed var(--borderS);border-radius:12px;margin-bottom:14px"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--dm)" stroke-width="1.5" style="margin-bottom:8px"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><div>No photos uploaded yet</div><div style="font-size:9px;margin-top:4px;color:var(--dm)">Upload your first competition or training photo</div></div>')
+    +'<div style="display:flex;gap:8px;flex-wrap:wrap">'
+      +'<button class="btn" onclick="pickGalleryPhoto()" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;min-width:120px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg> UPLOAD PHOTO</button>'
+      +'<button class="btn2" onclick="galleryAddFromUrl()" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;min-width:120px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg> PASTE URL</button>'
+    +'</div>'
+    +'<div style="margin-top:12px;padding:14px;background:var(--glass);border-radius:10px;border:1px solid var(--borderS)">'
+      +'<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--acc)" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg><span style="font-size:11px;font-weight:600;color:var(--acc);font-family:var(--display);letter-spacing:.03em">ADD FROM INSTAGRAM</span></div>'
+      +'<div style="font-size:10px;color:var(--dm);line-height:1.5;margin-bottom:10px">Save photos from Instagram to your phone/computer first, then upload them here. IG blocks direct linking, so downloaded files work best.</div>'
+      +'<button class="btn2" onclick="pickGalleryPhoto()" style="width:100%;display:flex;align-items:center;justify-content:center;gap:6px;font-size:10px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg> UPLOAD SAVED IG PHOTO</button>'
+    +'</div>'
     +'<input type="file" id="galleryFileInput" accept="image/*" style="display:none" onchange="handleGalleryUpload(event)">'
     +'</div>';
 }
@@ -3593,10 +3613,53 @@ function pickGalleryPhoto(){
   var sb=getSupabase();if(!sb){toast("Configure Supabase first");return;}
   el("galleryFileInput").click();
 }
+function galleryAddFromUrl(){
+  var sb=getSupabase();if(!sb){toast("Configure Supabase first");return;}
+  showModal("Add Photo from URL",'<div style="font-size:10px;color:var(--dm);margin-bottom:12px;line-height:1.5">Paste a direct image URL. The photo will appear in your gallery immediately.</div>'
+    +'<div class="field"><span class="lb">IMAGE URL</span><input id="galUrlInput" placeholder="https://example.com/photo.jpg" style="font-size:12px"></div>'
+    +'<div class="field"><span class="lb">CAPTION</span><input id="galUrlLabel" placeholder="e.g. 2024 Masters World Pro" style="font-size:12px"></div>'
+    +'<div id="galUrlPreview" style="margin:12px 0;display:none;border-radius:10px;overflow:hidden;border:1px solid var(--borderS)"></div>'
+    +'<div style="display:flex;gap:8px"><button class="btn2" onclick="galleryPreviewUrl()" style="flex:1">PREVIEW</button><button class="btn" onclick="gallerySaveFromUrl()" style="flex:1">ADD TO GALLERY</button></div>');
+}
+function galleryPreviewUrl(){
+  var url=val("galUrlInput");if(!url){toast("Enter a URL");return;}
+  var prev=el("galUrlPreview");
+  prev.style.display="block";
+  prev.innerHTML='<div style="text-align:center;padding:20px;color:var(--dm);font-size:10px">Loading preview...</div>';
+  var img=new Image();
+  img.onload=function(){prev.innerHTML='<img src="'+esc(url)+'" style="width:100%;max-height:300px;object-fit:cover">'+(val("galUrlLabel")?'<div style="padding:8px 10px;background:var(--glass);font-size:10px;color:var(--mu);font-family:var(--mono)">'+esc(val("galUrlLabel"))+'</div>':'');};
+  img.onerror=function(){prev.innerHTML='<div style="text-align:center;padding:20px;color:var(--danger);font-size:10px">Could not load image. Check URL and try again.</div>';};
+  img.src=url;
+}
+function gallerySaveFromUrl(){
+  var url=val("galUrlInput");if(!url){toast("Enter a URL");return;}
+  var label=val("galUrlLabel")||"";
+  if(!_galleryPhotos)_galleryPhotos=[];
+  _galleryPhotos.push({url:url,label:label,added:new Date().toISOString()});
+  _gallerySyncToSupabase();
+  closeModal();toast("\u2713 Added to gallery");render();
+}
 function handleGalleryUpload(evt){
   var file=evt.target.files[0];if(!file)return;
   if(!file.type.startsWith("image/")){toast("Only image files");return;}
   if(file.size>10*1024*1024){toast("Max 10MB");return;}
+  var sb=getSupabase();if(!sb){toast("Configure Supabase first");return;}
+  // Show preview before uploading
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var dataUrl=e.target.result;
+    showModal("Preview & Upload",'<div style="margin-bottom:12px;border-radius:10px;overflow:hidden;border:1px solid var(--borderS)"><img src="'+dataUrl+'" style="width:100%;max-height:300px;object-fit:cover"></div>'
+      +'<div class="field"><span class="lb">CAPTION</span><input id="galLabel" placeholder="e.g. 2024 Masters World Pro" style="font-size:12px"></div>'
+      +'<div style="font-size:9px;color:var(--dm);margin-bottom:12px;font-family:var(--mono)">'+file.name+' \u2022 '+(file.size/1024<1024?(file.size/1024).toFixed(0)+"KB":(file.size/1024/1024).toFixed(1)+"MB")+'</div>'
+      +'<button class="btn" onclick="galleryConfirmUpload()" style="width:100%">UPLOAD & ADD TO GALLERY</button>');
+    window._galPendingFile=file;
+  };
+  reader.readAsDataURL(file);
+  evt.target.value="";
+}
+function galleryConfirmUpload(){
+  var file=window._galPendingFile;if(!file){toast("No file selected");return;}
+  var label=val("galLabel")||"";
   var sb=getSupabase();if(!sb){toast("Configure Supabase first");return;}
   toast("Uploading...");
   var ext=file.name.split(".").pop()||"jpg";
@@ -3604,19 +3667,77 @@ function handleGalleryUpload(evt){
   sb.storage.from("gallery").upload(path,file,{cacheControl:"3600",upsert:false}).then(function(res){
     if(res.error){toast("\u2717 Upload failed: "+res.error.message);return;}
     var publicUrl=sb.storage.from("gallery").getPublicUrl(path).data.publicUrl;
-    showModal("Photo Details",'<div class="field"><span class="lb">LABEL</span><input id="galLabel" placeholder="e.g. 2024 Masters World Pro"></div>'
-      +'<div style="margin:12px 0;border-radius:8px;overflow:hidden;border:1px solid var(--borderS)"><img src="'+esc(publicUrl)+'" style="width:100%;max-height:300px;object-fit:cover"></div>'
-      +'<button class="btn" onclick="saveGalleryPhoto(\''+esc(publicUrl)+'\')">ADD TO GALLERY</button>');
+    if(!_galleryPhotos)_galleryPhotos=[];
+    _galleryPhotos.push({url:publicUrl,label:label,added:new Date().toISOString()});
+    _gallerySyncToSupabase();
+    window._galPendingFile=null;
+    closeModal();toast("\u2713 Added to gallery");render();
   });
-  evt.target.value="";
 }
 function saveGalleryPhoto(url){
   var label=val("galLabel")||"";
   if(!_galleryPhotos)_galleryPhotos=[];
   _galleryPhotos.push({url:url,label:label,added:new Date().toISOString()});
-  var sb=getSupabase();
-  if(sb)sb.from("app_settings").upsert({key:"gallery_photos",value:_galleryPhotos},{onConflict:"key"}).then(function(){});
+  _gallerySyncToSupabase();
   closeModal();toast("\u2713 Added to gallery");render();
+}
+function editGalleryPhoto(idx){
+  var p=_galleryPhotos[idx];if(!p)return;
+  showModal("Edit Photo",'<div style="margin-bottom:12px;border-radius:10px;overflow:hidden;border:1px solid var(--borderS)"><img src="'+esc(p.url)+'" style="width:100%;max-height:300px;object-fit:cover"></div>'
+    +'<div class="field"><span class="lb">CAPTION</span><input id="galEditLabel" value="'+esc(p.label||"")+'" placeholder="e.g. 2024 Masters World Pro" style="font-size:12px"></div>'
+    +'<div class="field"><span class="lb">IMAGE URL</span><input id="galEditUrl" value="'+esc(p.url)+'" placeholder="https://..." style="font-size:11px;font-family:var(--mono)"></div>'
+    +'<div style="display:flex;gap:8px;margin-top:4px"><button class="btn" onclick="gallerySaveEdit('+idx+')" style="flex:1">SAVE CHANGES</button><button class="btn2" onclick="galleryReplacePhoto('+idx+')" style="flex:1">REPLACE PHOTO</button></div>');
+}
+function gallerySaveEdit(idx){
+  var label=val("galEditLabel")||"";
+  var url=val("galEditUrl")||"";
+  if(!url){toast("URL is required");return;}
+  _galleryPhotos[idx].label=label;
+  _galleryPhotos[idx].url=url;
+  _gallerySyncToSupabase();
+  closeModal();toast("\u2713 Photo updated");render();
+}
+function galleryReplacePhoto(idx){
+  window._galReplaceIdx=idx;
+  var inp=document.createElement("input");
+  inp.type="file";inp.accept="image/*";
+  inp.onchange=function(evt){
+    var file=evt.target.files[0];if(!file)return;
+    if(!file.type.startsWith("image/")){toast("Only image files");return;}
+    if(file.size>10*1024*1024){toast("Max 10MB");return;}
+    var sb=getSupabase();if(!sb){toast("Configure Supabase first");return;}
+    toast("Uploading replacement...");
+    var ext=file.name.split(".").pop()||"jpg";
+    var path="gallery/"+Date.now()+"_"+Math.random().toString(36).slice(2,8)+"."+ext;
+    sb.storage.from("gallery").upload(path,file,{cacheControl:"3600",upsert:false}).then(function(res){
+      if(res.error){toast("\u2717 Upload failed: "+res.error.message);return;}
+      var publicUrl=sb.storage.from("gallery").getPublicUrl(path).data.publicUrl;
+      var old=_galleryPhotos[window._galReplaceIdx];
+      if(old&&old.url){var m=old.url.match(/gallery\/(.+)$/);if(m)sb.storage.from("gallery").remove([m[1]]);}
+      _galleryPhotos[window._galReplaceIdx].url=publicUrl;
+      _gallerySyncToSupabase();
+      closeModal();toast("\u2713 Photo replaced");render();
+    });
+  };
+  inp.click();
+}
+function galleryMovePhoto(idx,dir){
+  var target=idx+dir;
+  if(target<0||target>=_galleryPhotos.length)return;
+  var tmp=_galleryPhotos[idx];
+  _galleryPhotos[idx]=_galleryPhotos[target];
+  _galleryPhotos[target]=tmp;
+  _gallerySyncToSupabase();
+  render();
+}
+function galleryDragStart(idx){_galleryDragFrom=idx;}
+function galleryDrop(idx){
+  if(_galleryDragFrom<0||_galleryDragFrom===idx)return;
+  var item=_galleryPhotos.splice(_galleryDragFrom,1)[0];
+  _galleryPhotos.splice(idx,0,item);
+  _galleryDragFrom=-1;
+  _gallerySyncToSupabase();
+  toast("\u2713 Reordered");render();
 }
 function removeGalleryPhoto(idx){
   showConfirm("Remove Photo","Remove this photo from your website gallery?","Remove").then(function(ok){
@@ -3624,7 +3745,7 @@ function removeGalleryPhoto(idx){
     var removed=_galleryPhotos.splice(idx,1)[0];
     var sb=getSupabase();
     if(sb){
-      sb.from("app_settings").upsert({key:"gallery_photos",value:_galleryPhotos},{onConflict:"key"}).then(function(){});
+      _gallerySyncToSupabase();
       if(removed&&removed.url){
         var match=removed.url.match(/gallery\/(.+)$/);
         if(match)sb.storage.from("gallery").remove([match[1]]);
