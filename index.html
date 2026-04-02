@@ -28,6 +28,7 @@
   --ice:#f0e8d0;--wh:#f0ece4;--ow:#c8c0b0;--mu:#908878;--dm:#605848;--dmL:#3a3428;
   --glass:rgba(224,176,48,.05);--glassH:rgba(224,176,48,.1);
   --goldGrad:linear-gradient(135deg,#9A7018,#D4A828,#F0D860,#ECC040,#D4A828,#9A7018);
+  --surfGrad:linear-gradient(180deg,var(--bg) 0%,rgba(8,7,4,1) 50%,var(--bg) 100%);
   --heroGrad:linear-gradient(180deg,rgba(2,2,2,.06) 0%,rgba(2,2,2,0) 18%,rgba(2,2,2,.15) 50%,rgba(2,2,2,.92) 100%);
   --display:'Cinzel',Georgia,serif;--body:'Rajdhani','Segoe UI',sans-serif;--mono:'IBM Plex Mono','Courier New',monospace;
   --ease:cubic-bezier(.22,1,.36,1);
@@ -39,6 +40,7 @@ body.theme-crimson{
   --ice:#f0e0e0;--ow:#c8b0b0;--mu:#907070;--dm:#584040;--dmL:#3a2828;
   --glass:rgba(208,48,48,.03);--glassH:rgba(208,48,48,.06);
   --goldGrad:linear-gradient(135deg,#8B1414,#C42828,#E84040,#C42828,#8B1414);
+  --surfGrad:linear-gradient(180deg,var(--bg) 0%,rgba(8,4,4,1) 50%,var(--bg) 100%);
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth;overflow-x:hidden;scrollbar-color:var(--accDeep) var(--bg)}
@@ -109,7 +111,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .hero-scroll{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);z-index:2;color:var(--dm);animation:bounce 2.5s ease-in-out infinite;transition:opacity .5s}
 /* SERVICES */
 .svc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
-.svc{background:linear-gradient(160deg,var(--card),rgba(20,18,10,1));border:1px solid var(--borderS);border-radius:12px;padding:32px 28px;position:relative;transition:all .5s var(--ease);overflow:hidden;box-shadow:0 2px 20px rgba(0,0,0,.3),inset 0 1px 0 rgba(224,176,48,.06)}
+.svc{background:linear-gradient(160deg,var(--card),rgba(20,18,10,1));border:1px solid var(--borderS);border-radius:12px;padding:32px 28px;position:relative;transition:all .5s var(--ease);overflow:hidden;box-shadow:0 2px 20px rgba(0,0,0,.3),inset 0 1px 0 rgba(224,176,48,.06);cursor:pointer}
 .svc:hover{background:linear-gradient(160deg,var(--cardH),rgba(28,24,12,1));border-color:var(--borderH);transform:translateY(-6px);box-shadow:0 12px 50px rgba(0,0,0,.6),0 0 40px var(--accS),0 0 80px rgba(224,176,48,.06),inset 0 1px 0 rgba(224,176,48,.1)}
 .svc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--goldGrad);opacity:0;transition:opacity .4s;box-shadow:0 0 20px var(--accS)}.svc:hover::before{opacity:1}
 .svc-num{font-family:var(--mono);font-size:10px;color:var(--dm);letter-spacing:.1em;margin-bottom:16px}
@@ -169,6 +171,11 @@ img[loading="lazy"]{opacity:0}img[loading="lazy"].loaded{opacity:1}
 .lightbox img{max-width:90vw;max-height:90vh;object-fit:contain;border-radius:4px;box-shadow:0 0 80px rgba(0,0,0,.8);cursor:default;transform:scale(.85);opacity:0;transition:transform .5s cubic-bezier(.22,1,.36,1),opacity .4s ease}
 .lightbox.open img{transform:scale(1);opacity:1;transition-delay:.1s}
 .lb-close{position:absolute;top:20px;right:24px;font-size:28px;color:var(--mu);transition:color .2s;z-index:1}.lb-close:hover{color:var(--wh)}
+/* TESTIMONIAL */
+.testimonial{max-width:680px;margin:0 auto;text-align:center;padding:20px 0}
+.test-quote{font-family:var(--display);font-size:clamp(17px,2.5vw,22px);font-weight:600;color:var(--ow);line-height:1.6;font-style:italic;margin-bottom:20px;opacity:.85}
+.test-attr{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dm)}
+.test-attr span{color:var(--acc)}
 /* CTA */
 .cta{position:relative;padding:120px 24px;text-align:center;overflow:hidden}
 .cta-bg{position:absolute;inset:0;background:url('img/about-back-gym.jpg') center/cover no-repeat;filter:brightness(.35) contrast(1.1) saturate(1.1)}
@@ -180,12 +187,15 @@ img[loading="lazy"]{opacity:0}img[loading="lazy"].loaded{opacity:1}
 /* FOOTER */
 .footer{padding:60px 24px 32px;text-align:center;border-top:1px solid var(--borderS);background:linear-gradient(180deg,var(--bg),rgba(7,6,4,1));position:relative}
 .footer::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(224,176,48,.2),transparent)}
+.footer-sig{font-family:var(--display);font-size:clamp(14px,2vw,17px);font-weight:600;color:var(--ow);font-style:italic;opacity:.5;margin-bottom:32px;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.6}
 .footer-mark{width:44px;height:44px;border-radius:12px;background:var(--goldGrad);background-size:200% 100%;display:inline-flex;align-items:center;justify-content:center;font-family:var(--display);font-size:22px;font-weight:900;color:var(--bg);animation:shimmer 4s ease-in-out infinite,goldPulse 6s ease-in-out infinite;margin-bottom:24px}
 .footer-links{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:24px}
 .footer-links a{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--mu);transition:color .2s}.footer-links a:hover{color:var(--wh)}
 .footer-social{display:flex;justify-content:center;gap:16px;margin-bottom:24px}
 .footer-social a{width:40px;height:40px;border-radius:50%;border:1px solid var(--borderS);display:flex;align-items:center;justify-content:center;color:var(--mu);transition:all .3s}
-.footer-social a:hover{border-color:var(--acc);color:var(--acc);transform:translateY(-2px);box-shadow:0 0 16px var(--accS),0 0 32px rgba(224,176,48,.06)}
+.footer-social a:hover{border-color:var(--acc);color:var(--acc);transform:translateY(-2px) scale(1.08);box-shadow:0 0 16px var(--accS),0 0 32px rgba(224,176,48,.06)}
+.nav-logo:hover .nav-mark{box-shadow:0 0 24px rgba(224,176,48,.2)}
+.nav-logo:hover .nav-name{color:var(--acc);transition:color .3s}
 .footer-copy{font-family:var(--mono);font-size:9px;color:var(--dm);letter-spacing:.08em;margin-bottom:16px}
 .vat{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:8px;letter-spacing:.08em;color:var(--dmL);transition:color .3s;text-transform:uppercase;opacity:.6}.vat:hover{color:var(--dm);opacity:1}
 /* ANIMATIONS */
@@ -203,18 +213,28 @@ img[loading="lazy"]{opacity:0}img[loading="lazy"].loaded{opacity:1}
 @media(max-width:768px){
   .nav-links{display:none}.nav-burger{display:flex}
   .section{padding:64px 20px}
-  .hero{padding:100px 20px 64px;min-height:100svh}
+  .s-head{margin-bottom:32px}
+  .hero{padding:100px 20px 80px;min-height:100svh}
+  .svc-grid{grid-template-columns:1fr}
   .about-wrap{gap:32px}.about-photos{gap:8px}
   .num-grid{grid-template-columns:repeat(2,1fr);gap:10px}
   .results-grid{grid-template-columns:repeat(2,1fr);gap:8px}
   .gal-grid{grid-template-columns:repeat(2,1fr);gap:8px}
   .gal-item.featured{grid-column:span 2;grid-row:span 1}
   .cta{padding:80px 20px}
+  .cta-inner{padding:48px 24px}
   .about-stats{gap:8px}
   .hero-orb{filter:blur(40px)}
   .hero-orb-2,.hero-orb-3{display:none}
 }
+@media(max-width:400px){
+  .about-stats{grid-template-columns:1fr}
+  .gal-grid{grid-template-columns:1fr}
+  .gal-item.featured{grid-column:span 1}
+  .btn-p{padding:14px 28px;font-size:10px}
+}
 @media(min-width:769px) and (max-width:1023px){
+  .num-grid{grid-template-columns:repeat(2,1fr)}
   .results-grid{grid-template-columns:repeat(3,1fr)}
   .about-wrap{grid-template-columns:1fr 1fr}
 }
@@ -269,7 +289,7 @@ img[loading="lazy"]{opacity:0}img[loading="lazy"].loaded{opacity:1}
 <!-- SERVICES -->
 <section class="section" id="services">
   <div class="inner">
-    <h2 class="s-head reveal">Services</h2>
+    <h2 class="s-head reveal">What I Offer</h2>
     <div class="svc-grid">
       <div class="svc reveal"><div class="svc-num">01</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6.5 6.5v11M17.5 6.5v11M6.5 12h11M2 8v8M22 8v8"/></svg></div><div class="svc-name">1-on-1 Training</div><div class="svc-desc">Individualized programming with hands-on coaching at Old School Iron Gym.</div><a href="https://big-mike-108395.square.site/" target="_blank" rel="noopener" class="svc-book">Book &rarr;</a></div>
       <div class="svc reveal"><div class="svc-num">02</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 21h8m-4-4v4m-4-9a4 4 0 01-4-4V4h4m4 8a4 4 0 004-4V4h-4m-4 0h8M4 4v4a4 4 0 004 4m4 0a4 4 0 004-4V4"/></svg></div><div class="svc-name">Contest Prep</div><div class="svc-desc">Peak week protocols, posing, nutrition, and pharmacology from an Olympian who's been there.</div><a href="https://big-mike-108395.square.site/" target="_blank" rel="noopener" class="svc-book">Book &rarr;</a></div>
@@ -283,11 +303,14 @@ img[loading="lazy"]{opacity:0}img[loading="lazy"].loaded{opacity:1}
 <div class="gw"></div>
 
 <!-- ABOUT -->
-<section class="section" id="about" style="background:linear-gradient(180deg,var(--bg),rgba(6,6,4,1),var(--bg))">
+<section class="section" id="about" style="background:var(--surfGrad)">
   <div class="inner">
+    <h2 class="s-head reveal">Three Decades on the Stage</h2>
     <div class="about-wrap">
       <div class="about-text reveal-left">
-        <p>Pro card earned in 2013 with Hany Rambod in his corner. 2x IFBB Pro Masters World Champion. Olympian. NPC Judge. Over 30 pro cards coached since 1996. The results speak for themselves.</p>
+        <p style="font-family:var(--display);font-size:clamp(18px,2.5vw,22px);color:var(--wh);line-height:1.5;margin-bottom:20px;font-weight:600">Bodybuilding is not a hobby. It is a discipline that exposes who you actually are.</p>
+        <p>Pro card earned in 2013 with Hany Rambod in his corner. Two-time IFBB Pro Masters World Champion. Masters Mr. Olympia competitor. NPC Judge. Over 30 athletes coached to their IFBB Pro cards since 1996.</p>
+        <p>Training out of Old School Iron Gym in Ohio, Mike brings three decades of competition, pharmacology knowledge, and stage strategy to every client he takes on. No templates. No shortcuts. Every program is built from scratch.</p>
         <div class="about-creds">
           <span class="about-cred">IFBB Pro</span>
           <span class="about-cred">2x World Champion</span>
@@ -315,6 +338,7 @@ img[loading="lazy"]{opacity:0}img[loading="lazy"].loaded{opacity:1}
 <!-- RESULTS -->
 <section class="section" id="results">
   <div class="inner">
+    <h2 class="s-head reveal">The Record Speaks</h2>
     <div class="num-grid">
       <div class="num-card reveal-scale"><div class="num-val" data-count="30" data-suffix="+">0</div><div class="num-label">Pro Cards Coached</div></div>
       <div class="num-card reveal-scale"><div class="num-val">2x</div><div class="num-label">World Champion</div></div>
@@ -334,9 +358,21 @@ img[loading="lazy"]{opacity:0}img[loading="lazy"].loaded{opacity:1}
 </section>
 <div class="gw"></div>
 
-<!-- GALLERY -->
-<section class="section" id="gallery" style="background:linear-gradient(180deg,var(--bg),rgba(6,6,4,1),var(--bg))">
+<!-- TESTIMONIAL -->
+<section class="section">
   <div class="inner">
+    <div class="testimonial reveal">
+      <div class="test-quote">"Mike doesn't just coach you for a show. He builds you into something that lasts. I earned my pro card because he saw what I couldn't see in myself."</div>
+      <div class="test-attr"><span>Lindsay</span> &mdash; IFBB Pro Bikini</div>
+    </div>
+  </div>
+</section>
+<div class="gw"></div>
+
+<!-- GALLERY -->
+<section class="section" id="gallery" style="background:var(--surfGrad)">
+  <div class="inner">
+    <h2 class="s-head reveal">Built Over a Lifetime</h2>
     <div class="gal-grid" id="galGrid">
       <div class="gal-item featured reveal" onclick="openLB(this)"><img src="img/gallery-champion-2024.jpg" alt="2024 IFBB Pro Masters World Champion" loading="lazy"><div class="gal-label">World Title, 2024</div></div>
       <div class="gal-item reveal" onclick="openLB(this)"><img src="img/gallery-most-muscular-stage.jpg" alt="Most muscular on stage" loading="lazy"><div class="gal-label">Conditioning on point</div></div>
@@ -377,6 +413,7 @@ img[loading="lazy"]{opacity:0}img[loading="lazy"].loaded{opacity:1}
 <!-- FOOTER -->
 <footer class="footer">
   <div class="footer-mark">M</div>
+  <div class="footer-sig">"Iron doesn't lie. The stage doesn't lie. The work is the work."</div>
   <div class="footer-links">
     <a href="#services">Services</a><a href="#about">About</a><a href="#results">Results</a><a href="#gallery">Gallery</a>
     <a href="https://big-mike-108395.square.site/" target="_blank" rel="noopener">Book</a>
