@@ -3928,7 +3928,7 @@ function generateMealPlanPDF(mpId){
 var _pdfBuilderTheme="";
 function showPDFBuilder(idx){
   var c=clients[idx];if(!c){toast("Client not found");return;}
-  _pdfBuilderTheme=LS.get("theme","crimson");
+  _pdfBuilderTheme=LS.get("pdfTheme",LS.get("theme","crimson"));
   var isComp=c.isCompetitor||(c.services||"").indexOf("Contest Prep")>=0;
   var hasProg=c.program&&c.program.days&&c.program.days.length;
   var hasMeals=mealPlans.some(function(mp){return mp.clientId===c.id;});
@@ -3942,11 +3942,11 @@ function showPDFBuilder(idx){
   var content='<div style="-webkit-overflow-scrolling:touch">';
   // Color theme
   content+='<div style="margin-bottom:14px"><span class="lb">PDF COLOR THEME</span><div style="display:flex;gap:6px">'
-    +'<div class="chip'+(_pdfBuilderTheme==="crimson"?" on":"")+'" onclick="_pdfBuilderTheme=\'crimson\';pickChip(this,null)" style="flex:1;text-align:center;justify-content:center"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#D03030;margin-right:6px;vertical-align:middle"></span>CRIMSON</div>'
-    +'<div class="chip'+(_pdfBuilderTheme==="gold"?" on":"")+'" onclick="_pdfBuilderTheme=\'gold\';pickChip(this,null)" style="flex:1;text-align:center;justify-content:center"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#D4A830;margin-right:6px;vertical-align:middle"></span>GOLD</div>'
+    +'<div class="chip'+(_pdfBuilderTheme==="crimson"?" on":"")+'" onclick="_pdfBuilderTheme=\'crimson\';LS.set(\'pdfTheme\',\'crimson\');pickChip(this,null)" style="flex:1;text-align:center;justify-content:center"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#D03030;margin-right:6px;vertical-align:middle"></span>CRIMSON</div>'
+    +'<div class="chip'+(_pdfBuilderTheme==="gold"?" on":"")+'" onclick="_pdfBuilderTheme=\'gold\';LS.set(\'pdfTheme\',\'gold\');pickChip(this,null)" style="flex:1;text-align:center;justify-content:center"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#D4A830;margin-right:6px;vertical-align:middle"></span>GOLD</div>'
     +'</div></div>';
   // Section checkboxes — grouped for scannability
-  content+='<div class="sl" style="margin-bottom:8px">INCLUDE SECTIONS</div>';
+  content+='<div class="sl" style="margin-bottom:8px">INCLUDE SECTIONS</div><div style="display:flex;gap:6px;margin-bottom:10px"><button class="btn2" style="flex:1;font-size:9px;padding:6px" onclick="document.querySelectorAll(\'[id^=pdfSec_]\').forEach(function(c){c.checked=true})">SELECT ALL</button><button class="btn2" style="flex:1;font-size:9px;padding:6px" onclick="document.querySelectorAll(\'[id^=pdfSec_]\').forEach(function(c){c.checked=false})">DESELECT ALL</button></div>';
   var _pdfGrpHdr=function(label){return'<div style="font-size:9px;font-weight:700;color:var(--acc);font-family:var(--mono);letter-spacing:.15em;padding:10px 6px 4px;border-bottom:1px solid var(--accB);margin-top:6px">'+label+'</div>';};
   var secs=[];
   secs.push({group:"TRAINING & NUTRITION"});
