@@ -3674,13 +3674,6 @@ function galleryConfirmUpload(){
     closeModal();toast("\u2713 Added to gallery");render();
   });
 }
-function saveGalleryPhoto(url){
-  var label=val("galLabel")||"";
-  if(!_galleryPhotos)_galleryPhotos=[];
-  _galleryPhotos.push({url:url,label:label,added:new Date().toISOString()});
-  _gallerySyncToSupabase();
-  closeModal();toast("\u2713 Added to gallery");render();
-}
 function editGalleryPhoto(idx){
   var p=_galleryPhotos[idx];if(!p)return;
   showModal("Edit Photo",'<div style="margin-bottom:12px;border-radius:10px;overflow:hidden;border:1px solid var(--borderS)"><img src="'+esc(p.url)+'" style="width:100%;max-height:300px;object-fit:cover"></div>'
