@@ -19,7 +19,9 @@
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Rajdhani:wght@400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Rajdhani:wght@400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Rajdhani:wght@400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Rajdhani:wght@400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet"></noscript>
 <style>
 :root{
   --bg:#030302;--bg2:#070604;--card:#0b0a08;--cardH:#0f0e0a;
@@ -49,6 +51,7 @@ body{background:var(--bg);color:var(--ow);font-family:var(--body);font-weight:40
 a{color:inherit;text-decoration:none}img{max-width:100%;display:block;height:auto}
 button{font-family:inherit;cursor:pointer;border:none;background:none}
 ::selection{background:var(--acc);color:var(--bg)}
+.skip-link{position:absolute;top:-100%;left:50%;transform:translateX(-50%);background:var(--acc);color:var(--bg);padding:12px 24px;font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border-radius:0 0 6px 6px;z-index:10001;transition:top .2s}.skip-link:focus{top:0}
 :focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:4px}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--accDeep);border-radius:3px}::-webkit-scrollbar-thumb:hover{background:var(--acc)}
@@ -390,6 +393,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 </style>
 </head>
 <body>
+<a href="#services" class="skip-link">Skip to main content</a>
 <!-- BRAND REVEAL -->
 <div class="brand-reveal" id="brandReveal"><div class="br-kicker">IFBB Pro</div><div class="br-name">Big Mike Ely</div><div class="br-line"></div><div class="br-title">World Champion · Olympian · Coach</div></div>
 <!-- GRAIN + VIGNETTE -->
@@ -412,6 +416,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 </div>
 
 <!-- HERO -->
+<main id="main">
 <section class="hero">
   <div class="hero-bg"></div><div class="hero-ov"></div>
   <div class="hero-atmos"><div class="hero-orb hero-orb-1"></div><div class="hero-orb hero-orb-2"></div><div class="hero-orb hero-orb-3"></div></div>
@@ -421,7 +426,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
     <h1>Big <em>Mike</em> Ely</h1>
     <div class="hero-sub">World Champion</div>
     <div class="gw" style="margin:28px auto 36px;max-width:50px;opacity:.6"></div>
-    <p class="hero-tagline">30+ pro cards coached since 1996. The results speak for themselves.</p>
+    <p class="hero-tagline">30+ pro cards earned under his eye since 1996. When you&rsquo;re ready to stop guessing, this is where you come.</p>
     <div class="hero-ctas">
       <a href="#contact" class="btn-p">Book a Session</a>
       <a href="#results" class="btn-s">See the Results</a>
@@ -434,14 +439,14 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 <!-- SERVICES -->
 <section class="section" id="services">
   <div class="inner">
-    <h2 class="s-head reveal">What I Offer</h2>
+    <h2 class="s-head reveal">The Arsenal</h2>
     <div class="svc-grid">
-      <div class="svc reveal reveal-d1"><div class="svc-num">01</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6.5 6.5v11M17.5 6.5v11M6.5 12h11M2 8v8M22 8v8"/></svg></div><div class="svc-name">1-on-1 Training</div><div class="svc-desc">Individualized programming with hands-on coaching at Old School Iron Gym.</div><a href="#contact" class="svc-book">Book &rarr;</a></div>
-      <div class="svc reveal reveal-d2"><div class="svc-num">02</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 21h8m-4-4v4m-4-9a4 4 0 01-4-4V4h4m4 8a4 4 0 004-4V4h-4m-4 0h8M4 4v4a4 4 0 004 4m4 0a4 4 0 004-4V4"/></svg></div><div class="svc-name">Contest Prep</div><div class="svc-desc">Peak week protocols, posing, nutrition, and pharmacology from an Olympian who's been there.</div><a href="#contact" class="svc-book">Book &rarr;</a></div>
-      <div class="svc reveal reveal-d3"><div class="svc-num">03</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 7h6M9 11h6M9 15h3"/></svg></div><div class="svc-name">Nutrition Planning</div><div class="svc-desc">Macro-calibrated meal plans built from decades of putting athletes on stage.</div><a href="#contact" class="svc-book">Book &rarr;</a></div>
-      <div class="svc reveal reveal-d4"><div class="svc-num">04</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a3 3 0 100 6 3 3 0 000-6zM12 10v4m-3 7l1.5-5h3L15 21M9 14h6"/></svg></div><div class="svc-name">Posing Sessions</div><div class="svc-desc">Stage presence and mandatory poses refined by a 2x World Champion.</div><a href="#contact" class="svc-book">Book &rarr;</a></div>
-      <div class="svc reveal reveal-d5"><div class="svc-num">05</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div><div class="svc-name">Online Coaching</div><div class="svc-desc">Full remote programming, check-ins, and adjustments. Anywhere in the world.</div><a href="#contact" class="svc-book">Book &rarr;</a></div>
-      <div class="svc svc-featured reveal reveal-d6"><div class="svc-badge">Most Popular</div><div class="svc-num">06</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="svc-name">Full Coaching Package</div><div class="svc-desc">Training, nutrition, supplementation, and contest prep — the complete program.</div><a href="#contact" class="svc-book">Book &rarr;</a></div>
+      <div class="svc reveal reveal-d1"><div class="svc-num">01</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6.5 6.5v11M17.5 6.5v11M6.5 12h11M2 8v8M22 8v8"/></svg></div><div class="svc-name">1-on-1 Training</div><div class="svc-desc">Your program. Your weaknesses. His eye. Every session at Old School Iron Gym is built around what you need to grow, not what&rsquo;s easy.</div><a href="#contact" class="svc-book">Book &rarr;</a></div>
+      <div class="svc reveal reveal-d2"><div class="svc-num">02</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 21h8m-4-4v4m-4-9a4 4 0 01-4-4V4h4m4 8a4 4 0 004-4V4h-4m-4 0h8M4 4v4a4 4 0 004 4m4 0a4 4 0 004-4V4"/></svg></div><div class="svc-name">Contest Prep</div><div class="svc-desc">Peak week. Posing. Nutrition. Pharmacology. Everything dialed by a coach who&rsquo;s stood on the Olympia stage himself and put 30+ athletes through to their pro cards.</div><a href="#contact" class="svc-book">Book &rarr;</a></div>
+      <div class="svc reveal reveal-d3"><div class="svc-num">03</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 7h6M9 11h6M9 15h3"/></svg></div><div class="svc-name">Nutrition Planning</div><div class="svc-desc">Not a template from the internet. Every gram calculated from three decades of bringing athletes to the stage in peak condition.</div><a href="#contact" class="svc-book">Book &rarr;</a></div>
+      <div class="svc reveal reveal-d4"><div class="svc-num">04</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a3 3 0 100 6 3 3 0 000-6zM12 10v4m-3 7l1.5-5h3L15 21M9 14h6"/></svg></div><div class="svc-name">Posing Sessions</div><div class="svc-desc">Judges score what they see. A 2x World Champion teaches you how to command the stage and present a physique that wins.</div><a href="#contact" class="svc-book">Book &rarr;</a></div>
+      <div class="svc reveal reveal-d5"><div class="svc-num">05</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div><div class="svc-name">Online Coaching</div><div class="svc-desc">Same championship-level programming, delivered remotely. Weekly check-ins, real-time adjustments, zero compromise. Anywhere in the world.</div><a href="#contact" class="svc-book">Book &rarr;</a></div>
+      <div class="svc svc-featured reveal reveal-d6"><div class="svc-badge">Most Popular</div><div class="svc-num">06</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="svc-name">Full Coaching Package</div><div class="svc-desc">Training, nutrition, supplementation, and contest prep &mdash; every variable under one roof, one coach, one standard. This is how pro cards get earned.</div><a href="#contact" class="svc-book">Book &rarr;</a></div>
     </div>
   </div>
 </section>
@@ -453,7 +458,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
     <h2 class="s-head reveal">Three Decades on the Stage</h2>
     <div class="about-wrap">
       <div class="about-text reveal-left">
-        <p style="font-family:var(--display);font-size:clamp(18px,2.5vw,22px);color:var(--wh);line-height:1.5;margin-bottom:20px;font-weight:600">Bodybuilding is not a hobby. It is a discipline that exposes who you actually are.</p>
+        <p style="font-family:var(--display);font-size:clamp(18px,2.5vw,22px);color:var(--wh);line-height:1.5;margin-bottom:20px;font-weight:600">This sport does not reward potential. It rewards preparation, precision, and decades of knowing what actually works.</p>
         <p>Pro card earned in 2013 with Hany Rambod in his corner. Two-time IFBB Pro Masters World Champion. Masters Mr. Olympia competitor. NPC Judge. Over 30 athletes coached to their IFBB Pro cards since 1996.</p>
         <p>Training out of Old School Iron Gym in Ohio, Mike brings three decades of competition, pharmacology knowledge, and stage strategy to every client he takes on. No templates. No shortcuts. Every program is built from scratch.</p>
         <div class="about-creds">
@@ -562,6 +567,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
   </div>
 </section>
 
+</main>
 <!-- FOOTER -->
 <footer class="footer">
   <div class="footer-mark">BME</div>
