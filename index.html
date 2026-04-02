@@ -53,6 +53,9 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .s-head{font-family:var(--display);font-size:clamp(28px,5vw,44px);font-weight:700;color:var(--wh);text-align:center;margin-bottom:48px;line-height:1.15;text-shadow:0 0 80px rgba(224,176,48,.06)}
 .gw{height:1px;max-width:200px;margin:0 auto;background:var(--goldGrad);opacity:.4;animation:lineGlow 4s ease-in-out infinite;box-shadow:0 0 12px var(--accS),0 0 30px rgba(224,176,48,.06)}
 .reveal{opacity:0;transform:translateY(36px);transition:opacity .9s var(--ease),transform .9s var(--ease)}.reveal.vis{opacity:1;transform:none}
+.reveal-left{opacity:0;transform:translateX(-50px);transition:opacity 1s var(--ease),transform 1s var(--ease)}.reveal-left.vis{opacity:1;transform:none}
+.reveal-right{opacity:0;transform:translateX(50px);transition:opacity 1s var(--ease),transform 1s var(--ease)}.reveal-right.vis{opacity:1;transform:none}
+.reveal-scale{opacity:0;transform:scale(.88);transition:opacity 1s var(--ease),transform 1s var(--ease)}.reveal-scale.vis{opacity:1;transform:none}
 .btn-p{display:inline-flex;align-items:center;justify-content:center;padding:16px 40px;background:var(--goldGrad);background-size:200% 100%;color:var(--bg);font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;border-radius:6px;transition:all .3s var(--ease);box-shadow:0 4px 24px var(--accM),0 0 40px var(--accS),0 0 80px rgba(224,176,48,.08);position:relative;animation:shimmer 4s ease-in-out infinite}
 .btn-p:hover{background-position:100% 0;box-shadow:0 8px 40px var(--accGlow),0 0 60px var(--accM),0 0 120px rgba(224,176,48,.12);transform:translateY(-2px)}.btn-p:active{transform:translateY(0)}
 .btn-s{display:inline-flex;align-items:center;justify-content:center;padding:15px 36px;background:transparent;color:var(--ow);font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;border-radius:6px;border:1px solid var(--border);transition:all .3s var(--ease)}
@@ -76,8 +79,9 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .nav-name{font-family:var(--display);font-size:15px;font-weight:700;color:var(--wh);letter-spacing:.04em}
 .nav-links{display:flex;align-items:center;gap:32px}
 .nav-links a{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--mu);transition:color .3s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:50%;right:50%;height:1px;background:var(--acc);transition:left .3s var(--ease),right .3s var(--ease)}
 .nav-links a:hover,.nav-links a.active{color:var(--wh)}
-.nav-links a.active::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;background:var(--acc)}
+.nav-links a:hover::after,.nav-links a.active::after{left:0;right:0}
 .nav-cta{padding:10px 24px !important;background:var(--goldGrad) !important;background-size:200% 100% !important;color:var(--bg) !important;border-radius:5px;font-weight:600 !important;animation:shimmer 4s ease-in-out infinite;box-shadow:0 0 16px rgba(224,176,48,.15)}.nav-cta:hover{box-shadow:0 4px 20px var(--accM),0 0 40px rgba(224,176,48,.12);transform:translateY(-1px)}
 .nav-burger{display:none;width:44px;height:44px;align-items:center;justify-content:center;color:var(--ow)}
 .mm{position:fixed;inset:0;z-index:200;background:rgba(2,2,2,.97);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s var(--ease)}
@@ -88,7 +92,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .mm-badge{font-family:var(--mono);font-size:9px;letter-spacing:.16em;color:var(--dm);margin-top:40px;text-transform:uppercase}
 /* HERO */
 .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:120px 24px 80px}
-.hero-bg{position:absolute;inset:0;background:url('img/hero-stage-2025.jpg') center top/cover no-repeat;z-index:0}
+.hero-bg{position:absolute;inset:0;background:url('img/hero-stage-2025.jpg') center top/cover no-repeat;z-index:0;animation:heroKenBurns 25s ease-in-out infinite alternate;will-change:transform}
 @media(min-width:769px){.hero-bg{background-attachment:fixed}}
 .hero-ov{position:absolute;inset:0;background:var(--heroGrad);z-index:1}
 .hero-atmos{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
@@ -97,7 +101,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .hero-orb-2{width:400px;height:400px;background:radial-gradient(circle,rgba(224,176,48,.08),transparent 70%);top:40%;right:-8%;animation:orbFloat2 14s ease-in-out infinite,breathe 8s ease-in-out infinite;animation-delay:2s,1s}
 .hero-orb-3{width:300px;height:300px;background:radial-gradient(circle,rgba(200,160,40,.06),transparent 70%);bottom:10%;left:30%;animation:orbFloat 16s ease-in-out infinite,breathe 7s ease-in-out infinite;animation-delay:4s,2s}
 .hero-warmth{position:absolute;bottom:0;left:0;right:0;height:40%;background:linear-gradient(to top,rgba(224,176,48,.03),transparent);z-index:1;pointer-events:none}
-.hero-content{position:relative;z-index:2;text-align:center;max-width:760px}
+.hero-content{position:relative;z-index:2;text-align:center;max-width:760px;opacity:0;animation:heroFadeUp 1.4s var(--ease) 1.6s forwards}
 .hero h1{font-family:var(--display);font-size:clamp(52px,11vw,100px);font-weight:900;color:var(--wh);line-height:.92;margin-bottom:14px;text-shadow:0 0 120px var(--accGlow),0 0 60px var(--accS),0 0 200px rgba(224,176,48,.08),0 4px 60px rgba(0,0,0,.5);animation:heroTextGlow 6s ease-in-out infinite}
 .hero h1 em{font-style:normal;background:var(--goldGrad);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s ease-in-out infinite;filter:drop-shadow(0 0 30px rgba(224,176,48,.3))}
 .hero-sub{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--acc);letter-spacing:.3em;text-transform:uppercase;margin-bottom:0;opacity:.7;text-shadow:0 0 40px rgba(224,176,48,.2);animation:breathe 5s ease-in-out infinite}
@@ -128,7 +132,8 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .about-stat-label{font-family:var(--mono);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--dm);margin-top:6px}
 .about-photos{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .about-photo{border-radius:12px;overflow:hidden;border:1px solid var(--borderS);position:relative}
-.about-photo img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease);filter:contrast(1.05) brightness(.95)}
+.about-photo img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease),opacity .6s var(--ease);filter:contrast(1.05) brightness(.95)}
+img[loading="lazy"]{opacity:0}img[loading="lazy"].loaded{opacity:1}
 .about-photo:hover img{transform:scale(1.04)}
 .about-photo:hover{border-color:var(--border);box-shadow:0 0 24px var(--accS)}
 .about-photo-main{grid-column:1/-1;aspect-ratio:4/3}
@@ -160,14 +165,17 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 /* LIGHTBOX */
 .lightbox{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s var(--ease);cursor:pointer;padding:20px}
 .lightbox.open{opacity:1;pointer-events:auto}
-.lightbox img{max-width:90vw;max-height:90vh;object-fit:contain;border-radius:4px;box-shadow:0 0 80px rgba(0,0,0,.8);cursor:default}
+.lightbox img{max-width:90vw;max-height:90vh;object-fit:contain;border-radius:4px;box-shadow:0 0 80px rgba(0,0,0,.8);cursor:default;transform:scale(.85);opacity:0;transition:transform .5s cubic-bezier(.22,1,.36,1),opacity .4s ease}
+.lightbox.open img{transform:scale(1);opacity:1;transition-delay:.1s}
 .lb-close{position:absolute;top:20px;right:24px;font-size:28px;color:var(--mu);transition:color .2s;z-index:1}.lb-close:hover{color:var(--wh)}
 /* CTA */
 .cta{position:relative;padding:120px 24px;text-align:center;overflow:hidden}
-.cta-bg{position:absolute;inset:0;background:url('img/about-back-gym.jpg') center/cover no-repeat;filter:brightness(.3) contrast(1.1)}
+.cta-bg{position:absolute;inset:0;background:url('img/about-back-gym.jpg') center/cover no-repeat;filter:brightness(.35) contrast(1.1) saturate(1.1)}
 .cta-ov{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(2,2,2,.55),rgba(2,2,2,.95))}
 .cta::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 80%,rgba(224,176,48,.04),transparent 60%);z-index:0;pointer-events:none;animation:breathe 8s ease-in-out infinite}
-.cta-inner{position:relative;z-index:1;max-width:500px;margin:0 auto}
+.cta-inner{position:relative;z-index:1;max-width:540px;margin:0 auto;border:1px solid var(--borderS);border-radius:16px;padding:60px 40px;background:rgba(2,2,2,.4);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.cta-quote{font-family:var(--display);font-size:clamp(16px,2.5vw,20px);font-weight:600;color:var(--ow);line-height:1.5;margin-bottom:24px;font-style:italic;opacity:.8}
+.cta-sub{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dm);margin-top:16px}
 /* FOOTER */
 .footer{padding:60px 24px 32px;text-align:center;border-top:1px solid var(--borderS)}
 .footer-mark{width:44px;height:44px;border-radius:12px;background:var(--goldGrad);background-size:200% 100%;display:inline-flex;align-items:center;justify-content:center;font-family:var(--display);font-size:22px;font-weight:900;color:var(--bg);animation:shimmer 4s ease-in-out infinite,goldPulse 6s ease-in-out infinite;margin-bottom:24px}
@@ -186,6 +194,8 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 @keyframes orbFloat{0%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-20px) scale(1.1)}66%{transform:translate(-20px,10px) scale(.95)}100%{transform:translate(0,0) scale(1)}}
 @keyframes orbFloat2{0%{transform:translate(0,0) scale(1)}33%{transform:translate(-40px,15px) scale(.9)}66%{transform:translate(20px,-30px) scale(1.05)}100%{transform:translate(0,0) scale(1)}}
 @keyframes lineGlow{0%,100%{opacity:.3}50%{opacity:.7}}
+@keyframes heroKenBurns{0%{transform:scale(1) translate(0,0)}100%{transform:scale(1.06) translate(-.5%,-1%)}}
+@keyframes heroFadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
 @keyframes heroTextGlow{0%,100%{text-shadow:0 0 120px var(--accGlow),0 0 60px var(--accS),0 0 200px rgba(224,176,48,.08),0 4px 60px rgba(0,0,0,.5)}50%{text-shadow:0 0 160px rgba(224,176,48,.35),0 0 80px rgba(224,176,48,.15),0 0 300px rgba(224,176,48,.12),0 4px 60px rgba(0,0,0,.5)}}
 /* RESPONSIVE */
 @media(max-width:768px){
@@ -274,7 +284,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 <section class="section" id="about" style="background:linear-gradient(180deg,var(--bg),rgba(6,6,4,1),var(--bg))">
   <div class="inner">
     <div class="about-wrap">
-      <div class="about-text reveal">
+      <div class="about-text reveal-left">
         <p>Pro card earned in 2013 with Hany Rambod in his corner. 2x IFBB Pro Masters World Champion. Olympian. NPC Judge. Over 30 pro cards coached since 1996. The results speak for themselves.</p>
         <div class="about-creds">
           <span class="about-cred">IFBB Pro</span>
@@ -290,7 +300,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
           <div class="about-stat"><div class="about-stat-num">30+</div><div class="about-stat-label">Pro Cards Coached</div></div>
         </div>
       </div>
-      <div class="about-photos reveal">
+      <div class="about-photos reveal-right">
         <div class="about-photo about-photo-main"><img src="img/gallery-gym-recent.jpg" alt="Big Mike Ely" loading="lazy"><div class="about-photo-label">Old School Iron Gym</div></div>
         <div class="about-photo about-photo-sm"><img src="img/about-hany-rambod.jpg" alt="Mike with Hany Rambod" loading="lazy"><div class="about-photo-label">With Hany Rambod</div></div>
         <div class="about-photo about-photo-sm"><img src="img/about-tom-platz.jpg" alt="Mike with Tom Platz" loading="lazy"><div class="about-photo-label">With Tom Platz</div></div>
@@ -304,10 +314,10 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 <section class="section" id="results">
   <div class="inner">
     <div class="num-grid">
-      <div class="num-card reveal"><div class="num-val" data-count="30" data-suffix="+">0</div><div class="num-label">Pro Cards Coached</div></div>
-      <div class="num-card reveal"><div class="num-val">2x</div><div class="num-label">World Champion</div></div>
-      <div class="num-card reveal"><div class="num-val text-val">Olympian</div><div class="num-label">Masters Mr. Olympia</div></div>
-      <div class="num-card reveal"><div class="num-val" data-count="1996">0</div><div class="num-label">Coaching Since</div></div>
+      <div class="num-card reveal-scale"><div class="num-val" data-count="30" data-suffix="+">0</div><div class="num-label">Pro Cards Coached</div></div>
+      <div class="num-card reveal-scale"><div class="num-val">2x</div><div class="num-label">World Champion</div></div>
+      <div class="num-card reveal-scale"><div class="num-val text-val">Olympian</div><div class="num-label">Masters Mr. Olympia</div></div>
+      <div class="num-card reveal-scale"><div class="num-val" data-count="1996">0</div><div class="num-label">Coaching Since</div></div>
     </div>
     <div class="results-grid">
       <div class="results-photo reveal" onclick="openLB(this)"><img src="img/results-procard-lindsay.jpg" alt="Lindsay earning IFBB Pro Card" loading="lazy"><div class="results-photo-label">Lindsay — Pro card earned</div></div>
@@ -353,9 +363,12 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 <!-- CTA -->
 <section class="cta">
   <div class="cta-bg"></div><div class="cta-ov"></div>
-  <div class="cta-inner reveal">
+  <div class="cta-inner reveal-scale">
+    <div class="cta-quote">"The results speak for themselves."</div>
+    <div class="gw" style="max-width:40px;margin:0 auto 28px"></div>
     <h2 class="s-head" style="margin-bottom:24px" data-wc="cta-heading">Book a Session</h2>
     <a href="https://big-mike-108395.square.site/" target="_blank" rel="noopener" class="btn-p" data-wc="cta-button">Book Your Session</a>
+    <div class="cta-sub">Limited availability · Old School Iron Gym, OH</div>
   </div>
 </section>
 
@@ -410,7 +423,7 @@ var revealObs=new IntersectionObserver(function(entries){
     if(e.isIntersecting){e.target.classList.add('vis');revealObs.unobserve(e.target)}
   });
 },{threshold:.12});
-document.querySelectorAll('.reveal').forEach(function(el,i){
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale').forEach(function(el,i){
   var p=el.parentElement;
   var siblings=p?Array.from(p.querySelectorAll(':scope > .reveal')):[];
   var idx=siblings.indexOf(el);
@@ -492,6 +505,12 @@ function closeLB(){
   document.getElementById('lb').classList.remove('open');
   document.body.style.overflow='';
 }
+
+/* ── IMAGE LOAD FADE-IN ── */
+document.querySelectorAll('img[loading="lazy"]').forEach(function(img){
+  if(img.complete&&img.naturalWidth)img.classList.add('loaded');
+  else img.addEventListener('load',function(){img.classList.add('loaded')});
+});
 
 /* ── THEME ── */
 (function(){
