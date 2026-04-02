@@ -34,7 +34,6 @@
 {"@type":"LocalBusiness","@id":"https://ifbbprobigmikeely.com/#business","name":"Big Mike Ely Coaching","alternateName":"Center Stage Aesthetics","description":"Elite IFBB Pro bodybuilding coaching by 2x Masters World Champion Big Mike Ely. Contest prep, online coaching, nutrition planning, and posing sessions since 1996.","url":"https://ifbbprobigmikeely.com","image":"https://ifbbprobigmikeely.com/img/gallery-most-muscular-stage.jpg","address":{"@type":"PostalAddress","addressLocality":"Ohio","addressRegion":"OH","addressCountry":"US"},"sameAs":["https://instagram.com/ifbbpromikeely","https://instagram.com/center_stage_aesthetics","https://facebook.com/BIGMIKEELY"],"priceRange":"$$$"},
 {"@type":"Person","@id":"https://ifbbprobigmikeely.com/#person","name":"Big Mike Ely","jobTitle":"IFBB Pro Bodybuilding Coach","description":"2x IFBB Pro Masters World Champion, Masters Mr. Olympia competitor, NPC Judge, and elite bodybuilding coach with 30+ pro cards coached since 1996.","url":"https://ifbbprobigmikeely.com","image":"https://ifbbprobigmikeely.com/img/gallery-most-muscular-stage.jpg","sameAs":["https://instagram.com/ifbbpromikeely","https://facebook.com/BIGMIKEELY"],"award":["2x IFBB Pro Masters World Champion","Masters Mr. Olympia Competitor","NPC Judge"],"knowsAbout":["Bodybuilding","Contest Preparation","Nutrition Planning","Posing","Sports Pharmacology"]},
 {"@type":"WebSite","@id":"https://ifbbprobigmikeely.com/#website","name":"Big Mike Ely | IFBB Pro Bodybuilding Coach","url":"https://ifbbprobigmikeely.com"},
-{"@type":"Review","itemReviewed":{"@type":"LocalBusiness","@id":"https://ifbbprobigmikeely.com/#business"},"author":{"@type":"Person","name":"Lindsay"},"reviewBody":"Mike doesn't just coach you for a show. He builds you into something that lasts. I earned my pro card because he saw what I couldn't see in myself.","reviewRating":{"@type":"Rating","ratingValue":"5","bestRating":"5"}},
 {"@type":"Service","provider":{"@id":"https://ifbbprobigmikeely.com/#business"},"serviceType":"Bodybuilding Coaching","name":"Full Coaching Package","description":"Training, nutrition, supplementation, and contest prep from an IFBB Pro with 30+ years experience.","areaServed":[{"@type":"State","name":"Ohio"},{"@type":"Country","name":"United States"}]}
 ]}
 </script>
@@ -172,17 +171,17 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
 .about-stat:hover{border-color:var(--border);box-shadow:0 0 20px var(--accS);transform:translateY(-2px)}
 .about-stat-num{font-family:var(--display);font-size:clamp(24px,4vw,36px);font-weight:800;background:var(--goldGrad);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;filter:drop-shadow(0 0 20px rgba(224,176,48,.15))}
 .about-stat-label{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--dm);margin-top:8px}
-.about-photos{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.about-photos{display:grid;grid-template-columns:1fr 1fr;gap:12px;grid-auto-rows:auto}
 .about-photo{border-radius:12px;overflow:hidden;border:1px solid var(--borderS);position:relative}
-.about-photo img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease),opacity .6s var(--ease);filter:contrast(1.05) brightness(.95)}
+.about-photo img{width:100%;display:block;object-fit:cover;object-position:center top;transition:transform .6s var(--ease),opacity .6s var(--ease);filter:contrast(1.05) brightness(.95)}
 img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="lazy"].loaded{opacity:1}
 .about-photo,.results-photo,.gal-item{background:linear-gradient(110deg,var(--card) 30%,var(--cardH) 50%,var(--card) 70%);background-size:200% 100%;animation:imgShimmer 1.5s ease-in-out infinite}
 .about-photo:has(img.loaded),.results-photo:has(img.loaded),.gal-item:has(img.loaded){animation:none;background:var(--card)}
 @keyframes imgShimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 .about-photo:hover img{transform:scale(1.04)}
 .about-photo:hover{border-color:var(--border);box-shadow:0 0 24px var(--accS)}
-.about-photo-main{grid-column:1/-1;aspect-ratio:4/3}
-.about-photo-sm{aspect-ratio:1}
+.about-photo-main{grid-column:1/-1;aspect-ratio:3/4}
+.about-photo-sm{aspect-ratio:3/4}
 .about-photo-label{position:absolute;bottom:0;left:0;right:0;padding:8px 12px;background:linear-gradient(transparent,rgba(0,0,0,.8));font-family:var(--mono);font-size:8px;letter-spacing:.08em;color:var(--ow);text-transform:uppercase}
 /* RESULTS */
 .num-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:48px}
@@ -193,7 +192,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 .num-label{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--dm);margin-top:8px}
 .results-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
 .results-photo{border-radius:10px;overflow:hidden;position:relative;border:1px solid var(--borderS);aspect-ratio:4/3;cursor:pointer;transition:transform .5s var(--ease),box-shadow .5s var(--ease),border-color .3s}
-.results-photo img{width:100%;height:100%;object-fit:cover;object-position:center 25%;transition:transform .6s var(--ease),filter .6s;filter:contrast(1.05) brightness(.92)}
+.results-photo img{width:100%;height:100%;object-fit:cover;object-position:center top;transition:transform .6s var(--ease),filter .6s;filter:contrast(1.05) brightness(.92)}
 .results-photo:hover img{transform:scale(1.05);filter:contrast(1.08) brightness(1)}
 .results-photo:hover{box-shadow:0 0 40px rgba(224,176,48,.1),0 0 60px rgba(224,176,48,.04);border-color:var(--border);transform:translateY(-4px)}
 .results-photo-label{position:absolute;bottom:0;left:0;right:0;padding:10px 14px;background:linear-gradient(transparent,rgba(0,0,0,.85));font-family:var(--mono);font-size:9px;letter-spacing:.08em;color:var(--ow);opacity:.7;transition:opacity .3s;text-transform:uppercase}
@@ -514,9 +513,11 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
         </div>
       </div>
       <div class="about-photos reveal-right">
-        <div class="about-photo about-photo-main"><img src="img/gallery-gym-recent.jpg" alt="Big Mike Ely" loading="lazy"><div class="about-photo-label">Old School Iron Gym</div></div>
-        <div class="about-photo about-photo-sm"><img src="img/about-hany-rambod.jpg" alt="Mike with Hany Rambod" loading="lazy"><div class="about-photo-label">With Hany Rambod</div></div>
-        <div class="about-photo about-photo-sm"><img src="img/about-tom-platz.jpg" alt="Mike with Tom Platz" loading="lazy"><div class="about-photo-label">With Tom Platz</div></div>
+        <div class="about-photo about-photo-main"><img src="img/gallery-gym-recent.jpg" alt="Big Mike Ely at Old School Iron Gym" loading="lazy"><div class="about-photo-label">Old School Iron Gym</div></div>
+        <div class="about-photo about-photo-sm"><img src="img/about-hany-rambod.jpg" alt="Mike with legendary coach Hany Rambod" loading="lazy"><div class="about-photo-label">With Hany Rambod</div></div>
+        <div class="about-photo about-photo-sm"><img src="img/about-tom-platz.jpg" alt="Mike with Tom Platz - The Quadfather" loading="lazy"><div class="about-photo-label">With Tom Platz</div></div>
+        <div class="about-photo about-photo-sm"><img src="img/about-roelly.jpg" alt="Mike with IFBB Pro Roelly Winklaar" loading="lazy"><div class="about-photo-label">With Roelly Winklaar</div></div>
+        <div class="about-photo about-photo-sm"><img src="img/about-lifestyle.jpg" alt="Big Mike Ely off-season" loading="lazy"><div class="about-photo-label">Off the stage</div></div>
       </div>
     </div>
   </div>
@@ -535,7 +536,6 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
     </div>
     <div class="results-grid">
       <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}"><img src="img/results-procard-lindsay.jpg" alt="Lindsay earning IFBB Pro Card" loading="lazy"><div class="results-photo-label">Lindsay — Pro card earned</div></div>
-      <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}"><img src="img/results-procard-lindsay-stage.jpg" alt="Lindsay on stage" loading="lazy"><div class="results-photo-label">That moment on stage</div></div>
       <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}"><img src="img/results-group.jpg" alt="Center Stage Aesthetics team" loading="lazy"><div class="results-photo-label">The team shows up</div></div>
       <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}"><img src="img/results-procard-backstage.jpg" alt="Backstage celebration" loading="lazy"><div class="results-photo-label">Backstage, card in hand</div></div>
       <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}"><img src="img/results-procard-rob.jpg" alt="Rob earning Pro Card" loading="lazy"><div class="results-photo-label">Rob — another one earned</div></div>
@@ -546,15 +546,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 </section>
 <div class="gw-diamond"></div>
 
-<!-- TESTIMONIAL -->
-<section class="section">
-  <div class="inner">
-    <div class="testimonial reveal">
-      <blockquote class="test-quote">"Mike doesn't just coach you for a show. He builds you into something that lasts. I earned my pro card because he saw what I couldn't see in myself."</blockquote>
-      <div class="test-attr"><cite><span>Lindsay</span> &mdash; IFBB Pro Bikini</cite></div>
-    </div>
-  </div>
-</section>
+<!-- TESTIMONIAL: Add real client quotes here when available -->
 <div class="gw-sm"></div>
 
 <!-- GALLERY -->
@@ -570,12 +562,12 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}"><img src="img/gallery-gym-side-tricep.jpg" alt="Side tricep in gym" loading="lazy"><div class="gal-label">Arm detail, off-season</div></div>
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}"><img src="img/gallery-wings-stage.jpg" alt="Back double bicep on stage" loading="lazy"><div class="gal-label">Under the lights</div></div>
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}"><img src="img/gallery-ferrigno-prep.jpg" alt="Ferrigno Legacy Pro prep" loading="lazy"><div class="gal-label">Ferrigno Legacy, dialed in</div></div>
-      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}"><img src="img/gallery-muscular-dev-2013.jpg" alt="Muscular Development 2013" loading="lazy"><div class="gal-label">Print feature, 2013</div></div>
+      <!-- gallery-muscular-dev-2013.jpg removed: Instagram screenshot with UI visible -->
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}"><img src="img/gallery-posing-clinic.jpg" alt="Posing clinic" loading="lazy"><div class="gal-label">Teaching what can't be taught</div></div>
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}"><img src="img/gallery-stage-2014.jpg" alt="On stage 2014" loading="lazy"><div class="gal-label">Earning it, 2014</div></div>
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}"><img src="img/gallery-gym-prep-2014.jpg" alt="Gym prep 2014" loading="lazy"><div class="gal-label">16 weeks out</div></div>
-      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}"><img src="img/gallery-procard-story.jpg" alt="Pro card story" loading="lazy"><div class="gal-label">The day it all changed</div></div>
-      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}"><img src="img/gallery-transformation.jpg" alt="Transformation" loading="lazy"><div class="gal-label">The process works</div></div>
+      <!-- gallery-procard-story.jpg removed: Instagram screenshot with UI visible -->
+      <!-- gallery-transformation.jpg removed: Instagram screenshot with UI visible -->
     </div>
   </div>
 </section>
@@ -585,7 +577,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 <section class="cta">
   <div class="cta-bg"></div><div class="cta-ov"></div>
   <div class="cta-inner reveal-scale">
-    <div class="cta-quote">"You don&rsquo;t find a coach like this twice."</div>
+    <div class="cta-quote">2x World Champion. Olympian. 30+ pro cards coached.</div>
     <div class="gw" style="max-width:40px;margin:0 auto 28px"></div>
     <h2 class="s-head" style="margin-bottom:24px" data-wc="cta-heading">Your Move</h2>
     <a href="#contact" class="btn-p" data-wc="cta-button">Start the Conversation</a>
