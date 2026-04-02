@@ -6,6 +6,7 @@
 <title>Big Mike Ely | IFBB Pro</title>
 <meta name="description" content="IFBB Pro Big Mike Ely — 2x Masters World Champion, Olympian, NPC Judge. 30+ pro cards coached. Elite bodybuilding coaching built on real science and decades of competition.">
 <meta name="theme-color" content="#020202">
+<meta name="color-scheme" content="dark">
 <meta property="og:title" content="Big Mike Ely | IFBB Pro">
 <meta property="og:description" content="2x IFBB Pro Masters World Champion. Olympian. 30+ pro cards coached.">
 <meta property="og:type" content="website">
@@ -18,18 +19,18 @@
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Rajdhani:wght@400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#030302;--bg2:#070604;--card:#0b0a08;--cardH:#0f0e0a;
   --acc:#E0B030;--accD:#B88820;--accDeep:#986818;--accVib:#F0D050;
   --accS:rgba(224,176,48,.1);--accB:rgba(224,176,48,.5);--accM:rgba(224,176,48,.35);--accGlow:rgba(224,176,48,.25);
   --border:rgba(224,176,48,.25);--borderH:rgba(224,176,48,.45);--borderS:rgba(224,176,48,.15);
-  --ice:#f0e8d0;--wh:#f0ece4;--ow:#c8c0b0;--mu:#908878;--dm:#605848;--dmL:#3a3428;
+  --ice:#f0e8d0;--wh:#f0ece4;--ow:#c8c0b0;--mu:#988E7C;--dm:#706858;--dmL:#3a3428;
   --glass:rgba(224,176,48,.05);--glassH:rgba(224,176,48,.1);
-  --goldGrad:linear-gradient(135deg,#9A7018,#D4A828,#F0D860,#ECC040,#D4A828,#9A7018);
+  --goldGrad:linear-gradient(135deg,#806014 0%,#9A7018 15%,#C49828 35%,#E8CC70 48%,#F2E4A0 52%,#E0BC50 58%,#C49828 72%,#9A7018 88%,#806014 100%);
   --surfGrad:linear-gradient(180deg,var(--bg) 0%,rgba(8,7,4,1) 50%,var(--bg) 100%);
-  --heroGrad:linear-gradient(180deg,rgba(2,2,2,.3) 0%,rgba(2,2,2,.05) 25%,rgba(2,2,2,.08) 50%,rgba(2,2,2,.88) 85%,rgba(2,2,2,.96) 100%);
+  --heroGrad:linear-gradient(180deg,rgba(2,2,2,.5) 0%,rgba(2,2,2,.3) 20%,rgba(2,2,2,.4) 45%,rgba(2,2,2,.7) 72%,rgba(2,2,2,.94) 88%,rgba(2,2,2,.98) 100%);
   --display:'Cinzel',Georgia,serif;--body:'Rajdhani','Segoe UI',sans-serif;--mono:'IBM Plex Mono','Courier New',monospace;
   --ease:cubic-bezier(.22,1,.36,1);
 }
@@ -84,7 +85,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 28px;display:flex;justify-content:space-between;align-items:center;background:transparent;transition:all .4s var(--ease)}
 .nav.scrolled{background:linear-gradient(180deg,rgba(3,3,2,.95),rgba(7,6,4,.88));backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--borderS);padding:12px 28px;box-shadow:0 8px 40px rgba(0,0,0,.4),0 0 60px rgba(224,176,48,.04)}
 .nav-logo{display:flex;align-items:center;gap:12px}
-.nav-mark{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:15px;font-weight:800;letter-spacing:.02em;background:var(--goldGrad);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s ease-in-out infinite;flex-shrink:0;transition:all .4s var(--ease)}
+.nav-mark{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:15px;font-weight:800;letter-spacing:.02em;background:var(--goldGrad);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;flex-shrink:0;transition:all .4s var(--ease)}
 .nav-logo:hover .nav-mark{border-color:var(--acc);box-shadow:0 0 20px var(--accS),0 0 40px rgba(224,176,48,.06)}
 .nav-name{font-family:var(--display);font-size:15px;font-weight:700;color:var(--wh);letter-spacing:.04em}
 .nav-links{display:flex;align-items:center;gap:32px}
@@ -92,7 +93,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .nav-links a::after{content:'';position:absolute;bottom:-4px;left:50%;right:50%;height:1px;background:var(--acc);transition:left .3s var(--ease),right .3s var(--ease)}
 .nav-links a:hover,.nav-links a.active{color:var(--wh)}
 .nav-links a:hover::after,.nav-links a.active::after{left:0;right:0}
-.nav-cta{padding:10px 24px !important;background:var(--goldGrad) !important;background-size:200% 100% !important;color:var(--bg) !important;border-radius:5px;font-weight:600 !important;animation:shimmer 4s ease-in-out infinite;box-shadow:0 0 16px rgba(224,176,48,.15)}.nav-cta:hover{box-shadow:0 4px 20px var(--accM),0 0 40px rgba(224,176,48,.12);transform:translateY(-1px)}
+.nav-cta{padding:10px 24px !important;background:var(--goldGrad) !important;background-size:200% 100% !important;color:var(--bg) !important;border-radius:5px;font-weight:600 !important;box-shadow:0 0 16px rgba(224,176,48,.15)}.nav-cta:hover{box-shadow:0 4px 20px var(--accM),0 0 40px rgba(224,176,48,.12);transform:translateY(-1px)}
 .nav-burger{display:none;width:44px;height:44px;align-items:center;justify-content:center;color:var(--ow)}
 .mm{position:fixed;inset:0;z-index:200;background:rgba(2,2,2,.97);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s var(--ease)}
 .mm.open{opacity:1;pointer-events:auto}
@@ -109,7 +110,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 /* HERO */
 .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:120px 24px 80px}
 .hero-bg{position:absolute;inset:0;background:url('img/gallery-most-muscular-stage.jpg') center 15%/cover no-repeat;z-index:0;animation:heroKenBurns 25s ease-in-out infinite alternate;will-change:transform}
-@media(min-width:769px){.hero-bg{background-attachment:fixed}}
+/* background-attachment:fixed removed — conflicts with Ken Burns + parallax transform */
 .hero-ov{position:absolute;inset:0;background:var(--heroGrad);z-index:1}
 .hero-atmos{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
 .hero-orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:0;animation-fill-mode:forwards;will-change:transform,opacity}
@@ -118,11 +119,11 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .hero-orb-3{width:300px;height:300px;background:radial-gradient(circle,rgba(200,160,40,.06),transparent 70%);bottom:10%;left:30%;animation:orbFloat 16s ease-in-out infinite,breathe 7s ease-in-out infinite;animation-delay:4s,2s}
 .hero-warmth{position:absolute;bottom:0;left:0;right:0;height:40%;background:linear-gradient(to top,rgba(224,176,48,.03),transparent);z-index:1;pointer-events:none}
 .hero-content{position:relative;z-index:2;text-align:center;max-width:760px;opacity:0;animation:heroFadeUp 1.4s var(--ease) 2.2s forwards}
-.hero h1{font-family:var(--display);font-size:clamp(52px,11vw,100px);font-weight:900;color:var(--wh);line-height:.92;margin-bottom:14px;text-shadow:0 0 120px var(--accGlow),0 0 60px var(--accS),0 0 200px rgba(224,176,48,.08),0 4px 60px rgba(0,0,0,.5);animation:heroTextGlow 6s ease-in-out infinite}
+.hero h1{font-family:var(--display);font-size:clamp(52px,11vw,100px);font-weight:900;color:var(--wh);line-height:.95;margin-bottom:18px;text-shadow:0 2px 4px rgba(0,0,0,.7),0 4px 16px rgba(0,0,0,.5),0 0 80px var(--accGlow)}
 .hero h1 em{font-style:normal;background:var(--goldGrad);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s ease-in-out infinite;filter:drop-shadow(0 0 30px rgba(224,176,48,.3))}
-.hero-kicker{font-family:var(--mono);font-size:10px;letter-spacing:.4em;text-transform:uppercase;color:var(--acc);margin-bottom:20px;opacity:0;animation:heroFadeUp .8s var(--ease) 2.4s forwards}
-.hero-sub{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--acc);letter-spacing:.3em;text-transform:uppercase;margin-bottom:0;opacity:.8;text-shadow:0 0 40px rgba(224,176,48,.2);animation:breathe 5s ease-in-out infinite}
-.hero-tagline{font-family:var(--body);font-size:clamp(15px,2vw,18px);color:var(--ow);opacity:.55;max-width:460px;margin:0 auto;line-height:1.7;font-weight:300}
+.hero-kicker{font-family:var(--mono);font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--wh);margin-bottom:20px;opacity:0;animation:heroFadeUp .8s var(--ease) 2.0s forwards;text-shadow:0 1px 3px rgba(0,0,0,.8),0 0 20px rgba(0,0,0,.5)}
+.hero-sub{font-family:var(--mono);font-size:15px;font-weight:600;color:var(--acc);letter-spacing:.25em;text-transform:uppercase;margin-bottom:0;opacity:1;text-shadow:0 1px 3px rgba(0,0,0,.7),0 0 30px rgba(224,176,48,.15)}
+.hero-tagline{font-family:var(--body);font-size:clamp(15px,2vw,18px);color:var(--ow);opacity:.75;max-width:460px;margin:0 auto;line-height:1.7;font-weight:400;text-shadow:0 1px 3px rgba(0,0,0,.6)}
 .hero-ctas{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:32px}
 .hero-scroll{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);z-index:2;color:var(--dm);animation:bounce 2.5s ease-in-out infinite;transition:opacity .5s}
 /* SERVICES */
@@ -140,7 +141,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .svc-desc{font-size:13px;color:var(--mu);line-height:1.6;margin-bottom:20px}
 .svc-book{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--acc);display:inline-flex;align-items:center;gap:6px;transition:color .2s}.svc-book:hover{color:var(--accVib)}
 .svc-featured{border-color:var(--border)}
-.svc-badge{position:absolute;top:16px;right:16px;font-family:var(--mono);font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--bg);background:var(--goldGrad);background-size:200% 100%;padding:4px 10px;border-radius:4px;font-weight:600;animation:shimmer 4s ease-in-out infinite;box-shadow:0 0 12px rgba(224,176,48,.25)}
+.svc-badge{position:absolute;top:16px;right:16px;font-family:var(--mono);font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--bg);background:var(--goldGrad);background-size:200% 100%;padding:4px 10px;border-radius:4px;font-weight:600;box-shadow:0 0 12px rgba(224,176,48,.25)}
 /* ABOUT */
 .about-wrap{display:grid;gap:48px;align-items:center}
 .about-text p{font-size:15px;color:var(--ow);line-height:1.8;margin-bottom:16px}.about-text p:last-of-type{margin-bottom:0}
@@ -216,7 +217,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 .footer{padding:80px 24px 32px;text-align:center;border-top:1px solid var(--borderS);background:linear-gradient(180deg,rgba(6,6,4,1) 0%,var(--bg) 30%,rgba(7,6,4,1));position:relative}
 .footer::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(224,176,48,.2),transparent)}
 .footer-sig{font-family:var(--display);font-size:clamp(14px,2vw,17px);font-weight:600;color:var(--ow);font-style:italic;opacity:.5;margin-bottom:32px;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.6}
-.footer-mark{width:48px;height:48px;border-radius:50%;border:1.5px solid var(--border);display:inline-flex;align-items:center;justify-content:center;font-family:var(--display);font-size:16px;font-weight:800;letter-spacing:.02em;background:var(--goldGrad);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s ease-in-out infinite;margin-bottom:24px;transition:all .4s var(--ease)}
+.footer-mark{width:48px;height:48px;border-radius:50%;border:1.5px solid var(--border);display:inline-flex;align-items:center;justify-content:center;font-family:var(--display);font-size:16px;font-weight:800;letter-spacing:.02em;background:var(--goldGrad);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:24px;transition:all .4s var(--ease)}
 .footer-mark:hover{border-color:var(--acc);box-shadow:0 0 24px var(--accS)}
 .footer-links{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:24px}
 .footer-links a{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--mu);transition:color .2s}.footer-links a:hover{color:var(--wh)}
@@ -230,13 +231,13 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 @keyframes shimmer{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
 @keyframes breathe{0%,100%{opacity:.4}50%{opacity:.8}}
-@keyframes goldPulse{0%,100%{box-shadow:0 0 20px rgba(224,176,48,.08),0 0 60px rgba(224,176,48,.04)}50%{box-shadow:0 0 40px rgba(224,176,48,.15),0 0 80px rgba(224,176,48,.08)}}
+/* goldPulse removed — unused */
 @keyframes orbFloat{0%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-20px) scale(1.1)}66%{transform:translate(-20px,10px) scale(.95)}100%{transform:translate(0,0) scale(1)}}
 @keyframes orbFloat2{0%{transform:translate(0,0) scale(1)}33%{transform:translate(-40px,15px) scale(.9)}66%{transform:translate(20px,-30px) scale(1.05)}100%{transform:translate(0,0) scale(1)}}
 @keyframes lineGlow{0%,100%{opacity:.3}50%{opacity:.7}}
 @keyframes heroKenBurns{0%{transform:scale(1) translate(0,0)}100%{transform:scale(1.06) translate(-.5%,-1%)}}
 @keyframes heroFadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
-@keyframes heroTextGlow{0%,100%{text-shadow:0 0 120px var(--accGlow),0 0 60px var(--accS),0 0 200px rgba(224,176,48,.08),0 4px 60px rgba(0,0,0,.5)}50%{text-shadow:0 0 160px rgba(224,176,48,.35),0 0 80px rgba(224,176,48,.15),0 0 300px rgba(224,176,48,.12),0 4px 60px rgba(0,0,0,.5)}}
+/* heroTextGlow removed — unused */
 /* RESPONSIVE */
 @media(max-width:768px){
   .nav-links{display:none}.nav-burger{display:flex}
@@ -768,7 +769,7 @@ window.addEventListener('load',function(){
   window.addEventListener('scroll',function(){
     if(!ticking){requestAnimationFrame(function(){
       var s=window.scrollY;
-      if(hero)hero.style.transform='scale('+(1+s*.00005)+') translateY('+s*.2+'px)';
+      /* Hero parallax disabled — Ken Burns CSS animation handles hero-bg transform */
       if(ctaBg&&ctaBg.parentElement){
         var off=s-ctaBg.parentElement.offsetTop;
         if(Math.abs(off)<window.innerHeight)ctaBg.style.transform='translateY('+(off*.12)+'px)';
