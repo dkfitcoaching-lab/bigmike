@@ -1,0 +1,13 @@
+{
+  "photos": [
+    {
+      "id": 1,
+      "description": "Mike at IWA Championship event with athletes and massive trophy - Marandi Productions",
+      "suggested_name": "event-iwa-championship-trophy.jpg",
+      "context": "IWA Championship, Mike in white tank with pro card credential, large trophy center, athletes flanking",
+      "status": "needs_file_upload",
+      "caption": "Championship hardware"
+    }
+  ],
+  "notes": "User is sending photos for the site. Images shown in conversation need to be placed in /home/user/bigmike/img/ directory. User should upload files directly or provide URLs for download."
+}
