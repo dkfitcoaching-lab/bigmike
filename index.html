@@ -173,7 +173,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 .num-label{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--dm);margin-top:8px}
 .results-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
 .results-photo{border-radius:10px;overflow:hidden;position:relative;border:1px solid var(--borderS);aspect-ratio:4/3;cursor:pointer}
-.results-photo img{width:100%;height:100%;object-fit:cover;object-position:center 15%;transition:transform .6s var(--ease),filter .6s;filter:contrast(1.05) brightness(.92)}
+.results-photo img{width:100%;height:100%;object-fit:cover;object-position:center 25%;transition:transform .6s var(--ease),filter .6s;filter:contrast(1.05) brightness(.92)}
 .results-photo:hover img{transform:scale(1.05);filter:contrast(1.08) brightness(1)}
 .results-photo:hover{box-shadow:0 0 40px rgba(224,176,48,.1),0 0 60px rgba(224,176,48,.04);border-color:var(--border);transform:translateY(-4px)}
 .results-photo-label{position:absolute;bottom:0;left:0;right:0;padding:10px 14px;background:linear-gradient(transparent,rgba(0,0,0,.85));font-family:var(--mono);font-size:9px;letter-spacing:.08em;color:var(--ow);opacity:.7;transition:opacity .3s;text-transform:uppercase}
@@ -182,7 +182,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 .gal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
 .gal-item{border-radius:10px;overflow:hidden;position:relative;border:1px solid var(--borderS);aspect-ratio:3/4;cursor:pointer}
 .gal-item.featured{grid-column:span 2;grid-row:span 2;aspect-ratio:auto;box-shadow:0 0 40px rgba(224,176,48,.04),0 0 80px rgba(224,176,48,.02)}
-.gal-item img{width:100%;height:100%;object-fit:cover;object-position:center 15%;transition:transform .7s var(--ease),filter .5s;filter:contrast(1.05) brightness(.9)}
+.gal-item img{width:100%;height:100%;object-fit:cover;object-position:center top;transition:transform .7s var(--ease),filter .5s;filter:contrast(1.05) brightness(.9)}
 .gal-item:hover img{transform:scale(1.06);filter:contrast(1.08) brightness(1)}
 .gal-item:hover{box-shadow:0 0 40px rgba(224,176,48,.1),0 0 70px rgba(224,176,48,.05);border-color:var(--border);transform:translateY(-4px)}
 .gal-label{position:absolute;bottom:0;left:0;right:0;padding:10px 14px;background:linear-gradient(transparent,rgba(0,0,0,.85));font-family:var(--mono);font-size:8px;letter-spacing:.08em;color:var(--ow);opacity:0;transition:opacity .35s;text-transform:uppercase}
@@ -399,14 +399,14 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
   <a href="#" class="nav-logo"><div class="nav-mark">BME</div><div class="nav-name">Big Mike Ely</div></a>
   <div class="nav-links">
     <a href="#services" data-nav>Services</a><a href="#about" data-nav>About</a><a href="#results" data-nav>Results</a><a href="#gallery" data-nav>Gallery</a>
-    <a href="https://big-mike-108395.square.site/" target="_blank" rel="noopener" class="nav-cta">Book</a>
+    <a href="#contact" class="nav-cta">Book</a>
   </div>
   <button class="nav-burger" id="navBurger" aria-label="Open menu"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 </nav>
 <div class="mm" id="mm" role="dialog" aria-modal="true">
   <button class="mm-close" id="mmClose" aria-label="Close menu">&times;</button>
   <a href="#services" class="mm-link">Services</a><a href="#about" class="mm-link">About</a><a href="#results" class="mm-link">Results</a><a href="#gallery" class="mm-link">Gallery</a>
-  <a href="https://big-mike-108395.square.site/" target="_blank" rel="noopener" class="mm-cta">Book a Session</a>
+  <a href="#contact" class="mm-cta">Book a Session</a>
   <div class="mm-badge">IFBB Pro Big Mike Ely</div>
 </div>
 
@@ -422,7 +422,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
     <div class="gw" style="margin:28px auto 36px;max-width:50px;opacity:.6"></div>
     <p class="hero-tagline">30+ pro cards coached since 1996. The results speak for themselves.</p>
     <div class="hero-ctas">
-      <a href="https://big-mike-108395.square.site/" target="_blank" rel="noopener" class="btn-p">Book a Session</a>
+      <a href="#contact" class="btn-p">Book a Session</a>
       <a href="#results" class="btn-s">See the Results</a>
     </div>
   </div>
@@ -435,12 +435,12 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
   <div class="inner">
     <h2 class="s-head reveal">What I Offer</h2>
     <div class="svc-grid">
-      <div class="svc reveal reveal-d1"><div class="svc-num">01</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6.5 6.5v11M17.5 6.5v11M6.5 12h11M2 8v8M22 8v8"/></svg></div><div class="svc-name">1-on-1 Training</div><div class="svc-desc">Individualized programming with hands-on coaching at Old School Iron Gym.</div><a href="https://big-mike-108395.square.site/" target="_blank" rel="noopener" class="svc-book">Book &rarr;</a></div>
-      <div class="svc reveal reveal-d2"><div class="svc-num">02</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 21h8m-4-4v4m-4-9a4 4 0 01-4-4V4h4m4 8a4 4 0 004-4V4h-4m-4 0h8M4 4v4a4 4 0 004 4m4 0a4 4 0 004-4V4"/></svg></div><div class="svc-name">Contest Prep</div><div class="svc-desc">Peak week protocols, posing, nutrition, and pharmacology from an Olympian who's been there.</div><a href="https://big-mike-108395.square.site/" target="_blank" rel="noopener" class="svc-book">Book &rarr;</a></div>
-      <div class="svc reveal reveal-d3"><div class="svc-num">03</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 7h6M9 11h6M9 15h3"/></svg></div><div class="svc-name">Nutrition Planning</div><div class="svc-desc">Macro-calibrated meal plans built from decades of putting athletes on stage.</div><a href="https://big-mike-108395.square.site/" target="_blank" rel="noopener" class="svc-book">Book &rarr;</a></div>
-      <div class="svc reveal reveal-d4"><div class="svc-num">04</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a3 3 0 100 6 3 3 0 000-6zM12 10v4m-3 7l1.5-5h3L15 21M9 14h6"/></svg></div><div class="svc-name">Posing Sessions</div><div class="svc-desc">Stage presence and mandatory poses refined by a 2x World Champion.</div><a href="https://big-mike-108395.square.site/" target="_blank" rel="noopener" class="svc-book">Book &rarr;</a></div>
-      <div class="svc reveal reveal-d5"><div class="svc-num">05</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div><div class="svc-name">Online Coaching</div><div class="svc-desc">Full remote programming, check-ins, and adjustments. Anywhere in the world.</div><a href="https://big-mike-108395.square.site/" target="_blank" rel="noopener" class="svc-book">Book &rarr;</a></div>
-      <div class="svc svc-featured reveal reveal-d6"><div class="svc-badge">Most Popular</div><div class="svc-num">06</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="svc-name">Full Coaching Package</div><div class="svc-desc">Training, nutrition, supplementation, and contest prep — the complete program.</div><a href="https://big-mike-108395.square.site/" target="_blank" rel="noopener" class="svc-book">Book &rarr;</a></div>
+      <div class="svc reveal reveal-d1"><div class="svc-num">01</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6.5 6.5v11M17.5 6.5v11M6.5 12h11M2 8v8M22 8v8"/></svg></div><div class="svc-name">1-on-1 Training</div><div class="svc-desc">Individualized programming with hands-on coaching at Old School Iron Gym.</div><a href="#contact" class="svc-book">Book &rarr;</a></div>
+      <div class="svc reveal reveal-d2"><div class="svc-num">02</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 21h8m-4-4v4m-4-9a4 4 0 01-4-4V4h4m4 8a4 4 0 004-4V4h-4m-4 0h8M4 4v4a4 4 0 004 4m4 0a4 4 0 004-4V4"/></svg></div><div class="svc-name">Contest Prep</div><div class="svc-desc">Peak week protocols, posing, nutrition, and pharmacology from an Olympian who's been there.</div><a href="#contact" class="svc-book">Book &rarr;</a></div>
+      <div class="svc reveal reveal-d3"><div class="svc-num">03</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 7h6M9 11h6M9 15h3"/></svg></div><div class="svc-name">Nutrition Planning</div><div class="svc-desc">Macro-calibrated meal plans built from decades of putting athletes on stage.</div><a href="#contact" class="svc-book">Book &rarr;</a></div>
+      <div class="svc reveal reveal-d4"><div class="svc-num">04</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a3 3 0 100 6 3 3 0 000-6zM12 10v4m-3 7l1.5-5h3L15 21M9 14h6"/></svg></div><div class="svc-name">Posing Sessions</div><div class="svc-desc">Stage presence and mandatory poses refined by a 2x World Champion.</div><a href="#contact" class="svc-book">Book &rarr;</a></div>
+      <div class="svc reveal reveal-d5"><div class="svc-num">05</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div><div class="svc-name">Online Coaching</div><div class="svc-desc">Full remote programming, check-ins, and adjustments. Anywhere in the world.</div><a href="#contact" class="svc-book">Book &rarr;</a></div>
+      <div class="svc svc-featured reveal reveal-d6"><div class="svc-badge">Most Popular</div><div class="svc-num">06</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="svc-name">Full Coaching Package</div><div class="svc-desc">Training, nutrition, supplementation, and contest prep — the complete program.</div><a href="#contact" class="svc-book">Book &rarr;</a></div>
     </div>
   </div>
 </section>
@@ -519,24 +519,19 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
     <h2 class="s-head reveal">Built Over a Lifetime</h2>
     <div class="gal-grid" id="galGrid">
       <div class="gal-item featured reveal" onclick="openLB(this)"><img src="img/gallery-champion-2024.jpg" alt="2024 IFBB Pro Masters World Champion" loading="lazy"><div class="gal-label">World Title, 2024</div></div>
-      <div class="gal-item reveal" onclick="openLB(this)"><img src="img/gallery-most-muscular-stage.jpg" alt="Most muscular on stage" loading="lazy"><div class="gal-label">Conditioning on point</div></div>
+      <div class="gal-item reveal" onclick="openLB(this)"><img src="img/gallery-most-muscular-crab.jpg" alt="Most muscular crab pose" loading="lazy"><div class="gal-label">Mass and detail</div></div>
       <div class="gal-item reveal" onclick="openLB(this)"><img src="img/gallery-back-dbl-bicep.jpg" alt="Back double bicep" loading="lazy"><div class="gal-label">Back thickness you earn</div></div>
       <div class="gal-item reveal" onclick="openLB(this)"><img src="img/gallery-side-chest-stage.jpg" alt="Side chest pose" loading="lazy"><div class="gal-label">Stage presence</div></div>
       <div class="gal-item reveal" onclick="openLB(this)"><img src="img/gallery-wings-chicago-2015.jpg" alt="Wings of Strength Chicago Pro 2015" loading="lazy"><div class="gal-label">Chicago Pro, 2015</div></div>
-      <div class="gal-item reveal" onclick="openLB(this)"><img src="img/gallery-most-muscular-crab.jpg" alt="Most muscular crab pose" loading="lazy"><div class="gal-label">Mass and detail</div></div>
-      <div class="gal-item reveal" onclick="openLB(this)"><img src="img/about-gym-olympia.jpg" alt="Olympia prep" loading="lazy"><div class="gal-label">Olympia shape</div></div>
       <div class="gal-item reveal" onclick="openLB(this)"><img src="img/gallery-gym-side-tricep.jpg" alt="Side tricep in gym" loading="lazy"><div class="gal-label">Arm detail, off-season</div></div>
       <div class="gal-item reveal" onclick="openLB(this)"><img src="img/gallery-wings-stage.jpg" alt="Back double bicep on stage" loading="lazy"><div class="gal-label">Under the lights</div></div>
       <div class="gal-item reveal" onclick="openLB(this)"><img src="img/gallery-ferrigno-prep.jpg" alt="Ferrigno Legacy Pro prep" loading="lazy"><div class="gal-label">Ferrigno Legacy, dialed in</div></div>
       <div class="gal-item reveal" onclick="openLB(this)"><img src="img/gallery-muscular-dev-2013.jpg" alt="Muscular Development 2013" loading="lazy"><div class="gal-label">Print feature, 2013</div></div>
       <div class="gal-item reveal" onclick="openLB(this)"><img src="img/gallery-posing-clinic.jpg" alt="Posing clinic" loading="lazy"><div class="gal-label">Teaching what can't be taught</div></div>
-      <div class="gal-item reveal" onclick="openLB(this)"><img src="img/about-back-gym.jpg" alt="Rear lat spread" loading="lazy"><div class="gal-label">Width from the rear</div></div>
       <div class="gal-item reveal" onclick="openLB(this)"><img src="img/gallery-stage-2014.jpg" alt="On stage 2014" loading="lazy"><div class="gal-label">Earning it, 2014</div></div>
       <div class="gal-item reveal" onclick="openLB(this)"><img src="img/gallery-gym-prep-2014.jpg" alt="Gym prep 2014" loading="lazy"><div class="gal-label">16 weeks out</div></div>
-      <div class="gal-item reveal" onclick="openLB(this)"><img src="img/about-roelly.jpg" alt="With Roelly Winklaar" loading="lazy"><div class="gal-label">With Roelly Winklaar</div></div>
       <div class="gal-item reveal" onclick="openLB(this)"><img src="img/gallery-procard-story.jpg" alt="Pro card story" loading="lazy"><div class="gal-label">The day it all changed</div></div>
       <div class="gal-item reveal" onclick="openLB(this)"><img src="img/gallery-transformation.jpg" alt="Transformation" loading="lazy"><div class="gal-label">The process works</div></div>
-      <div class="gal-item reveal" onclick="openLB(this)"><img src="img/about-lifestyle.jpg" alt="Mike and wife" loading="lazy"><div class="gal-label">What it's all for</div></div>
     </div>
   </div>
 </section>
@@ -549,8 +544,20 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
     <div class="cta-quote">"The results speak for themselves."</div>
     <div class="gw" style="max-width:40px;margin:0 auto 28px"></div>
     <h2 class="s-head" style="margin-bottom:24px" data-wc="cta-heading">Book a Session</h2>
-    <a href="https://big-mike-108395.square.site/" target="_blank" rel="noopener" class="btn-p" data-wc="cta-button">Book Your Session</a>
+    <a href="#contact" class="btn-p" data-wc="cta-button">Book Your Session</a>
     <div class="cta-sub">Limited availability · Old School Iron Gym, OH</div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section" id="contact">
+  <div class="inner" style="max-width:600px;text-align:center">
+    <h2 class="s-head reveal">Get in Touch</h2>
+    <p class="reveal" style="font-size:16px;color:var(--ow);line-height:1.8;margin-bottom:32px">Serious inquiries only. Reach out on Instagram or send me a message to discuss your goals, availability, and what package is right for you.</p>
+    <div class="reveal" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a href="https://instagram.com/ifbbpromikeely" target="_blank" rel="noopener" class="btn-p" style="display:inline-flex;align-items:center;gap:8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor"/></svg> Message on Instagram</a>
+    </div>
+    <div class="reveal" style="margin-top:24px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--dm);text-transform:uppercase">Old School Iron Gym · Ohio</div>
   </div>
 </section>
 
@@ -560,7 +567,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
   <div class="footer-sig">"Iron doesn't lie. The stage doesn't lie. The work is the work."</div>
   <div class="footer-links">
     <a href="#services">Services</a><a href="#about">About</a><a href="#results">Results</a><a href="#gallery">Gallery</a>
-    <a href="https://big-mike-108395.square.site/" target="_blank" rel="noopener">Book</a>
+    <a href="#contact">Book</a>
     <a href="app.html" style="opacity:.35">Coach Portal</a>
   </div>
   <div class="footer-social">
