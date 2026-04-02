@@ -4,8 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Big Mike Ely | IFBB Pro</title>
-<meta name="description" content="IFBB Pro Big Mike Ely — 2x Masters World Champion, Olympian, NPC Judge. 30+ pro cards coached. Elite bodybuilding coaching built on real science and decades of competition.">
+<meta name="description" content="IFBB Pro Big Mike Ely — 2x Masters World Champion, Olympian, NPC Judge. 30+ pro cards coached since 1996. Championship-level bodybuilding coaching built on decades of competition, not theory.">
 <meta name="theme-color" content="#020202">
+<meta name="color-scheme" content="dark">
 <meta property="og:title" content="Big Mike Ely | IFBB Pro">
 <meta property="og:description" content="2x IFBB Pro Masters World Champion. Olympian. 30+ pro cards coached.">
 <meta property="og:type" content="website">
@@ -18,18 +19,20 @@
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Rajdhani:wght@400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Rajdhani:wght@400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Rajdhani:wght@400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet"></noscript>
 <style>
 :root{
   --bg:#030302;--bg2:#070604;--card:#0b0a08;--cardH:#0f0e0a;
   --acc:#E0B030;--accD:#B88820;--accDeep:#986818;--accVib:#F0D050;
   --accS:rgba(224,176,48,.1);--accB:rgba(224,176,48,.5);--accM:rgba(224,176,48,.35);--accGlow:rgba(224,176,48,.25);
   --border:rgba(224,176,48,.25);--borderH:rgba(224,176,48,.45);--borderS:rgba(224,176,48,.15);
-  --ice:#f0e8d0;--wh:#f0ece4;--ow:#c8c0b0;--mu:#908878;--dm:#605848;--dmL:#3a3428;
+  --ice:#f0e8d0;--wh:#f0ece4;--ow:#c8c0b0;--mu:#988E7C;--dm:#706858;--dmL:#3a3428;
   --glass:rgba(224,176,48,.05);--glassH:rgba(224,176,48,.1);
-  --goldGrad:linear-gradient(135deg,#9A7018,#D4A828,#F0D860,#ECC040,#D4A828,#9A7018);
+  --goldGrad:linear-gradient(135deg,#806014 0%,#9A7018 15%,#C49828 35%,#E8CC70 48%,#F2E4A0 52%,#E0BC50 58%,#C49828 72%,#9A7018 88%,#806014 100%);
   --surfGrad:linear-gradient(180deg,var(--bg) 0%,rgba(8,7,4,1) 50%,var(--bg) 100%);
-  --heroGrad:linear-gradient(180deg,rgba(2,2,2,.3) 0%,rgba(2,2,2,.05) 25%,rgba(2,2,2,.08) 50%,rgba(2,2,2,.88) 85%,rgba(2,2,2,.96) 100%);
+  --heroGrad:linear-gradient(180deg,rgba(2,2,2,.5) 0%,rgba(2,2,2,.3) 20%,rgba(2,2,2,.4) 45%,rgba(2,2,2,.7) 72%,rgba(2,2,2,.94) 88%,rgba(2,2,2,.98) 100%);
   --display:'Cinzel',Georgia,serif;--body:'Rajdhani','Segoe UI',sans-serif;--mono:'IBM Plex Mono','Courier New',monospace;
   --ease:cubic-bezier(.22,1,.36,1);
 }
@@ -46,15 +49,16 @@ body.theme-crimson{
 html{scroll-behavior:smooth;overflow-x:hidden;scrollbar-color:var(--accDeep) var(--bg)}
 body{background:var(--bg);color:var(--ow);font-family:var(--body);font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
 a{color:inherit;text-decoration:none}img{max-width:100%;display:block;height:auto}
-button{font-family:inherit;cursor:pointer;border:none;background:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{touch-action:manipulation}
 ::selection{background:var(--acc);color:var(--bg)}
+.skip-link{position:absolute;top:-100%;left:50%;transform:translateX(-50%);background:var(--acc);color:var(--bg);padding:12px 24px;font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border-radius:0 0 6px 6px;z-index:10001;transition:top .2s}.skip-link:focus{top:0}
 :focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:4px}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--accDeep);border-radius:3px}::-webkit-scrollbar-thumb:hover{background:var(--acc)}
 .section{padding:100px 24px;position:relative}.section::before{content:'';position:absolute;top:50%;left:50%;width:600px;height:600px;background:radial-gradient(circle,rgba(224,176,48,.015),transparent 70%);transform:translate(-50%,-50%);pointer-events:none;border-radius:50%}.inner{max-width:1200px;margin:0 auto}
-.s-head{font-family:var(--display);font-size:clamp(28px,5vw,44px);font-weight:700;color:var(--wh);text-align:center;margin-bottom:48px;line-height:1.15;text-shadow:0 0 80px rgba(224,176,48,.06)}
+.s-head{font-family:var(--display);font-size:clamp(32px,5.5vw,52px);font-weight:700;color:var(--wh);text-align:center;margin-bottom:56px;line-height:1.1;letter-spacing:.03em;text-shadow:0 0 80px rgba(224,176,48,.08)}
 .gw{height:1px;max-width:200px;margin:0 auto;background:var(--goldGrad);opacity:.4;animation:lineGlow 4s ease-in-out infinite;box-shadow:0 0 12px var(--accS),0 0 30px rgba(224,176,48,.06)}
-.gw-sm{height:1px;max-width:80px;margin:0 auto;background:var(--goldGrad);opacity:.25;box-shadow:0 0 8px var(--accS)}
+.gw-sm{height:1px;max-width:100px;margin:0 auto;background:var(--goldGrad);opacity:.35;box-shadow:0 0 12px var(--accS),0 0 24px rgba(224,176,48,.04)}
 .gw-diamond{width:8px;height:8px;margin:0 auto;background:var(--goldGrad);transform:rotate(45deg);opacity:.35;box-shadow:0 0 12px var(--accS),0 0 24px rgba(224,176,48,.06)}
 .reveal{opacity:0;transform:translateY(36px);transition:opacity .9s var(--ease),transform .9s var(--ease)}.reveal.vis{opacity:1;transform:none}
 .reveal-left{opacity:0;transform:translateX(-50px);transition:opacity 1s var(--ease),transform 1s var(--ease)}.reveal-left.vis{opacity:1;transform:none}
@@ -69,14 +73,14 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .btn-s:hover{border-color:var(--acc);color:var(--wh);background:var(--glass);transform:translateY(-2px);box-shadow:0 8px 30px rgba(224,176,48,.12),inset 0 0 20px rgba(224,176,48,.06)}
 /* BRAND REVEAL */
 .brand-reveal{position:fixed;inset:0;z-index:10000;background:#020202;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.br-kicker{font-family:var(--mono);font-size:9px;letter-spacing:.45em;text-transform:uppercase;color:var(--acc);opacity:0;animation:brIn .5s ease-out .15s forwards;margin-bottom:18px}
-.br-name{font-family:var(--display);font-size:clamp(32px,8vw,52px);font-weight:900;line-height:1;background:var(--goldGrad);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;opacity:0;animation:brIn .6s ease-out .4s forwards,shimmer 4s ease-in-out infinite;margin-bottom:14px;letter-spacing:.04em}
-.br-line{height:1px;width:0;background:var(--goldGrad);animation:brGrow .8s ease-out .2s forwards;box-shadow:0 0 20px var(--accS)}
-.br-title{font-family:var(--mono);font-size:8px;letter-spacing:.5em;text-transform:uppercase;color:var(--dm);opacity:0;animation:brIn .5s ease-out .7s forwards;margin-top:16px}
-.brand-reveal.exit{animation:brExit .7s ease-in-out forwards}
-@keyframes brIn{to{opacity:1}}
-@keyframes brGrow{to{width:100px}}
-@keyframes brExit{to{opacity:0;visibility:hidden}}
+.br-kicker{font-family:var(--mono);font-size:9px;letter-spacing:.45em;text-transform:uppercase;color:var(--acc);opacity:0;animation:brIn .6s cubic-bezier(.16,1,.3,1) .2s forwards;margin-bottom:18px}
+.br-name{font-family:var(--display);font-size:clamp(32px,8vw,52px);font-weight:900;line-height:1;background:var(--goldGrad);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;opacity:0;animation:brIn .7s cubic-bezier(.16,1,.3,1) .55s forwards,shimmer 4s ease-in-out infinite;margin-bottom:14px;letter-spacing:.04em}
+.br-line{height:1px;width:0;background:var(--goldGrad);animation:brGrow .6s cubic-bezier(.22,1,.36,1) 1.0s forwards;box-shadow:0 0 20px var(--accS)}
+.br-title{font-family:var(--mono);font-size:8px;letter-spacing:.5em;text-transform:uppercase;color:var(--dm);opacity:0;animation:brIn .5s cubic-bezier(.16,1,.3,1) 1.35s forwards;margin-top:16px}
+.brand-reveal.exit{animation:brExit .8s cubic-bezier(.4,0,1,1) forwards}
+@keyframes brIn{from{opacity:0;transform:translateY(12px);filter:blur(4px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
+@keyframes brGrow{from{width:0;opacity:0}to{width:100px;opacity:1}}
+@keyframes brExit{to{opacity:0;transform:scale(1.02);filter:blur(8px)}}
 /* OVERLAYS */
 .grain{position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.028}
 .vignette{position:fixed;inset:0;z-index:9998;pointer-events:none;background:radial-gradient(ellipse at center,rgba(224,176,48,.008) 20%,transparent 50%,rgba(0,0,0,.5))}
@@ -84,7 +88,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 28px;display:flex;justify-content:space-between;align-items:center;background:transparent;transition:all .4s var(--ease)}
 .nav.scrolled{background:linear-gradient(180deg,rgba(3,3,2,.95),rgba(7,6,4,.88));backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--borderS);padding:12px 28px;box-shadow:0 8px 40px rgba(0,0,0,.4),0 0 60px rgba(224,176,48,.04)}
 .nav-logo{display:flex;align-items:center;gap:12px}
-.nav-mark{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:15px;font-weight:800;letter-spacing:.02em;background:var(--goldGrad);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s ease-in-out infinite;flex-shrink:0;transition:all .4s var(--ease)}
+.nav-mark{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:15px;font-weight:800;letter-spacing:.02em;background:var(--goldGrad);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;flex-shrink:0;transition:all .4s var(--ease)}
 .nav-logo:hover .nav-mark{border-color:var(--acc);box-shadow:0 0 20px var(--accS),0 0 40px rgba(224,176,48,.06)}
 .nav-name{font-family:var(--display);font-size:15px;font-weight:700;color:var(--wh);letter-spacing:.04em}
 .nav-links{display:flex;align-items:center;gap:32px}
@@ -92,7 +96,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .nav-links a::after{content:'';position:absolute;bottom:-4px;left:50%;right:50%;height:1px;background:var(--acc);transition:left .3s var(--ease),right .3s var(--ease)}
 .nav-links a:hover,.nav-links a.active{color:var(--wh)}
 .nav-links a:hover::after,.nav-links a.active::after{left:0;right:0}
-.nav-cta{padding:10px 24px !important;background:var(--goldGrad) !important;background-size:200% 100% !important;color:var(--bg) !important;border-radius:5px;font-weight:600 !important;animation:shimmer 4s ease-in-out infinite;box-shadow:0 0 16px rgba(224,176,48,.15)}.nav-cta:hover{box-shadow:0 4px 20px var(--accM),0 0 40px rgba(224,176,48,.12);transform:translateY(-1px)}
+.nav-cta{padding:10px 24px !important;background:var(--goldGrad) !important;background-size:200% 100% !important;color:var(--bg) !important;border-radius:5px;font-weight:600 !important;box-shadow:0 0 16px rgba(224,176,48,.15);transition:box-shadow .3s var(--ease),transform .3s var(--ease)}.nav-cta:hover{box-shadow:0 4px 20px var(--accM),0 0 40px rgba(224,176,48,.12);transform:translateY(-1px)}
 .nav-burger{display:none;width:44px;height:44px;align-items:center;justify-content:center;color:var(--ow)}
 .mm{position:fixed;inset:0;z-index:200;background:rgba(2,2,2,.97);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s var(--ease)}
 .mm.open{opacity:1;pointer-events:auto}
@@ -104,12 +108,12 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .mm.open a.mm-link:nth-child(4){transition-delay:.34s}
 .mm-cta{margin-top:32px;padding:16px 40px;background:var(--goldGrad);background-size:200% 100%;color:var(--bg);font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;border-radius:6px;display:inline-block;opacity:0;transform:translateY(20px);transition:opacity .4s var(--ease),transform .4s var(--ease)}
 .mm.open .mm-cta{opacity:1;transform:none;transition-delay:.45s}
-.mm-close{position:absolute;top:24px;right:28px;font-size:32px;color:var(--mu);line-height:1}.mm-close:hover{color:var(--wh)}
+.mm-close{position:absolute;top:24px;right:28px;font-size:32px;color:var(--mu);line-height:1;transition:color .2s var(--ease)}.mm-close:hover{color:var(--wh)}
 .mm-badge{font-family:var(--mono);font-size:9px;letter-spacing:.16em;color:var(--dm);margin-top:40px;text-transform:uppercase}
 /* HERO */
 .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:120px 24px 80px}
-.hero-bg{position:absolute;inset:0;background:url('img/gallery-most-muscular-stage.jpg') center 15%/cover no-repeat;z-index:0;animation:heroKenBurns 25s ease-in-out infinite alternate;will-change:transform}
-@media(min-width:769px){.hero-bg{background-attachment:fixed}}
+.hero-bg{position:absolute;inset:0;background:url('img/gallery-most-muscular-stage.jpg') center 15%/cover no-repeat;z-index:0;animation:heroKenBurns 30s cubic-bezier(.45,0,.55,1) infinite alternate;will-change:transform}
+/* background-attachment:fixed removed — conflicts with Ken Burns + parallax transform */
 .hero-ov{position:absolute;inset:0;background:var(--heroGrad);z-index:1}
 .hero-atmos{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
 .hero-orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:0;animation-fill-mode:forwards;will-change:transform,opacity}
@@ -117,13 +121,13 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .hero-orb-2{width:400px;height:400px;background:radial-gradient(circle,rgba(224,176,48,.08),transparent 70%);top:40%;right:-8%;animation:orbFloat2 14s ease-in-out infinite,breathe 8s ease-in-out infinite;animation-delay:2s,1s}
 .hero-orb-3{width:300px;height:300px;background:radial-gradient(circle,rgba(200,160,40,.06),transparent 70%);bottom:10%;left:30%;animation:orbFloat 16s ease-in-out infinite,breathe 7s ease-in-out infinite;animation-delay:4s,2s}
 .hero-warmth{position:absolute;bottom:0;left:0;right:0;height:40%;background:linear-gradient(to top,rgba(224,176,48,.03),transparent);z-index:1;pointer-events:none}
-.hero-content{position:relative;z-index:2;text-align:center;max-width:760px;opacity:0;animation:heroFadeUp 1.4s var(--ease) 2.2s forwards}
-.hero h1{font-family:var(--display);font-size:clamp(52px,11vw,100px);font-weight:900;color:var(--wh);line-height:.92;margin-bottom:14px;text-shadow:0 0 120px var(--accGlow),0 0 60px var(--accS),0 0 200px rgba(224,176,48,.08),0 4px 60px rgba(0,0,0,.5);animation:heroTextGlow 6s ease-in-out infinite}
+.hero-content{position:relative;z-index:2;text-align:center;max-width:760px}
+.hero-kicker{font-family:var(--mono);font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--wh);margin-bottom:20px;opacity:0;animation:heroFadeUp .7s cubic-bezier(.16,1,.3,1) 2.6s forwards;text-shadow:0 1px 3px rgba(0,0,0,.8),0 0 20px rgba(0,0,0,.5)}
+.hero h1{font-family:var(--display);font-size:clamp(52px,11vw,100px);font-weight:900;color:var(--wh);line-height:.95;margin-bottom:18px;text-shadow:0 2px 4px rgba(0,0,0,.7),0 4px 16px rgba(0,0,0,.5),0 0 80px var(--accGlow);opacity:0;animation:heroFadeUp .9s cubic-bezier(.16,1,.3,1) 2.8s forwards}
 .hero h1 em{font-style:normal;background:var(--goldGrad);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s ease-in-out infinite;filter:drop-shadow(0 0 30px rgba(224,176,48,.3))}
-.hero-kicker{font-family:var(--mono);font-size:10px;letter-spacing:.4em;text-transform:uppercase;color:var(--acc);margin-bottom:20px;opacity:0;animation:heroFadeUp .8s var(--ease) 2.4s forwards}
-.hero-sub{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--acc);letter-spacing:.3em;text-transform:uppercase;margin-bottom:0;opacity:.8;text-shadow:0 0 40px rgba(224,176,48,.2);animation:breathe 5s ease-in-out infinite}
-.hero-tagline{font-family:var(--body);font-size:clamp(15px,2vw,18px);color:var(--ow);opacity:.55;max-width:460px;margin:0 auto;line-height:1.7;font-weight:300}
-.hero-ctas{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:32px}
+.hero-sub{font-family:var(--mono);font-size:15px;font-weight:600;color:var(--acc);letter-spacing:.25em;text-transform:uppercase;margin-bottom:0;opacity:0;animation:heroFadeUp .7s cubic-bezier(.16,1,.3,1) 3.1s forwards;text-shadow:0 1px 3px rgba(0,0,0,.7),0 0 30px rgba(224,176,48,.15)}
+.hero-tagline{font-family:var(--body);font-size:clamp(15px,2vw,18px);color:var(--ow);max-width:460px;margin:0 auto;line-height:1.7;font-weight:400;text-shadow:0 1px 3px rgba(0,0,0,.6);opacity:0;animation:heroFadeUp .7s cubic-bezier(.16,1,.3,1) 3.4s forwards}
+.hero-ctas{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:32px;opacity:0;animation:heroFadeUp .7s cubic-bezier(.16,1,.3,1) 3.6s forwards}
 .hero-scroll{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);z-index:2;color:var(--dm);animation:bounce 2.5s ease-in-out infinite;transition:opacity .5s}
 /* SERVICES */
 .svc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
@@ -136,11 +140,11 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .svc-icon svg{transition:stroke .3s var(--ease),transform .3s var(--ease)}
 .svc:hover .svc-icon{border-color:var(--border);box-shadow:0 0 24px var(--accS),0 0 48px rgba(224,176,48,.06);background:linear-gradient(145deg,rgba(20,18,8,1),var(--bg2));transform:scale(1.08) rotate(-3deg)}
 .svc:hover .svc-icon svg{stroke:var(--accVib)}
-.svc-name{font-family:var(--display);font-size:18px;font-weight:600;color:var(--wh);margin-bottom:8px}
-.svc-desc{font-size:13px;color:var(--mu);line-height:1.6;margin-bottom:20px}
+.svc-name{font-family:var(--display);font-size:20px;font-weight:700;color:var(--wh);margin-bottom:10px;letter-spacing:.02em}
+.svc-desc{font-size:14px;color:var(--mu);line-height:1.75;margin-bottom:24px}
 .svc-book{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--acc);display:inline-flex;align-items:center;gap:6px;transition:color .2s}.svc-book:hover{color:var(--accVib)}
 .svc-featured{border-color:var(--border)}
-.svc-badge{position:absolute;top:16px;right:16px;font-family:var(--mono);font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--bg);background:var(--goldGrad);background-size:200% 100%;padding:4px 10px;border-radius:4px;font-weight:600;animation:shimmer 4s ease-in-out infinite;box-shadow:0 0 12px rgba(224,176,48,.25)}
+.svc-badge{position:absolute;top:16px;right:16px;font-family:var(--mono);font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--bg);background:var(--goldGrad);background-size:200% 100%;padding:4px 10px;border-radius:4px;font-weight:600;box-shadow:0 0 12px rgba(224,176,48,.25)}
 /* ABOUT */
 .about-wrap{display:grid;gap:48px;align-items:center}
 .about-text p{font-size:15px;color:var(--ow);line-height:1.8;margin-bottom:16px}.about-text p:last-of-type{margin-bottom:0}
@@ -150,8 +154,8 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .about-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:32px}
 .about-stat{text-align:center;padding:20px 8px;background:linear-gradient(160deg,var(--card),rgba(16,14,8,1));border:1px solid var(--borderS);border-radius:10px;transition:all .4s var(--ease)}
 .about-stat:hover{border-color:var(--border);box-shadow:0 0 20px var(--accS);transform:translateY(-2px)}
-.about-stat-num{font-family:var(--display);font-size:clamp(20px,3vw,28px);font-weight:800;color:var(--wh);line-height:1;text-shadow:0 0 30px rgba(224,176,48,.1)}
-.about-stat-label{font-family:var(--mono);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--dm);margin-top:6px}
+.about-stat-num{font-family:var(--display);font-size:clamp(24px,4vw,36px);font-weight:800;background:var(--goldGrad);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;filter:drop-shadow(0 0 20px rgba(224,176,48,.15))}
+.about-stat-label{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--dm);margin-top:8px}
 .about-photos{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .about-photo{border-radius:12px;overflow:hidden;border:1px solid var(--borderS);position:relative}
 .about-photo img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease),opacity .6s var(--ease);filter:contrast(1.05) brightness(.95)}
@@ -172,17 +176,17 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 .num-val.text-val{font-size:clamp(16px,2.5vw,22px)}
 .num-label{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--dm);margin-top:8px}
 .results-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
-.results-photo{border-radius:10px;overflow:hidden;position:relative;border:1px solid var(--borderS);aspect-ratio:4/3;cursor:pointer}
-.results-photo img{width:100%;height:100%;object-fit:cover;object-position:center 15%;transition:transform .6s var(--ease),filter .6s;filter:contrast(1.05) brightness(.92)}
+.results-photo{border-radius:10px;overflow:hidden;position:relative;border:1px solid var(--borderS);aspect-ratio:4/3;cursor:pointer;transition:transform .5s var(--ease),box-shadow .5s var(--ease),border-color .3s}
+.results-photo img{width:100%;height:100%;object-fit:cover;object-position:center 25%;transition:transform .6s var(--ease),filter .6s;filter:contrast(1.05) brightness(.92)}
 .results-photo:hover img{transform:scale(1.05);filter:contrast(1.08) brightness(1)}
 .results-photo:hover{box-shadow:0 0 40px rgba(224,176,48,.1),0 0 60px rgba(224,176,48,.04);border-color:var(--border);transform:translateY(-4px)}
 .results-photo-label{position:absolute;bottom:0;left:0;right:0;padding:10px 14px;background:linear-gradient(transparent,rgba(0,0,0,.85));font-family:var(--mono);font-size:9px;letter-spacing:.08em;color:var(--ow);opacity:.7;transition:opacity .3s;text-transform:uppercase}
 .results-photo:hover .results-photo-label{opacity:1}
 /* GALLERY */
 .gal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
-.gal-item{border-radius:10px;overflow:hidden;position:relative;border:1px solid var(--borderS);aspect-ratio:3/4;cursor:pointer}
+.gal-item{border-radius:10px;overflow:hidden;position:relative;border:1px solid var(--borderS);aspect-ratio:3/4;cursor:pointer;transition:transform .5s var(--ease),box-shadow .5s var(--ease),border-color .3s}
 .gal-item.featured{grid-column:span 2;grid-row:span 2;aspect-ratio:auto;box-shadow:0 0 40px rgba(224,176,48,.04),0 0 80px rgba(224,176,48,.02)}
-.gal-item img{width:100%;height:100%;object-fit:cover;object-position:center 15%;transition:transform .7s var(--ease),filter .5s;filter:contrast(1.05) brightness(.9)}
+.gal-item img{width:100%;height:100%;object-fit:cover;object-position:center top;transition:transform .6s var(--ease),filter .6s var(--ease);filter:contrast(1.05) brightness(.9)}
 .gal-item:hover img{transform:scale(1.06);filter:contrast(1.08) brightness(1)}
 .gal-item:hover{box-shadow:0 0 40px rgba(224,176,48,.1),0 0 70px rgba(224,176,48,.05);border-color:var(--border);transform:translateY(-4px)}
 .gal-label{position:absolute;bottom:0;left:0;right:0;padding:10px 14px;background:linear-gradient(transparent,rgba(0,0,0,.85));font-family:var(--mono);font-size:8px;letter-spacing:.08em;color:var(--ow);opacity:0;transition:opacity .35s;text-transform:uppercase}
@@ -200,12 +204,12 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 #lbImg{transition:opacity .3s var(--ease),transform .3s var(--ease)}
 /* TESTIMONIAL */
 .testimonial{max-width:680px;margin:0 auto;text-align:center;padding:20px 0}
-.test-quote{font-family:var(--display);font-size:clamp(17px,2.5vw,22px);font-weight:600;color:var(--ow);line-height:1.6;font-style:italic;margin-bottom:20px;opacity:.85}
-.test-attr{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dm)}
+.test-quote{font-family:var(--display);font-size:clamp(19px,3vw,26px);font-weight:600;color:var(--ice);line-height:1.6;font-style:italic;margin-bottom:24px;opacity:.9}
+.test-attr{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mu)}
 .test-attr span{color:var(--acc)}
 /* CTA */
 .cta{position:relative;padding:120px 24px;text-align:center;overflow:hidden}
-.cta-bg{position:absolute;inset:0;background:url('img/about-back-gym.jpg') center/cover no-repeat;filter:brightness(.35) contrast(1.1) saturate(1.1)}
+.cta-bg{position:absolute;inset:0;background-color:var(--bg);background-size:cover;background-position:center;background-repeat:no-repeat;filter:brightness(.35) contrast(1.1) saturate(1.1);transition:opacity .6s var(--ease);opacity:0}.cta-bg.loaded{opacity:1}
 .cta-ov{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(2,2,2,.55),rgba(2,2,2,.95))}
 .cta::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 80%,rgba(224,176,48,.04),transparent 60%);z-index:0;pointer-events:none;animation:breathe 8s ease-in-out infinite}
 .cta-inner{position:relative;z-index:1;max-width:540px;margin:0 auto;border:1px solid var(--borderS);border-radius:16px;padding:60px 40px;background:rgba(2,2,2,.4);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);transition:all .5s var(--ease)}
@@ -216,7 +220,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 .footer{padding:80px 24px 32px;text-align:center;border-top:1px solid var(--borderS);background:linear-gradient(180deg,rgba(6,6,4,1) 0%,var(--bg) 30%,rgba(7,6,4,1));position:relative}
 .footer::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(224,176,48,.2),transparent)}
 .footer-sig{font-family:var(--display);font-size:clamp(14px,2vw,17px);font-weight:600;color:var(--ow);font-style:italic;opacity:.5;margin-bottom:32px;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.6}
-.footer-mark{width:48px;height:48px;border-radius:50%;border:1.5px solid var(--border);display:inline-flex;align-items:center;justify-content:center;font-family:var(--display);font-size:16px;font-weight:800;letter-spacing:.02em;background:var(--goldGrad);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s ease-in-out infinite;margin-bottom:24px;transition:all .4s var(--ease)}
+.footer-mark{width:48px;height:48px;border-radius:50%;border:1.5px solid var(--border);display:inline-flex;align-items:center;justify-content:center;font-family:var(--display);font-size:16px;font-weight:800;letter-spacing:.02em;background:var(--goldGrad);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:24px;transition:all .4s var(--ease)}
 .footer-mark:hover{border-color:var(--acc);box-shadow:0 0 24px var(--accS)}
 .footer-links{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:24px}
 .footer-links a{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--mu);transition:color .2s}.footer-links a:hover{color:var(--wh)}
@@ -230,19 +234,130 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 @keyframes shimmer{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
 @keyframes breathe{0%,100%{opacity:.4}50%{opacity:.8}}
-@keyframes goldPulse{0%,100%{box-shadow:0 0 20px rgba(224,176,48,.08),0 0 60px rgba(224,176,48,.04)}50%{box-shadow:0 0 40px rgba(224,176,48,.15),0 0 80px rgba(224,176,48,.08)}}
+/* goldPulse removed — unused */
 @keyframes orbFloat{0%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-20px) scale(1.1)}66%{transform:translate(-20px,10px) scale(.95)}100%{transform:translate(0,0) scale(1)}}
 @keyframes orbFloat2{0%{transform:translate(0,0) scale(1)}33%{transform:translate(-40px,15px) scale(.9)}66%{transform:translate(20px,-30px) scale(1.05)}100%{transform:translate(0,0) scale(1)}}
 @keyframes lineGlow{0%,100%{opacity:.3}50%{opacity:.7}}
-@keyframes heroKenBurns{0%{transform:scale(1) translate(0,0)}100%{transform:scale(1.06) translate(-.5%,-1%)}}
+@keyframes heroKenBurns{0%{transform:scale(1) translate(0,0)}100%{transform:scale(1.08) translate(-1.5%,-1%)}}
 @keyframes heroFadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
-@keyframes heroTextGlow{0%,100%{text-shadow:0 0 120px var(--accGlow),0 0 60px var(--accS),0 0 200px rgba(224,176,48,.08),0 4px 60px rgba(0,0,0,.5)}50%{text-shadow:0 0 160px rgba(224,176,48,.35),0 0 80px rgba(224,176,48,.15),0 0 300px rgba(224,176,48,.12),0 4px 60px rgba(0,0,0,.5)}}
+/* heroTextGlow removed — unused */
 /* RESPONSIVE */
 @media(max-width:768px){
   .nav-links{display:none}.nav-burger{display:flex}
   .section{padding:64px 20px}
   .s-head{margin-bottom:32px}
-  .hero{padding:100px 20px 80px;min-height:100svh}
+  /* ── MOBILE HERO: COMPLETE OVERRIDE ── */
+  .hero{
+    padding:0 20px calc(env(safe-area-inset-bottom,0px) + 32px);
+    padding-top:env(safe-area-inset-top,0px);
+    min-height:100svh;
+    min-height:-webkit-fill-available;
+    align-items:flex-end;
+  }
+  .hero-bg{
+    background-position:center 18%;
+  }
+  .hero-ov{
+    background:
+      linear-gradient(180deg,
+        rgba(2,2,2,.45) 0%,
+        rgba(2,2,2,.18) 15%,
+        rgba(2,2,2,.22) 35%,
+        rgba(2,2,2,.38) 50%,
+        rgba(2,2,2,.62) 65%,
+        rgba(2,2,2,.88) 80%,
+        rgba(2,2,2,.97) 95%,
+        rgba(2,2,2,1) 100%
+      );
+  }
+  .hero-content{
+    max-width:100%;
+    padding-bottom:48px;
+    text-align:center;
+  }
+  .hero-kicker{
+    font-size:8.5px;
+    letter-spacing:.32em;
+    color:var(--acc);
+    text-shadow:
+      0 1px 3px rgba(0,0,0,.9),
+      0 0 12px rgba(0,0,0,.7);
+    -webkit-text-stroke:.2px var(--accM);
+  }
+  .hero h1{
+    font-size:clamp(48px,13vw,72px);
+    text-shadow:
+      0 2px 4px rgba(0,0,0,.95),
+      0 4px 12px rgba(0,0,0,.8),
+      0 8px 24px rgba(0,0,0,.6),
+      0 0 40px rgba(0,0,0,.5);
+    line-height:.9;
+    margin-bottom:10px;
+  }
+  .hero-sub{
+    font-size:11px;
+    letter-spacing:.28em;
+    text-shadow:
+      0 1px 3px rgba(0,0,0,.9),
+      0 0 10px rgba(0,0,0,.7);
+  }
+  .hero-tagline{
+    font-size:14px;
+    opacity:.7;
+    line-height:1.6;
+    max-width:320px;
+    text-shadow:
+      0 1px 4px rgba(0,0,0,.9),
+      0 2px 8px rgba(0,0,0,.6);
+  }
+  .hero-ctas{
+    margin-top:24px;
+    gap:12px;
+    flex-direction:column;
+    align-items:center;
+  }
+  .hero-ctas .btn-p{
+    width:100%;
+    max-width:320px;
+    padding:18px 32px;
+    font-size:12px;
+    letter-spacing:.2em;
+    min-height:54px;
+  }
+  .hero-ctas .btn-s{
+    width:100%;
+    max-width:320px;
+    padding:16px 32px;
+    font-size:11px;
+    letter-spacing:.16em;
+    min-height:50px;
+    border-width:1.5px;
+    border-color:var(--accB);
+    background:var(--accS);
+    color:var(--wh);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    text-shadow:0 1px 3px rgba(0,0,0,.5);
+    box-shadow:
+      0 0 20px var(--accS),
+      inset 0 0 12px rgba(0,0,0,.15);
+  }
+  .hero-ctas .btn-s:hover,
+  .hero-ctas .btn-s:active{
+    border-color:var(--acc);
+    background:var(--glassH);
+    box-shadow:
+      0 0 30px var(--accGlow),
+      inset 0 0 20px var(--accS);
+  }
+  .hero-scroll{bottom:12px}
+  /* ── MOBILE NAV SAFE AREA ── */
+  .nav{
+    padding-top:calc(env(safe-area-inset-top,0px) + 12px);
+    padding-left:calc(env(safe-area-inset-left,0px) + 20px);
+    padding-right:calc(env(safe-area-inset-right,0px) + 20px);
+  }
+  /* ── END MOBILE HERO ── */
   .svc-grid{grid-template-columns:1fr}
   .about-wrap{gap:32px}.about-photos{gap:8px}
   .num-grid{grid-template-columns:repeat(2,1fr);gap:10px}
@@ -254,12 +369,20 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
   .about-stats{gap:8px}
   .hero-orb{filter:blur(40px)}
   .hero-orb-2,.hero-orb-3{display:none}
+  /* MOBILE LIGHTBOX FIXES */
+  .lb-close{top:calc(env(safe-area-inset-top,0px) + 16px);right:16px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-size:32px}
+  .lb-arr{font-size:36px;padding:0;width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.4);border-radius:50%}
+  .lb-prev{left:8px}.lb-next{right:8px}
+  /* GALLERY LABELS VISIBLE ON TOUCH */
+  .gal-label{opacity:1}
+  /* FOOTER SOCIAL 44px TOUCH TARGETS */
+  .footer-social a{width:44px;height:44px}
 }
 @media(max-width:400px){
   .about-stats{grid-template-columns:1fr}
   .gal-grid{grid-template-columns:1fr}
   .gal-item.featured{grid-column:span 1}
-  .btn-p{padding:14px 28px;font-size:10px}
+  .btn-p{padding:14px 28px;font-size:10px;min-height:44px}
 }
 @media(min-width:769px) and (max-width:1023px){
   .num-grid{grid-template-columns:repeat(2,1fr)}
@@ -278,58 +401,60 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 </style>
 </head>
 <body>
+<a href="#services" class="skip-link">Skip to main content</a>
 <!-- BRAND REVEAL -->
-<div class="brand-reveal" id="brandReveal"><div class="br-kicker">IFBB Pro</div><div class="br-name">Big Mike Ely</div><div class="br-line"></div><div class="br-title">World Champion · Olympian · Coach</div></div>
+<div class="brand-reveal" aria-hidden="true" id="brandReveal"><div class="br-kicker">IFBB Pro</div><div class="br-name">Big Mike Ely</div><div class="br-line"></div><div class="br-title">World Champion · Olympian · Coach</div></div>
 <!-- GRAIN + VIGNETTE -->
-<div class="grain"><svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".65" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg></div>
-<div class="vignette"></div>
+<div class="grain" aria-hidden="true"><svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".65" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg></div>
+<div class="vignette" aria-hidden="true"></div>
 <!-- NAV -->
 <nav class="nav" id="nav">
-  <a href="#" class="nav-logo"><div class="nav-mark">BME</div><div class="nav-name">Big Mike Ely</div></a>
+  <a href="#" class="nav-logo" aria-label="Big Mike Ely - Home"><div class="nav-mark">BME</div><div class="nav-name">Big Mike Ely</div></a>
   <div class="nav-links">
     <a href="#services" data-nav>Services</a><a href="#about" data-nav>About</a><a href="#results" data-nav>Results</a><a href="#gallery" data-nav>Gallery</a>
-    <a href="https://big-mike-108395.square.site/" target="_blank" rel="noopener" class="nav-cta">Book</a>
+    <a href="#contact" class="nav-cta">Book</a>
   </div>
   <button class="nav-burger" id="navBurger" aria-label="Open menu"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 </nav>
 <div class="mm" id="mm" role="dialog" aria-modal="true">
   <button class="mm-close" id="mmClose" aria-label="Close menu">&times;</button>
   <a href="#services" class="mm-link">Services</a><a href="#about" class="mm-link">About</a><a href="#results" class="mm-link">Results</a><a href="#gallery" class="mm-link">Gallery</a>
-  <a href="https://big-mike-108395.square.site/" target="_blank" rel="noopener" class="mm-cta">Book a Session</a>
+  <a href="#contact" class="mm-cta">Book a Session</a>
   <div class="mm-badge">IFBB Pro Big Mike Ely</div>
 </div>
 
 <!-- HERO -->
+<main id="main">
 <section class="hero">
   <div class="hero-bg"></div><div class="hero-ov"></div>
-  <div class="hero-atmos"><div class="hero-orb hero-orb-1"></div><div class="hero-orb hero-orb-2"></div><div class="hero-orb hero-orb-3"></div></div>
-  <div class="hero-warmth"></div>
+  <div class="hero-atmos" aria-hidden="true"><div class="hero-orb hero-orb-1"></div><div class="hero-orb hero-orb-2"></div><div class="hero-orb hero-orb-3"></div></div>
+  <div class="hero-warmth" aria-hidden="true"></div>
   <div class="hero-content">
     <p class="hero-kicker">IFBB Pro &middot; 2x Masters World Champion &middot; Olympian</p>
     <h1>Big <em>Mike</em> Ely</h1>
     <div class="hero-sub">World Champion</div>
     <div class="gw" style="margin:28px auto 36px;max-width:50px;opacity:.6"></div>
-    <p class="hero-tagline">30+ pro cards coached since 1996. The results speak for themselves.</p>
+    <p class="hero-tagline">30+ pro cards earned under his eye since 1996. When you&rsquo;re ready to stop guessing, this is where you come.</p>
     <div class="hero-ctas">
-      <a href="https://big-mike-108395.square.site/" target="_blank" rel="noopener" class="btn-p">Book a Session</a>
+      <a href="#contact" class="btn-p">Book a Session</a>
       <a href="#results" class="btn-s">See the Results</a>
     </div>
   </div>
-  <div class="hero-scroll" id="heroScroll"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
+  <div class="hero-scroll" id="heroScroll" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg></div>
 </section>
 <div class="gw-sm"></div>
 
 <!-- SERVICES -->
 <section class="section" id="services">
   <div class="inner">
-    <h2 class="s-head reveal">What I Offer</h2>
+    <h2 class="s-head reveal">The Arsenal</h2>
     <div class="svc-grid">
-      <div class="svc reveal reveal-d1"><div class="svc-num">01</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6.5 6.5v11M17.5 6.5v11M6.5 12h11M2 8v8M22 8v8"/></svg></div><div class="svc-name">1-on-1 Training</div><div class="svc-desc">Individualized programming with hands-on coaching at Old School Iron Gym.</div><a href="https://big-mike-108395.square.site/" target="_blank" rel="noopener" class="svc-book">Book &rarr;</a></div>
-      <div class="svc reveal reveal-d2"><div class="svc-num">02</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 21h8m-4-4v4m-4-9a4 4 0 01-4-4V4h4m4 8a4 4 0 004-4V4h-4m-4 0h8M4 4v4a4 4 0 004 4m4 0a4 4 0 004-4V4"/></svg></div><div class="svc-name">Contest Prep</div><div class="svc-desc">Peak week protocols, posing, nutrition, and pharmacology from an Olympian who's been there.</div><a href="https://big-mike-108395.square.site/" target="_blank" rel="noopener" class="svc-book">Book &rarr;</a></div>
-      <div class="svc reveal reveal-d3"><div class="svc-num">03</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 7h6M9 11h6M9 15h3"/></svg></div><div class="svc-name">Nutrition Planning</div><div class="svc-desc">Macro-calibrated meal plans built from decades of putting athletes on stage.</div><a href="https://big-mike-108395.square.site/" target="_blank" rel="noopener" class="svc-book">Book &rarr;</a></div>
-      <div class="svc reveal reveal-d4"><div class="svc-num">04</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a3 3 0 100 6 3 3 0 000-6zM12 10v4m-3 7l1.5-5h3L15 21M9 14h6"/></svg></div><div class="svc-name">Posing Sessions</div><div class="svc-desc">Stage presence and mandatory poses refined by a 2x World Champion.</div><a href="https://big-mike-108395.square.site/" target="_blank" rel="noopener" class="svc-book">Book &rarr;</a></div>
-      <div class="svc reveal reveal-d5"><div class="svc-num">05</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div><div class="svc-name">Online Coaching</div><div class="svc-desc">Full remote programming, check-ins, and adjustments. Anywhere in the world.</div><a href="https://big-mike-108395.square.site/" target="_blank" rel="noopener" class="svc-book">Book &rarr;</a></div>
-      <div class="svc svc-featured reveal reveal-d6"><div class="svc-badge">Most Popular</div><div class="svc-num">06</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="svc-name">Full Coaching Package</div><div class="svc-desc">Training, nutrition, supplementation, and contest prep — the complete program.</div><a href="https://big-mike-108395.square.site/" target="_blank" rel="noopener" class="svc-book">Book &rarr;</a></div>
+      <div class="svc reveal reveal-d1"><div class="svc-num">01</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6.5 6.5v11M17.5 6.5v11M6.5 12h11M2 8v8M22 8v8"/></svg></div><div class="svc-name">1-on-1 Training</div><div class="svc-desc">Your program. Your weaknesses. His eye. Every session at Old School Iron Gym is built around what you need to grow, not what&rsquo;s easy.</div><a href="#contact" class="svc-book">Book &rarr;</a></div>
+      <div class="svc reveal reveal-d2"><div class="svc-num">02</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 21h8m-4-4v4m-4-9a4 4 0 01-4-4V4h4m4 8a4 4 0 004-4V4h-4m-4 0h8M4 4v4a4 4 0 004 4m4 0a4 4 0 004-4V4"/></svg></div><div class="svc-name">Contest Prep</div><div class="svc-desc">Peak week. Posing. Nutrition. Pharmacology. Everything dialed by a coach who&rsquo;s stood on the Olympia stage himself and put 30+ athletes through to their pro cards.</div><a href="#contact" class="svc-book">Book &rarr;</a></div>
+      <div class="svc reveal reveal-d3"><div class="svc-num">03</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 7h6M9 11h6M9 15h3"/></svg></div><div class="svc-name">Nutrition Planning</div><div class="svc-desc">Not a template from the internet. Every gram calculated from three decades of bringing athletes to the stage in peak condition.</div><a href="#contact" class="svc-book">Book &rarr;</a></div>
+      <div class="svc reveal reveal-d4"><div class="svc-num">04</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a3 3 0 100 6 3 3 0 000-6zM12 10v4m-3 7l1.5-5h3L15 21M9 14h6"/></svg></div><div class="svc-name">Posing Sessions</div><div class="svc-desc">Judges score what they see. A 2x World Champion teaches you how to command the stage and present a physique that wins.</div><a href="#contact" class="svc-book">Book &rarr;</a></div>
+      <div class="svc reveal reveal-d5"><div class="svc-num">05</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div><div class="svc-name">Online Coaching</div><div class="svc-desc">Same championship-level programming, delivered remotely. Weekly check-ins, real-time adjustments, zero compromise. Anywhere in the world.</div><a href="#contact" class="svc-book">Book &rarr;</a></div>
+      <div class="svc svc-featured reveal reveal-d6"><div class="svc-badge">Signature</div><div class="svc-num">06</div><div class="svc-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="svc-name">Full Coaching Package</div><div class="svc-desc">Training, nutrition, supplementation, and contest prep &mdash; every variable under one roof, one coach, one standard. This is how pro cards get earned.</div><a href="#contact" class="svc-book">Book &rarr;</a></div>
     </div>
   </div>
 </section>
@@ -341,9 +466,9 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
     <h2 class="s-head reveal">Three Decades on the Stage</h2>
     <div class="about-wrap">
       <div class="about-text reveal-left">
-        <p style="font-family:var(--display);font-size:clamp(18px,2.5vw,22px);color:var(--wh);line-height:1.5;margin-bottom:20px;font-weight:600">Bodybuilding is not a hobby. It is a discipline that exposes who you actually are.</p>
-        <p>Pro card earned in 2013 with Hany Rambod in his corner. Two-time IFBB Pro Masters World Champion. Masters Mr. Olympia competitor. NPC Judge. Over 30 athletes coached to their IFBB Pro cards since 1996.</p>
-        <p>Training out of Old School Iron Gym in Ohio, Mike brings three decades of competition, pharmacology knowledge, and stage strategy to every client he takes on. No templates. No shortcuts. Every program is built from scratch.</p>
+        <p style="font-family:var(--display);font-size:clamp(18px,2.5vw,22px);color:var(--wh);line-height:1.5;margin-bottom:20px;font-weight:600">This sport does not reward potential. It rewards preparation, precision, and decades of knowing what actually works.</p>
+        <p>Mike earned his IFBB Pro card in 2013 with legendary coach Hany Rambod in his corner. Two-time IFBB Pro Masters World Champion. Masters Mr. Olympia competitor. NPC Judge. Since 1996, he has coached over 30 athletes to their own pro cards &mdash; not with theory, but with the knowledge that only comes from living it.</p>
+        <p>Operating out of Old School Iron Gym in Ohio, Mike brings three decades of elite competition, deep pharmacology expertise, and stage strategy tested under the brightest lights in the sport. No templates. No shortcuts. Every program is built from scratch for the athlete standing in front of him.</p>
         <div class="about-creds">
           <span class="about-cred">IFBB Pro</span>
           <span class="about-cred">2x World Champion</span>
@@ -379,13 +504,13 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
       <div class="num-card reveal-scale"><div class="num-val" data-count="1996">0</div><div class="num-label">Coaching Since</div></div>
     </div>
     <div class="results-grid">
-      <div class="results-photo reveal" onclick="openLB(this)"><img src="img/results-procard-lindsay.jpg" alt="Lindsay earning IFBB Pro Card" loading="lazy"><div class="results-photo-label">Lindsay — Pro card earned</div></div>
-      <div class="results-photo reveal" onclick="openLB(this)"><img src="img/results-procard-lindsay-stage.jpg" alt="Lindsay on stage" loading="lazy"><div class="results-photo-label">That moment on stage</div></div>
-      <div class="results-photo reveal" onclick="openLB(this)"><img src="img/results-group.jpg" alt="Center Stage Aesthetics team" loading="lazy"><div class="results-photo-label">The team shows up</div></div>
-      <div class="results-photo reveal" onclick="openLB(this)"><img src="img/results-procard-backstage.jpg" alt="Backstage celebration" loading="lazy"><div class="results-photo-label">Backstage, card in hand</div></div>
-      <div class="results-photo reveal" onclick="openLB(this)"><img src="img/results-procard-rob.jpg" alt="Rob earning Pro Card" loading="lazy"><div class="results-photo-label">Rob — another one earned</div></div>
-      <div class="results-photo reveal" onclick="openLB(this)"><img src="img/results-procard-female.jpg" alt="Female athlete Pro Card" loading="lazy"><div class="results-photo-label">She trusted the process</div></div>
-      <div class="results-photo reveal" onclick="openLB(this)"><img src="img/results-procard-ladies.jpg" alt="Figure competitors" loading="lazy"><div class="results-photo-label">Built different</div></div>
+      <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}"><img src="img/results-procard-lindsay.jpg" alt="Lindsay earning IFBB Pro Card" loading="lazy"><div class="results-photo-label">Lindsay — Pro card earned</div></div>
+      <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}"><img src="img/results-procard-lindsay-stage.jpg" alt="Lindsay on stage" loading="lazy"><div class="results-photo-label">That moment on stage</div></div>
+      <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}"><img src="img/results-group.jpg" alt="Center Stage Aesthetics team" loading="lazy"><div class="results-photo-label">The team shows up</div></div>
+      <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}"><img src="img/results-procard-backstage.jpg" alt="Backstage celebration" loading="lazy"><div class="results-photo-label">Backstage, card in hand</div></div>
+      <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}"><img src="img/results-procard-rob.jpg" alt="Rob earning Pro Card" loading="lazy"><div class="results-photo-label">Rob — another one earned</div></div>
+      <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}"><img src="img/results-procard-female.jpg" alt="Female athlete Pro Card" loading="lazy"><div class="results-photo-label">She trusted the process</div></div>
+      <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}"><img src="img/results-procard-ladies.jpg" alt="Figure competitors" loading="lazy"><div class="results-photo-label">Built different</div></div>
     </div>
   </div>
 </section>
@@ -395,8 +520,8 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 <section class="section">
   <div class="inner">
     <div class="testimonial reveal">
-      <div class="test-quote">"Mike doesn't just coach you for a show. He builds you into something that lasts. I earned my pro card because he saw what I couldn't see in myself."</div>
-      <div class="test-attr"><span>Lindsay</span> &mdash; IFBB Pro Bikini</div>
+      <blockquote class="test-quote">"Mike doesn't just coach you for a show. He builds you into something that lasts. I earned my pro card because he saw what I couldn't see in myself."</blockquote>
+      <div class="test-attr"><cite><span>Lindsay</span> &mdash; IFBB Pro Bikini</cite></div>
     </div>
   </div>
 </section>
@@ -407,25 +532,20 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
   <div class="inner">
     <h2 class="s-head reveal">Built Over a Lifetime</h2>
     <div class="gal-grid" id="galGrid">
-      <div class="gal-item featured reveal" onclick="openLB(this)"><img src="img/gallery-champion-2024.jpg" alt="2024 IFBB Pro Masters World Champion" loading="lazy"><div class="gal-label">World Title, 2024</div></div>
-      <div class="gal-item reveal" onclick="openLB(this)"><img src="img/gallery-most-muscular-stage.jpg" alt="Most muscular on stage" loading="lazy"><div class="gal-label">Conditioning on point</div></div>
-      <div class="gal-item reveal" onclick="openLB(this)"><img src="img/gallery-back-dbl-bicep.jpg" alt="Back double bicep" loading="lazy"><div class="gal-label">Back thickness you earn</div></div>
-      <div class="gal-item reveal" onclick="openLB(this)"><img src="img/gallery-side-chest-stage.jpg" alt="Side chest pose" loading="lazy"><div class="gal-label">Stage presence</div></div>
-      <div class="gal-item reveal" onclick="openLB(this)"><img src="img/gallery-wings-chicago-2015.jpg" alt="Wings of Strength Chicago Pro 2015" loading="lazy"><div class="gal-label">Chicago Pro, 2015</div></div>
-      <div class="gal-item reveal" onclick="openLB(this)"><img src="img/gallery-most-muscular-crab.jpg" alt="Most muscular crab pose" loading="lazy"><div class="gal-label">Mass and detail</div></div>
-      <div class="gal-item reveal" onclick="openLB(this)"><img src="img/about-gym-olympia.jpg" alt="Olympia prep" loading="lazy"><div class="gal-label">Olympia shape</div></div>
-      <div class="gal-item reveal" onclick="openLB(this)"><img src="img/gallery-gym-side-tricep.jpg" alt="Side tricep in gym" loading="lazy"><div class="gal-label">Arm detail, off-season</div></div>
-      <div class="gal-item reveal" onclick="openLB(this)"><img src="img/gallery-wings-stage.jpg" alt="Back double bicep on stage" loading="lazy"><div class="gal-label">Under the lights</div></div>
-      <div class="gal-item reveal" onclick="openLB(this)"><img src="img/gallery-ferrigno-prep.jpg" alt="Ferrigno Legacy Pro prep" loading="lazy"><div class="gal-label">Ferrigno Legacy, dialed in</div></div>
-      <div class="gal-item reveal" onclick="openLB(this)"><img src="img/gallery-muscular-dev-2013.jpg" alt="Muscular Development 2013" loading="lazy"><div class="gal-label">Print feature, 2013</div></div>
-      <div class="gal-item reveal" onclick="openLB(this)"><img src="img/gallery-posing-clinic.jpg" alt="Posing clinic" loading="lazy"><div class="gal-label">Teaching what can't be taught</div></div>
-      <div class="gal-item reveal" onclick="openLB(this)"><img src="img/about-back-gym.jpg" alt="Rear lat spread" loading="lazy"><div class="gal-label">Width from the rear</div></div>
-      <div class="gal-item reveal" onclick="openLB(this)"><img src="img/gallery-stage-2014.jpg" alt="On stage 2014" loading="lazy"><div class="gal-label">Earning it, 2014</div></div>
-      <div class="gal-item reveal" onclick="openLB(this)"><img src="img/gallery-gym-prep-2014.jpg" alt="Gym prep 2014" loading="lazy"><div class="gal-label">16 weeks out</div></div>
-      <div class="gal-item reveal" onclick="openLB(this)"><img src="img/about-roelly.jpg" alt="With Roelly Winklaar" loading="lazy"><div class="gal-label">With Roelly Winklaar</div></div>
-      <div class="gal-item reveal" onclick="openLB(this)"><img src="img/gallery-procard-story.jpg" alt="Pro card story" loading="lazy"><div class="gal-label">The day it all changed</div></div>
-      <div class="gal-item reveal" onclick="openLB(this)"><img src="img/gallery-transformation.jpg" alt="Transformation" loading="lazy"><div class="gal-label">The process works</div></div>
-      <div class="gal-item reveal" onclick="openLB(this)"><img src="img/about-lifestyle.jpg" alt="Mike and wife" loading="lazy"><div class="gal-label">What it's all for</div></div>
+      <div class="gal-item featured reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}"><img src="img/gallery-champion-2024.jpg" alt="2024 IFBB Pro Masters World Champion" loading="lazy"><div class="gal-label">World Title, 2024</div></div>
+      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}"><img src="img/gallery-most-muscular-crab.jpg" alt="Most muscular crab pose" loading="lazy"><div class="gal-label">Mass and detail</div></div>
+      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}"><img src="img/gallery-back-dbl-bicep.jpg" alt="Back double bicep" loading="lazy"><div class="gal-label">Back thickness you earn</div></div>
+      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}"><img src="img/gallery-side-chest-stage.jpg" alt="Side chest pose" loading="lazy"><div class="gal-label">Stage presence</div></div>
+      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}"><img src="img/gallery-wings-chicago-2015.jpg" alt="Wings of Strength Chicago Pro 2015" loading="lazy"><div class="gal-label">Chicago Pro, 2015</div></div>
+      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}"><img src="img/gallery-gym-side-tricep.jpg" alt="Side tricep in gym" loading="lazy"><div class="gal-label">Arm detail, off-season</div></div>
+      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}"><img src="img/gallery-wings-stage.jpg" alt="Back double bicep on stage" loading="lazy"><div class="gal-label">Under the lights</div></div>
+      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}"><img src="img/gallery-ferrigno-prep.jpg" alt="Ferrigno Legacy Pro prep" loading="lazy"><div class="gal-label">Ferrigno Legacy, dialed in</div></div>
+      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}"><img src="img/gallery-muscular-dev-2013.jpg" alt="Muscular Development 2013" loading="lazy"><div class="gal-label">Print feature, 2013</div></div>
+      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}"><img src="img/gallery-posing-clinic.jpg" alt="Posing clinic" loading="lazy"><div class="gal-label">Teaching what can't be taught</div></div>
+      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}"><img src="img/gallery-stage-2014.jpg" alt="On stage 2014" loading="lazy"><div class="gal-label">Earning it, 2014</div></div>
+      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}"><img src="img/gallery-gym-prep-2014.jpg" alt="Gym prep 2014" loading="lazy"><div class="gal-label">16 weeks out</div></div>
+      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}"><img src="img/gallery-procard-story.jpg" alt="Pro card story" loading="lazy"><div class="gal-label">The day it all changed</div></div>
+      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}"><img src="img/gallery-transformation.jpg" alt="Transformation" loading="lazy"><div class="gal-label">The process works</div></div>
     </div>
   </div>
 </section>
@@ -435,21 +555,34 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 <section class="cta">
   <div class="cta-bg"></div><div class="cta-ov"></div>
   <div class="cta-inner reveal-scale">
-    <div class="cta-quote">"The results speak for themselves."</div>
+    <div class="cta-quote">"You don&rsquo;t find a coach like this twice."</div>
     <div class="gw" style="max-width:40px;margin:0 auto 28px"></div>
-    <h2 class="s-head" style="margin-bottom:24px" data-wc="cta-heading">Book a Session</h2>
-    <a href="https://big-mike-108395.square.site/" target="_blank" rel="noopener" class="btn-p" data-wc="cta-button">Book Your Session</a>
-    <div class="cta-sub">Limited availability · Old School Iron Gym, OH</div>
+    <h2 class="s-head" style="margin-bottom:24px" data-wc="cta-heading">Your Move</h2>
+    <a href="#contact" class="btn-p" data-wc="cta-button">Start the Conversation</a>
+    <div class="cta-sub">Limited availability &middot; Serious inquiries only</div>
   </div>
 </section>
 
+<!-- CONTACT -->
+<section class="section" id="contact">
+  <div class="inner" style="max-width:600px;text-align:center">
+    <h2 class="s-head reveal">Start Here</h2>
+    <p class="reveal" style="font-size:16px;color:var(--ow);line-height:1.8;margin-bottom:32px">Serious inquiries only. Send a message on Instagram with your competition history, your goals, and your timeline. Mike reviews every inquiry personally.</p>
+    <div class="reveal" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a href="https://instagram.com/ifbbpromikeely" target="_blank" rel="noopener" class="btn-p" style="display:inline-flex;align-items:center;gap:8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor"/></svg> Message on Instagram</a>
+    </div>
+    <div class="reveal" style="margin-top:24px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--dm);text-transform:uppercase">Old School Iron Gym · Ohio</div>
+  </div>
+</section>
+
+</main>
 <!-- FOOTER -->
 <footer class="footer">
   <div class="footer-mark">BME</div>
   <div class="footer-sig">"Iron doesn't lie. The stage doesn't lie. The work is the work."</div>
   <div class="footer-links">
     <a href="#services">Services</a><a href="#about">About</a><a href="#results">Results</a><a href="#gallery">Gallery</a>
-    <a href="https://big-mike-108395.square.site/" target="_blank" rel="noopener">Book</a>
+    <a href="#contact">Book</a>
     <a href="app.html" style="opacity:.35">Coach Portal</a>
   </div>
   <div class="footer-social">
@@ -502,12 +635,12 @@ var revealObs=new IntersectionObserver(function(entries){
   entries.forEach(function(e){
     if(e.isIntersecting){e.target.classList.add('vis');revealObs.unobserve(e.target)}
   });
-},{threshold:.12});
+},{threshold:.15});
 document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale').forEach(function(el,i){
   var p=el.parentElement;
-  var siblings=p?Array.from(p.querySelectorAll(':scope > .reveal')):[];
+  var siblings=p?Array.from(p.querySelectorAll(':scope > .reveal,:scope > .reveal-left,:scope > .reveal-right,:scope > .reveal-scale')):[];
   var idx=siblings.indexOf(el);
-  if(idx>0)el.style.transitionDelay=(idx*80)+'ms';
+  if(idx>0)el.style.transitionDelay=(idx*130)+'ms';
   revealObs.observe(el);
 });
 
@@ -515,8 +648,8 @@ document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale').fo
 (function(){
   var br=document.getElementById('brandReveal');
   if(!br)return;
-  setTimeout(function(){br.classList.add('exit')},2000);
-  setTimeout(function(){if(br.parentNode)br.remove()},2800);
+  setTimeout(function(){br.classList.add('exit')},2200);
+  setTimeout(function(){if(br.parentNode)br.remove()},3100);
 })();
 
 /* ── HIDE SCROLL ARROW ON FIRST SCROLL ── */
@@ -596,7 +729,9 @@ function showLBImage(){
   },200);
 }
 function navLB(dir){_lbIdx=(_lbIdx+dir+_lbImages.length)%_lbImages.length;showLBImage()}
-function closeLB(){document.getElementById('lb').classList.remove('open');document.body.style.overflow=''}
+function closeLB(){var lb=document.getElementById('lb'),img=document.getElementById('lbImg');img.style.opacity='0';img.style.transform='scale(0.92)';setTimeout(function(){lb.classList.remove('open');document.body.style.overflow=''},250)}
+/* ── LIGHTBOX SWIPE ── */
+(function(){var lb=document.getElementById("lb"),sx=0,sy=0;lb.addEventListener("touchstart",function(e){sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});lb.addEventListener("touchend",function(e){var dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>50){if(dx<0)navLB(1);else navLB(-1)}else if(Math.abs(dy)>80){closeLB()}})})();
 
 /* ── IMAGE LOAD FADE-IN ── */
 document.querySelectorAll('img[loading="lazy"]').forEach(function(img){
@@ -642,15 +777,16 @@ window.addEventListener('load',function(){
   }).catch(function(){});
 });
 
-/* ── PARALLAX ── */
+/* ── PARALLAX + HERO FADE ── */
 (function(){
-  var hero=document.querySelector('.hero-bg');
+  var heroContent=document.querySelector('.hero-content');
   var ctaBg=document.querySelector('.cta-bg');
   var ticking=false;
   window.addEventListener('scroll',function(){
     if(!ticking){requestAnimationFrame(function(){
       var s=window.scrollY;
-      if(hero)hero.style.transform='scale('+(1+s*.00005)+') translateY('+s*.2+'px)';
+      /* Fade hero content as user scrolls past */
+      if(heroContent){var op=1-(s/(window.innerHeight*.6));heroContent.style.opacity=Math.max(0,Math.min(1,op))}
       if(ctaBg&&ctaBg.parentElement){
         var off=s-ctaBg.parentElement.offsetTop;
         if(Math.abs(off)<window.innerHeight)ctaBg.style.transform='translateY('+(off*.12)+'px)';
@@ -658,6 +794,21 @@ window.addEventListener('load',function(){
       ticking=false;
     });ticking=true}
   });
+})();
+
+/* ── LAZY CTA BACKGROUND ── */
+(function(){
+  var ctaBg=document.querySelector('.cta-bg');
+  if(!ctaBg)return;
+  var obs=new IntersectionObserver(function(entries){
+    if(entries[0].isIntersecting){
+      var img=new Image();
+      img.onload=function(){ctaBg.style.backgroundImage="url('img/about-back-gym.jpg')";ctaBg.classList.add('loaded')};
+      img.src='img/about-back-gym.jpg';
+      obs.disconnect();
+    }
+  },{rootMargin:'200px'});
+  obs.observe(ctaBg);
 })();
 
 /* ── SCROLL RESET ── */
