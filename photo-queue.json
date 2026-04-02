@@ -1,0 +1,31 @@
+{
+  "photos": [
+    {
+      "id": 1,
+      "description": "Mike at IWA Championship event with athletes and massive trophy - Marandi Productions",
+      "suggested_name": "event-iwa-championship-trophy.jpg",
+      "suggested_placement": "gallery",
+      "context": "IWA Championship, Mike in white tank with pro card credential, large trophy center, athletes flanking",
+      "status": "needs_file_upload",
+      "caption": "Championship hardware"
+    },
+    {
+      "id": 2,
+      "description": "2024 IFBB Pro Masters World Champion - front relaxed/most muscular pose on stage",
+      "source": "Instagram @ifbbpromikeely, September 7 2024, post 1/4",
+      "suggested_name": "gallery-masters-world-champ-2024.jpg",
+      "suggested_placement": "hero OR gallery-featured",
+      "context": "Full body stage shot, front most muscular pose, incredible conditioning, IFBB Pro Masters World Championship trophy visible stage right, competition stage lighting, 727 likes. Caption: '2024 IFBB Pro Masters World Champion'",
+      "status": "needs_file_upload",
+      "caption": "2024 IFBB Pro Masters World Champion",
+      "crop_notes": "MUST show full body head to toe - this is a bodybuilding photo, never crop the physique",
+      "priority": "high"
+    }
+  ],
+  "notes": "User is sending photos for the site. All bodybuilding photos MUST be cropped to show the FULL body head to toe. Never crop the physique. Images need to be placed in /home/user/bigmike/img/ directory.",
+  "crop_rules": {
+    "stage_photos": "Full body, head to toe, object-fit:contain preferred over cover",
+    "event_photos": "Can crop tighter, focus on people and trophy",
+    "gym_photos": "Show full pose, head to toe when possible"
+  }
+}
