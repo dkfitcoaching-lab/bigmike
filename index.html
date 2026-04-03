@@ -126,9 +126,9 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
 .scroll-progress{position:fixed;top:0;left:0;height:2px;width:0;background:var(--goldGrad);z-index:9999;pointer-events:none;box-shadow:0 0 8px var(--accGlow),0 0 20px rgba(224,176,48,.1);transition:width .08s linear}
 .scroll-progress::after{content:'';position:absolute;top:-2px;right:-1px;width:6px;height:6px;border-radius:50%;background:rgba(255,240,180,.9);box-shadow:0 0 10px rgba(224,176,48,.8),0 0 20px rgba(224,176,48,.4),0 0 40px rgba(224,176,48,.2);pointer-events:none}
 /* BRAND REVEAL */
-.brand-reveal{position:fixed;inset:0;z-index:10000;background:#010101;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
+.brand-reveal{position:fixed;inset:0;z-index:10000;background:#010101;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;padding:0 24px}
 /* Deep warm radial glow — stadium light behind the champion */
-.brand-reveal::before{content:'';position:absolute;top:48%;left:50%;width:900px;height:900px;background:radial-gradient(circle,rgba(200,160,40,.14) 0%,rgba(180,140,30,.07) 20%,rgba(160,120,20,.03) 40%,transparent 65%);transform:translate(-50%,-50%);animation:brBreathe 3.5s ease-in-out infinite;pointer-events:none}
+.brand-reveal::before{content:'';position:absolute;top:48%;left:50%;width:min(900px,200vw);height:min(900px,200vw);background:radial-gradient(circle,rgba(200,160,40,.14) 0%,rgba(180,140,30,.07) 20%,rgba(160,120,20,.03) 40%,transparent 65%);transform:translate(-50%,-50%);animation:brBreathe 3.5s ease-in-out infinite;pointer-events:none}
 /* Secondary atmospheric haze — warm fog */
 .brand-reveal::after{content:'';position:absolute;inset:0;background:
   radial-gradient(ellipse 120% 80% at 50% 45%,rgba(224,176,48,.06) 0%,rgba(224,176,48,.02) 30%,transparent 60%),
@@ -137,29 +137,29 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
 /* Horizontal light streak across center */
 .br-streak{position:absolute;top:50%;left:50%;width:0;height:1px;transform:translate(-50%,-50%);background:linear-gradient(90deg,transparent 0%,rgba(224,176,48,.02) 15%,rgba(255,230,140,.08) 40%,rgba(255,240,180,.14) 50%,rgba(255,230,140,.08) 60%,rgba(224,176,48,.02) 85%,transparent 100%);animation:brStreakGrow 1.8s cubic-bezier(.16,1,.3,1) .2s forwards;pointer-events:none;filter:blur(1px)}
 /* Kicker — IFBB PRO */
-.br-kicker{font-family:var(--mono);font-size:10px;letter-spacing:.7em;text-transform:uppercase;color:rgba(224,176,48,.85);opacity:0;animation:brFadeUp .9s var(--ease) .5s forwards;margin-bottom:28px;text-shadow:0 0 40px rgba(224,176,48,.35),0 0 80px rgba(224,176,48,.15);position:relative;z-index:2}
+.br-kicker{font-family:var(--mono);font-size:10px;letter-spacing:.6em;text-transform:uppercase;color:rgba(224,176,48,.85);opacity:0;animation:brFadeUp .9s var(--ease) .5s forwards;margin-bottom:24px;text-shadow:0 0 40px rgba(224,176,48,.35),0 0 80px rgba(224,176,48,.15);position:relative;z-index:2;text-align:center}
 /* Main name — championship presence */
-.br-name{font-family:var(--display);font-size:clamp(52px,13vw,100px);font-weight:900;line-height:.95;letter-spacing:.07em;position:relative;z-index:2;
+.br-name{font-family:var(--display);font-size:clamp(42px,10vw,100px);font-weight:900;line-height:.95;letter-spacing:.05em;position:relative;z-index:2;text-align:center;white-space:nowrap;
   background:linear-gradient(135deg,#7a5810 0%,#9A7018 10%,#C49828 25%,#DABB55 38%,#F2E4A0 48%,#FFF8E0 51%,#F2E4A0 54%,#DABB55 62%,#C49828 75%,#9A7018 90%,#7a5810 100%);
   background-size:250% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
   opacity:0;animation:brNameIn 1.2s var(--ease) .9s forwards,brShimmer 6s ease-in-out 2.1s infinite;
-  margin-bottom:24px;filter:drop-shadow(0 2px 30px rgba(224,176,48,.35)) drop-shadow(0 0 60px rgba(224,176,48,.15))}
+  margin-bottom:20px;filter:drop-shadow(0 2px 30px rgba(224,176,48,.35)) drop-shadow(0 0 60px rgba(224,176,48,.15))}
 /* Gold name glow layer behind text */
-.br-name-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:clamp(280px,60vw,600px);height:100px;background:radial-gradient(ellipse,rgba(224,176,48,.12) 0%,rgba(224,176,48,.04) 40%,transparent 70%);pointer-events:none;opacity:0;animation:brGlowIn 1.5s var(--ease) 1.2s forwards;filter:blur(20px);z-index:1}
+.br-name-glow{position:absolute;top:48%;left:50%;transform:translate(-50%,-50%);width:clamp(260px,65vw,600px);height:clamp(60px,12vw,100px);background:radial-gradient(ellipse,rgba(224,176,48,.12) 0%,rgba(224,176,48,.04) 40%,transparent 70%);pointer-events:none;opacity:0;animation:brGlowIn 1.5s var(--ease) 1.2s forwards;filter:blur(20px);z-index:1}
 /* Gold rule */
 .br-line{height:1px;width:0;position:relative;z-index:2;
   background:linear-gradient(90deg,transparent,rgba(224,176,48,.15) 10%,rgba(224,176,48,.6) 35%,rgba(255,240,180,.9) 50%,rgba(224,176,48,.6) 65%,rgba(224,176,48,.15) 90%,transparent);
   animation:brLineGrow 1s cubic-bezier(.22,1,.36,1) 1.6s forwards;
   box-shadow:0 0 30px rgba(224,176,48,.3),0 0 60px rgba(224,176,48,.1)}
 /* Credentials */
-.br-title{font-family:var(--mono);font-size:9px;letter-spacing:.5em;text-transform:uppercase;color:rgba(152,142,124,.8);opacity:0;animation:brFadeUp .7s var(--ease) 2s forwards;margin-top:24px;position:relative;z-index:2;text-shadow:0 0 20px rgba(224,176,48,.08)}
-/* Corner brackets — viewfinder precision */
-.br-corners{position:absolute;width:clamp(220px,45vw,440px);height:clamp(220px,45vw,440px);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
-.br-corners::before,.br-corners::after,.br-corner-tl,.br-corner-br{content:'';position:absolute;width:48px;height:48px;opacity:0}
-.br-corners::before{top:0;left:0;border-top:1px solid rgba(224,176,48,.35);border-left:1px solid rgba(224,176,48,.35);animation:brCornerTL 1s var(--ease) 1.3s forwards}
-.br-corners::after{bottom:0;right:0;border-bottom:1px solid rgba(224,176,48,.35);border-right:1px solid rgba(224,176,48,.35);animation:brCornerBR 1s var(--ease) 1.3s forwards}
-.br-corner-tl{top:0;right:0;border-top:1px solid rgba(224,176,48,.35);border-right:1px solid rgba(224,176,48,.35);animation:brCornerTR 1s var(--ease) 1.4s forwards}
-.br-corner-br{bottom:0;left:0;border-bottom:1px solid rgba(224,176,48,.35);border-left:1px solid rgba(224,176,48,.35);animation:brCornerBL 1s var(--ease) 1.4s forwards}
+.br-title{font-family:var(--mono);font-size:9px;letter-spacing:.4em;text-transform:uppercase;color:rgba(152,142,124,.8);opacity:0;animation:brFadeUp .7s var(--ease) 2s forwards;margin-top:22px;position:relative;z-index:2;text-shadow:0 0 20px rgba(224,176,48,.08);text-align:center;white-space:nowrap}
+/* Corner brackets — viewfinder precision, sized to content */
+.br-corners{position:absolute;width:clamp(280px,55vw,480px);height:clamp(200px,35vw,320px);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+.br-corners::before,.br-corners::after,.br-corner-tl,.br-corner-br{content:'';position:absolute;width:36px;height:36px;opacity:0}
+.br-corners::before{top:0;left:0;border-top:1px solid rgba(224,176,48,.3);border-left:1px solid rgba(224,176,48,.3);animation:brCornerTL 1s var(--ease) 1.3s forwards}
+.br-corners::after{bottom:0;right:0;border-bottom:1px solid rgba(224,176,48,.3);border-right:1px solid rgba(224,176,48,.3);animation:brCornerBR 1s var(--ease) 1.3s forwards}
+.br-corner-tl{top:0;right:0;border-top:1px solid rgba(224,176,48,.3);border-right:1px solid rgba(224,176,48,.3);animation:brCornerTR 1s var(--ease) 1.4s forwards}
+.br-corner-br{bottom:0;left:0;border-bottom:1px solid rgba(224,176,48,.3);border-left:1px solid rgba(224,176,48,.3);animation:brCornerBL 1s var(--ease) 1.4s forwards}
 /* Floating gold particles */
 .br-particles{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1}
 .br-particle{position:absolute;width:2px;height:2px;background:rgba(224,176,48,.4);border-radius:50%;animation:brFloat linear infinite;box-shadow:0 0 6px rgba(224,176,48,.3)}
@@ -181,7 +181,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
 @keyframes brNameIn{0%{opacity:0;transform:translateY(20px) scale(.97);filter:blur(8px)}60%{opacity:1;transform:translateY(-2px) scale(1.005);filter:blur(0)}100%{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
 @keyframes brShimmer{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 @keyframes brGlowIn{from{opacity:0}to{opacity:1}}
-@keyframes brLineGrow{from{width:0;opacity:0}to{width:clamp(120px,25vw,200px);opacity:1}}
+@keyframes brLineGrow{from{width:0;opacity:0}to{width:clamp(100px,22vw,200px);opacity:1}}
 @keyframes brCornerTL{from{opacity:0;transform:translate(-12px,-12px)}to{opacity:1;transform:translate(0,0)}}
 @keyframes brCornerBR{from{opacity:0;transform:translate(12px,12px)}to{opacity:1;transform:translate(0,0)}}
 @keyframes brCornerTR{from{opacity:0;transform:translate(12px,-12px)}to{opacity:1;transform:translate(0,0)}}
@@ -477,6 +477,13 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 @keyframes imgShimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 /* RESPONSIVE */
 @media(max-width:768px){
+  /* Splash screen mobile */
+  .br-kicker{font-size:8px;letter-spacing:.4em;margin-bottom:18px}
+  .br-name{font-size:clamp(36px,11vw,56px);letter-spacing:.03em}
+  .br-title{font-size:7px;letter-spacing:.25em}
+  .br-corners{width:clamp(260px,75vw,360px);height:clamp(180px,40vw,260px)}
+  .br-corners::before,.br-corners::after,.br-corner-tl,.br-corner-br{width:28px;height:28px}
+  .br-particles{display:none}
   .nav-links{display:none}.nav-burger{display:flex}
   .section{padding:64px 20px}.s-head{margin-bottom:32px}
   .hero{padding:0;padding-top:env(safe-area-inset-top,0px);min-height:100svh;min-height:-webkit-fill-available;align-items:flex-end;justify-content:flex-end}
