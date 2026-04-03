@@ -58,7 +58,7 @@
       "@type": "Person",
       "name": "Big Mike Ely",
       "jobTitle": "IFBB Pro Bodybuilding Coach",
-      "description": "2x IFBB Pro Masters World Champion, 2x Mr. Olympia competitor, NPC Judge. Coaching since 1996.",
+      "description": "2x IFBB Pro Masters World Champion, 2x Olympian, NPC Judge. Coaching since 1996.",
       "sameAs": [
         "https://instagram.com/ifbbpromikeely",
         "https://instagram.com/center_stage_aesthetics",
@@ -268,22 +268,24 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
 .mm-badge{font-family:var(--mono);font-size:8px;letter-spacing:.2em;color:var(--dm);margin-top:44px;text-transform:uppercase;opacity:.5}
 .mm::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 10%,rgba(224,176,48,.15) 50%,transparent 90%)}
 /* HERO */
-.hero{min-height:100vh;min-height:100svh;display:flex;align-items:flex-end;justify-content:center;position:relative;overflow:hidden;padding:120px 24px 80px}
+.hero{min-height:100vh;min-height:100svh;display:flex;align-items:flex-end;justify-content:center;position:relative;overflow:hidden;padding:120px 24px 60px}
 .hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--goldGrad);opacity:.3;z-index:3;box-shadow:0 0 40px var(--accGlow),0 0 80px rgba(224,176,48,.12),0 -2px 30px rgba(224,176,48,.06)}
 .hero-bg{position:absolute;inset:-5%;background:url('img/hero-stage-2025.jpg') center 15%/cover no-repeat;z-index:0;animation:heroKenBurns 30s cubic-bezier(.45,0,.55,1) infinite alternate;will-change:transform;filter:contrast(1.15) brightness(.78) saturate(.85) sepia(.04)}
 .hero-ov{position:absolute;inset:0;z-index:1;
-  background:linear-gradient(180deg,
-    rgba(2,2,2,.65) 0%,
-    rgba(2,2,2,.3) 15%,
-    rgba(2,2,2,.15) 30%,
-    rgba(2,2,2,.15) 40%,
-    rgba(2,2,2,.35) 52%,
-    rgba(2,2,2,.7) 65%,
-    rgba(2,2,2,.92) 78%,
-    rgba(2,2,2,.98) 88%,
-    rgba(2,2,2,1) 95%)}
-.hero-ov::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 100% 70% at 50% 35%,rgba(224,176,48,.06) 0%,transparent 50%);pointer-events:none;animation:breathe 8s ease-in-out infinite}
-.hero-ov::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,rgba(224,176,48,.05) 0%,transparent 55%);pointer-events:none}
+  background:
+    linear-gradient(90deg,rgba(2,2,2,.85) 0%,rgba(2,2,2,.4) 18%,transparent 35%,transparent 65%,rgba(2,2,2,.4) 82%,rgba(2,2,2,.85) 100%),
+    linear-gradient(180deg,
+    rgba(2,2,2,.7) 0%,
+    rgba(2,2,2,.35) 12%,
+    rgba(2,2,2,.12) 28%,
+    rgba(2,2,2,.08) 38%,
+    rgba(2,2,2,.3) 50%,
+    rgba(2,2,2,.7) 62%,
+    rgba(2,2,2,.93) 75%,
+    rgba(2,2,2,.98) 85%,
+    rgba(2,2,2,1) 92%)}
+.hero-ov::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 32%,transparent 0%,rgba(2,2,2,.3) 60%,rgba(2,2,2,.7) 100%);pointer-events:none}
+.hero-ov::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 45% at 50% 35%,rgba(224,176,48,.05) 0%,transparent 60%);pointer-events:none;animation:breathe 8s ease-in-out infinite}
 /* HERO LIGHT LEAK — cinematic light flare */
 .hero-leak{position:absolute;top:-20%;right:-10%;width:60%;height:80%;background:radial-gradient(ellipse at center,rgba(224,176,48,.06),rgba(224,176,48,.02) 40%,transparent 70%);z-index:1;pointer-events:none;animation:leakDrift 15s ease-in-out infinite alternate;transform:rotate(-15deg);filter:blur(40px)}
 @keyframes leakDrift{0%{transform:rotate(-15deg) translate(0,0);opacity:.6}100%{transform:rotate(-10deg) translate(-5%,8%);opacity:1}}
@@ -317,13 +319,16 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
   opacity:0;animation:heroEmLine .8s var(--ease) 7.5s forwards;box-shadow:0 0 20px rgba(224,176,48,.2)}
 @keyframes heroEmLine{from{opacity:0;left:45%;right:45%}to{opacity:1;left:15%;right:15%}}
 @keyframes heroTitleIn{from{opacity:0;transform:translateY(40px) scale(.96);filter:blur(6px) drop-shadow(0 0 0 transparent)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0) drop-shadow(0 2px 20px rgba(224,176,48,.3)) drop-shadow(0 4px 40px rgba(224,176,48,.12)) drop-shadow(0 0 80px rgba(224,176,48,.06))}}
-.hero-sub{font-family:var(--body);font-size:clamp(14px,2vw,18px);color:var(--ow);line-height:1.7;margin-top:22px;opacity:0;animation:heroFadeUp .8s var(--ease) 6.9s forwards;text-shadow:0 1px 4px rgba(0,0,0,.9);max-width:540px;margin-left:auto;margin-right:auto;letter-spacing:.02em}
+.hero-sub{font-family:var(--mono);font-size:clamp(9px,1.2vw,11px);letter-spacing:.35em;text-transform:uppercase;color:rgba(224,176,48,.6);line-height:1;margin-top:28px;opacity:0;animation:heroFadeUp .8s var(--ease) 6.9s forwards;text-shadow:0 1px 6px rgba(0,0,0,.95);position:relative;display:inline-block}
+.hero-sub::before,.hero-sub::after{content:'';position:absolute;top:50%;width:clamp(30px,8vw,80px);height:1px;background:linear-gradient(90deg,transparent,rgba(224,176,48,.3),transparent)}
+.hero-sub::before{right:calc(100% + 16px)}
+.hero-sub::after{left:calc(100% + 16px)}
 .hero-ctas{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:36px;opacity:0;animation:heroFadeUp .8s var(--ease) 7.2s forwards}
 .hero-scroll{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);z-index:2;color:var(--dm);animation:bounce 2.5s ease-in-out infinite;transition:opacity .5s}
 /* SECTIONS */
 .section{padding:100px 24px;position:relative;overflow:hidden}
-.section::before{content:'';position:absolute;top:50%;left:50%;width:800px;height:800px;background:radial-gradient(circle,rgba(224,176,48,.012),transparent 60%);transform:translate(-50%,-50%);pointer-events:none;border-radius:50%}
-.section::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 5%,rgba(224,176,48,.08) 30%,rgba(224,176,48,.15) 50%,rgba(224,176,48,.08) 70%,transparent 95%);pointer-events:none}
+.section::before{content:'';position:absolute;top:50%;left:50%;width:900px;height:900px;background:radial-gradient(ellipse 60% 50%,rgba(224,176,48,.015),transparent 55%);transform:translate(-50%,-50%);pointer-events:none;border-radius:50%;animation:breathe 12s ease-in-out infinite}
+.section::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 5%,rgba(224,176,48,.1) 25%,rgba(255,240,180,.22) 50%,rgba(224,176,48,.1) 75%,transparent 95%);pointer-events:none;box-shadow:0 0 20px rgba(224,176,48,.06),0 0 40px rgba(224,176,48,.03)}
 .inner{max-width:1200px;margin:0 auto}
 .s-head{font-family:var(--display);font-size:clamp(34px,5.5vw,56px);font-weight:700;color:var(--wh);text-align:center;margin-bottom:56px;line-height:1.1;letter-spacing:.04em;text-shadow:0 0 60px rgba(224,176,48,.06);position:relative;padding-bottom:28px;opacity:0;transform:translateY(40px);transition:opacity 1s var(--ease),transform 1s var(--ease),filter 1s var(--ease);filter:blur(4px)}
 .s-head.vis{opacity:1;transform:none;filter:blur(0)}
@@ -331,7 +336,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
 .s-head.vis::after{width:60px;left:calc(50% - 30px)}
 .s-sub{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dm);text-align:center;margin-top:-40px;margin-bottom:48px}
 /* GOLD DIVIDERS */
-.gw{height:1px;max-width:200px;margin:0 auto;background:var(--goldGrad);opacity:.4;animation:lineGlow 4s ease-in-out infinite;box-shadow:0 0 12px var(--accS),0 0 30px rgba(224,176,48,.06)}
+.gw{height:1px;max-width:200px;margin:0 auto;background:var(--goldGrad);opacity:.45;animation:lineGlow 4s ease-in-out infinite;box-shadow:0 0 16px var(--accS),0 0 40px rgba(224,176,48,.08),0 0 60px rgba(224,176,48,.03)}
 .gw-sm{height:1px;max-width:100px;margin:0 auto;background:var(--goldGrad);opacity:.35;box-shadow:0 0 16px rgba(224,176,48,.06),0 0 28px rgba(224,176,48,.04)}
 .gw-diamond{width:6px;height:6px;margin:24px auto;background:linear-gradient(135deg,#C49828,#F2E4A0,#C49828);transform:rotate(45deg);opacity:.4;box-shadow:0 0 12px rgba(224,176,48,.2),0 0 24px rgba(224,176,48,.06);animation:breathe 6s ease-in-out infinite;position:relative}
 .gw-diamond::before,.gw-diamond::after{content:'';position:absolute;top:50%;height:1px;width:clamp(40px,10vw,100px);background:linear-gradient(90deg,rgba(224,176,48,.25),transparent);transform:translateY(-50%)}
@@ -356,6 +361,31 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
 /* INNER CIRCLE */
 .circle-wrap{display:grid;gap:48px;align-items:start}
 .circle-text p{font-size:15px;color:var(--ow);line-height:1.8;margin-bottom:16px}.circle-text p:last-of-type{margin-bottom:0}
+/* Credential headline — gold gradient like hero */
+.cred-headline{font-family:var(--display);font-size:clamp(30px,4.5vw,44px);font-weight:900;line-height:1;letter-spacing:.05em;
+  background:linear-gradient(100deg,#8B6820 0%,#BF9930 24%,#D4B048 38%,#E8CC68 46%,#F5E8A8 50%,#E8CC68 56%,#D4B048 64%,#BF9930 76%,#8B6820 100%);
+  background-size:220% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:shimmer 5s ease-in-out infinite;filter:drop-shadow(0 0 24px rgba(224,176,48,.2))}
+/* Credential cards */
+.cred-card{display:flex;align-items:baseline;gap:14px;padding:16px 20px;border:1px solid var(--borderS);border-radius:12px;
+  background:linear-gradient(135deg,rgba(224,176,48,.05),rgba(224,176,48,.01) 40%,transparent 70%);
+  position:relative;overflow:hidden;transition:all .5s var(--ease)}
+.cred-card::before{content:'';position:absolute;inset:-1px;border-radius:12px;
+  background:linear-gradient(135deg,rgba(224,176,48,.12),transparent 40%,transparent 60%,rgba(224,176,48,.06));
+  -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;padding:1px;opacity:0;transition:opacity .5s;pointer-events:none}
+.cred-card:hover{border-color:var(--borderH);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.4),0 0 40px rgba(224,176,48,.06)}
+.cred-card:hover::before{opacity:1}
+.cred-num{font-family:var(--display);font-size:clamp(22px,3vw,28px);font-weight:700;line-height:1;white-space:nowrap;
+  background:var(--goldGrad);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s ease-in-out infinite;
+  filter:drop-shadow(0 0 12px rgba(224,176,48,.2))}
+.cred-title{font-family:var(--display);font-size:clamp(14px,1.9vw,18px);font-weight:600;color:var(--wh);letter-spacing:.03em;line-height:1.2}
+.cred-sub{font-family:var(--mono);font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:var(--dm);margin-top:5px;line-height:1.5}
+/* Training environment block */
+.env-block{padding:20px 22px;border-radius:14px;border:1px solid var(--borderS);
+  background:linear-gradient(145deg,rgba(0,0,0,.35),rgba(224,176,48,.015));
+  position:relative;overflow:hidden;transition:all .5s var(--ease)}
+.env-block::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:var(--goldGrad);opacity:.15}
+.env-block:hover{border-color:var(--borderH);box-shadow:0 8px 30px rgba(0,0,0,.3),0 0 30px rgba(224,176,48,.04)}
 .circle-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .circle-photo{border-radius:14px;overflow:hidden;border:1px solid var(--borderS);position:relative;cursor:pointer;transition:all .6s var(--ease);background:linear-gradient(110deg,var(--card) 30%,rgba(224,176,48,.04) 50%,var(--card) 70%);background-size:200% 100%;animation:imgShimmer 1.8s ease-in-out infinite}
 .circle-photo:has(img.loaded){animation:none;background:var(--card)}
@@ -370,11 +400,11 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 .circle-photo:hover .circle-label{opacity:1}
 /* STATS */
 .num-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:56px}
-.num-card{text-align:center;padding:32px 12px;background:linear-gradient(160deg,rgba(12,11,8,.9),rgba(18,16,10,.95));border:1px solid var(--borderS);border-radius:14px;transition:all .5s var(--ease);position:relative;overflow:hidden;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-.num-card::after{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;background:var(--goldGrad);opacity:0;transition:opacity .4s var(--ease);box-shadow:0 0 20px rgba(224,176,48,.3)}
-.num-card:hover{border-color:var(--border);transform:translateY(-6px);box-shadow:0 12px 50px rgba(0,0,0,.5),0 0 40px var(--accS),0 0 80px rgba(224,176,48,.04)}
-.num-card:hover::after{opacity:.8}
-.num-card::before{content:'';position:absolute;top:50%;left:50%;width:120px;height:120px;background:radial-gradient(circle,var(--accS),transparent 60%);transform:translate(-50%,-50%);opacity:0;transition:opacity .5s var(--ease);pointer-events:none}
+.num-card{text-align:center;padding:36px 16px;background:linear-gradient(160deg,rgba(12,11,8,.92),rgba(18,16,10,.96));border:1px solid var(--borderS);border-radius:14px;transition:all .5s var(--ease);position:relative;overflow:hidden;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 2px 16px rgba(0,0,0,.3),inset 0 1px 0 rgba(224,176,48,.04)}
+.num-card::after{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;background:var(--goldGrad);opacity:.2;transition:opacity .4s var(--ease);box-shadow:0 0 20px rgba(224,176,48,.3)}
+.num-card:hover{border-color:var(--border);transform:translateY(-6px);box-shadow:0 16px 60px rgba(0,0,0,.5),0 0 50px var(--accS),0 0 100px rgba(224,176,48,.05)}
+.num-card:hover::after{opacity:.9}
+.num-card::before{content:'';position:absolute;top:50%;left:50%;width:140px;height:140px;background:radial-gradient(circle,rgba(224,176,48,.08),transparent 60%);transform:translate(-50%,-50%);opacity:0;transition:opacity .5s var(--ease);pointer-events:none}
 .num-card:hover::before{opacity:1}
 .num-val{font-family:var(--display);font-size:clamp(28px,4vw,40px);font-weight:900;background:var(--goldGrad);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s ease-in-out infinite;line-height:1.1;filter:drop-shadow(0 0 20px rgba(224,176,48,.25))}
 .num-val.text-val{font-size:clamp(18px,2.5vw,24px)}
@@ -450,7 +480,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 .form-label{display:block;font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--dm);margin-bottom:8px;transition:color .3s}
 .form-group:focus-within .form-label{color:var(--acc)}
 .form-input,.form-select,.form-textarea{width:100%;padding:15px 18px;background:linear-gradient(160deg,rgba(10,9,6,.95),rgba(14,12,8,.98));border:1px solid var(--borderS);border-radius:10px;color:var(--wh);font-family:var(--body);font-size:15px;outline:none;transition:all .4s var(--ease);box-shadow:inset 0 2px 8px rgba(0,0,0,.2),0 1px 0 rgba(224,176,48,.03)}
-.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--acc);box-shadow:0 0 0 1px rgba(224,176,48,.2),0 0 24px rgba(224,176,48,.06),0 0 48px rgba(224,176,48,.03),inset 0 2px 8px rgba(0,0,0,.15);background:linear-gradient(160deg,rgba(14,12,8,.98),rgba(18,16,10,1))}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--acc);box-shadow:0 0 0 1px rgba(224,176,48,.25),0 0 30px rgba(224,176,48,.08),0 0 60px rgba(224,176,48,.04),inset 0 2px 8px rgba(0,0,0,.12);background:linear-gradient(160deg,rgba(14,12,8,.98),rgba(18,16,10,1))}
 .form-input::placeholder,.form-textarea::placeholder{color:var(--dmL);font-style:italic}
 .form-select{-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23706858' fill='none' stroke-width='1.2'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;padding-right:40px;cursor:pointer}
 .form-select:focus{background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23E0B030' fill='none' stroke-width='1.2'/%3E%3C/svg%3E")}
@@ -462,7 +492,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 .cta{position:relative;padding:140px 24px;text-align:center;overflow:hidden}
 .cta::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 5%,var(--acc) 50%,transparent 95%);opacity:.2}
 .cta-bg{position:absolute;inset:0;background-color:var(--bg);background-size:cover;background-position:center;background-repeat:no-repeat;filter:brightness(.3) contrast(1.15) saturate(1.1) sepia(.05);transition:opacity .8s var(--ease);opacity:0}.cta-bg.loaded{opacity:1}
-.cta-ov{position:absolute;inset:0;background:radial-gradient(ellipse 80% 70% at center,rgba(2,2,2,.5),rgba(2,2,2,.92))}
+.cta-ov{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at center,rgba(2,2,2,.45),rgba(2,2,2,.88) 60%,rgba(2,2,2,.96))}
 .cta::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 80%,rgba(224,176,48,.05),transparent 50%);z-index:0;pointer-events:none;animation:breathe 8s ease-in-out infinite}
 .cta-inner{position:relative;z-index:1;max-width:560px;margin:0 auto;border:1px solid var(--borderS);border-radius:20px;padding:64px 44px;background:rgba(2,2,2,.5);backdrop-filter:blur(24px) saturate(1.2);-webkit-backdrop-filter:blur(24px) saturate(1.2);transition:all .6s var(--ease);box-shadow:0 4px 60px rgba(0,0,0,.4)}
 .cta-inner::before{content:'';position:absolute;top:-1px;left:15%;right:15%;height:1.5px;background:var(--goldGrad);opacity:.35;border-radius:1px;box-shadow:0 0 20px rgba(224,176,48,.15)}
@@ -650,7 +680,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
   <div class="hero-content">
     <p class="hero-kicker">IFBB Pro · 2x Olympian · 2x World Champion</p>
     <h1>BIG MIKE ELY</h1>
-    <p class="hero-sub">The coach behind hundreds of pro cards. Back-to-back Masters World Champion. The standard is earned on real stages.</p>
+    <p class="hero-sub">Coaching Since 1996</p>
     <div class="hero-ctas">
       <a href="#contact" class="btn-p">Book a Session</a>
       <a href="#results" class="btn-s">See the Results</a>
@@ -666,13 +696,56 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 <section class="section" id="about" style="background:var(--surfGrad)">
   <div class="inner">
     <h2 class="s-head reveal">The Inner Circle</h2>
+    <p class="reveal" style="font-family:var(--mono);font-size:clamp(10px,1.4vw,12px);letter-spacing:.24em;text-transform:uppercase;color:var(--dm);text-align:center;margin-top:-36px;margin-bottom:56px;line-height:1.6">Invite-only coaching &mdash; 30 years in the making</p>
     <div class="circle-wrap">
       <div class="circle-text reveal-left">
-        <p style="font-family:var(--display);font-size:clamp(17px,2.2vw,20px);color:var(--wh);line-height:1.7;font-weight:600">
-          IFBB Pro card under Hany Rambod, 2013. Back-to-back Masters World Champion, 2024&nbsp;&amp;&nbsp;2025. Two-time Mr.&nbsp;Olympia. NPC&nbsp;Judge.
-        </p>
-        <p style="font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--dm);margin-top:24px">Center Stage Aesthetics &middot; <a href="https://osigym.com" target="_blank" rel="noopener" style="color:var(--dm);transition:color .2s" onmouseover="this.style.color='var(--acc)'" onmouseout="this.style.color='var(--dm)'">Old School Iron Gym</a> &middot; Brook Park, Ohio</p>
-        <p style="font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--dmL);margin-top:8px">Westside Barbell Certified &middot; The Midwest Mecca &middot; 16,000 sq&nbsp;ft</p>
+
+        <!-- PRIMARY CREDENTIAL — Olympia Competitor -->
+        <div style="margin-bottom:32px">
+          <div class="cred-headline">2&times; Olympian</div>
+          <div style="font-family:var(--mono);font-size:clamp(8px,1.1vw,10px);letter-spacing:.2em;text-transform:uppercase;color:var(--acc);margin-top:10px;line-height:1.6">IFBB Pro Olympia Stage &mdash; Invitation by world ranking only</div>
+        </div>
+
+        <!-- CREDENTIAL STACK -->
+        <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:28px">
+
+          <div class="cred-card">
+            <span class="cred-num">2&times;</span>
+            <div>
+              <div class="cred-title">IFBB Pro Masters World Champion</div>
+              <div class="cred-sub">Back-to-back &mdash; 2024 &amp; 2025 &middot; Of the 30,000+ NPC competitors each year, fewer than 300 turn pro &middot; Of those, a fraction ever qualify for a world-level stage &middot; Winning it twice, consecutively, places Mike among the rarest in the sport&rsquo;s history</div>
+            </div>
+          </div>
+
+          <div class="cred-card">
+            <span style="font-family:var(--display);font-size:18px;font-weight:700;color:var(--acc);line-height:1;filter:drop-shadow(0 0 8px rgba(224,176,48,.2))">&#9670;</span>
+            <div>
+              <div class="cred-title">IFBB Pro Card &mdash; Coached by Hany Rambod</div>
+              <div class="cred-sub">Earned his pro card with Hany &ldquo;The Pro Creator&rdquo; Rambod backstage &middot; 25 Olympia titles across 6 divisions &middot; Founder &amp; CEO, Evogen Nutrition &middot; Phil Heath (7&times; Mr.&nbsp;O), Chris Bumstead (5&times; Classic Physique), Jay Cutler, Hadi Choopan, Derek Lunsford, Jeremy Buendia (4&times; Men&rsquo;s Physique), Nicole Wilkins (4&times; Figure)</div>
+            </div>
+          </div>
+
+          <div class="cred-card">
+            <span style="font-family:var(--display);font-size:18px;font-weight:700;color:var(--acc);line-height:1;filter:drop-shadow(0 0 8px rgba(224,176,48,.2))">&#9670;</span>
+            <div>
+              <div class="cred-title">NPC National Judge</div>
+              <div class="cred-sub">Active judge &mdash; National Physique Committee</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- TRAINING ENVIRONMENT — separate visual block -->
+        <div class="env-block">
+          <div style="font-family:var(--mono);font-size:8px;letter-spacing:.24em;text-transform:uppercase;color:var(--acc);margin-bottom:14px">Training Home</div>
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px">
+            <span style="font-family:var(--display);font-size:clamp(14px,1.7vw,16px);font-weight:600;color:var(--wh);letter-spacing:.02em">Center Stage Aesthetics</span>
+            <span style="color:var(--borderH);font-size:10px">&middot;</span>
+            <a href="https://osigym.com" target="_blank" rel="noopener" style="font-family:var(--display);font-size:clamp(14px,1.7vw,16px);font-weight:600;color:var(--wh);letter-spacing:.02em;text-decoration:none;transition:color .2s" onmouseover="this.style.color='var(--acc)'" onmouseout="this.style.color='var(--wh)'">Old School Iron Gym</a>
+          </div>
+          <div style="font-family:var(--mono);font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:var(--dm);margin-top:10px;line-height:1.8">Brook Park, Ohio &middot; Westside Barbell Certified &middot; 16,000 sq&nbsp;ft &middot; The Midwest Mecca</div>
+        </div>
+
       </div>
       <div class="circle-grid reveal-right">
         <div class="circle-photo" onclick="openLB(this)" role="button" tabindex="0">
@@ -710,7 +783,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
     <!-- 4 stat cards -->
     <div class="num-grid">
       <div class="num-card reveal-scale"><div class="num-val">2x</div><div class="num-label">World Champion</div></div>
-      <div class="num-card reveal-scale"><div class="num-val">2x</div><div class="num-label">Mr. Olympia</div></div>
+      <div class="num-card reveal-scale"><div class="num-val">2x</div><div class="num-label">Olympian</div></div>
       <div class="num-card reveal-scale"><div class="num-val text-val">100s</div><div class="num-label">Athletes Turned Pro</div></div>
       <div class="num-card reveal-scale"><div class="num-val" data-count="1996">0</div><div class="num-label">Coaching Since</div></div>
     </div>
@@ -806,7 +879,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
         <div class="svc-num">01</div>
         <div class="svc-icon"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4v16"/><path d="M18 4v16"/><path d="M6 12h12"/><circle cx="6" cy="4" r="2"/><circle cx="6" cy="20" r="2"/><circle cx="18" cy="4" r="2"/><circle cx="18" cy="20" r="2"/></svg></div>
         <div class="svc-name">1-on-1 Training</div>
-        <div class="svc-desc">Your program. Your weaknesses. His eye. Every session at Old School Iron Gym is built around what you need to grow, not what's easy.</div>
+        <div class="svc-desc">Individual programming at Old School Iron Gym. Assessed, corrected, and progressed in person every session.</div>
         <a href="#contact" class="svc-book">Book &rarr;</a>
       </div>
 
@@ -816,7 +889,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
         <div class="svc-num">02</div>
         <div class="svc-icon"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5C6 4 6 6 6 6s0-2 1.5-2a2.5 2.5 0 0 1 0 5H6z"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5C18 4 18 6 18 6s0-2-1.5-2a2.5 2.5 0 0 0 0 5h1.5z"/><path d="M12 2v4"/><path d="M8.5 9l-2 11h11l-2-11z"/><path d="M12 9v11"/></svg></div>
         <div class="svc-name">Contest Prep</div>
-        <div class="svc-desc">Peak week. Posing. Nutrition. Pharmacology. Everything dialed by a coach who's stood on the Olympia stage himself and put hundreds of athletes through to their pro cards.</div>
+        <div class="svc-desc">Peak week protocols, stage-ready posing, nutrition periodization, and pharmacology management. From first show to pro qualifier.</div>
         <a href="#contact" class="svc-book">Book &rarr;</a>
       </div>
 
@@ -826,7 +899,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
         <div class="svc-num">03</div>
         <div class="svc-icon"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="9" y1="7" x2="15" y2="7"/><line x1="9" y1="11" x2="15" y2="11"/><line x1="9" y1="15" x2="13" y2="15"/></svg></div>
         <div class="svc-name">Nutrition Planning</div>
-        <div class="svc-desc">Not a template from the internet. Every gram calculated from three decades of bringing athletes to the stage in peak condition.</div>
+        <div class="svc-desc">Macro-calculated meal plans built for your metabolism, training phase, and competition timeline. Adjusted weekly.</div>
         <a href="#contact" class="svc-book">Book &rarr;</a>
       </div>
 
@@ -836,7 +909,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
         <div class="svc-num">04</div>
         <div class="svc-icon"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2"/><path d="M12 7v5"/><path d="M8 22l2-7"/><path d="M16 22l-2-7"/><path d="M7 12l5 0 5 0"/><path d="M7 12l-2 3"/><path d="M17 12l2 3"/></svg></div>
         <div class="svc-name">Posing Sessions</div>
-        <div class="svc-desc">Judges score what they see. A 2x World Champion teaches you how to command the stage and present a physique that wins.</div>
+        <div class="svc-desc">Mandatory and individual routines taught by a 2x World Champion and active NPC judge. Transitions, timing, and presentation.</div>
         <a href="#contact" class="svc-book">Book &rarr;</a>
       </div>
 
@@ -846,7 +919,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
         <div class="svc-num">05</div>
         <div class="svc-icon"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
         <div class="svc-name">Online Coaching</div>
-        <div class="svc-desc">Same championship-level programming, delivered remotely. Weekly check-ins, real-time adjustments, zero compromise. Anywhere in the world.</div>
+        <div class="svc-desc">Full programming delivered remotely. Weekly check-ins, real-time adjustments, video reviews. Available worldwide.</div>
         <a href="#contact" class="svc-book">Book &rarr;</a>
       </div>
 
@@ -857,7 +930,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
         <div class="svc-num">06</div>
         <div class="svc-icon"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg></div>
         <div class="svc-name">Full Coaching Package</div>
-        <div class="svc-desc">Training, nutrition, supplementation, and contest prep — every variable under one roof, one coach, one standard. This is how pro cards get earned.</div>
+        <div class="svc-desc">Training, nutrition, supplementation, pharmacology, and contest prep. Every variable managed under one program by one coach.</div>
         <a href="#contact" class="svc-book">Book &rarr;</a>
       </div>
 
@@ -1025,7 +1098,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 <section class="cta">
   <div class="cta-bg"></div><div class="cta-ov"></div>
   <div class="cta-inner reveal-scale">
-    <div class="cta-quote">The standard is earned, not given.</div>
+    <div class="cta-quote">The results are the résumé.</div>
     <div class="gw" style="max-width:40px;margin:0 auto 28px"></div>
     <h2 class="s-head" style="margin-bottom:24px" data-wc="cta-heading">Your Move</h2>
     <a href="#contact" class="btn-p" data-wc="cta-button">Start the Conversation</a>
@@ -1037,7 +1110,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 <section class="section" id="contact">
   <div class="inner" style="max-width:600px;text-align:center">
     <h2 class="s-head reveal">Message Mike</h2>
-    <p class="reveal" style="font-size:16px;color:var(--ow);line-height:1.8;margin-bottom:32px">Tell Mike about your goals and where you are in the sport. He reviews every single inquiry personally and responds within 24&nbsp;hours.</p>
+    <p class="reveal" style="font-size:16px;color:var(--ow);line-height:1.8;margin-bottom:32px">All inquiries reviewed personally. Include your competition history, current standing, and goals. Response within 24&nbsp;hours.</p>
     <form class="reveal" id="contactForm" style="text-align:left;max-width:480px;margin:0 auto 24px" onsubmit="return submitContactForm(event)">
       <div class="form-group">
         <label class="form-label">Name</label>
@@ -1076,7 +1149,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 <!-- FOOTER -->
 <footer class="footer">
   <div class="footer-mark">M</div>
-  <div class="footer-sig">Championship-level coaching.</div>
+  <div class="footer-sig">IFBB Pro &middot; 2x Olympian &middot; 2x World Champion &middot; NPC Judge &middot; Since 1996</div>
   <div class="footer-links">
     <a href="#about">About</a><a href="#results">Results</a><a href="#services">Services</a><a href="#gallery">Gallery</a>
     <a href="#contact">Book</a>
