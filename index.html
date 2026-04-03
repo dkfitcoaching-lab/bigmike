@@ -125,16 +125,26 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
 /* SCROLL PROGRESS */
 .scroll-progress{position:fixed;top:0;left:0;height:2px;width:0;background:var(--goldGrad);z-index:9999;pointer-events:none;box-shadow:0 0 8px var(--accGlow),0 0 20px rgba(224,176,48,.1)}
 /* BRAND REVEAL */
-.brand-reveal{position:fixed;inset:0;z-index:10000;background:#020202;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.brand-reveal::before{content:'';position:absolute;top:50%;left:50%;width:400px;height:400px;background:radial-gradient(circle,rgba(224,176,48,.06),transparent 70%);transform:translate(-50%,-50%);animation:breathe 3s ease-in-out infinite;pointer-events:none}
-.br-kicker{font-family:var(--mono);font-size:8px;letter-spacing:.5em;text-transform:uppercase;color:var(--acc);opacity:0;animation:brIn .8s var(--ease) .3s forwards;margin-bottom:20px}
-.br-name{font-family:var(--display);font-size:clamp(36px,9vw,60px);font-weight:900;line-height:1;background:var(--goldGrad);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;opacity:0;animation:brIn .9s var(--ease) .7s forwards,shimmer 4s ease-in-out infinite;margin-bottom:16px;letter-spacing:.06em}
-.br-line{height:1px;width:0;background:var(--goldGrad);animation:brGrow .8s var(--ease) 1.2s forwards;box-shadow:0 0 30px var(--accGlow)}
-.br-title{font-family:var(--mono);font-size:7.5px;letter-spacing:.55em;text-transform:uppercase;color:var(--dm);opacity:0;animation:brIn .6s var(--ease) 1.6s forwards;margin-top:18px}
-.brand-reveal.exit{animation:brExit 1s cubic-bezier(.4,0,1,1) forwards}
-@keyframes brIn{from{opacity:0;transform:translateY(12px);filter:blur(4px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
-@keyframes brGrow{from{width:0;opacity:0}to{width:100px;opacity:1}}
-@keyframes brExit{to{opacity:0;transform:scale(1.02);filter:blur(8px)}}
+.brand-reveal{position:fixed;inset:0;z-index:10000;background:#020202;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
+.brand-reveal::before{content:'';position:absolute;top:50%;left:50%;width:600px;height:600px;background:radial-gradient(circle,rgba(224,176,48,.08),rgba(224,176,48,.03) 40%,transparent 70%);transform:translate(-50%,-50%);animation:breathe 3s ease-in-out infinite;pointer-events:none}
+.brand-reveal::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,transparent 30%,rgba(224,176,48,.02) 50%,transparent 70%);animation:brPulse 4s ease-in-out infinite;pointer-events:none}
+.br-kicker{font-family:var(--mono);font-size:10px;letter-spacing:.6em;text-transform:uppercase;color:var(--acc);opacity:0;animation:brIn .8s var(--ease) .3s forwards;margin-bottom:24px;text-shadow:0 0 30px rgba(224,176,48,.4)}
+.br-name{font-family:var(--display);font-size:clamp(48px,12vw,90px);font-weight:900;line-height:1;background:var(--goldGrad);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;opacity:0;animation:brIn .9s var(--ease) .7s forwards,shimmer 4s ease-in-out infinite;margin-bottom:20px;letter-spacing:.06em;filter:drop-shadow(0 0 40px rgba(224,176,48,.3))}
+.br-line{height:1px;width:0;background:var(--goldGrad);animation:brGrow .8s var(--ease) 1.2s forwards;box-shadow:0 0 40px var(--accGlow),0 0 80px rgba(224,176,48,.15)}
+.br-title{font-family:var(--mono);font-size:9px;letter-spacing:.5em;text-transform:uppercase;color:var(--mu);opacity:0;animation:brIn .6s var(--ease) 1.6s forwards;margin-top:22px;text-shadow:0 0 20px rgba(224,176,48,.1)}
+.br-corners{position:absolute;width:clamp(200px,40vw,400px);height:clamp(200px,40vw,400px);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+.br-corners::before,.br-corners::after{content:'';position:absolute;width:40px;height:40px;border-color:var(--acc);opacity:0;animation:brCorners 1s var(--ease) 1s forwards}
+.br-corners::before{top:0;left:0;border-top:1px solid;border-left:1px solid}
+.br-corners::after{bottom:0;right:0;border-bottom:1px solid;border-right:1px solid}
+.br-corner-br,.br-corner-tl{position:absolute;width:40px;height:40px;border-color:var(--acc);opacity:0;animation:brCorners 1s var(--ease) 1s forwards}
+.br-corner-tl{top:0;right:0;border-top:1px solid;border-right:1px solid}
+.br-corner-br{bottom:0;left:0;border-bottom:1px solid;border-left:1px solid}
+.brand-reveal.exit{animation:brExit 1.2s cubic-bezier(.4,0,1,1) forwards}
+@keyframes brIn{from{opacity:0;transform:translateY(16px);filter:blur(6px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
+@keyframes brGrow{from{width:0;opacity:0}to{width:140px;opacity:1}}
+@keyframes brExit{to{opacity:0;transform:scale(1.05);filter:blur(12px)}}
+@keyframes brCorners{from{opacity:0;transform:scale(.8)}to{opacity:.3;transform:scale(1)}}
+@keyframes brPulse{0%,100%{opacity:.3}50%{opacity:.8}}
 /* OVERLAYS */
 .grain{position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:.028}
 .vignette{position:fixed;inset:0;z-index:9997;pointer-events:none;background:radial-gradient(ellipse at center,rgba(224,176,48,.008) 20%,transparent 50%,rgba(0,0,0,.5))}
@@ -387,6 +397,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 
 <!-- BRAND REVEAL -->
 <div class="brand-reveal" aria-hidden="true" id="brandReveal">
+  <div class="br-corners"><div class="br-corner-tl"></div><div class="br-corner-br"></div></div>
   <div class="br-kicker">IFBB Pro</div>
   <div class="br-name">Big Mike Ely</div>
   <div class="br-line"></div>
@@ -405,28 +416,27 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 
 <!-- NAV -->
 <nav class="nav" id="nav">
-  <a href="#" class="nav-brand" aria-label="Big Mike Ely — Home">
-    <span class="monogram">BME</span>
-    <span class="nav-name">Big Mike Ely</span>
+  <a href="#" class="nav-logo" aria-label="Big Mike Ely — Home">
+    <div class="nav-mark">BME</div>
+    <div class="nav-name">Big Mike Ely</div>
   </a>
   <div class="nav-links">
-    <a href="#about" data-nav="about">About</a>
-    <a href="#results" data-nav="results">Results</a>
-    <a href="#services" data-nav="services">Services</a>
-    <a href="#gallery" data-nav="gallery">Gallery</a>
-    <a href="#contact" class="btn-gold nav-cta" data-nav="contact">Book</a>
+    <a href="#about" data-nav>About</a>
+    <a href="#results" data-nav>Results</a>
+    <a href="#services" data-nav>Services</a>
+    <a href="#gallery" data-nav>Gallery</a>
+    <a href="#contact" class="nav-cta">Book</a>
   </div>
-  <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false">
-    <span></span><span></span><span></span>
-  </button>
+  <button class="nav-burger" id="navBurger" aria-label="Open menu"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
 </nav>
 
 <!-- MOBILE MENU -->
-<div class="mm" id="mm" aria-hidden="true">
-  <a href="#about" data-nav="about">About</a>
-  <a href="#results" data-nav="results">Results</a>
-  <a href="#services" data-nav="services">Services</a>
-  <a href="#gallery" data-nav="gallery">Gallery</a>
+<div class="mm" id="mm" role="dialog" aria-modal="true">
+  <button class="mm-close" id="mmClose" aria-label="Close menu">&times;</button>
+  <a href="#about" class="mm-link">About</a>
+  <a href="#results" class="mm-link">Results</a>
+  <a href="#services" class="mm-link">Services</a>
+  <a href="#gallery" class="mm-link">Gallery</a>
   <a href="#contact" class="mm-cta">Book a Session</a>
   <div class="mm-badge">IFBB Pro Big Mike Ely</div>
 </div>
@@ -455,8 +465,8 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
       <a href="#results" class="btn-s">See the Results</a>
     </div>
   </div>
-  <div class="hero-scroll" aria-hidden="true">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+  <div class="hero-scroll" id="heroScroll" aria-hidden="true">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
   </div>
 </section>
 <div class="gw-sm"></div>
