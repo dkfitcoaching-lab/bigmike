@@ -21,7 +21,7 @@ DO NOT TOUCH app.html, portal.html, or book.html — only index.html (public lan
 ### Inner Circle (People Who Matter)
 | File | Description | Use | Crop |
 |------|------------|-----|------|
-| `about-lifestyle.jpg` | Mike + Dejan, matching tropical outfits, poolside | **Partner — featured prominently** | center top |
+| `about-lifestyle.jpg` | Mike + wife Allie, matching tropical outfits, poolside | **Wife — featured prominently** | center center |
 | `about-hany-rambod.jpg` | Mike backstage with Hany Rambod (coached Jay Cutler, Phil Heath) | **Legend #1** | center center |
 | `about-tom-platz.jpg` | Mike with Tom Platz "The Quadfather" | **Legend #2** | center top |
 | `about-roelly.jpg` | Mike with Roelly Winklaar, Yamamoto shirts | **Legend #3** | center 35% |
@@ -74,7 +74,8 @@ DO NOT TOUCH app.html, portal.html, or book.html — only index.html (public lan
 - **Old School Iron Gym, Ohio** (gym where he trains — Square site has WRONG address)
 - **Coaching since 1996** — 30+ years
 - **NPC Judge**
-- **Dejan** = co-owner of Center Stage Aesthetics (male business partner, NOT wife)
+- Wife's name: **Allie** (in about-lifestyle.jpg photo)
+- **Dejan** = male business partner, co-owner of Center Stage Aesthetics (NOT wife)
 
 ## SOCIAL LINKS
 - Instagram (personal): https://instagram.com/ifbbpromikeely

@@ -227,14 +227,14 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
 .circle-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .circle-photo{border-radius:12px;overflow:hidden;border:1px solid var(--borderS);position:relative;cursor:pointer;transition:all .5s var(--ease);background:linear-gradient(110deg,var(--card) 30%,var(--cardH) 50%,var(--card) 70%);background-size:200% 100%;animation:imgShimmer 1.5s ease-in-out infinite}
 .circle-photo:has(img.loaded){animation:none;background:var(--card)}
-.circle-photo img{width:100%;height:100%;object-fit:cover;object-position:center top;transition:transform .6s var(--ease),opacity .6s var(--ease);filter:contrast(1.05) brightness(.95)}
+.circle-photo img{width:100%;height:100%;object-fit:cover;object-position:center 25%;transition:transform .6s var(--ease),opacity .6s var(--ease);filter:contrast(1.05) brightness(.95)}
 img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="lazy"].loaded{opacity:1}
 .circle-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(0,0,0,.6));pointer-events:none;opacity:.7;transition:opacity .5s}
 .circle-photo:hover::after{opacity:.4}
 .circle-photo:hover{transform:scale(1.02);border-color:var(--borderH);box-shadow:0 8px 40px rgba(0,0,0,.5),0 0 30px var(--accS)}
 .circle-photo:hover img{transform:scale(1.04)}
 .circle-photo-lg{grid-column:1/-1;aspect-ratio:16/9;max-height:380px}
-.circle-photo-lg img{object-position:center 25%}
+.circle-photo-lg img{object-position:center center}
 .circle-photo:not(.circle-photo-lg){aspect-ratio:1/1}
 .circle-label{position:absolute;bottom:0;left:0;right:0;padding:10px 14px;background:linear-gradient(transparent,rgba(0,0,0,.85));font-family:var(--mono);font-size:9px;letter-spacing:.08em;color:var(--ow);text-transform:uppercase;opacity:.7;transition:opacity .3s}
 .circle-photo:hover .circle-label{opacity:1}
@@ -253,7 +253,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 .results-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
 .results-photo{border-radius:10px;overflow:hidden;position:relative;border:1px solid var(--borderS);aspect-ratio:4/3;cursor:pointer;transition:transform .5s var(--ease),box-shadow .5s var(--ease),border-color .3s;background:linear-gradient(110deg,var(--card) 30%,var(--cardH) 50%,var(--card) 70%);background-size:200% 100%;animation:imgShimmer 1.5s ease-in-out infinite}
 .results-photo:has(img.loaded){animation:none;background:var(--card)}
-.results-photo img{width:100%;height:100%;object-fit:cover;object-position:center top;transition:transform .6s var(--ease),filter .6s;filter:contrast(1.05) brightness(.92)}
+.results-photo img{width:100%;height:100%;object-fit:cover;object-position:center 25%;transition:transform .6s var(--ease),filter .6s;filter:contrast(1.05) brightness(.92)}
 .results-photo:hover img{transform:scale(1.05);filter:contrast(1.08) brightness(1)}
 .results-photo::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--goldGrad);opacity:0;transition:opacity .4s var(--ease);box-shadow:0 0 20px var(--accGlow)}
 .results-photo:hover::after{opacity:1}
@@ -287,7 +287,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 .gal-item.featured:hover::after{opacity:.5}
 .gal-item.featured img{filter:contrast(1.08) brightness(.92) saturate(1.05)}
 .gal-item.featured:hover img{filter:contrast(1.1) brightness(1.02) saturate(1.1)}
-.gal-item img{width:100%;height:100%;object-fit:cover;object-position:center top;transition:transform .6s var(--ease),filter .6s var(--ease);filter:contrast(1.05) brightness(.9)}
+.gal-item img{width:100%;height:100%;object-fit:cover;object-position:center 25%;transition:transform .6s var(--ease),filter .6s var(--ease);filter:contrast(1.05) brightness(.9)}
 .gal-item:hover img{transform:scale(1.06);filter:contrast(1.08) brightness(1)}
 .gal-item:hover{box-shadow:0 0 40px rgba(224,176,48,.1),0 0 70px rgba(224,176,48,.05);border-color:var(--border);transform:translateY(-4px)}
 .gal-label{position:absolute;bottom:0;left:0;right:0;padding:10px 14px;background:linear-gradient(transparent,rgba(0,0,0,.85));font-family:var(--mono);font-size:8px;letter-spacing:.08em;color:var(--ow);opacity:0;transition:opacity .35s;text-transform:uppercase}
@@ -491,19 +491,19 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
         </div>
       </div>
       <div class="circle-grid reveal-right">
-        <!-- Wife - LARGE, spans 2 columns -->
+        <!-- Mike & Allie (wife) - LARGE, spans 2 columns -->
         <div class="circle-photo circle-photo-lg" onclick="openLB(this)" role="button" tabindex="0">
-          <img src="img/about-lifestyle.jpg" alt="Mike and Dejan — Center Stage Aesthetics" loading="lazy">
-          <div class="circle-label">Mike &amp; Dejan — Center Stage Aesthetics</div>
+          <img src="img/about-lifestyle.jpg" alt="Mike and his wife Allie" loading="lazy" style="object-position:center center">
+          <div class="circle-label">Mike &amp; Allie</div>
         </div>
         <!-- Hany Rambod -->
         <div class="circle-photo" onclick="openLB(this)" role="button" tabindex="0">
-          <img src="img/about-hany-rambod.jpg" alt="Mike with Hany Rambod" loading="lazy">
+          <img src="img/about-hany-rambod.jpg" alt="Mike with Hany Rambod" loading="lazy" style="object-position:center 25%">
           <div class="circle-label">With Hany Rambod</div>
         </div>
         <!-- Tom Platz -->
         <div class="circle-photo" onclick="openLB(this)" role="button" tabindex="0">
-          <img src="img/about-tom-platz.jpg" alt="Mike with Tom Platz" loading="lazy">
+          <img src="img/about-tom-platz.jpg" alt="Mike with Tom Platz — The Quadfather" loading="lazy" style="object-position:center 15%">
           <div class="circle-label">With Tom Platz</div>
         </div>
         <!-- Roelly -->
@@ -513,7 +513,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
         </div>
         <!-- Dad - tribute -->
         <div class="circle-photo" onclick="openLB(this)" role="button" tabindex="0">
-          <img src="img/about-dad.jpg" alt="Mike with his father" loading="lazy">
+          <img src="img/about-dad.jpg" alt="Mike with his father" loading="lazy" style="object-position:center 25%">
           <div class="circle-label">Like father, like son</div>
         </div>
       </div>
