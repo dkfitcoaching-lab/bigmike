@@ -1,221 +1,277 @@
 # MASTER PLAN: Big Mike Ely Landing Page — $250k Agency-Quality Rebuild
-
-## STATUS: IN PROGRESS
-## Current Score: 38/100 → Target: 99/100
-
----
-
-## CRITICAL CONTEXT
-- This is a public-facing landing page for IFBB Pro Big Mike Ely
-- Must look like a $250k agency build — not a template, not amateur
-- Every pixel, animation, word matters
-- Photos uploaded: hero-stage-2025.jpg, hany-rambod, tom-platz, roelly, lifestyle, gym shots, results, gallery
-- Missing photos needed: wife, dad (need from user)
+# STATUS: BUILDING NOW
+# Score Target: 38/100 → 99/100
+# Last Updated: 2026-04-02
 
 ---
 
-## PHASE 1: HERO — THE FIRST 3 SECONDS (Highest Impact)
-
-### Current Problems:
-- Uses `gallery-most-muscular-stage.jpg` instead of dedicated `hero-stage-2025.jpg`
-- Hero text just says "Big Mike Ely" — no emotional hook
-- Single CTA button, no subtitle text selling him
-- Ken Burns animation is subtle but hero feels flat
-- No depth layers or cinematic feel on first load
-
-### Plan:
-1. **Switch hero image** to `hero-stage-2025.jpg`
-2. **Add powerful subtitle** under name: "2x World Champion. Olympian. The Coach Behind Hundreds of Pro Cards."
-3. **Dual CTAs**: "Book a Session" (primary gold) + "See the Results" (ghost/secondary)
-4. **Hero gradient redesign**: Deeper cinematic blend — subject visible top 60%, text area bottom 40% with rich dark gradient
-5. **Animated gold accent line** that draws across under the name
-6. **Staggered load animation**: kicker → name → subtitle → line → CTAs, each with spring physics feel
-7. **Floating golden particles** enhanced — more visible, different sizes, slight blur depth of field
-8. **Atmospheric orbs** — more pronounced warm gold glow behind subject
+## INSTRUCTIONS FOR ANY SESSION
+Read this file + index.html. Then execute. Every detail below is final.
+DO NOT TOUCH app.html, portal.html, or book.html — only index.html (public landing page).
 
 ---
 
-## PHASE 2: LAYOUT RESTRUCTURE — WHAT MATTERS FIRST
+## PHOTO INVENTORY (Verified — Every Image Visually Confirmed)
 
-### Current Order (Wrong):
-Hero → Trust Bar → Services → About → Results → Gallery → CTA → Contact
+### Hero
+| File | Description | Use |
+|------|------------|-----|
+| `hero-stage-2025.jpg` | Mike on stage, CROWN on head, most muscular, world champion moment | **PRIMARY HERO** |
 
-### New Order (Correct):
-Hero → Inner Circle (Mike + Legends) → The Record (Stats + Results Photos) → Services → Gallery → CTA → Contact
+### Inner Circle (People Who Matter)
+| File | Description | Use | Crop |
+|------|------------|-----|------|
+| `about-lifestyle.jpg` | Mike + wife Dejan, matching tropical outfits, poolside | **Wife — featured prominently** | center top |
+| `about-hany-rambod.jpg` | Mike backstage with Hany Rambod (coached Jay Cutler, Phil Heath) | **Legend #1** | center center |
+| `about-tom-platz.jpg` | Mike with Tom Platz "The Quadfather" | **Legend #2** | center top |
+| `about-roelly.jpg` | Mike with Roelly Winklaar, Yamamoto shirts | **Legend #3** | center 35% |
 
-### Why:
-- The PEOPLE in Mike's life (Hany Rambod, Tom Platz, Roelly, wife, dad) are the strongest social proof
-- Put them RIGHT AFTER the hero — visitors see Mike with bodybuilding LEGENDS immediately
-- Services are important but less visually impactful — move down
-- Trust bar ("as featured in") can be removed or made subtler — the photos ARE the trust
+### Mike Solo (Best Shots)
+| File | Description | Use | Crop |
+|------|------------|-----|------|
+| `about-back-gym.jpg` | Back shot in gym — INSANE development, rear lat spread | CTA background / gallery feature | center center |
+| `about-gym-olympia.jpg` | Vacuum/abs pose in gym, smiling, Cleveland sign | About section | center top |
+| `gallery-gym-recent.jpg` | Full body gym shot, posing | Gallery | center center |
+| `gallery-most-muscular-stage.jpg` | Most muscular on stage, dramatic lighting | Gallery feature | center center |
+| `gallery-champion-2024.jpg` | Most muscular on stage, trophies visible | Gallery | center 20% |
 
----
+### Pro Card Results (Coached Athletes)
+| File | Description | Use |
+|------|------------|-----|
+| `results-procard-lindsay.jpg` | Lindsay + Mike holding IFBB PRO CARD sign | Results |
+| `results-procard-lindsay-stage.jpg` | Lindsay on stage with pro card, dramatic | Results |
+| `results-procard-backstage.jpg` | Mike + athlete backstage, IFBB PRO CARD | Results |
+| `results-procard-rob.jpg` | Mike + Rob, Rob holding IFBB PRO CARD | Results |
+| `results-procard-ladies.jpg` | Female athlete on stage with medal | Results |
+| `results-procard-female.jpg` | Female athlete holding pro card sign with Mike | Results |
+| `results-group.jpg` | MASSIVE group photo, ~50+ athletes at gym | Results — social proof |
 
-## PHASE 3: "INNER CIRCLE" SECTION (New — Replaces About)
-
-### Design:
-- Large cinematic heading: "The Inner Circle" or "Built With Legends"
-- Mike's bio paragraph — shorter, punchier, more editorial
-- **Photo grid with premium hover effects:**
-  - LARGE: Mike with Hany Rambod (the most credibility — Hany coached Jay Cutler, Phil Heath)
-  - LARGE: Mike with Tom Platz (The Quadfather — instant bodybuilding credibility)
-  - MEDIUM: Mike with Roelly Winklaar
-  - MEDIUM: Mike's wife (need photo from user)
-  - MEDIUM: Mike's dad (need photo from user)
-- Each photo has:
-  - Subtle gold border glow on hover
-  - Name label that slides up on hover
-  - Parallax micro-movement on scroll
-  - Premium aspect ratios (not all the same)
-
-### Bio Text (Editorial, punchy):
-"Mike Ely didn't learn coaching from a certification course. He learned it from 30 years under the bar, on the stage, and in the trenches with the greatest names in bodybuilding. Two-time IFBB Pro Masters World Champion. Masters Mr. Olympia competitor. NPC Judge. And the coach behind hundreds of pro cards since 1996."
-
----
-
-## PHASE 4: STATS / RECORD SECTION
-
-### Current Problems:
-- Stats repeat in both About and Results sections
-- Number cards look generic
-- Results photos are small and undifferentiated
-
-### Plan:
-- **Massive stat counters** with animated count-up on scroll
-- **4 key stats**: "2x" World Champion, "30+" Years, "100s" Pro Cards, "Since 1996"
-- Each stat card: dark glass background, gold number, subtle breathing glow
-- Below stats: **Results photo grid** — larger photos, staggered grid, gold accent borders
-- Each result photo: name overlay, "Pro Card Earned" badge
-
----
-
-## PHASE 5: SERVICES — PREMIUM CARD REDESIGN
-
-### Current Problems:
-- Cards look like every other coaching site template
-- SVG icons are generic
-- Text descriptions could be stronger
-
-### Plan:
-- **Glass morphism cards** with deeper depth
-- **Premium scan-line hover effect** (already partially implemented)
-- **Larger service icons** with gold gradient fill on hover
-- **Rewrite service descriptions** — more editorial, less generic
-- **"Signature" badge** on Full Coaching Package more prominent
-- **Hover state**: card lifts more dramatically, gold top border glows
+### Gallery (Competition)
+| File | Description |
+|------|------------|
+| `gallery-back-dbl-bicep.jpg` | Back double bicep |
+| `gallery-side-chest-stage.jpg` | Side chest on stage |
+| `gallery-most-muscular-crab.jpg` | Crab most muscular |
+| `gallery-wings-chicago-2015.jpg` | Wings of Strength Chicago 2015 |
+| `gallery-wings-stage.jpg` | Back double bicep on stage |
+| `gallery-gym-side-tricep.jpg` | Side tricep in gym |
+| `gallery-ferrigno-prep.jpg` | Ferrigno Legacy prep |
+| `gallery-muscular-dev-2013.jpg` | Muscular Development 2013 |
+| `gallery-posing-clinic.jpg` | Posing clinic |
+| `gallery-stage-2014.jpg` | On stage 2014 |
+| `gallery-gym-prep-2014.jpg` | Gym prep 2014 |
+| `gallery-procard-story.jpg` | Pro card story |
+| `gallery-transformation.jpg` | Transformation over years |
+| `new-trophy-event.jpg` | EMPTY FILE (0 bytes) — do not use |
 
 ---
 
-## PHASE 6: GALLERY — WORLD-CLASS PRESENTATION
+## CORRECTED FACTS (User-Confirmed)
+- **2x Olympian** (competed at Mr. Olympia TWICE — not just "competitor")
+- **2024 AND 2025 IFBB Pro Masters World Champion** (back-to-back titles)
+- **Hundreds of pro clients** (not just "pro cards" — hundreds of actual pro-level athletes)
+- **Center Stage Aesthetics** = Mike + Dejan's coaching business
+- **Old School Iron Gym, Ohio** (gym where he trains — Square site has WRONG address)
+- **Coaching since 1996** — 30+ years
+- **NPC Judge**
+- Wife's name: **Dejan** (co-owner of Center Stage Aesthetics)
 
-### Current Problems:
-- All items same size except one "featured"
-- Feels like a basic grid, not a curated gallery
-- Labels only show on hover (miss the story)
-
-### Plan:
-- **Magazine-style masonry layout**: varying sizes create visual rhythm
-- **2-3 featured hero images** spanning full width or 2 columns
-- **Lazy-loaded with shimmer placeholders** (already implemented)
-- **Lightbox**: smoother transitions, swipe on mobile, pinch-to-zoom
-- **Category feel**: Competition shots grouped, gym shots grouped, lifestyle grouped
-- Always show labels (they tell Mike's story)
-
----
-
-## PHASE 7: ANIMATIONS & LOADING EXPERIENCE
-
-### Current:
-- Brand reveal is nice but could be more dramatic
-- Reveal animations are basic fade-up
-- No scroll-driven animations
-
-### Plan:
-- **Brand reveal**: Add golden particle burst as name appears
-- **Section reveals**: Different animation per section type
-  - Stats: count up with spring bounce
-  - Photos: scale up from center with blur-to-sharp
-  - Cards: stagger from left with slight rotation
-  - Text: character-by-character or word-by-word for headings
-- **Scroll progress indicator**: thin gold line at top of viewport
-- **Parallax layers**: hero orbs move at different speeds
-- **Gold accent borders**: pulsing glow animation on section dividers
+## SOCIAL LINKS
+- Instagram (personal): https://instagram.com/ifbbpromikeely
+- Instagram (business): https://instagram.com/center_stage_aesthetics
+- Facebook: https://facebook.com/BIGMIKEELY
+- Square (reference only): https://big-mike-108395.square.site/
 
 ---
 
-## PHASE 8: TYPOGRAPHY & COLOR REFINEMENTS
+## PAGE STRUCTURE (Final Order)
 
-### Current Issues:
-- Font sizes could be more dramatic
-- Gold gradient could be richer
-- Text contrast needs checking
-
-### Plan:
-- **Hero name**: Even larger on desktop (clamp to 140px)
-- **Section headings**: More weight variation, tighter letter-spacing
-- **Gold gradient**: Add more stops for richer metallic look
-- **Body text**: Slightly larger (16px base), better line-height
-- **Accent colors**: Ensure gold pops against dark backgrounds
-- **Text shadows**: More dramatic on hero, subtle elsewhere
-
----
-
-## PHASE 9: CONTACT / BOOKING
-
-### Current:
-- Simple form that posts to Supabase
-- User mentioned wanting Square booking to work without Square
-
-### Plan:
-- **Keep Supabase form** (it works, it's simple)
-- **Add booking calendar** if Square integration is desired (separate task)
-- **Better form styling**: Premium input focus states, animated labels
-- **Social proof near form**: "Mike reviews every inquiry personally"
-- **Response time badge**: "Typically responds within 24 hours"
+```
+1. BRAND REVEAL (3s cinematic intro)
+2. NAV (fixed, glass morphism on scroll)
+3. HERO (hero-stage-2025.jpg — crowned world champion)
+4. INNER CIRCLE (wife + legends + bio — strongest social proof)
+5. THE RECORD (stats + pro card results photos)
+6. SERVICES (6 premium cards)
+7. GALLERY (magazine masonry — competition + gym)
+8. CTA (dramatic close with back shot background)
+9. CONTACT ("Message Mike" — Supabase form + socials)
+10. FOOTER
+```
 
 ---
 
-## PHASE 10: MOBILE EXCELLENCE
+## SECTION-BY-SECTION SPECIFICATION
 
-### Current:
-- Mobile styles exist but could be more polished
-- Hero on mobile needs to feel as premium as desktop
+### 1. BRAND REVEAL
+- Keep current: "IFBB Pro" kicker → "Big Mike Ely" gold gradient → gold line → "World Champion · Olympian · Coach"
+- Enhancement: Add "2x" before World Champion
+- Timing: 2.8s display → 1s exit fade
+- After exit: hero visible immediately, no flash
 
-### Plan:
-- **Mobile hero**: Full bleed photo, text overlay at bottom with glassmorphism
-- **Touch interactions**: Smooth swipe for gallery, haptic-feel buttons
-- **Bottom CTA bar**: Sticky "Book Now" that appears after scrolling past hero
-- **Performance**: Ensure <3s load on 4G
+### 2. NAV
+- Left: BME monogram + "Big Mike Ely"
+- Right links: About · Results · Services · Gallery · [Book] (gold CTA button)
+- Mobile: hamburger → full-screen overlay menu
+- On scroll: glass morphism background, slight shrink, border bottom glow
+
+### 3. HERO
+- **Image**: `hero-stage-2025.jpg` (Mike with crown, most muscular, on stage)
+- **Position**: `center 15%` (keeps crown and upper body visible)
+- **Gradient overlay**: Bottom 45% fades to pure black for text readability
+- **Ken Burns**: Subtle 30s scale 1 → 1.08, slight translate
+- **Content (bottom-aligned)**:
+  - Kicker: `IFBB PRO · 2x OLYMPIAN · 2x WORLD CHAMPION`
+  - H1: `BIG` (white) `MIKE` (gold gradient) `ELY` (white) — or just `Big` `Mike` `Ely` with Mike in gold
+  - Subtitle: `The coach behind hundreds of pro cards. Back-to-back Masters World Champion. The standard since 1996.`
+  - CTAs: "Book a Session" (gold primary) + "See the Results" (ghost secondary → scrolls to results)
+- **Animations**: Staggered fade-up with spring easing, 200ms delays between elements
+- **Atmospheric**: Gold dust particles floating up, warm orb glow behind subject
+- **Gold accent line**: 1px gold gradient line below hero, subtle glow
+
+### 4. INNER CIRCLE (After Hero)
+- **Heading**: "The Inner Circle" (or "Built With Legends")
+- **Layout**: Bio text left, photo grid right (desktop). Stacked on mobile.
+- **Bio text**:
+  ```
+  Mike Ely didn't learn coaching from a certification course.
+  
+  He learned it from 30 years under the bar, on the stage, and in the
+  trenches with the greatest names in bodybuilding. Two-time IFBB Pro
+  Masters World Champion — back to back, 2024 and 2025. Two-time
+  Mr. Olympia competitor. NPC Judge. And the coach behind hundreds
+  of pro cards since 1996.
+  
+  He and his wife Dejan run Center Stage Aesthetics out of Old School
+  Iron Gym in Ohio — where the standard isn't negotiable.
+  ```
+- **Credential badges**: IFBB Pro · 2x World Champion · 2x Olympian · NPC Judge · Since 1996
+- **Photo grid** (5 photos, masonry):
+  - **LARGE** (spans 2 cols): `about-lifestyle.jpg` — Mike + Dejan (wife), label: "Mike & Dejan — Center Stage Aesthetics"
+  - **MEDIUM**: `about-hany-rambod.jpg` — label: "With Hany Rambod"
+  - **MEDIUM**: `about-tom-platz.jpg` — label: "With Tom Platz — The Quadfather"
+  - **MEDIUM**: `about-roelly.jpg` — label: "With Roelly Winklaar" (crop: center 35%)
+  - **MEDIUM**: `about-gym-olympia.jpg` — label: "Old School Iron Gym"
+- **Photo hover**: Scale 1.03, border glows gold, label fades to full opacity
+- **Photo labels**: Always partially visible (opacity 0.7), full on hover
+
+### 5. THE RECORD (Stats + Results)
+- **Heading**: "The Record Speaks"
+- **4 stat cards** (row):
+  - "2x" / "World Champion" (gold animated number)
+  - "2x" / "Mr. Olympia"  
+  - "100s" / "Pro Cards Coached"
+  - "1996" / "Coaching Since" (counter animation)
+- **Results photo grid** (below stats):
+  - Use ALL 7 results photos
+  - Staggered grid, varying sizes
+  - Pro card photos get subtle red "IFBB PRO CARD" accent
+  - Group photo (`results-group.jpg`) spans full width — shows scale of his operation
+  - Each photo: gold bottom border on hover, label always visible
+
+### 6. SERVICES
+- **Heading**: "The Arsenal"
+- **6 cards**, keep current structure but enhanced:
+  1. 1-on-1 Training
+  2. Contest Prep
+  3. Nutrition Planning
+  4. Posing Sessions
+  5. Online Coaching
+  6. Full Coaching Package (Signature badge)
+- Each card: glass morphism, gold scan-line hover, lift on hover
+- All "Book →" links go to #contact
+
+### 7. GALLERY
+- **Heading**: "Built Over a Lifetime"
+- **Magazine masonry**: 
+  - Featured (2-col span): `gallery-champion-2024.jpg`, `gallery-most-muscular-stage.jpg`
+  - Regular: all other gallery images
+  - Labels always visible on mobile, hover on desktop
+- **Lightbox**: current system works, keep it
+
+### 8. CTA
+- **Background**: `about-back-gym.jpg` (the insane back shot) with heavy dark overlay
+- **Quote**: "Iron doesn't care about your excuses. Neither does the stage."
+- **Heading**: "Your Move"
+- **Button**: "Start the Conversation" → #contact
+- **Sub**: "Limited availability · Serious inquiries only"
+
+### 9. CONTACT
+- **Heading**: "Message Mike"
+- **Subtext**: "Tell Mike about your goals. He reviews every inquiry personally and responds within 24 hours."
+- **Form fields**: Name, Email or Phone, Service dropdown, Goals textarea, Submit
+- **Form posts to**: Supabase `contact_inquiries` table (already working)
+- **Below form**: Instagram buttons for both @ifbbpromikeely and @center_stage_aesthetics
+- **Location line**: "Old School Iron Gym · Ohio · Limited Availability"
+
+### 10. FOOTER
+- BME monogram
+- Quote: "Iron doesn't lie. The stage doesn't lie. The work is the work."
+- Links: About · Results · Services · Gallery · Book · Coach Portal (dimmed)
+- Social icons: Instagram (personal), Center Stage Aesthetics (star icon), Facebook
+- Copyright: © 2026 Big Mike Ely Coaching / Center Stage Aesthetics
+- VAT credit: Vermillion Axis Technologies
 
 ---
 
-## PHOTOS NEEDED FROM USER
-1. Mike's wife — high quality photo together
-2. Mike's dad — high quality photo together
-3. Any additional pro card celebration photos
-4. Any photos of Mike with other legends/pros
+## VISUAL DESIGN SYSTEM
+
+### Colors (Keep Current Gold Theme)
+```css
+--bg: #030302          /* Near-black background */
+--acc: #E0B030         /* Primary gold */
+--goldGrad: linear-gradient(135deg, #806014 0%, #9A7018 15%, #C49828 35%, #E8CC70 48%, #F2E4A0 52%, #E0BC50 58%, #C49828 72%, #9A7018 88%, #806014 100%)
+```
+
+### Typography
+- Display: Cinzel (headings)
+- Body: Rajdhani (paragraphs)
+- Mono: IBM Plex Mono (labels, badges, small text)
+
+### Animation Principles
+- Spring easing: `cubic-bezier(.22, 1, .36, 1)`
+- Stagger delays: 100-200ms between siblings
+- Reveal: fade-up 36px with 0.9s duration
+- Photos: scale from 0.88 with blur-to-sharp
+- Numbers: count-up animation with easeOutCubic
+- Gold elements: 4s shimmer cycle on gradients
+- Parallax: hero content fades on scroll, CTA background has subtle movement
+
+### Responsive Breakpoints
+- Mobile: max-width 768px
+- Small: max-width 400px
+- Tablet: 769px-1023px
+- Desktop: 1024px+
+- Wide: 1400px+
 
 ---
 
-## IMPLEMENTATION ORDER (Priority)
-1. Hero image swap + text improvements + animation enhancement
-2. Section reorder (Inner Circle up top)
-3. Photo grid redesign for Inner Circle
-4. Stats section polish
-5. Gallery masonry upgrade
-6. Service cards premium redesign
-7. Animation system overhaul
-8. Typography + color refinements
-9. Mobile polish
-10. Contact/booking enhancement
+## CRITICAL RULES
+1. Single file: ALL CSS + HTML + JS in index.html
+2. No frameworks, no build tools — vanilla only
+3. All images lazy-loaded except hero
+4. Hero image preloaded in <head>
+5. Supabase keys stay exactly as they are
+6. Theme switching (gold/crimson) stays
+7. Service worker (sw.js) untouched
+8. PWA manifest untouched
+9. Contact form Supabase integration stays exactly as-is
+10. DO NOT TOUCH app.html, portal.html, book.html
 
 ---
 
-## FILES
-- `/home/user/bigmike/index.html` — single file, all CSS + HTML + JS
-- `/home/user/bigmike/img/` — all photos
-- Total: ~939 lines currently
+## VALIDATION CHECKLIST (Run After Build)
+```bash
+# Extract and validate JS
+sed -n '/<script>/,/<\/script>/p' index.html | sed '1d;$d' > /tmp/bigmike_js.js && node -c /tmp/bigmike_js.js
+
+# Check line count (target: ~1200-1500 lines)
+wc -l index.html
+
+# Verify all images referenced exist
+grep -oP 'src="img/[^"]+' index.html | sed 's/src="//' | while read f; do [ -f "$f" ] || echo "MISSING: $f"; done
+```
 
 ---
 
-*This plan saved to repo so it survives session limits. Last updated: 2026-04-02*
+*This plan is the source of truth. Any Claude Code session should read this + index.html and execute.*
