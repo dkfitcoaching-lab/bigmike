@@ -268,22 +268,24 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
 .mm-badge{font-family:var(--mono);font-size:8px;letter-spacing:.2em;color:var(--dm);margin-top:44px;text-transform:uppercase;opacity:.5}
 .mm::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 10%,rgba(224,176,48,.15) 50%,transparent 90%)}
 /* HERO */
-.hero{min-height:100vh;min-height:100svh;display:flex;align-items:flex-end;justify-content:center;position:relative;overflow:hidden;padding:120px 24px 80px}
+.hero{min-height:100vh;min-height:100svh;display:flex;align-items:flex-end;justify-content:center;position:relative;overflow:hidden;padding:120px 24px 60px}
 .hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--goldGrad);opacity:.3;z-index:3;box-shadow:0 0 40px var(--accGlow),0 0 80px rgba(224,176,48,.12),0 -2px 30px rgba(224,176,48,.06)}
 .hero-bg{position:absolute;inset:-5%;background:url('img/hero-stage-2025.jpg') center 15%/cover no-repeat;z-index:0;animation:heroKenBurns 30s cubic-bezier(.45,0,.55,1) infinite alternate;will-change:transform;filter:contrast(1.15) brightness(.78) saturate(.85) sepia(.04)}
 .hero-ov{position:absolute;inset:0;z-index:1;
-  background:linear-gradient(180deg,
-    rgba(2,2,2,.65) 0%,
-    rgba(2,2,2,.3) 15%,
-    rgba(2,2,2,.15) 30%,
-    rgba(2,2,2,.15) 40%,
-    rgba(2,2,2,.35) 52%,
-    rgba(2,2,2,.7) 65%,
-    rgba(2,2,2,.92) 78%,
-    rgba(2,2,2,.98) 88%,
-    rgba(2,2,2,1) 95%)}
-.hero-ov::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 100% 70% at 50% 35%,rgba(224,176,48,.06) 0%,transparent 50%);pointer-events:none;animation:breathe 8s ease-in-out infinite}
-.hero-ov::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,rgba(224,176,48,.05) 0%,transparent 55%);pointer-events:none}
+  background:
+    linear-gradient(90deg,rgba(2,2,2,.85) 0%,rgba(2,2,2,.4) 18%,transparent 35%,transparent 65%,rgba(2,2,2,.4) 82%,rgba(2,2,2,.85) 100%),
+    linear-gradient(180deg,
+    rgba(2,2,2,.7) 0%,
+    rgba(2,2,2,.35) 12%,
+    rgba(2,2,2,.12) 28%,
+    rgba(2,2,2,.08) 38%,
+    rgba(2,2,2,.3) 50%,
+    rgba(2,2,2,.7) 62%,
+    rgba(2,2,2,.93) 75%,
+    rgba(2,2,2,.98) 85%,
+    rgba(2,2,2,1) 92%)}
+.hero-ov::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 32%,transparent 0%,rgba(2,2,2,.3) 60%,rgba(2,2,2,.7) 100%);pointer-events:none}
+.hero-ov::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 45% at 50% 35%,rgba(224,176,48,.05) 0%,transparent 60%);pointer-events:none;animation:breathe 8s ease-in-out infinite}
 /* HERO LIGHT LEAK — cinematic light flare */
 .hero-leak{position:absolute;top:-20%;right:-10%;width:60%;height:80%;background:radial-gradient(ellipse at center,rgba(224,176,48,.06),rgba(224,176,48,.02) 40%,transparent 70%);z-index:1;pointer-events:none;animation:leakDrift 15s ease-in-out infinite alternate;transform:rotate(-15deg);filter:blur(40px)}
 @keyframes leakDrift{0%{transform:rotate(-15deg) translate(0,0);opacity:.6}100%{transform:rotate(-10deg) translate(-5%,8%);opacity:1}}
@@ -317,7 +319,10 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
   opacity:0;animation:heroEmLine .8s var(--ease) 7.5s forwards;box-shadow:0 0 20px rgba(224,176,48,.2)}
 @keyframes heroEmLine{from{opacity:0;left:45%;right:45%}to{opacity:1;left:15%;right:15%}}
 @keyframes heroTitleIn{from{opacity:0;transform:translateY(40px) scale(.96);filter:blur(6px) drop-shadow(0 0 0 transparent)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0) drop-shadow(0 2px 20px rgba(224,176,48,.3)) drop-shadow(0 4px 40px rgba(224,176,48,.12)) drop-shadow(0 0 80px rgba(224,176,48,.06))}}
-.hero-sub{font-family:var(--body);font-size:clamp(14px,2vw,18px);color:var(--ow);line-height:1.7;margin-top:22px;opacity:0;animation:heroFadeUp .8s var(--ease) 6.9s forwards;text-shadow:0 1px 4px rgba(0,0,0,.9);max-width:540px;margin-left:auto;margin-right:auto;letter-spacing:.02em}
+.hero-sub{font-family:var(--mono);font-size:clamp(9px,1.2vw,11px);letter-spacing:.35em;text-transform:uppercase;color:rgba(224,176,48,.6);line-height:1;margin-top:28px;opacity:0;animation:heroFadeUp .8s var(--ease) 6.9s forwards;text-shadow:0 1px 6px rgba(0,0,0,.95);position:relative;display:inline-block}
+.hero-sub::before,.hero-sub::after{content:'';position:absolute;top:50%;width:clamp(30px,8vw,80px);height:1px;background:linear-gradient(90deg,transparent,rgba(224,176,48,.3),transparent)}
+.hero-sub::before{right:calc(100% + 16px)}
+.hero-sub::after{left:calc(100% + 16px)}
 .hero-ctas{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:36px;opacity:0;animation:heroFadeUp .8s var(--ease) 7.2s forwards}
 .hero-scroll{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);z-index:2;color:var(--dm);animation:bounce 2.5s ease-in-out infinite;transition:opacity .5s}
 /* SECTIONS */
@@ -675,7 +680,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
   <div class="hero-content">
     <p class="hero-kicker">IFBB Pro · 2x Olympian · 2x World Champion</p>
     <h1>BIG MIKE ELY</h1>
-    <p class="hero-sub">The coach behind hundreds of pro cards. Back-to-back Masters World Champion. The standard is earned on real stages.</p>
+    <p class="hero-sub">Coaching Since 1996</p>
     <div class="hero-ctas">
       <a href="#contact" class="btn-p">Book a Session</a>
       <a href="#results" class="btn-s">See the Results</a>
@@ -691,14 +696,14 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 <section class="section" id="about" style="background:var(--surfGrad)">
   <div class="inner">
     <h2 class="s-head reveal">The Inner Circle</h2>
-    <p class="reveal" style="font-family:var(--mono);font-size:clamp(10px,1.4vw,12px);letter-spacing:.24em;text-transform:uppercase;color:var(--dm);text-align:center;margin-top:-36px;margin-bottom:56px;line-height:1.6">An exclusive, invite-only coaching experience &mdash; earned through three decades of dominance</p>
+    <p class="reveal" style="font-family:var(--mono);font-size:clamp(10px,1.4vw,12px);letter-spacing:.24em;text-transform:uppercase;color:var(--dm);text-align:center;margin-top:-36px;margin-bottom:56px;line-height:1.6">Invite-only coaching &mdash; 30 years in the making</p>
     <div class="circle-wrap">
       <div class="circle-text reveal-left">
 
         <!-- PRIMARY CREDENTIAL — Olympia Competitor -->
         <div style="margin-bottom:32px">
           <div class="cred-headline">2&times; Olympian</div>
-          <div style="font-family:var(--mono);font-size:clamp(8px,1.1vw,10px);letter-spacing:.2em;text-transform:uppercase;color:var(--acc);margin-top:10px;line-height:1.6">Only the top-ranked IFBB Pros on earth receive an invitation to the Olympia stage &mdash; the Super Bowl of bodybuilding. Mike answered the call twice.</div>
+          <div style="font-family:var(--mono);font-size:clamp(8px,1.1vw,10px);letter-spacing:.2em;text-transform:uppercase;color:var(--acc);margin-top:10px;line-height:1.6">IFBB Pro Olympia Stage &mdash; Invitation by world ranking only</div>
         </div>
 
         <!-- CREDENTIAL STACK -->
@@ -708,15 +713,15 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
             <span class="cred-num">2&times;</span>
             <div>
               <div class="cred-title">IFBB Pro Masters World Champion</div>
-              <div class="cred-sub">Reigning &amp; defending &mdash; 2024 &amp; 2025 &middot; Consecutive titles in a division where careers end, not begin</div>
+              <div class="cred-sub">Back-to-back &mdash; 2024 &amp; 2025</div>
             </div>
           </div>
 
           <div class="cred-card">
             <span style="font-family:var(--display);font-size:18px;font-weight:700;color:var(--acc);line-height:1;filter:drop-shadow(0 0 8px rgba(224,176,48,.2))">&#9670;</span>
             <div>
-              <div class="cred-title">IFBB Pro Card &mdash; Under Hany Rambod</div>
-              <div class="cred-sub">Turned pro with &ldquo;The Pro Creator&rdquo; in his corner &mdash; the most decorated coach in Olympia history &middot; 22+ Olympia titles &middot; Coach to 7&times; Mr.&nbsp;Olympia Phil Heath, Jay Cutler &amp; Derek Lunsford &middot; Hany was backstage with Mike the night he earned his card</div>
+              <div class="cred-title">IFBB Pro Card &mdash; Coached by Hany Rambod</div>
+              <div class="cred-sub">Earned his pro card with Hany &ldquo;The Pro Creator&rdquo; Rambod backstage &middot; 22+ Olympia titles &middot; 20+ IFBB Pros built &middot; Founder of Evogen Nutrition &middot; Phil Heath (7&times; Mr.&nbsp;O), Jay Cutler, Derek Lunsford, Hadi Choopan</div>
             </div>
           </div>
 
@@ -724,7 +729,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
             <span style="font-family:var(--display);font-size:18px;font-weight:700;color:var(--acc);line-height:1;filter:drop-shadow(0 0 8px rgba(224,176,48,.2))">&#9670;</span>
             <div>
               <div class="cred-title">NPC National Judge</div>
-              <div class="cred-sub">Evaluating the next generation of champions from behind the judges&rsquo; table</div>
+              <div class="cred-sub">Active judge &mdash; National Physique Committee</div>
             </div>
           </div>
 
@@ -732,7 +737,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 
         <!-- TRAINING ENVIRONMENT — separate visual block -->
         <div class="env-block">
-          <div style="font-family:var(--mono);font-size:8px;letter-spacing:.24em;text-transform:uppercase;color:var(--acc);margin-bottom:14px">Where Champions Train</div>
+          <div style="font-family:var(--mono);font-size:8px;letter-spacing:.24em;text-transform:uppercase;color:var(--acc);margin-bottom:14px">Training Home</div>
           <div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px">
             <span style="font-family:var(--display);font-size:clamp(14px,1.7vw,16px);font-weight:600;color:var(--wh);letter-spacing:.02em">Center Stage Aesthetics</span>
             <span style="color:var(--borderH);font-size:10px">&middot;</span>
