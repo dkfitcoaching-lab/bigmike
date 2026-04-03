@@ -693,6 +693,25 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
           <img src="img/about-dad.jpg" alt="Mike with his father" loading="lazy" style="object-position:center 25%">
           <div class="circle-label">Like father, like son</div>
         </div>
+        <div class="circle-photo" onclick="openLB(this)" role="button" tabindex="0">
+          <img src="img/about-boston-lloyd.jpg" alt="Mike with Boston Lloyd" loading="lazy" style="object-position:center 30%">
+          <div class="circle-label">With Boston Lloyd</div>
+        </div>
+        <div class="circle-photo" onclick="openLB(this)" role="button" tabindex="0">
+          <img src="img/about-dave-lieberman.jpg" alt="Mike with Dave Liberman" loading="lazy" style="object-position:center 30%">
+          <div class="circle-label">With Dave Liberman</div>
+        </div>
+        <div class="circle-photo" onclick="openLB(this)" role="button" tabindex="0">
+          <img src="img/about-tom-platz-2.jpg" alt="Mike with Tom Platz" loading="lazy" style="object-position:center 35%">
+          <div class="circle-label">With Tom Platz</div>
+        </div>
+        <div class="circle-photo" onclick="openLB(this)" role="button" tabindex="0">
+          <img src="img/about-mike-baby.jpg" alt="Mike with his son at Old School Iron" loading="lazy" style="object-position:center center">
+        </div>
+        <div class="circle-photo" onclick="openLB(this)" role="button" tabindex="0">
+          <img src="img/about-pump-co-sponsor.jpg" alt="Mike Ely — Pump Co" loading="lazy" style="object-position:center 30%">
+          <div class="circle-label">Pump Co</div>
+        </div>
       </div>
     </div>
   </div>
@@ -727,8 +746,8 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
         <div class="results-photo-label">Pro Card</div>
       </div>
 
-      <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/results-procard-rob.jpg" alt="Athlete holding IFBB Pro Card with Mike Ely" loading="lazy" style="object-position:center 12%">
+      <div class="results-photo reveal" data-no-lb style="cursor:default">
+        <img src="img/results-procard-rob.jpg" alt="Athlete holding IFBB Pro Card with Mike Ely" loading="lazy" style="object-position:center 25%">
         <div class="results-photo-label">Pro Card</div>
       </div>
 
@@ -776,7 +795,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
       <!-- TEAM & AWARDS -->
       <div class="results-photo results-photo-wide reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
         <img src="img/results-group.jpg" alt="Posing clinic group photo — Old School Iron CLE" loading="lazy">
-        <div class="results-photo-label">Posing Clinic — Old School Iron CLE</div>
+        <div class="results-photo-label">Posing Clinic — Center Stage Aesthetics</div>
       </div>
 
       <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
@@ -874,7 +893,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
     <div class="gal-grid" id="galGrid">
 
       <!-- FEATURED — 2-column span -->
-      <div class="gal-item featured reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
+      <div class="gal-item featured reveal" data-no-lb style="cursor:default">
         <img src="img/gallery-champion-2024.jpg" alt="Mike Ely most muscular on stage with trophies, 2024 World Title" loading="lazy" style="object-position:center 55%">
         <div class="gal-label">World Title, 2024</div>
       </div>
@@ -885,6 +904,16 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
       </div>
 
       <!-- REGULAR gallery items -->
+
+      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
+        <img src="img/about-back-gym.jpg" alt="Mike Ely rear lat spread in gym" loading="lazy" style="object-position:center 30%">
+        <div class="gal-label">Rear Lat Spread — Gym</div>
+      </div>
+
+      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
+        <img src="img/about-gym-olympia.jpg" alt="Mike Ely abdominal and thigh pose in gym" loading="lazy" style="object-position:center 25%">
+        <div class="gal-label">Abs &amp; Thigh — Gym</div>
+      </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
         <img src="img/gallery-most-muscular-crab.jpg" alt="Mike Ely most muscular pose on stage" loading="lazy" style="object-position:center 15%">
@@ -908,7 +937,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
         <img src="img/gallery-wings-chicago-2015.jpg" alt="Mike Ely at Wings of Strength Chicago Pro 2015" loading="lazy">
-        <div class="gal-label">Chicago Pro, 2015</div>
+        <div class="gal-label">Wings of Strength — Chicago Pro, 2015</div>
       </div>
 
       <div class="gal-item reveal" data-no-lb style="cursor:default">
@@ -963,12 +992,12 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 
       <div class="gal-item reveal" data-no-lb style="cursor:default">
         <img src="img/gallery-posing-clinic.jpg" alt="Mike Ely conducting posing clinic" loading="lazy" style="object-position:center 68%">
-        <div class="gal-label">Posing Clinic — Teaching the Stage</div>
+        <div class="gal-label">Posing Clinic — Center Stage Aesthetics</div>
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
         <img src="img/gallery-posing-clinic-group.jpg" alt="Group photo at Mike Ely posing clinic" loading="lazy">
-        <div class="gal-label">Posing Clinic — Group</div>
+        <div class="gal-label">Posing Clinic — Center Stage Aesthetics</div>
       </div>
 
       <div class="gal-item reveal" data-no-lb style="cursor:default">
@@ -1015,8 +1044,6 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 <section class="cta">
   <div class="cta-bg"></div><div class="cta-ov"></div>
   <div class="cta-inner reveal-scale">
-    <div class="cta-quote">The standard is earned, not given.</div>
-    <div class="gw" style="max-width:40px;margin:0 auto 28px"></div>
     <h2 class="s-head" style="margin-bottom:24px" data-wc="cta-heading">Your Move</h2>
     <a href="#contact" class="btn-p" data-wc="cta-button">Start the Conversation</a>
     <div class="cta-sub">Limited availability &middot; Serious inquiries only</div>
