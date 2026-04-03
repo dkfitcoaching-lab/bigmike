@@ -351,7 +351,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 .circle-photo:hover::after{opacity:.2}
 .circle-photo:hover{transform:scale(1.02);border-color:var(--borderH);box-shadow:0 12px 40px rgba(0,0,0,.5),0 0 30px var(--accS)}
 .circle-photo:hover img{transform:scale(1.05);filter:contrast(1.06) brightness(1)}
-.circle-photo-lg{grid-column:1/-1;aspect-ratio:16/9;max-height:380px}
+.circle-photo-lg{grid-column:1/-1;aspect-ratio:3/2;max-height:420px}
 .circle-photo-lg img{object-position:center center}
 .circle-photo:not(.circle-photo-lg){aspect-ratio:1/1}
 .circle-label{position:absolute;bottom:0;left:0;right:0;padding:10px 14px;background:linear-gradient(transparent,rgba(0,0,0,.85));font-family:var(--mono);font-size:9px;letter-spacing:.08em;color:var(--ow);text-transform:uppercase;opacity:.7;transition:opacity .3s}
@@ -458,7 +458,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 @keyframes ctaRingRotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 .cta-inner:hover{border-color:var(--borderH);box-shadow:0 0 80px var(--accS),0 0 120px rgba(224,176,48,.06),0 20px 60px rgba(0,0,0,.4);transform:translateY(-6px)}
 .cta-quote{font-family:var(--display);font-size:clamp(18px,2.8vw,24px);font-weight:600;color:var(--ow);line-height:1.6;margin-bottom:32px;font-style:italic;opacity:.9;position:relative;padding:0 8px}
-.cta-quote::before{content:'\201C';position:absolute;top:-.3em;left:-8px;font-family:var(--display);font-size:clamp(48px,8vw,72px);font-weight:900;font-style:normal;background:var(--goldGrad);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;opacity:.15;line-height:1;pointer-events:none;animation:shimmer 6s ease-in-out infinite}
+.cta-quote::before{content:'';position:absolute;top:-.3em;left:-8px;font-family:var(--display);font-size:clamp(48px,8vw,72px);font-weight:900;font-style:normal;background:var(--goldGrad);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;opacity:.15;line-height:1;pointer-events:none;animation:shimmer 6s ease-in-out infinite}
 .cta-sub{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dm);margin-top:18px}
 /* FOOTER */
 .footer{padding:100px 24px 36px;text-align:center;border-top:none;background:linear-gradient(180deg,rgba(6,6,4,1) 0%,rgba(3,3,2,1) 40%,rgba(4,3,2,1) 100%);position:relative;overflow:hidden}
@@ -521,7 +521,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
   .hero-leak{width:80%;height:60%;filter:blur(30px);opacity:.5}
   .nav{padding-top:calc(env(safe-area-inset-top,0px) + 12px);padding-left:calc(env(safe-area-inset-left,0px) + 20px);padding-right:calc(env(safe-area-inset-right,0px) + 20px)}
   .circle-wrap{gap:32px}.circle-grid{gap:8px}
-  .circle-photo-lg{max-height:280px}
+  .circle-photo-lg{max-height:320px;aspect-ratio:4/3}
   .circle-photo:not(.circle-photo-lg){aspect-ratio:3/4}
   .svc-grid{grid-template-columns:1fr}
   .num-grid{grid-template-columns:repeat(2,1fr);gap:10px}
@@ -662,19 +662,13 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
           Thirty years in this game. The results are the resume.
         </p>
         <p>IFBB Pro card earned in 2013 under Hany Rambod. Back-to-back IFBB Pro Masters World Champion, 2024 and 2025. Two-time Mr. Olympia competitor. NPC Judge. Hundreds of athletes turned pro since 1996 — built on real knowledge from real stages, not internet theories.</p>
-        <p>Mike and Dejan run Center Stage Aesthetics out of Old School Iron Gym in Brook Park, Ohio. The standard here is non-negotiable.</p>
-        <div class="circle-creds">
-          <span class="about-cred">IFBB Pro</span>
-          <span class="about-cred">2x World Champion</span>
-          <span class="about-cred">2x Olympian</span>
-          <span class="about-cred">NPC Judge</span>
-          <span class="about-cred">Since 1996</span>
-        </div>
+        <p>Center Stage Aesthetics. Old School Iron Gym. Brook Park, Ohio.</p>
+        <p style="font-family:var(--mono);font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--acc);margin-top:28px;opacity:.65;line-height:2.2">IFBB Pro &middot; 2x World Champion &middot; 2x Olympian &middot; NPC Judge &middot; Since 1996</p>
       </div>
       <div class="circle-grid reveal-right">
         <!-- Mike & Allie (wife) - LARGE, spans 2 columns -->
         <div class="circle-photo circle-photo-lg" onclick="openLB(this)" role="button" tabindex="0">
-          <img src="img/about-lifestyle.jpg" alt="Mike and his wife Allie" loading="lazy" style="object-position:center center">
+          <img src="img/about-lifestyle.jpg" alt="Mike and his wife Allie" loading="lazy" style="object-position:center 15%">
           <div class="circle-label">Mike &amp; Allie</div>
         </div>
         <!-- Hany Rambod -->
@@ -892,7 +886,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 
       <!-- FEATURED — 2-column span -->
       <div class="gal-item featured reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-champion-2024.jpg" alt="Mike Ely most muscular on stage with trophies, 2024 World Title" loading="lazy" style="object-position:center 20%">
+        <img src="img/gallery-champion-2024.jpg" alt="Mike Ely most muscular on stage with trophies, 2024 World Title" loading="lazy" style="object-position:center 55%">
         <div class="gal-label">World Title, 2024</div>
       </div>
 
@@ -933,7 +927,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-wings-stage.jpg" alt="Mike Ely back double bicep under stage lights" loading="lazy" style="object-position:center 20%">
+        <img src="img/gallery-wings-stage.jpg" alt="Mike Ely back double bicep under stage lights" loading="lazy" style="object-position:center 75%">
         <div class="gal-label">Wings of Strength — Back Double Bicep</div>
       </div>
 
@@ -958,12 +952,12 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-ferrigno-prep.jpg" alt="Mike Ely preparing for Ferrigno Legacy competition" loading="lazy" style="object-position:center 22%">
+        <img src="img/gallery-ferrigno-prep.jpg" alt="Mike Ely preparing for Ferrigno Legacy competition" loading="lazy" style="object-position:center 72%">
         <div class="gal-label">Ferrigno Legacy Prep</div>
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-muscular-dev-2013.jpg" alt="Mike Ely featured in Muscular Development magazine, 2013" loading="lazy" style="object-position:center 18%">
+        <img src="img/gallery-muscular-dev-2013.jpg" alt="Mike Ely featured in Muscular Development magazine, 2013" loading="lazy" style="object-position:center 75%">
         <div class="gal-label">Muscular Development — 2013 Feature</div>
       </div>
 
@@ -978,12 +972,12 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-guest-posing-npc-ny.jpg" alt="Mike Ely guest posing at NPC show in New York" loading="lazy" style="object-position:center 18%">
+        <img src="img/gallery-guest-posing-npc-ny.jpg" alt="Mike Ely guest posing at NPC show in New York" loading="lazy" style="object-position:center 52%">
         <div class="gal-label">Guest Posing — NPC New York</div>
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-posing-clinic.jpg" alt="Mike Ely conducting posing clinic" loading="lazy" style="object-position:center 20%">
+        <img src="img/gallery-posing-clinic.jpg" alt="Mike Ely conducting posing clinic" loading="lazy" style="object-position:center 68%">
         <div class="gal-label">Posing Clinic — Teaching the Stage</div>
       </div>
 
@@ -993,22 +987,22 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-gym-back-squats.jpg" alt="Mike Ely squatting with custom Big Mike Ely belt" loading="lazy">
+        <img src="img/gallery-gym-back-squats.jpg" alt="Mike Ely squatting with custom Big Mike Ely belt" loading="lazy" style="object-position:center 28%">
         <div class="gal-label">Squats — Old School Iron Gym</div>
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-gym-recent.jpg" alt="Mike Ely recent gym posing shot" loading="lazy">
+        <img src="img/gallery-gym-recent.jpg" alt="Mike Ely recent gym posing shot" loading="lazy" style="object-position:center 38%">
         <div class="gal-label">Off-Season — Recent</div>
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-stage-2014.jpg" alt="Mike Ely on stage 2014" loading="lazy" style="object-position:center 25%">
+        <img src="img/gallery-stage-2014.jpg" alt="Mike Ely on stage 2014" loading="lazy" style="object-position:center 82%">
         <div class="gal-label">On Stage — 2014</div>
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-gym-prep-2014.jpg" alt="Mike Ely gym prep 16 weeks out 2014" loading="lazy" style="object-position:center 25%">
+        <img src="img/gallery-gym-prep-2014.jpg" alt="Mike Ely gym prep 16 weeks out 2014" loading="lazy" style="object-position:center 82%">
         <div class="gal-label">Contest Prep — 16 Weeks Out, 2014</div>
       </div>
 
@@ -1018,12 +1012,12 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-procard-story.jpg" alt="Where the pro card story started" loading="lazy" style="object-position:center 22%">
+        <img src="img/gallery-procard-story.jpg" alt="Where the pro card story started" loading="lazy" style="object-position:center 28%">
         <div class="gal-label">Where the Pro Card Story Started</div>
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-transformation.jpg" alt="Mike Ely physique evolution over the years" loading="lazy" style="object-position:center 18%">
+        <img src="img/gallery-transformation.jpg" alt="Mike Ely physique evolution over the years" loading="lazy" style="object-position:center 68%">
         <div class="gal-label">The Evolution — Then to Now</div>
       </div>
 
@@ -1036,7 +1030,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 <section class="cta">
   <div class="cta-bg"></div><div class="cta-ov"></div>
   <div class="cta-inner reveal-scale">
-    <div class="cta-quote">"You either show up ready or you don't show up at all."</div>
+    <div class="cta-quote">The standard is earned, not given.</div>
     <div class="gw" style="max-width:40px;margin:0 auto 28px"></div>
     <h2 class="s-head" style="margin-bottom:24px" data-wc="cta-heading">Your Move</h2>
     <a href="#contact" class="btn-p" data-wc="cta-button">Start the Conversation</a>
@@ -1087,7 +1081,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 <!-- FOOTER -->
 <footer class="footer">
   <div class="footer-mark">M</div>
-  <div class="footer-sig">"There are no shortcuts. Do the work or get out of the way."</div>
+  <div class="footer-sig">Championship-level coaching since 1996.</div>
   <div class="footer-links">
     <a href="#about">About</a><a href="#results">Results</a><a href="#services">Services</a><a href="#gallery">Gallery</a>
     <a href="#contact">Book</a>
@@ -1260,7 +1254,7 @@ var _lbImages = [], _lbIdx = 0;
 function openLB(el) {
   var img = el.querySelector('img');
   if (!img) return;
-  var allItems = document.querySelectorAll('.results-photo,.gal-item');
+  var allItems = document.querySelectorAll('.results-photo,.gal-item,.circle-photo');
   _lbImages = [];
   allItems.forEach(function (item) {
     var i = item.querySelector('img');
