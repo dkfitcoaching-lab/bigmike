@@ -21,7 +21,7 @@ DO NOT TOUCH app.html, portal.html, or book.html — only index.html (public lan
 ### Inner Circle (People Who Matter)
 | File | Description | Use | Crop |
 |------|------------|-----|------|
-| `about-lifestyle.jpg` | Mike + wife Dejan, matching tropical outfits, poolside | **Wife — featured prominently** | center top |
+| `about-lifestyle.jpg` | Mike + Dejan, matching tropical outfits, poolside | **Partner — featured prominently** | center top |
 | `about-hany-rambod.jpg` | Mike backstage with Hany Rambod (coached Jay Cutler, Phil Heath) | **Legend #1** | center center |
 | `about-tom-platz.jpg` | Mike with Tom Platz "The Quadfather" | **Legend #2** | center top |
 | `about-roelly.jpg` | Mike with Roelly Winklaar, Yamamoto shirts | **Legend #3** | center 35% |
@@ -70,11 +70,11 @@ DO NOT TOUCH app.html, portal.html, or book.html — only index.html (public lan
 - **2x Olympian** (competed at Mr. Olympia TWICE — not just "competitor")
 - **2024 AND 2025 IFBB Pro Masters World Champion** (back-to-back titles)
 - **Hundreds of pro clients** (not just "pro cards" — hundreds of actual pro-level athletes)
-- **Center Stage Aesthetics** = Mike + Dejan's coaching business
+- **Center Stage Aesthetics** = Mike + Dejan's coaching business (Dejan is male, NOT Mike's wife)
 - **Old School Iron Gym, Ohio** (gym where he trains — Square site has WRONG address)
 - **Coaching since 1996** — 30+ years
 - **NPC Judge**
-- Wife's name: **Dejan** (co-owner of Center Stage Aesthetics)
+- **Dejan** = co-owner of Center Stage Aesthetics (male business partner, NOT wife)
 
 ## SOCIAL LINKS
 - Instagram (personal): https://instagram.com/ifbbpromikeely
@@ -90,7 +90,7 @@ DO NOT TOUCH app.html, portal.html, or book.html — only index.html (public lan
 1. BRAND REVEAL (3s cinematic intro)
 2. NAV (fixed, glass morphism on scroll)
 3. HERO (hero-stage-2025.jpg — crowned world champion)
-4. INNER CIRCLE (wife + legends + bio — strongest social proof)
+4. INNER CIRCLE (Dejan + legends + bio — strongest social proof)
 5. THE RECORD (stats + pro card results photos)
 6. SERVICES (6 premium cards)
 7. GALLERY (magazine masonry — competition + gym)
@@ -142,12 +142,12 @@ DO NOT TOUCH app.html, portal.html, or book.html — only index.html (public lan
   Mr. Olympia competitor. NPC Judge. And the coach behind hundreds
   of pro cards since 1996.
   
-  He and his wife Dejan run Center Stage Aesthetics out of Old School
+  He and Dejan run Center Stage Aesthetics out of Old School
   Iron Gym in Ohio — where the standard isn't negotiable.
   ```
 - **Credential badges**: IFBB Pro · 2x World Champion · 2x Olympian · NPC Judge · Since 1996
 - **Photo grid** (5 photos, masonry):
-  - **LARGE** (spans 2 cols): `about-lifestyle.jpg` — Mike + Dejan (wife), label: "Mike & Dejan — Center Stage Aesthetics"
+  - **LARGE** (spans 2 cols): `about-lifestyle.jpg` — Mike + Dejan, label: "Mike & Dejan — Center Stage Aesthetics"
   - **MEDIUM**: `about-hany-rambod.jpg` — label: "With Hany Rambod"
   - **MEDIUM**: `about-tom-platz.jpg` — label: "With Tom Platz — The Quadfather"
   - **MEDIUM**: `about-roelly.jpg` — label: "With Roelly Winklaar" (crop: center 35%)
