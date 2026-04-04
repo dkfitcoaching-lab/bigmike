@@ -306,9 +306,9 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
 .hero-dust{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
 .hero-dust span{position:absolute;width:2px;height:2px;background:var(--acc);border-radius:50%;opacity:0;animation:dustFloat linear infinite;box-shadow:0 0 6px rgba(224,176,48,.4)}
 .hero-dust span:nth-child(1){left:15%;top:80%;animation-duration:8s}.hero-dust span:nth-child(2){left:45%;top:90%;animation-duration:12s;animation-delay:2s;width:1.5px;height:1.5px}.hero-dust span:nth-child(3){left:72%;top:85%;animation-duration:10s;animation-delay:4s}.hero-dust span:nth-child(4){left:30%;top:95%;animation-duration:14s;animation-delay:1s;width:1px;height:1px}.hero-dust span:nth-child(5){left:88%;top:88%;animation-duration:9s;animation-delay:3s;width:1.5px;height:1.5px}.hero-dust span:nth-child(6){left:8%;top:92%;animation-duration:11s;animation-delay:5s}.hero-dust span:nth-child(7){left:60%;top:82%;animation-duration:13s;animation-delay:6s;width:1px;height:1px}.hero-dust span:nth-child(8){left:52%;top:96%;animation-duration:7s;animation-delay:.5s}
-.hero-content{position:relative;z-index:2;text-align:center;max-width:960px;padding-bottom:clamp(60px,12vh,120px)}
+.hero-content{position:relative;z-index:2;text-align:center;width:100%;padding:0 24px;padding-bottom:clamp(60px,12vh,120px)}
 /* HERO H1 — carved gold, maximum presence */
-.hero h1{font-family:var(--display);font-size:clamp(72px,14vw,200px);font-weight:900;line-height:.88;margin-bottom:0;letter-spacing:.04em;white-space:nowrap;
+.hero h1{font-family:var(--display);font-size:clamp(72px,11.5vw,180px);font-weight:900;line-height:.88;margin-bottom:0;letter-spacing:.03em;white-space:nowrap;
   background:linear-gradient(100deg,#6B4E14 0%,#8B6820 12%,#BF9930 28%,#D4B048 38%,#E8CC68 45%,#F5E8A8 49%,#FFFCE8 51%,#F5E8A8 53%,#E8CC68 57%,#D4B048 64%,#BF9930 74%,#8B6820 88%,#6B4E14 100%);
   background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
   opacity:0;animation:heroTitleIn 1.8s var(--ease) 16s forwards,brShimmer 8s linear 18.5s infinite;
@@ -412,7 +412,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 .results-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .results-photo{border-radius:12px;overflow:hidden;position:relative;border:1px solid var(--borderS);aspect-ratio:1/1;cursor:pointer;transition:all .5s var(--ease);background:linear-gradient(110deg,var(--card) 30%,rgba(224,176,48,.04) 50%,var(--card) 70%);background-size:200% 100%;animation:imgShimmer 1.8s ease-in-out infinite}
 .results-photo:has(img.loaded){animation:none;background:var(--card)}
-.results-photo img{width:100%;height:100%;object-fit:cover;object-position:center 25%;transition:transform .7s var(--ease),filter .7s;filter:contrast(1.05) brightness(.9)}
+.results-photo img{width:100%;height:100%;object-fit:cover;object-position:center 15%;transition:transform .7s var(--ease),filter .7s;filter:contrast(1.05) brightness(.9)}
 .results-photo:hover img{transform:scale(1.06);filter:contrast(1.08) brightness(1.02) saturate(1.05)}
 .results-photo::before{content:'';position:absolute;inset:0;z-index:2;background:linear-gradient(135deg,transparent 40%,rgba(255,240,180,.05) 50%,transparent 60%);opacity:0;transition:opacity .5s var(--ease);pointer-events:none}
 .results-photo:hover::before{opacity:1}
@@ -550,8 +550,8 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
     linear-gradient(180deg,
     rgba(2,2,2,.6) 0%,rgba(2,2,2,.15) 10%,transparent 22%,transparent 42%,
     rgba(2,2,2,.2) 52%,rgba(2,2,2,.65) 62%,rgba(2,2,2,.92) 74%,rgba(2,2,2,.99) 84%,rgba(2,2,2,1) 90%)}
-  .hero-content{max-width:100%;padding:0 16px calc(env(safe-area-inset-bottom,0px) + 40px);text-align:center}
-  .hero h1{font-size:clamp(56px,19vw,96px);white-space:normal;line-height:.84;
+  .hero-content{max-width:100%;width:100%;padding:0 16px calc(env(safe-area-inset-bottom,0px) + 24px);text-align:center}
+  .hero h1{font-size:clamp(52px,16vw,88px);white-space:normal;line-height:.84;
     filter:drop-shadow(0 2px 16px rgba(224,176,48,.3)) drop-shadow(0 4px 30px rgba(224,176,48,.12))}
   .hero h1::after{left:8%;right:8%}
   .hero-sub{font-size:11px}
@@ -831,12 +831,12 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 
       <!-- PRO CARDS -->
       <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/results-procard-lindsay.jpg" alt="Athlete holding IFBB Pro Card with Mike Ely" loading="lazy" style="object-position:center 35%">
+        <img src="img/results-procard-lindsay.jpg" alt="Athlete holding IFBB Pro Card with Mike Ely" loading="lazy">
         <div class="results-photo-label">Pro Card</div>
       </div>
 
       <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/results-procard-lindsay-stage.jpg" alt="Athlete on stage with IFBB Pro Card" loading="lazy" style="object-position:center 30%">
+        <img src="img/results-procard-lindsay-stage.jpg" alt="Athlete on stage with IFBB Pro Card" loading="lazy" style="object-position:center 20%">
         <div class="results-photo-label">Pro Card</div>
       </div>
 
@@ -846,22 +846,22 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
       </div>
 
       <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/results-procard-backstage.jpg" alt="Mike and athlete backstage with IFBB Pro Card" loading="lazy" style="object-position:center 30%">
+        <img src="img/results-procard-backstage.jpg" alt="Mike and athlete backstage with IFBB Pro Card" loading="lazy">
         <div class="results-photo-label">Pro Card</div>
       </div>
 
       <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/results-procard-female-2.jpg" alt="Athlete raising IFBB Pro Card outdoors" loading="lazy" style="object-position:center 20%">
+        <img src="img/results-procard-female-2.jpg" alt="Athlete raising IFBB Pro Card outdoors" loading="lazy" style="object-position:center 10%">
         <div class="results-photo-label">Pro Card</div>
       </div>
 
       <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/results-procard-female-3.jpg" alt="Athlete holding IFBB Pro Card" loading="lazy" style="object-position:center 30%">
+        <img src="img/results-procard-female-3.jpg" alt="Athlete holding IFBB Pro Card" loading="lazy" style="object-position:center 18%">
         <div class="results-photo-label">Pro Card</div>
       </div>
 
       <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/results-procard-ladies.jpg" alt="Athlete on stage with medal" loading="lazy" style="object-position:center 50%">
+        <img src="img/results-procard-ladies.jpg" alt="Athlete on stage with medal" loading="lazy" style="object-position:center 40%">
         <div class="results-photo-label">Pro Card</div>
       </div>
 
@@ -1015,17 +1015,17 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-wings-stage.jpg" alt="Mike Ely back double bicep under stage lights — Wings of Strength" loading="lazy" style="object-position:center 62%">
+        <img src="img/gallery-wings-stage.jpg" alt="Mike Ely back double bicep under stage lights — Wings of Strength" loading="lazy" style="object-position:center 20%">
         <div class="gal-label">Wings of Strength</div>
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-stage-2014.jpg" alt="Mike Ely on stage 2014" loading="lazy" style="object-position:center 68%">
+        <img src="img/gallery-stage-2014.jpg" alt="Mike Ely on stage 2014" loading="lazy" style="object-position:center 15%">
         <div class="gal-label">On Stage — 2014</div>
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-ferrigno-prep.jpg" alt="Mike Ely preparing for Ferrigno Legacy competition" loading="lazy" style="object-position:center 62%">
+        <img src="img/gallery-ferrigno-prep.jpg" alt="Mike Ely preparing for Ferrigno Legacy competition" loading="lazy" style="object-position:center 20%">
         <div class="gal-label">Ferrigno Legacy</div>
       </div>
 
@@ -1079,7 +1079,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-guest-posing-npc-ny.jpg" alt="Mike Ely guest posing at NPC New York" loading="lazy" style="object-position:center 48%">
+        <img src="img/gallery-guest-posing-npc-ny.jpg" alt="Mike Ely guest posing at NPC New York" loading="lazy" style="object-position:center 25%">
         <div class="gal-label">Guest Posing — NPC New York</div>
       </div>
 
@@ -1108,22 +1108,22 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-procard-story.jpg" alt="Where the pro card story started" loading="lazy" style="object-position:center 55%">
+        <img src="img/gallery-procard-story.jpg" alt="Where the pro card story started" loading="lazy" style="object-position:center center">
         <div class="gal-label">Where the Pro Card Story Started</div>
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-transformation.jpg" alt="Mike Ely physique evolution" loading="lazy" style="object-position:center 52%">
+        <img src="img/gallery-transformation.jpg" alt="Mike Ely physique evolution" loading="lazy" style="object-position:center center">
         <div class="gal-label">The Evolution — Then to Now</div>
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-gym-prep-2014.jpg" alt="Mike Ely contest prep 2014" loading="lazy" style="object-position:center 72%">
+        <img src="img/gallery-gym-prep-2014.jpg" alt="Mike Ely contest prep 2014" loading="lazy" style="object-position:center center">
         <div class="gal-label">Contest Prep — 2014</div>
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-muscular-dev-2013.jpg" alt="Mike Ely Muscular Development magazine 2013" loading="lazy" style="object-position:center 62%">
+        <img src="img/gallery-muscular-dev-2013.jpg" alt="Mike Ely Muscular Development magazine 2013" loading="lazy" style="object-position:center center">
         <div class="gal-label">Muscular Development — 2013</div>
       </div>
 
