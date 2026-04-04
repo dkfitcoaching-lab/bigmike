@@ -141,8 +141,10 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
 .br-ring:nth-child(1){animation-delay:1.8s}.br-ring:nth-child(2){animation-delay:2.2s;border-color:rgba(200,175,100,.07)}.br-ring:nth-child(3){animation-delay:2.6s;border-color:rgba(200,175,100,.04)}
 /* Crossed swords — SVG drawn behind the name */
 .br-swords{position:absolute;top:50%;left:50%;transform:translate(-50%,-52%);z-index:3;pointer-events:none;opacity:0;animation:brSwordsIn 1.8s cubic-bezier(.2,.8,.3,1) 2s both}
-.br-swords svg{width:clamp(180px,40vw,320px);height:auto}
-.br-swords line,.br-swords path{stroke:rgba(220,195,130,.2);stroke-width:1.5;fill:none;stroke-dasharray:100;stroke-dashoffset:100;animation:brSwordDraw 1.6s cubic-bezier(.4,0,.2,1) 2.2s forwards}
+.br-swords svg{width:clamp(240px,55vw,480px);height:auto}
+.br-swords line,.br-swords path{stroke:rgba(220,195,130,.25);stroke-width:1.8;fill:none;stroke-dasharray:200;stroke-dashoffset:200;animation:brSwordDraw 1.8s cubic-bezier(.4,0,.2,1) 2.2s forwards}
+.br-swords .blade-fill{fill:rgba(200,175,100,.04);stroke:none;opacity:0;animation:brBladeFill 1s ease-out 3.6s forwards}
+@keyframes brBladeFill{0%{opacity:0}100%{opacity:1}}
 /* Horizon line — the first thing that appears, a crack of golden light */
 .br-streak{position:absolute;top:50%;left:50%;height:1px;width:0;transform:translate(-50%,-50%);z-index:3;
   background:linear-gradient(90deg,transparent,rgba(200,175,100,.15) 20%,rgba(220,195,120,.4) 40%,rgba(245,225,160,.6) 50%,rgba(220,195,120,.4) 60%,rgba(200,175,100,.15) 80%,transparent);
@@ -298,6 +300,12 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
 .hero-orb-2{width:400px;height:400px;background:radial-gradient(circle,rgba(224,176,48,.08),transparent 70%);top:40%;right:-8%;animation:orbFloat2 14s ease-in-out infinite,breathe 8s ease-in-out infinite;animation-delay:2s,1s}
 .hero-orb-3{width:300px;height:300px;background:radial-gradient(circle,rgba(200,160,40,.06),transparent 70%);bottom:10%;left:30%;animation:orbFloat 16s ease-in-out infinite,breathe 7s ease-in-out infinite;animation-delay:4s,2s}
 .hero-warmth{position:absolute;bottom:0;left:0;right:0;height:40%;background:linear-gradient(to top,rgba(224,176,48,.04),rgba(224,176,48,.01) 60%,transparent);z-index:1;pointer-events:none}
+/* Anamorphic lens flare — horizontal streak across hero */
+.hero-flare{position:absolute;top:38%;left:0;right:0;height:1px;z-index:2;pointer-events:none;
+  background:linear-gradient(90deg,transparent 5%,rgba(224,176,48,.03) 15%,rgba(255,240,180,.08) 35%,rgba(255,245,200,.14) 48%,rgba(255,250,220,.18) 50%,rgba(255,245,200,.14) 52%,rgba(255,240,180,.08) 65%,rgba(224,176,48,.03) 85%,transparent 95%);
+  box-shadow:0 0 60px rgba(224,176,48,.06),0 0 120px rgba(224,176,48,.03);
+  opacity:0;animation:heroFlareIn 2s ease-out 7.5s forwards;filter:blur(1px)}
+@keyframes heroFlareIn{0%{opacity:0;transform:scaleX(.3)}100%{opacity:1;transform:scaleX(1)}}
 /* Breathing side vignette — cinematic depth */
 .hero-breath{position:absolute;inset:0;z-index:1;pointer-events:none;
   background:
@@ -329,7 +337,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
   opacity:0;animation:heroEmLine .8s var(--ease) 7.5s forwards;box-shadow:0 0 20px rgba(224,176,48,.2)}
 @keyframes heroEmLine{from{opacity:0;left:45%;right:45%}to{opacity:1;left:15%;right:15%}}
 @keyframes heroTitleIn{from{opacity:0;transform:translateY(40px) scale(.96);filter:blur(6px) drop-shadow(0 0 0 transparent)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0) drop-shadow(0 2px 20px rgba(224,176,48,.3)) drop-shadow(0 4px 40px rgba(224,176,48,.12)) drop-shadow(0 0 80px rgba(224,176,48,.06))}}
-.hero-sub{font-family:var(--mono);font-size:clamp(9px,1.2vw,11px);letter-spacing:.35em;text-transform:uppercase;color:rgba(224,176,48,.6);line-height:1;margin-top:28px;opacity:0;animation:heroFadeUp .8s var(--ease) 6.9s forwards;text-shadow:0 1px 6px rgba(0,0,0,.95);position:relative;display:inline-block}
+.hero-sub{font-family:var(--mono);font-size:clamp(10px,1.4vw,13px);letter-spacing:.35em;text-transform:uppercase;color:rgba(224,176,48,.6);line-height:1;margin-top:28px;opacity:0;animation:heroFadeUp .8s var(--ease) 6.9s forwards;text-shadow:0 1px 6px rgba(0,0,0,.95);position:relative;display:inline-block}
 .hero-sub::before,.hero-sub::after{content:'';position:absolute;top:50%;width:clamp(30px,8vw,80px);height:1px;background:linear-gradient(90deg,transparent,rgba(224,176,48,.3),transparent)}
 .hero-sub::before{right:calc(100% + 16px)}
 .hero-sub::after{left:calc(100% + 16px)}
@@ -551,7 +559,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
   .br-title{font-size:7.5px;letter-spacing:.2em}
   .br-corners{width:clamp(260px,78vw,360px);height:clamp(160px,36vw,240px)}
   .br-corners::before,.br-corners::after,.br-corner-tl,.br-corner-br{width:24px;height:24px}
-  .br-swords svg{width:clamp(80px,22vw,140px)}
+  .br-swords svg{width:clamp(140px,38vw,240px)}
   .br-pulse-rings .br-ring{border-width:.5px}
   .nav-links{display:none}.nav-burger{display:flex}
   .section{padding:64px 20px}.s-head{margin-bottom:32px}
@@ -621,7 +629,27 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
   <div class="br-scan"></div>
   <div class="br-streak"></div>
   <div class="br-pulse-rings"><div class="br-ring"></div><div class="br-ring"></div><div class="br-ring"></div></div>
-  <div class="br-swords"><svg viewBox="0 0 120 80" fill="none"><line x1="20" y1="70" x2="100" y2="10" stroke-linecap="round"/><line x1="100" y1="70" x2="20" y2="10" stroke-linecap="round"/><line x1="35" y1="60" x2="20" y2="70" stroke-linecap="round"/><line x1="85" y1="60" x2="100" y2="70" stroke-linecap="round"/><line x1="35" y1="20" x2="20" y2="10" stroke-linecap="round"/><line x1="85" y1="20" x2="100" y2="10" stroke-linecap="round"/></svg></div>
+  <div class="br-swords"><svg viewBox="0 0 160 100" fill="none">
+    <!-- Left sword blade -->
+    <path d="M25,85 L75,15 L80,18 L30,88 Z" class="blade-fill"/>
+    <line x1="27" y1="86" x2="78" y2="16" stroke-linecap="round"/>
+    <!-- Left sword guard -->
+    <line x1="38" y1="72" x2="22" y2="80" stroke-linecap="round"/>
+    <line x1="36" y1="68" x2="20" y2="76" stroke-linecap="round"/>
+    <!-- Left pommel -->
+    <path d="M22,84 Q20,88 24,90 Q28,88 26,84" stroke-linecap="round"/>
+    <!-- Right sword blade -->
+    <path d="M135,85 L85,15 L80,18 L130,88 Z" class="blade-fill"/>
+    <line x1="133" y1="86" x2="82" y2="16" stroke-linecap="round"/>
+    <!-- Right sword guard -->
+    <line x1="122" y1="72" x2="138" y2="80" stroke-linecap="round"/>
+    <line x1="124" y1="68" x2="140" y2="76" stroke-linecap="round"/>
+    <!-- Right pommel -->
+    <path d="M138,84 Q140,88 136,90 Q132,88 134,84" stroke-linecap="round"/>
+    <!-- Crown/crest at intersection -->
+    <path d="M74,16 L80,6 L86,16" stroke-linecap="round"/>
+    <path d="M77,12 L80,8 L83,12" stroke-linecap="round"/>
+  </svg></div>
   <div class="br-particles">
     <div class="br-particle"></div><div class="br-particle"></div><div class="br-particle"></div><div class="br-particle"></div>
     <div class="br-particle"></div><div class="br-particle"></div><div class="br-particle"></div><div class="br-particle"></div>
@@ -683,6 +711,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
     <div class="hero-orb hero-orb-3"></div>
   </div>
   <div class="hero-warmth" aria-hidden="true"></div>
+  <div class="hero-flare" aria-hidden="true"></div>
   <div class="hero-breath" aria-hidden="true"></div>
   <div class="hero-dust" aria-hidden="true">
     <span></span><span></span><span></span><span></span>
@@ -833,7 +862,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
         <div class="results-photo-label">Pro Card</div>
       </div>
 
-      <div class="results-photo reveal" data-no-lb style="cursor:default">
+      <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
         <img src="img/results-procard-ladies.jpg" alt="Athlete on stage with medal" loading="lazy" style="object-position:center 30%">
         <div class="results-photo-label">Pro Card</div>
       </div>
@@ -1216,7 +1245,7 @@ function toggleMenu() {
 
 burger.addEventListener('click', toggleMenu);
 mmClose.addEventListener('click', toggleMenu);
-document.querySelectorAll('.mm-link').forEach(function (a) {
+document.querySelectorAll('.mm-link,.mm-cta').forEach(function (a) {
   a.addEventListener('click', toggleMenu);
 });
 
