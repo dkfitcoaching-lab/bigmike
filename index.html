@@ -260,22 +260,21 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
 /* HERO */
 .hero{min-height:100vh;min-height:100svh;display:flex;align-items:flex-end;justify-content:center;position:relative;overflow:hidden;padding:80px 24px 0}
 .hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--goldGrad);opacity:.3;z-index:3;box-shadow:0 0 40px var(--accGlow),0 0 80px rgba(224,176,48,.12),0 -2px 30px rgba(224,176,48,.06)}
-.hero-bg{position:absolute;inset:-5%;background:url('img/hero-stage-2025.jpg') center 15%/cover no-repeat;z-index:0;animation:heroKenBurns 30s cubic-bezier(.45,0,.55,1) infinite alternate;will-change:transform;filter:contrast(1.15) brightness(.78) saturate(.85) sepia(.04)}
+.hero-bg{position:absolute;inset:-5%;background:url('img/hero-stage-2025.jpg') center 15%/cover no-repeat;z-index:0;animation:heroKenBurns 30s cubic-bezier(.45,0,.55,1) infinite alternate;will-change:transform;filter:contrast(1.1) brightness(.88) saturate(1.05)}
 .hero-ov{position:absolute;inset:0;z-index:1;
   background:
-    linear-gradient(90deg,rgba(2,2,2,.85) 0%,rgba(2,2,2,.35) 12%,rgba(2,2,2,.08) 25%,transparent 38%,transparent 62%,rgba(2,2,2,.08) 75%,rgba(2,2,2,.35) 88%,rgba(2,2,2,.85) 100%),
+    linear-gradient(90deg,rgba(2,2,2,.6) 0%,rgba(2,2,2,.15) 12%,transparent 25%,transparent 75%,rgba(2,2,2,.15) 88%,rgba(2,2,2,.6) 100%),
     linear-gradient(180deg,
-    rgba(2,2,2,.75) 0%,
-    rgba(2,2,2,.3) 10%,
-    rgba(2,2,2,.05) 22%,
-    transparent 35%,
-    transparent 45%,
-    rgba(2,2,2,.25) 55%,
-    rgba(2,2,2,.7) 65%,
-    rgba(2,2,2,.92) 75%,
-    rgba(2,2,2,.99) 85%,
-    rgba(2,2,2,1) 90%)}
-.hero-ov::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 45% at 50% 35%,transparent 0%,rgba(2,2,2,.4) 50%,rgba(2,2,2,.85) 100%);pointer-events:none}
+    rgba(2,2,2,.4) 0%,
+    rgba(2,2,2,.1) 8%,
+    transparent 18%,
+    transparent 50%,
+    rgba(2,2,2,.15) 58%,
+    rgba(2,2,2,.55) 68%,
+    rgba(2,2,2,.88) 78%,
+    rgba(2,2,2,.98) 86%,
+    rgba(2,2,2,1) 92%)}
+.hero-ov::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 55% 50% at 50% 35%,transparent 0%,rgba(2,2,2,.2) 50%,rgba(2,2,2,.5) 100%);pointer-events:none}
 .hero-ov::after{content:'';position:absolute;inset:0;background:
   radial-gradient(ellipse 40% 35% at 50% 35%,rgba(224,176,48,.06) 0%,transparent 50%),
   radial-gradient(ellipse 25% 40% at 50% 40%,rgba(200,160,40,.03) 0%,transparent 50%);
@@ -566,13 +565,13 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
   .nav-links{display:none}.nav-burger{display:flex}
   .section{padding:64px 20px}.s-head{margin-bottom:32px}
   .hero{padding:0;padding-top:env(safe-area-inset-top,0px);min-height:100svh;min-height:-webkit-fill-available;align-items:flex-end;justify-content:center}
-  .hero-bg{background-position:center 28%;inset:-3%}
+  .hero-bg{background-position:center 35%;inset:-3%}
   .hero-ov{background:
-    linear-gradient(90deg,rgba(2,2,2,.7) 0%,rgba(2,2,2,.2) 15%,transparent 30%,transparent 70%,rgba(2,2,2,.2) 85%,rgba(2,2,2,.7) 100%),
+    linear-gradient(90deg,rgba(2,2,2,.5) 0%,rgba(2,2,2,.1) 15%,transparent 30%,transparent 70%,rgba(2,2,2,.1) 85%,rgba(2,2,2,.5) 100%),
     linear-gradient(180deg,
-    rgba(2,2,2,.6) 0%,rgba(2,2,2,.15) 10%,transparent 22%,transparent 42%,
-    rgba(2,2,2,.2) 52%,rgba(2,2,2,.65) 62%,rgba(2,2,2,.92) 74%,rgba(2,2,2,.99) 84%,rgba(2,2,2,1) 90%)}
-  .hero-content{max-width:100%;width:100%;padding:0 16px calc(env(safe-area-inset-bottom,0px) + 56px);text-align:center}
+    rgba(2,2,2,.3) 0%,rgba(2,2,2,.05) 8%,transparent 18%,transparent 44%,
+    rgba(2,2,2,.12) 52%,rgba(2,2,2,.5) 62%,rgba(2,2,2,.88) 74%,rgba(2,2,2,.98) 84%,rgba(2,2,2,1) 90%)}
+  .hero-content{max-width:100%;width:100%;padding:0 16px calc(env(safe-area-inset-bottom,0px) + 90px);text-align:center}
   .hero h1{font-size:clamp(52px,16vw,88px);white-space:normal;line-height:.84;
     filter:drop-shadow(0 2px 16px rgba(224,176,48,.3)) drop-shadow(0 4px 30px rgba(224,176,48,.12))}
   .hero h1::after{left:8%;right:8%}
