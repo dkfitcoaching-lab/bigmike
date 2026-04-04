@@ -131,7 +131,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
 /* BRAND REVEAL — Suspenseful credential buildup
    Sequence: horizon → credentials one by one → name reveal → slash exit */
 .brand-reveal{position:fixed;inset:0;z-index:10000;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;padding:0 28px}
-.brand-reveal::before{content:'';position:absolute;top:46%;left:50%;width:100%;height:40%;background:radial-gradient(ellipse 80% 100% at 50% 50%,rgba(255,255,255,.015) 0%,transparent 60%);transform:translate(-50%,-50%);animation:brAmbient 5s ease-in-out 1s both;pointer-events:none}
+.brand-reveal::before{content:'';position:absolute;top:46%;left:50%;width:100%;height:40%;background:radial-gradient(ellipse 80% 100% at 50% 50%,rgba(255,255,255,1) 0%,transparent 60%);transform:translate(-50%,-50%);opacity:0;transition:opacity 1.2s ease-out;pointer-events:none}
 /* Scan line — sweeps through frame */
 .br-scan{position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 5%,rgba(255,255,255,.04) 20%,rgba(255,255,255,.1) 45%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.1) 55%,rgba(255,255,255,.04) 80%,transparent 95%);z-index:5;pointer-events:none;opacity:0;animation:brScanDown 2.4s cubic-bezier(.4,0,.2,1) .2s both;box-shadow:0 0 20px rgba(255,255,255,.03)}
 /* Horizon line — crack of golden light */
@@ -1318,6 +1318,30 @@ document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.s-h
 
   var T = 0; /* running timeline in ms */
 
+  /* Reactive ambient glow — brightens at each phase trigger */
+  var glowLevel = 0;
+  function pulseGlow(targetOpacity, delay) {
+    setTimeout(function () {
+      glowLevel = targetOpacity;
+      var s = br.querySelector('.br-glow-layer');
+      if (s) {
+        /* Brighten fast (0.8s), dim slow (2s) — natural breath */
+        s.style.transition = targetOpacity > parseFloat(s.style.opacity || 0)
+          ? 'opacity 0.8s ease-out' : 'opacity 2s ease-in-out';
+        s.style.opacity = glowLevel;
+      }
+    }, delay);
+  }
+
+  /* Insert a real element to control (can't set ::before opacity from JS easily) */
+  var glowLayer = document.createElement('div');
+  glowLayer.className = 'br-glow-layer';
+  glowLayer.style.cssText = 'position:absolute;top:46%;left:50%;width:100%;height:40%;background:radial-gradient(ellipse 80% 100% at 50% 50%,rgba(255,255,255,1) 0%,transparent 60%);transform:translate(-50%,-50%);opacity:0;transition:opacity 1.2s ease-out;pointer-events:none;z-index:0';
+  br.insertBefore(glowLayer, br.firstChild);
+
+  /* Phase glow schedule: horizon → cred1 → cred2 → cred3 → portal → name → slash */
+  pulseGlow(0.008, 600);    /* horizon opens — faintest glow */
+
   /* Helper: animate a credential in, hold, then out */
   function showCred(id, inDelay, holdMs) {
     var el = document.getElementById(id);
@@ -1333,14 +1357,21 @@ document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.s-h
   /* ── PHASE 1: Credentials fade in/out one by one ── */
   T = 1800;
   showCred('brCred1', T, 2200);       /* World Championship 2024 */
+  pulseGlow(0.018, T);                /* glow brightens — cred 1 */
+  pulseGlow(0.010, T + 2200);         /* dim back as cred fades */
   T += 3200;
   showCred('brCred2', T, 2200);       /* World Championship 2025 */
+  pulseGlow(0.028, T);                /* brighter — cred 2 */
+  pulseGlow(0.015, T + 2200);         /* dim back */
   T += 3200;
   showCred('brCred3', T, 1800);       /* 2× Olympian */
+  pulseGlow(0.04, T);                 /* brighter still — cred 3 */
+  pulseGlow(0.02, T + 1800);          /* dim back */
   T += 2800;
 
   /* ── PHASE 2: Darkness deepens after Olympian — portal effect ── */
   var portalStart = T;
+  pulseGlow(0.055, portalStart);      /* portal glow surge */
   setTimeout(function () {
     /* Pulse rings expand from center — portal opening */
     for (var i = 0; i < 3; i++) {
@@ -1352,6 +1383,8 @@ document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.s-h
 
   /* ── PHASE 3: Swords draw + name materializes ── */
   var nameStart = portalStart + 600;
+  pulseGlow(0.08, nameStart);          /* peak glow — name reveals */
+  pulseGlow(0.10, nameStart + 1200);   /* brightest moment — full name visible */
   setTimeout(function () {
     /* Swords */
     var swords = br.querySelector('.br-swords');
