@@ -10,6 +10,7 @@
 <meta name="robots" content="index, follow">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta http-equiv="X-Frame-Options" content="DENY">
+<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=()">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="canonical" href="https://ifbbprobigmikeely.com/">
 
@@ -24,7 +25,7 @@
 <meta name="twitter:card" content="summary_large_image">
 
 <!-- Preload hero -->
-<link rel="preload" as="image" href="img/hero-stage-2025.jpg">
+<link rel="preload" as="image" href="img/hero-stage-2025.jpg" fetchpriority="high">
 
 <!-- Icons -->
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
@@ -1904,11 +1905,13 @@ function submitContactForm(e) {
   btn.textContent = 'Sending...';
   btn.disabled = true;
 
+  /* Sanitize inputs — strip HTML tags */
+  function sanitize(s) { return s.replace(/<[^>]*>/g, '').trim(); }
   var data = {
-    name: form.name.value,
-    contact: form.contact.value,
+    name: sanitize(form.name.value),
+    contact: sanitize(form.contact.value),
     service: form.service.value,
-    message: form.message.value,
+    message: sanitize(form.message.value),
     submitted: new Date().toISOString()
   };
 
