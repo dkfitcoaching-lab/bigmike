@@ -101,10 +101,49 @@ Examples:
 
 This applies to every single entry. If a compound has multiple brand names, include them all separated by `/`.
 
+## Visual Testing with Playwright (CRITICAL — USE THIS)
+You can **render the page and take screenshots** using Playwright. This is the single most important tool for quality — USE IT on every visual change instead of guessing.
+
+```javascript
+// Run with: NODE_PATH=/opt/node22/lib/node_modules node -e "..."
+const { chromium } = require('playwright');
+(async () => {
+  const browser = await chromium.launch({ args: ['--no-sandbox'] });
+  const page = await browser.newPage();
+  // Block external requests (fonts etc) to avoid timeouts
+  await page.route('**/*', r => r.request().url().startsWith('file://') ? r.continue() : r.abort());
+  await page.setViewportSize({ width: 1440, height: 900 }); // or 390x844 for mobile
+  await page.goto('file:///home/user/bigmike/index.html', { waitUntil: 'load', timeout: 10000 });
+  // Remove brand reveal and force visibility on animated elements
+  await page.evaluate(() => {
+    document.getElementById('brandReveal')?.remove();
+    document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.s-head').forEach(el => {
+      el.style.opacity='1'; el.style.transform='none'; el.style.filter='none';
+    });
+    document.querySelector('.hero h1').style.cssText+='opacity:1!important;animation:none!important';
+    document.querySelector('.hero-sub').style.cssText+='opacity:1!important;animation:none!important';
+    document.querySelector('.hero-ctas').style.cssText+='opacity:1!important;animation:none!important';
+  });
+  await page.waitForTimeout(600);
+  await page.screenshot({ path: '/tmp/ss-section.png' });
+  // Scroll to sections: await page.evaluate(() => document.getElementById('about')?.scrollIntoView());
+  await browser.close();
+})();
+```
+
+Key notes:
+- **Block external requests** with `page.route()` — Google Fonts will timeout otherwise
+- **Remove brand reveal** — it covers the page for 18 seconds
+- **Force reveal visibility** — scroll-triggered animations start hidden
+- **Use `Read` tool on the screenshot PNG** — Claude can see images
+- Always screenshot at both **desktop (1440x900)** and **mobile (390x844)**
+- Scroll to sections with `scrollIntoView()` then `waitForTimeout(400)` before screenshot
+
 ## Testing Checklist
 After any changes, always:
 1. Extract JS and validate: `sed -n '/<script>/,/<\/script>/p' index.html | sed '1d;$d' > /tmp/bigmike_js.js && node -c /tmp/bigmike_js.js`
-2. Check all onclick handlers reference existing functions
-3. Verify modals open and scroll properly (no nested overflow containers)
-4. Verify render chain: renderNutrition → renderProgramBuilder → sub-editors
-5. Commit and push to `claude/refactor-programs-builder-TgMWi`
+2. **Screenshot the changed sections** using Playwright (see above) and visually verify
+3. Check all onclick handlers reference existing functions
+4. Verify modals open and scroll properly (no nested overflow containers)
+5. Verify render chain: renderNutrition → renderProgramBuilder → sub-editors
+6. Commit and push
