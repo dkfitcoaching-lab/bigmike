@@ -4,18 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Big Mike Ely | IFBB Pro Bodybuilding Coach — Contest Prep &amp; Online Coaching | Ohio</title>
-<meta name="description" content="IFBB Pro Big Mike Ely — 2x Olympian, 2x Masters World Champion, NPC Judge. Hundreds of athletes turned pro since 1996. Championship-level bodybuilding coaching.">
+<meta name="description" content="IFBB Pro Big Mike Ely — 2x Masters World Champion, Olympian, NPC Judge. Hundreds of athletes turned pro since 1996. Championship-level bodybuilding coaching.">
 <meta name="theme-color" content="#020202">
 <meta name="color-scheme" content="dark">
 <meta name="robots" content="index, follow">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta http-equiv="X-Frame-Options" content="DENY">
+<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=()">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="canonical" href="https://ifbbprobigmikeely.com/">
 
 <!-- Open Graph -->
 <meta property="og:title" content="Big Mike Ely | IFBB Pro Bodybuilding Coach">
-<meta property="og:description" content="IFBB Pro Big Mike Ely — 2x Olympian, 2x Masters World Champion, NPC Judge. Hundreds of athletes turned pro since 1996. Championship-level bodybuilding coaching.">
+<meta property="og:description" content="IFBB Pro Big Mike Ely — 2x Masters World Champion, Olympian, NPC Judge. Hundreds of athletes turned pro since 1996. Championship-level bodybuilding coaching.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://ifbbprobigmikeely.com/">
 <meta property="og:image" content="img/hero-stage-2025.jpg">
@@ -24,7 +25,7 @@
 <meta name="twitter:card" content="summary_large_image">
 
 <!-- Preload hero -->
-<link rel="preload" as="image" href="img/hero-stage-2025.jpg">
+<link rel="preload" as="image" href="img/hero-stage-2025.jpg" fetchpriority="high">
 
 <!-- Icons -->
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
@@ -61,7 +62,7 @@
       "@type": "Person",
       "name": "Big Mike Ely",
       "jobTitle": "IFBB Pro Bodybuilding Coach",
-      "description": "2x IFBB Pro Masters World Champion, 2x Olympian, NPC Judge. Coaching since 1996.",
+      "description": "2x IFBB Pro Masters World Champion, Olympian, NPC Judge. Coaching since 1996.",
       "sameAs": [
         "https://instagram.com/ifbbpromikeely",
         "https://instagram.com/center_stage_aesthetics",
@@ -411,40 +412,85 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
   box-shadow:0 0 60px rgba(224,176,48,.25),0 0 100px rgba(224,176,48,.1)}
 .vid-facade:hover .vid-play svg{fill:#fff;filter:drop-shadow(0 0 12px rgba(255,255,255,.4))}
 .vid-caption{text-align:center;margin-top:16px;font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:var(--dm);text-transform:uppercase;line-height:1.7}
-/* ACHIEVEMENT MONUMENTS — each title as its own golden plaque */
-.monuments{max-width:800px;margin:0 auto 56px;display:flex;flex-direction:column;gap:0}
-.monument{text-align:center;padding:48px 24px;position:relative}
-.monument::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:clamp(40px,8vw,80px);height:1px;
-  background:linear-gradient(90deg,transparent,rgba(224,176,48,.3),transparent);box-shadow:0 0 12px rgba(224,176,48,.08)}
+/* ACHIEVEMENT MONUMENTS — architectural memorials with depth and light */
+.monuments{max-width:900px;margin:0 auto 56px;display:flex;flex-direction:column;gap:0;position:relative}
+/* Vertical golden thread connecting all monuments */
+.monuments::before{content:'';position:absolute;top:0;bottom:0;left:50%;width:1px;
+  background:linear-gradient(180deg,transparent 0%,rgba(224,176,48,.06) 5%,rgba(224,176,48,.12) 20%,rgba(224,176,48,.12) 80%,rgba(224,176,48,.06) 95%,transparent 100%);
+  transform:translateX(-50%);pointer-events:none}
+.monument{text-align:center;padding:64px 32px;position:relative;overflow:hidden}
+/* Bottom divider — ornamental line */
+.monument::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:clamp(60px,12vw,140px);height:1px;
+  background:linear-gradient(90deg,transparent,rgba(224,176,48,.2) 20%,rgba(224,176,48,.4) 50%,rgba(224,176,48,.2) 80%,transparent);
+  box-shadow:0 0 20px rgba(224,176,48,.08),0 0 40px rgba(224,176,48,.04)}
 .monument:last-child::after{display:none}
-.monument-year{font-family:var(--display);font-size:clamp(44px,7vw,68px);font-weight:900;line-height:1;letter-spacing:.03em;
-  background:var(--goldGrad);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  animation:shimmer 8s linear infinite;filter:drop-shadow(0 0 30px rgba(224,176,48,.15))}
-.monument-show{font-family:var(--display);font-size:clamp(15px,2vw,20px);font-weight:600;color:var(--wh);letter-spacing:.04em;margin-top:10px;line-height:1.35}
-.monument-meta{font-family:var(--mono);font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--dm);margin-top:8px}
-.monument-result{display:inline-block;font-family:var(--mono);font-size:clamp(9px,1.1vw,11px);letter-spacing:.3em;text-transform:uppercase;margin-top:14px;padding:6px 20px;
+/* Corner brackets on each monument */
+.monument::before{content:'';position:absolute;top:16px;left:50%;width:min(320px,70vw);height:calc(100% - 32px);
+  transform:translateX(-50%);pointer-events:none;
+  border-top:1px solid rgba(224,176,48,.04);border-bottom:1px solid rgba(224,176,48,.04)}
+.monument-year{font-family:var(--display);font-size:clamp(48px,8vw,72px);font-weight:900;line-height:1;letter-spacing:.04em;
+  background:linear-gradient(100deg,#6B4E14 0%,#8B6820 12%,#BF9930 28%,#D4B048 38%,#E8CC68 45%,#F5E8A8 49%,#FFFCE8 51%,#F5E8A8 53%,#E8CC68 57%,#D4B048 64%,#BF9930 74%,#8B6820 88%,#6B4E14 100%);
+  background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:shimmer 8s linear infinite;filter:drop-shadow(0 0 30px rgba(224,176,48,.18));position:relative}
+.monument-show{font-family:var(--display);font-size:clamp(15px,2vw,20px);font-weight:600;color:var(--wh);letter-spacing:.06em;margin-top:12px;line-height:1.35;text-shadow:0 1px 8px rgba(0,0,0,.5)}
+.monument-meta{font-family:var(--mono);font-size:9px;letter-spacing:.35em;text-transform:uppercase;color:var(--dm);margin-top:10px}
+.monument-result{display:inline-block;font-family:var(--mono);font-size:clamp(9px,1.1vw,11px);letter-spacing:.3em;text-transform:uppercase;margin-top:16px;padding:8px 24px;
   border:1px solid rgba(224,176,48,.25);border-radius:4px;
   background:linear-gradient(135deg,rgba(224,176,48,.08),rgba(224,176,48,.02));
-  color:var(--acc);font-weight:600;
-  box-shadow:0 0 20px rgba(224,176,48,.04)}
-/* Crown monument — the championships get extra presence */
-.monument-crown .monument-year{font-size:clamp(52px,9vw,80px);filter:drop-shadow(0 0 40px rgba(224,176,48,.2)) drop-shadow(0 4px 20px rgba(0,0,0,.4))}
-.monument-crown .monument-result{border-color:var(--acc);
-  background:linear-gradient(135deg,rgba(224,176,48,.15),rgba(224,176,48,.05));
-  box-shadow:0 0 30px rgba(224,176,48,.1),0 0 60px rgba(224,176,48,.04);
-  color:var(--wh)}
-.monument-crown::before{content:'';position:absolute;top:50%;left:50%;width:min(400px,80vw);height:min(200px,40vw);
-  background:radial-gradient(ellipse,rgba(224,176,48,.04),transparent 60%);transform:translate(-50%,-50%);pointer-events:none}
-/* Olympia monument — prestige without placement */
-.monument-olympia .monument-year{color:var(--ow)}
-.monument-olympia .monument-show{font-style:italic}
-/* Pro record — clean list of competition history */
-.pro-record{max-width:600px;margin:0 auto;padding:0}
-.pro-record-entry{display:flex;justify-content:space-between;align-items:baseline;padding:10px 0;border-bottom:1px solid rgba(224,176,48,.06)}
+  color:var(--acc);font-weight:600;position:relative;
+  box-shadow:0 0 20px rgba(224,176,48,.04),0 2px 8px rgba(0,0,0,.3)}
+/* Crown monument — WORLD CHAMPIONSHIP — the absolute pinnacle */
+.monument-crown{padding:80px 32px;position:relative}
+/* Radial halo behind crown monuments */
+.monument-crown>.monument-halo{position:absolute;top:50%;left:50%;width:min(600px,90vw);height:min(350px,50vw);
+  background:radial-gradient(ellipse 100% 100%,rgba(224,176,48,.06) 0%,rgba(224,176,48,.03) 30%,transparent 65%);
+  transform:translate(-50%,-50%);pointer-events:none;animation:breathe 8s ease-in-out infinite}
+/* Horizontal light rays emanating from center */
+.monument-crown>.monument-rays{position:absolute;top:50%;left:50%;width:min(700px,95vw);height:1px;
+  background:linear-gradient(90deg,transparent 0%,rgba(224,176,48,.03) 10%,rgba(255,240,180,.08) 35%,rgba(255,245,200,.14) 48%,rgba(255,250,220,.18) 50%,rgba(255,245,200,.14) 52%,rgba(255,240,180,.08) 65%,rgba(224,176,48,.03) 90%,transparent 100%);
+  transform:translate(-50%,-50%);pointer-events:none;
+  box-shadow:0 0 60px rgba(224,176,48,.06),0 0 120px rgba(224,176,48,.03)}
+/* Crown SVG icon above the year */
+.monument-crown-icon{display:block;margin:0 auto 16px;width:32px;height:20px;opacity:.35;
+  filter:drop-shadow(0 0 12px rgba(224,176,48,.3))}
+.monument-crown-icon path{fill:none;stroke:rgba(224,176,48,.6);stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round}
+.monument-crown .monument-year{font-size:clamp(56px,10vw,88px);
+  filter:drop-shadow(0 0 50px rgba(224,176,48,.25)) drop-shadow(0 4px 20px rgba(0,0,0,.5));
+  background:linear-gradient(100deg,#6B4E14 0%,#8B6820 10%,#BF9930 25%,#D4B048 35%,#E8CC68 43%,#F5E8A8 48%,#FFFCE8 50%,#FFFEF0 51%,#F5E8A8 53%,#E8CC68 58%,#D4B048 66%,#BF9930 76%,#8B6820 90%,#6B4E14 100%);
+  background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.monument-crown .monument-show{font-size:clamp(16px,2.4vw,22px);letter-spacing:.08em}
+.monument-crown .monument-result{border-color:rgba(224,176,48,.5);
+  background:linear-gradient(135deg,rgba(224,176,48,.18),rgba(224,176,48,.06));
+  box-shadow:0 0 30px rgba(224,176,48,.12),0 0 60px rgba(224,176,48,.06),inset 0 0 20px rgba(224,176,48,.04);
+  color:var(--wh);padding:10px 28px;font-size:clamp(10px,1.2vw,12px)}
+.monument-crown::before{border-color:rgba(224,176,48,.08)}
+/* Decorative diamond between crown result and divider */
+.monument-crown .monument-gem{width:5px;height:5px;margin:20px auto 0;background:linear-gradient(135deg,#C49828,#F2E4A0,#C49828);
+  transform:rotate(45deg);opacity:.3;box-shadow:0 0 8px rgba(224,176,48,.3)}
+/* Olympia monument — prestige without placement, ethereal feel */
+.monument-olympia{padding:56px 32px}
+.monument-olympia .monument-year{
+  background:linear-gradient(100deg,rgba(200,190,170,.5) 0%,rgba(230,225,210,.7) 30%,rgba(245,240,225,.85) 48%,rgba(255,252,245,.95) 50%,rgba(245,240,225,.85) 52%,rgba(230,225,210,.7) 70%,rgba(200,190,170,.5) 100%);
+  background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 30px rgba(255,255,255,.08))}
+.monument-olympia .monument-show{font-style:italic;color:rgba(240,236,228,.85);letter-spacing:.06em}
+.monument-olympia .monument-meta{color:var(--mu)}
+/* Olympia subtle prestige badge */
+.monument-olympia .monument-badge{display:inline-block;font-family:var(--mono);font-size:8px;letter-spacing:.4em;text-transform:uppercase;
+  margin-top:14px;padding:5px 16px;color:var(--dm);border:1px solid rgba(224,176,48,.08);border-radius:3px}
+/* Pro record — refined competition ledger */
+.pro-record{max-width:620px;margin:0 auto;padding:0;position:relative}
+.pro-record::before{content:'';position:absolute;top:0;left:0;bottom:0;width:1px;
+  background:linear-gradient(180deg,transparent,rgba(224,176,48,.12) 10%,rgba(224,176,48,.12) 90%,transparent)}
+.pro-record-entry{display:flex;justify-content:space-between;align-items:baseline;padding:12px 0 12px 16px;
+  border-bottom:1px solid rgba(224,176,48,.04);position:relative;transition:all .3s var(--ease)}
+.pro-record-entry:hover{background:linear-gradient(90deg,rgba(224,176,48,.02),transparent 60%);padding-left:20px}
 .pro-record-entry:last-child{border-bottom:none}
-.pro-record-show{font-family:var(--body);font-size:clamp(13px,1.4vw,15px);color:var(--ow)}
-.pro-record-year{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--dm)}
-.pro-record-result{font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--mu);text-transform:uppercase}
+.pro-record-entry::before{content:'';position:absolute;left:0;top:50%;width:6px;height:1px;background:rgba(224,176,48,.2);transform:translateY(-50%)}
+.pro-record-show{font-family:var(--body);font-size:clamp(13px,1.4vw,15px);color:var(--ow);transition:color .3s}
+.pro-record-entry:hover .pro-record-show{color:var(--wh)}
+.pro-record-year{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--dm);min-width:40px;text-align:right}
+.pro-record-result{font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:var(--acc);text-transform:uppercase;font-weight:600}
 /* Credential headline — gold gradient like hero */
 .cred-headline{font-family:var(--display);font-size:clamp(30px,4.5vw,44px);font-weight:900;line-height:1;letter-spacing:.05em;
   background:linear-gradient(100deg,#8B6820 0%,#BF9930 24%,#D4B048 38%,#E8CC68 46%,#F5E8A8 50%,#E8CC68 56%,#D4B048 64%,#BF9930 76%,#8B6820 100%);
@@ -653,8 +699,12 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
   .about-photos{grid-template-columns:repeat(3,1fr);gap:8px}
   .vid-feature{margin:36px auto 4px}
   .vid-play{width:60px;height:60px}.vid-play svg{width:20px;height:20px}
-  .monument{padding:36px 16px}
-  .monument-crown .monument-year{font-size:clamp(44px,12vw,64px)}
+  .monuments::before{display:none}
+  .monument{padding:44px 16px}
+  .monument::before{width:min(280px,85vw)}
+  .monument-crown{padding:56px 16px}
+  .monument-crown .monument-year{font-size:clamp(48px,14vw,72px)}
+  .monument-crown>.monument-rays{display:none}
   .pro-record-entry{flex-wrap:wrap;gap:4px}
   .about-photos .circle-photo{aspect-ratio:3/4}
   .about-creds{gap:28px;margin-bottom:40px}
@@ -838,30 +888,33 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 
       <!-- THE CROWNS — World Championship victories -->
       <div class="monument monument-crown">
+        <div class="monument-halo"></div>
+        <div class="monument-rays"></div>
+        <svg class="monument-crown-icon" viewBox="0 0 32 20"><path d="M2,18 L6,6 L11,12 L16,2 L21,12 L26,6 L30,18 Z"/><path d="M4,18 L28,18"/></svg>
         <div class="monument-year">2025</div>
         <div class="monument-show">IFBB Pro Masters World Championship</div>
         <div class="monument-meta">Pittsburgh, PA &middot; Men&rsquo;s Bodybuilding 50+</div>
         <div class="monument-result">1st Place &middot; World Champion</div>
+        <div class="monument-gem"></div>
       </div>
 
       <div class="monument monument-crown">
+        <div class="monument-halo"></div>
+        <div class="monument-rays"></div>
+        <svg class="monument-crown-icon" viewBox="0 0 32 20"><path d="M2,18 L6,6 L11,12 L16,2 L21,12 L26,6 L30,18 Z"/><path d="M4,18 L28,18"/></svg>
         <div class="monument-year">2024</div>
         <div class="monument-show">IFBB Pro Masters World Championship</div>
         <div class="monument-meta">Pittsburgh, PA &middot; Men&rsquo;s Bodybuilding</div>
         <div class="monument-result">1st Place &middot; World Champion</div>
+        <div class="monument-gem"></div>
       </div>
 
       <!-- THE OLYMPIA — invitation-only, the highest stage -->
       <div class="monument monument-olympia">
-        <div class="monument-year">2024</div>
-        <div class="monument-show">Masters Olympia</div>
-        <div class="monument-meta">Romania &middot; Invitation Only</div>
-      </div>
-
-      <div class="monument monument-olympia">
         <div class="monument-year">2023</div>
         <div class="monument-show">Masters Olympia</div>
         <div class="monument-meta">Cluj-Napoca, Romania &middot; Invitation Only</div>
+        <div class="monument-badge">Olympian</div>
       </div>
 
       <!-- PRO VICTORIES -->
@@ -903,16 +956,16 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
     <div class="gw" style="max-width:160px;margin:48px auto"></div>
 
     <!-- COMPETITION RECORD — full pro career -->
-    <div class="reveal" style="max-width:600px;margin:0 auto 48px">
-      <div style="text-align:center;margin-bottom:24px">
-        <span style="font-family:var(--mono);font-size:9px;letter-spacing:.4em;text-transform:uppercase;color:var(--dm)">Competition Record</span>
+    <div class="reveal" style="max-width:620px;margin:0 auto 48px">
+      <div style="text-align:center;margin-bottom:28px">
+        <span style="font-family:var(--mono);font-size:8px;letter-spacing:.5em;text-transform:uppercase;color:var(--dm);display:block;margin-bottom:8px">Pro Career</span>
+        <span style="font-family:var(--display);font-size:clamp(20px,3vw,26px);font-weight:700;color:var(--wh);letter-spacing:.06em">Competition Record</span>
       </div>
       <div class="pro-record">
         <div class="pro-record-entry"><span class="pro-record-show">IFBB Pro Masters World Championship <span class="pro-record-result">&middot; 1st</span></span><span class="pro-record-year">2025</span></div>
         <div class="pro-record-entry"><span class="pro-record-show">IFBB Pro Masters World Championship <span class="pro-record-result">&middot; 1st</span></span><span class="pro-record-year">2024</span></div>
-        <div class="pro-record-entry"><span class="pro-record-show">Masters Olympia, Romania</span><span class="pro-record-year">2024</span></div>
         <div class="pro-record-entry"><span class="pro-record-show">Masters Olympia, Romania</span><span class="pro-record-year">2023</span></div>
-        <div class="pro-record-entry"><span class="pro-record-show">IFBB Masters World Pro</span><span class="pro-record-year">2022</span></div>
+        <div class="pro-record-entry"><span class="pro-record-show">IFBB Masters World Pro <span class="pro-record-result">&middot; 6th</span></span><span class="pro-record-year">2022</span></div>
         <div class="pro-record-entry"><span class="pro-record-show">IFBB Baltimore Classic Masters Pro <span class="pro-record-result">&middot; 1st</span></span><span class="pro-record-year">2019</span></div>
         <div class="pro-record-entry"><span class="pro-record-show">IFBB Ferrigno Legacy Pro</span><span class="pro-record-year">2015</span></div>
         <div class="pro-record-entry"><span class="pro-record-show">Wings of Strength Chicago Pro</span><span class="pro-record-year">2014</span></div>
@@ -1856,11 +1909,13 @@ function submitContactForm(e) {
   btn.textContent = 'Sending...';
   btn.disabled = true;
 
+  /* Sanitize inputs — strip HTML tags */
+  function sanitize(s) { return s.replace(/<[^>]*>/g, '').trim(); }
   var data = {
-    name: form.name.value,
-    contact: form.contact.value,
+    name: sanitize(form.name.value),
+    contact: sanitize(form.contact.value),
     service: form.service.value,
-    message: form.message.value,
+    message: sanitize(form.message.value),
     submitted: new Date().toISOString()
   };
 
