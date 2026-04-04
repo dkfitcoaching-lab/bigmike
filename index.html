@@ -259,22 +259,21 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
 .mm::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 10%,rgba(224,176,48,.15) 50%,transparent 90%)}
 /* HERO */
 .hero{min-height:100vh;min-height:100svh;display:flex;align-items:flex-end;justify-content:center;position:relative;overflow:hidden;padding:80px 24px 0}
-.hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--goldGrad);opacity:.3;z-index:3;box-shadow:0 0 40px var(--accGlow),0 0 80px rgba(224,176,48,.12),0 -2px 30px rgba(224,176,48,.06)}
-.hero-bg{position:absolute;inset:-5%;background:url('img/hero-stage-2025.jpg') center 15%/cover no-repeat;z-index:0;animation:heroKenBurns 30s cubic-bezier(.45,0,.55,1) infinite alternate;will-change:transform;filter:contrast(1.1) brightness(.88) saturate(1.05)}
+.hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--goldGrad);opacity:.4;z-index:3;box-shadow:0 0 50px var(--accGlow),0 0 100px rgba(224,176,48,.15),0 -4px 40px rgba(224,176,48,.08)}
+.hero-bg{position:absolute;inset:-8%;background:url('img/hero-stage-2025.jpg') center top/cover no-repeat;z-index:0;animation:heroKenBurns 25s cubic-bezier(.45,0,.55,1) infinite alternate;will-change:transform;filter:contrast(1.12) brightness(.86) saturate(1.08)}
 .hero-ov{position:absolute;inset:0;z-index:1;
   background:
-    linear-gradient(90deg,rgba(2,2,2,.6) 0%,rgba(2,2,2,.15) 12%,transparent 25%,transparent 75%,rgba(2,2,2,.15) 88%,rgba(2,2,2,.6) 100%),
+    linear-gradient(90deg,rgba(2,2,2,.5) 0%,rgba(2,2,2,.1) 12%,transparent 28%,transparent 72%,rgba(2,2,2,.1) 88%,rgba(2,2,2,.5) 100%),
     linear-gradient(180deg,
-    rgba(2,2,2,.4) 0%,
-    rgba(2,2,2,.1) 8%,
-    transparent 18%,
-    transparent 50%,
-    rgba(2,2,2,.15) 58%,
-    rgba(2,2,2,.55) 68%,
-    rgba(2,2,2,.88) 78%,
-    rgba(2,2,2,.98) 86%,
-    rgba(2,2,2,1) 92%)}
-.hero-ov::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 55% 50% at 50% 35%,transparent 0%,rgba(2,2,2,.2) 50%,rgba(2,2,2,.5) 100%);pointer-events:none}
+    rgba(2,2,2,.15) 0%,
+    transparent 5%,
+    transparent 55%,
+    rgba(2,2,2,.12) 62%,
+    rgba(2,2,2,.45) 70%,
+    rgba(2,2,2,.82) 80%,
+    rgba(2,2,2,.96) 88%,
+    rgba(2,2,2,1) 94%)}
+.hero-ov::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 55% at 50% 40%,transparent 0%,rgba(2,2,2,.15) 50%,rgba(2,2,2,.4) 100%);pointer-events:none}
 .hero-ov::after{content:'';position:absolute;inset:0;background:
   radial-gradient(ellipse 40% 35% at 50% 35%,rgba(224,176,48,.06) 0%,transparent 50%),
   radial-gradient(ellipse 25% 40% at 50% 40%,rgba(200,160,40,.03) 0%,transparent 50%);
@@ -292,14 +291,14 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
 .hero-flare{position:absolute;top:38%;left:0;right:0;height:1px;z-index:2;pointer-events:none;
   background:linear-gradient(90deg,transparent 5%,rgba(224,176,48,.03) 15%,rgba(255,240,180,.08) 35%,rgba(255,245,200,.14) 48%,rgba(255,250,220,.18) 50%,rgba(255,245,200,.14) 52%,rgba(255,240,180,.08) 65%,rgba(224,176,48,.03) 85%,transparent 95%);
   box-shadow:0 0 60px rgba(224,176,48,.06),0 0 120px rgba(224,176,48,.03);
-  opacity:0;animation:heroFlareIn 2s ease-out 17.5s forwards;filter:blur(1px)}
+  opacity:0;animation:heroFlareIn 2s ease-out 12.5s forwards;filter:blur(1px)}
 @keyframes heroFlareIn{0%{opacity:0;transform:scaleX(.3)}100%{opacity:1;transform:scaleX(1)}}
 /* Breathing side vignette — cinematic depth */
 .hero-breath{position:absolute;inset:0;z-index:1;pointer-events:none;
   background:
-    radial-gradient(ellipse 35% 80% at 0% 50%,rgba(0,0,0,.5),transparent),
-    radial-gradient(ellipse 35% 80% at 100% 50%,rgba(0,0,0,.5),transparent),
-    radial-gradient(ellipse 80% 35% at 50% 0%,rgba(0,0,0,.5),transparent);
+    radial-gradient(ellipse 30% 80% at 0% 50%,rgba(0,0,0,.45),transparent),
+    radial-gradient(ellipse 30% 80% at 100% 50%,rgba(0,0,0,.45),transparent),
+    radial-gradient(ellipse 80% 25% at 50% 0%,rgba(0,0,0,.3),transparent);
   animation:heroBreathe 8s ease-in-out infinite}
 @keyframes heroBreathe{0%,100%{opacity:.6}50%{opacity:.85}}
 .hero-dust{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
@@ -310,17 +309,17 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
 .hero h1{font-family:var(--display);font-size:clamp(72px,11.5vw,180px);font-weight:900;line-height:.88;margin-bottom:0;letter-spacing:.03em;white-space:nowrap;
   background:linear-gradient(100deg,#6B4E14 0%,#8B6820 12%,#BF9930 28%,#D4B048 38%,#E8CC68 45%,#F5E8A8 49%,#FFFCE8 51%,#F5E8A8 53%,#E8CC68 57%,#D4B048 64%,#BF9930 74%,#8B6820 88%,#6B4E14 100%);
   background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  opacity:0;animation:heroTitleIn 1.8s var(--ease) 16s forwards,shimmer 20s linear 18.5s infinite;
-  filter:drop-shadow(0 2px 20px rgba(200,170,80,.2));
+  opacity:0;animation:heroTitleIn 1.8s var(--ease) 11s forwards,shimmer 20s linear 13.5s infinite;
+  filter:drop-shadow(0 2px 24px rgba(200,170,80,.25)) drop-shadow(0 8px 40px rgba(0,0,0,.5));
   position:relative}
 /* Subtle underline accent beneath the name */
-.hero h1::after{content:'';position:absolute;bottom:-8px;left:12%;right:12%;height:1.5px;
-  background:linear-gradient(90deg,transparent,rgba(224,176,48,.4) 20%,rgba(255,240,180,.7) 50%,rgba(224,176,48,.4) 80%,transparent);
-  opacity:0;animation:heroEmLine .8s var(--ease) 17.8s forwards;box-shadow:0 0 30px rgba(224,176,48,.25),0 0 60px rgba(224,176,48,.1)}
+.hero h1::after{content:'';position:absolute;bottom:-10px;left:12%;right:12%;height:1.5px;
+  background:linear-gradient(90deg,transparent,rgba(224,176,48,.35) 15%,rgba(255,240,180,.75) 50%,rgba(224,176,48,.35) 85%,transparent);
+  opacity:0;animation:heroEmLine .8s var(--ease) 12.8s forwards;box-shadow:0 0 40px rgba(224,176,48,.3),0 0 80px rgba(224,176,48,.12),0 0 120px rgba(224,176,48,.06)}
 @keyframes heroEmLine{from{opacity:0;left:45%;right:45%}to{opacity:1;left:15%;right:15%}}
-@keyframes heroTitleIn{from{opacity:0;transform:translateY(40px) scale(.96);filter:blur(6px) drop-shadow(0 0 0 transparent)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0) drop-shadow(0 2px 20px rgba(224,176,48,.3)) drop-shadow(0 4px 40px rgba(224,176,48,.12)) drop-shadow(0 0 80px rgba(224,176,48,.06))}}
-.hero-sub{font-family:var(--mono);font-size:clamp(9px,1.2vw,12px);letter-spacing:.4em;text-transform:uppercase;color:rgba(220,215,200,.4);line-height:1;margin-top:24px;opacity:0;animation:heroFadeUp .8s var(--ease) 17s forwards;text-shadow:0 1px 6px rgba(0,0,0,.95)}
-.hero-ctas{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:36px;opacity:0;animation:heroFadeUp .8s var(--ease) 17.4s forwards}
+@keyframes heroTitleIn{from{opacity:0;transform:translateY(40px) scale(.96);filter:blur(6px) drop-shadow(0 0 0 transparent)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0) drop-shadow(0 2px 24px rgba(200,170,80,.35)) drop-shadow(0 6px 50px rgba(224,176,48,.15)) drop-shadow(0 0 100px rgba(224,176,48,.08))}}
+.hero-sub{font-family:var(--mono);font-size:clamp(9px,1.2vw,12px);letter-spacing:.4em;text-transform:uppercase;color:rgba(220,215,200,.4);line-height:1;margin-top:24px;opacity:0;animation:heroFadeUp .8s var(--ease) 12s forwards;text-shadow:0 1px 6px rgba(0,0,0,.95)}
+.hero-ctas{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:36px;opacity:0;animation:heroFadeUp .8s var(--ease) 12.4s forwards}
 .hero-scroll{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);z-index:2;color:var(--dm);animation:bounce 2.5s ease-in-out infinite;transition:opacity .5s}
 /* SECTIONS */
 .section{padding:100px 24px;position:relative;overflow:hidden}
@@ -382,6 +381,36 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
 .about-home-names a:hover{color:var(--acc)}
 .about-home-dot{color:var(--borderH);font-size:10px}
 .about-home-meta{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--dm);line-height:1.8}
+/* VIDEO FEATURE — cinematic interview showcase */
+.vid-feature{margin:48px auto 8px;max-width:780px;position:relative}
+.vid-header{text-align:center;margin-bottom:24px}
+.vid-label{display:block;font-family:var(--mono);font-size:9px;letter-spacing:.45em;text-transform:uppercase;margin-bottom:10px;
+  background:var(--goldGrad);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 8s linear infinite}
+.vid-title{display:block;font-family:var(--display);font-size:clamp(17px,2.2vw,22px);font-weight:600;color:var(--ow);letter-spacing:.02em;line-height:1.4}
+.vid-title span{color:var(--mu);font-weight:400}
+.vid-wrap{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--border);aspect-ratio:16/9;background:#000;
+  box-shadow:0 8px 60px rgba(0,0,0,.5),0 0 80px rgba(224,176,48,.04);transition:all .6s var(--ease)}
+.vid-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--goldGrad);opacity:.35;z-index:3;
+  box-shadow:0 0 20px rgba(224,176,48,.25),0 0 60px rgba(224,176,48,.08)}
+.vid-wrap::after{content:'';position:absolute;inset:-1px;border-radius:14px;z-index:2;pointer-events:none;
+  background:linear-gradient(135deg,rgba(224,176,48,.1),transparent 30%,transparent 70%,rgba(224,176,48,.06));
+  -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;padding:1px;opacity:0;transition:opacity .5s}
+.vid-wrap:hover::after{opacity:1}
+.vid-wrap:hover{border-color:var(--borderH);box-shadow:0 20px 80px rgba(0,0,0,.6),0 0 100px rgba(224,176,48,.08);transform:translateY(-4px)}
+.vid-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none;z-index:1}
+.vid-facade{position:absolute;inset:0;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;background:#000;transition:opacity .5s}
+.vid-facade.loaded{opacity:0;pointer-events:none}
+.vid-facade img{width:100%;height:100%;object-fit:cover;filter:brightness(.55) contrast(1.15) saturate(1.05);transition:filter .5s var(--ease)}
+.vid-facade:hover img{filter:brightness(.35) contrast(1.15) saturate(1.05)}
+.vid-play{position:absolute;width:76px;height:76px;border-radius:50%;border:2px solid rgba(255,250,230,.25);background:rgba(0,0,0,.5);
+  display:flex;align-items:center;justify-content:center;transition:all .5s var(--ease);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  box-shadow:0 0 40px rgba(0,0,0,.4),0 0 60px rgba(224,176,48,.06)}
+.vid-play svg{width:24px;height:24px;fill:rgba(255,250,230,.9);margin-left:3px;filter:drop-shadow(0 0 8px rgba(255,255,255,.2));transition:all .4s}
+.vid-facade:hover .vid-play{border-color:var(--acc);background:rgba(224,176,48,.15);transform:scale(1.12);
+  box-shadow:0 0 60px rgba(224,176,48,.25),0 0 100px rgba(224,176,48,.1)}
+.vid-facade:hover .vid-play svg{fill:#fff;filter:drop-shadow(0 0 12px rgba(255,255,255,.4))}
+.vid-caption{text-align:center;margin-top:16px;font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:var(--dm);text-transform:uppercase;line-height:1.7}
 /* Credential headline — gold gradient like hero */
 .cred-headline{font-family:var(--display);font-size:clamp(30px,4.5vw,44px);font-weight:900;line-height:1;letter-spacing:.05em;
   background:linear-gradient(100deg,#8B6820 0%,#BF9930 24%,#D4B048 38%,#E8CC68 46%,#F5E8A8 50%,#E8CC68 56%,#D4B048 64%,#BF9930 76%,#8B6820 100%);
@@ -552,7 +581,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 @keyframes orbFloat{0%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-20px) scale(1.1)}66%{transform:translate(-20px,10px) scale(.95)}100%{transform:translate(0,0) scale(1)}}
 @keyframes orbFloat2{0%{transform:translate(0,0) scale(1)}33%{transform:translate(-40px,15px) scale(.9)}66%{transform:translate(20px,-30px) scale(1.05)}100%{transform:translate(0,0) scale(1)}}
 @keyframes lineGlow{0%,100%{opacity:.3}50%{opacity:.7}}
-@keyframes heroKenBurns{0%{transform:scale(1) translate(0,0)}100%{transform:scale(1.08) translate(-1.5%,-1%)}}
+@keyframes heroKenBurns{0%{transform:scale(1.02) translate(0,0)}50%{transform:scale(1.06) translate(-0.5%,3%)}100%{transform:scale(1.02) translate(0.5%,0%)}}
 @keyframes heroFadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
 @keyframes dustFloat{0%{opacity:0;transform:translateY(0) scale(1)}10%{opacity:.6}50%{opacity:.3}90%{opacity:0}100%{opacity:0;transform:translateY(-80vh) scale(0)}}
 @keyframes imgShimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
@@ -569,12 +598,12 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
   .nav-links{display:none}.nav-burger{display:flex}
   .section{padding:64px 20px}.s-head{margin-bottom:32px}
   .hero{padding:0;padding-top:env(safe-area-inset-top,0px);min-height:100svh;min-height:-webkit-fill-available;align-items:flex-end;justify-content:center}
-  .hero-bg{background-position:center 35%;inset:-3%}
+  .hero-bg{background-position:center top;inset:-6%}
   .hero-ov{background:
-    linear-gradient(90deg,rgba(2,2,2,.5) 0%,rgba(2,2,2,.1) 15%,transparent 30%,transparent 70%,rgba(2,2,2,.1) 85%,rgba(2,2,2,.5) 100%),
+    linear-gradient(90deg,rgba(2,2,2,.45) 0%,rgba(2,2,2,.08) 15%,transparent 30%,transparent 70%,rgba(2,2,2,.08) 85%,rgba(2,2,2,.45) 100%),
     linear-gradient(180deg,
-    rgba(2,2,2,.3) 0%,rgba(2,2,2,.05) 8%,transparent 18%,transparent 44%,
-    rgba(2,2,2,.12) 52%,rgba(2,2,2,.5) 62%,rgba(2,2,2,.88) 74%,rgba(2,2,2,.98) 84%,rgba(2,2,2,1) 90%)}
+    rgba(2,2,2,.25) 0%,rgba(2,2,2,.03) 6%,transparent 14%,transparent 52%,
+    rgba(2,2,2,.1) 60%,rgba(2,2,2,.4) 68%,rgba(2,2,2,.78) 76%,rgba(2,2,2,.95) 84%,rgba(2,2,2,1) 92%)}
   .hero-content{max-width:100%;width:100%;padding:0 16px calc(env(safe-area-inset-bottom,0px) + 90px);text-align:center}
   .hero h1{font-size:clamp(52px,16vw,88px);white-space:normal;line-height:.84;
     filter:drop-shadow(0 2px 16px rgba(224,176,48,.3)) drop-shadow(0 4px 30px rgba(224,176,48,.12))}
@@ -588,6 +617,8 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
   .circle-wrap{gap:32px}.circle-grid{gap:8px}
   .circle-photo{aspect-ratio:3/4}
   .about-photos{grid-template-columns:repeat(3,1fr);gap:8px}
+  .vid-feature{margin:36px auto 4px}
+  .vid-play{width:60px;height:60px}.vid-play svg{width:20px;height:20px}
   .about-photos .circle-photo{aspect-ratio:3/4}
   .about-creds{gap:28px;margin-bottom:40px}
   .about-stat{gap:10px}
@@ -772,7 +803,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
           <span class="about-stat-num">2&times;</span>
           <span class="about-stat-title">World Champion</span>
         </div>
-        <p class="about-stat-desc">IFBB Pro Masters World Championship &mdash; Pittsburgh, PA, October 2024 &amp; October 2025. Back-to-back. Of 30,000+ NPC competitors each year, fewer than 300 ever turn pro. Of those, a fraction qualify for the world stage. Winning it twice, consecutively, is nearly unheard of in the sport&rsquo;s history.</p>
+        <p class="about-stat-desc">IFBB Pro Masters World Championship &mdash; Pittsburgh, PA, 2024 &amp; 2025. Back-to-back. Over 250,000 athletes hold NPC membership in the United States. Roughly 30,000 step on stage each year. Fewer than 300 &mdash; the top 1% &mdash; ever earn an IFBB Pro Card. Of those professionals, only a handful qualify for the World Championship. Winning it once is the pinnacle. Winning it twice, consecutively, places Mike in a class that can be counted on one hand.</p>
       </div>
 
       <div class="gw" style="max-width:120px;margin:0 auto"></div>
@@ -782,7 +813,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
           <span class="about-stat-num">2&times;</span>
           <span class="about-stat-title">Olympian</span>
         </div>
-        <p class="about-stat-desc">Masters Olympia, Romania 2023 &amp; 2024. The Olympia stage is reserved for the world&rsquo;s top-ranked professionals &mdash; invitation only. The single highest honor in competitive bodybuilding.</p>
+        <p class="about-stat-desc">Masters Olympia, Romania &mdash; 2023 &amp; 2024. Of the roughly 1,000 active IFBB Professionals worldwide, only the highest-ranked are invited to the Olympia stage. No application. No entry fee. Invitation only &mdash; extended to those the federation deems the absolute best in the world. The Olympia is to bodybuilding what the Super Bowl is to football: the single most prestigious event in the sport&rsquo;s history. Mike has stood on that stage twice.</p>
       </div>
 
       <div class="gw" style="max-width:120px;margin:0 auto"></div>
@@ -792,7 +823,22 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
           <span class="about-stat-num">&#9670;</span>
           <span class="about-stat-title">Pro Card Under Hany Rambod</span>
         </div>
-        <p class="about-stat-desc">Earned his IFBB Pro Card under Hany Rambod &mdash; &ldquo;The Pro Creator&rdquo; &mdash; architect of 25 Olympia titles across 6 divisions. The same coach behind Phil Heath, Chris Bumstead, Jay Cutler, and Hadi Choopan.</p>
+        <p class="about-stat-desc">Earned his IFBB Pro Card under Hany Rambod &mdash; known worldwide as &ldquo;The Pro Creator.&rdquo; Rambod is the most decorated coach in the history of professional bodybuilding: 25 Olympia titles across 6 divisions. The architect behind Phil Heath (7x Mr. Olympia), Chris Bumstead (5x Classic Olympia), Jay Cutler, and Hadi Choopan. When Mike earned his Pro Card, Hany was the one standing next to him.</p>
+      </div>
+
+      <!-- THE MOMENT — Hany Rambod Pro Card Interview -->
+      <div class="vid-feature reveal">
+        <div class="vid-header">
+          <span class="vid-label">The Moment</span>
+          <span class="vid-title">Hany Rambod interviews Mike <span>after earning his Pro Card</span></span>
+        </div>
+        <div class="vid-wrap">
+          <div class="vid-facade" id="vidHany" onclick="playVid(this,'xfGujRPSlJM')" role="button" tabindex="0" aria-label="Play interview video" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();playVid(this,'xfGujRPSlJM')}">
+            <img src="https://img.youtube.com/vi/xfGujRPSlJM/maxresdefault.jpg" alt="Hany Rambod interviews Big Mike Ely after earning his IFBB Pro Card" loading="lazy">
+            <div class="vid-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          </div>
+        </div>
+        <div class="vid-caption">NPC Nationals &middot; Hany Rambod &amp; Big Mike Ely</div>
       </div>
 
       <div class="gw" style="max-width:120px;margin:0 auto"></div>
@@ -802,7 +848,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
           <span class="about-stat-num">&#9670;</span>
           <span class="about-stat-title">NPC National Judge</span>
         </div>
-        <p class="about-stat-desc">Active judge with the National Physique Committee. Sees both sides of the stage.</p>
+        <p class="about-stat-desc">Active judge with the National Physique Committee &mdash; the governing body of amateur competitive bodybuilding in the United States. Mike evaluates competitors at the national level, bringing the same eye for detail to the judging table that built his own career on stage. He sees both sides: what it takes to win, and what the judges are looking for.</p>
       </div>
     </div>
 
@@ -1344,93 +1390,87 @@ document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.s-h
   glowLayer.style.cssText = 'position:absolute;top:46%;left:50%;width:100%;height:40%;background:radial-gradient(ellipse 80% 100% at 50% 50%,rgba(255,255,255,1) 0%,transparent 60%);transform:translate(-50%,-50%);opacity:0;transition:opacity 1.2s ease-out;pointer-events:none;z-index:0';
   br.insertBefore(glowLayer, br.firstChild);
 
-  /* Phase glow schedule: horizon → cred1 → cred2 → cred3 → portal → name → slash */
-  pulseGlow(0.008, 600);    /* horizon opens — faintest glow */
+  /* Phase glow schedule: horizon → cred1 → cred2 → cred3 → portal → name → slash
+     COMPRESSED TIMELINE: ~12s total (was ~18s). Still cinematic, respects attention. */
+  pulseGlow(0.008, 400);    /* horizon opens — faintest glow */
 
   /* Helper: animate a credential in, hold, then out */
   function showCred(id, inDelay, holdMs) {
     var el = document.getElementById(id);
     if (!el) return;
     setTimeout(function () {
-      el.style.animation = 'brCredIn 1.2s cubic-bezier(.3,0,.15,1) forwards';
+      el.style.animation = 'brCredIn 1s cubic-bezier(.3,0,.15,1) forwards';
     }, inDelay);
     setTimeout(function () {
-      el.style.animation = 'brCredOut .8s cubic-bezier(.5,0,.8,1) forwards';
+      el.style.animation = 'brCredOut .6s cubic-bezier(.5,0,.8,1) forwards';
     }, inDelay + holdMs);
   }
 
   /* ── PHASE 1: Credentials fade in/out one by one ── */
-  T = 1800;
-  showCred('brCred1', T, 2200);       /* World Championship 2024 */
-  pulseGlow(0.018, T);                /* glow brightens — cred 1 */
-  pulseGlow(0.010, T + 2200);         /* dim back as cred fades */
-  T += 3200;
-  showCred('brCred2', T, 2200);       /* World Championship 2025 */
-  pulseGlow(0.028, T);                /* brighter — cred 2 */
-  pulseGlow(0.015, T + 2200);         /* dim back */
-  T += 3200;
-  showCred('brCred3', T, 1800);       /* 2× Olympian */
-  pulseGlow(0.04, T);                 /* brighter still — cred 3 */
-  pulseGlow(0.02, T + 1800);          /* dim back */
-  T += 2800;
+  T = 1200;
+  showCred('brCred1', T, 1600);       /* World Championship 2024 */
+  pulseGlow(0.018, T);
+  pulseGlow(0.010, T + 1600);
+  T += 2200;
+  showCred('brCred2', T, 1600);       /* World Championship 2025 */
+  pulseGlow(0.028, T);
+  pulseGlow(0.015, T + 1600);
+  T += 2200;
+  showCred('brCred3', T, 1400);       /* 2× Olympian */
+  pulseGlow(0.04, T);
+  pulseGlow(0.02, T + 1400);
+  T += 2000;
 
-  /* ── PHASE 2: Darkness deepens after Olympian — portal effect ── */
+  /* ── PHASE 2: Portal effect ── */
   var portalStart = T;
-  pulseGlow(0.055, portalStart);      /* portal glow surge */
+  pulseGlow(0.055, portalStart);
   setTimeout(function () {
-    /* Pulse rings expand from center — portal opening */
     for (var i = 0; i < 3; i++) {
       var ring = document.createElement('div');
-      ring.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);border-radius:50%;border:1px solid rgba(255,255,255,' + (.12 - i * .03) + ');width:20px;height:20px;opacity:0;z-index:2;pointer-events:none;animation:brPortalRing 2s cubic-bezier(.15,.8,.25,1) ' + (i * .3) + 's both';
+      ring.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);border-radius:50%;border:1px solid rgba(255,255,255,' + (.12 - i * .03) + ');width:20px;height:20px;opacity:0;z-index:2;pointer-events:none;animation:brPortalRing 1.6s cubic-bezier(.15,.8,.25,1) ' + (i * .25) + 's both';
       br.appendChild(ring);
     }
   }, portalStart);
 
   /* ── PHASE 3: Swords draw + name materializes ── */
-  var nameStart = portalStart + 600;
-  pulseGlow(0.08, nameStart);          /* peak glow — name reveals */
-  pulseGlow(0.10, nameStart + 1200);   /* brightest moment — full name visible */
+  var nameStart = portalStart + 400;
+  pulseGlow(0.08, nameStart);
+  pulseGlow(0.10, nameStart + 800);
   setTimeout(function () {
-    /* Swords */
     var swords = br.querySelector('.br-swords');
     if (swords) {
-      swords.style.animation = 'brSwordsIn 1.8s cubic-bezier(.2,.8,.3,1) forwards';
+      swords.style.animation = 'brSwordsIn 1.4s cubic-bezier(.2,.8,.3,1) forwards';
       swords.querySelectorAll('line,path:not(.blade-fill),circle').forEach(function (el) {
-        el.style.animation = 'brSwordDraw 2s cubic-bezier(.4,0,.2,1) .2s forwards';
+        el.style.animation = 'brSwordDraw 1.6s cubic-bezier(.4,0,.2,1) .15s forwards';
       });
       swords.querySelectorAll('.blade-fill').forEach(function (el) {
-        el.style.animation = 'brBladeFill 1s ease-out 1.6s forwards';
+        el.style.animation = 'brBladeFill .8s ease-out 1.2s forwards';
       });
     }
-    /* Corners */
     var corners = br.querySelector('.br-corners');
     if (corners) {
-      corners.style.animation = 'brCornerIn .8s ease-out .6s forwards';
+      corners.style.animation = 'brCornerIn .6s ease-out .4s forwards';
       corners.querySelectorAll('*').forEach(function (c) { c.style.opacity = '1'; });
     }
-    /* Particles */
     br.querySelectorAll('.br-particle').forEach(function (p, i) {
-      p.style.animation = 'brEmber ' + (5 + i * .3) + 's linear ' + (.4 + i * .2) + 's both';
+      p.style.animation = 'brEmber ' + (4 + i * .25) + 's linear ' + (.3 + i * .15) + 's both';
     });
-    /* Name glow */
     var glow = br.querySelector('.br-name-glow');
-    if (glow) glow.style.animation = 'brBloom 3s ease-out .4s both';
+    if (glow) glow.style.animation = 'brBloom 2.5s ease-out .3s both';
   }, nameStart);
 
   setTimeout(function () {
-    /* Name */
     var name = br.querySelector('.br-name');
-    if (name) name.style.animation = 'brNameReveal 2.2s cubic-bezier(.15,.85,.25,1) forwards,brShimmer 7s linear 3s infinite';
-    /* Gold line */
+    if (name) name.style.animation = 'brNameReveal 1.8s cubic-bezier(.15,.85,.25,1) forwards,brShimmer 7s linear 2.5s infinite';
     var line = br.querySelector('.br-line');
-    if (line) line.style.animation = 'brLineGrow 1.2s cubic-bezier(.25,.9,.25,1) .8s both';
-  }, nameStart + 400);
+    if (line) line.style.animation = 'brLineGrow 1s cubic-bezier(.25,.9,.25,1) .6s both';
+  }, nameStart + 300);
 
   /* ── PHASE 4: Hold name, then slash exit ── */
-  var slashStart = nameStart + 3800;
+  var slashStart = nameStart + 2800;
   setTimeout(function () {
     var line = br.querySelector('.br-line');
-    if (line) line.style.animation = 'brLineFade .6s ease-out forwards';
+    if (line) line.style.animation = 'brLineFade .5s ease-out forwards';
   }, slashStart);
 
   setTimeout(function () {
@@ -1440,7 +1480,7 @@ document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.s-h
     sr.className = 'br-slash br-slash-r';
     br.appendChild(sl);
     br.appendChild(sr);
-  }, slashStart + 500);
+  }, slashStart + 400);
 
   setTimeout(function () {
     var flash = document.createElement('div');
@@ -1453,7 +1493,7 @@ document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.s-h
       var dist = 80 + Math.random() * 200;
       var dx = Math.cos(angle * Math.PI / 180) * dist;
       var dy = Math.sin(angle * Math.PI / 180) * dist;
-      var dur = 400 + Math.random() * 400;
+      var dur = 350 + Math.random() * 350;
       spark.style.cssText = 'top:50%;left:50%;transform:translate(-50%,-50%);opacity:1;transition:all ' + dur + 'ms cubic-bezier(.2,0,.5,1)';
       br.appendChild(spark);
       spark.offsetWidth;
@@ -1461,11 +1501,23 @@ document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.s-h
       spark.style.opacity = '0';
     }
     br.classList.add('exit');
-  }, slashStart + 850);
+  }, slashStart + 700);
 
   /* Clean up */
-  setTimeout(function () { if (br.parentNode) br.remove(); }, slashStart + 2200);
+  setTimeout(function () { if (br.parentNode) br.remove(); }, slashStart + 1800);
 })();
+
+/* ── VIDEO FACADE — lazy-load YouTube on click ── */
+function playVid(facade, vid) {
+  var wrap = facade.parentElement;
+  var iframe = document.createElement('iframe');
+  iframe.src = 'https://www.youtube-nocookie.com/embed/' + vid + '?autoplay=1&rel=0&modestbranding=1';
+  iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+  iframe.allowFullscreen = true;
+  iframe.title = 'Video player';
+  wrap.appendChild(iframe);
+  facade.classList.add('loaded');
+}
 
 /* ── HERO SCROLL ARROW — hide on first scroll past 100px ── */
 (function () {
@@ -1658,7 +1710,7 @@ window.addEventListener('load', function () {
   var ticking = false;
   var heroReady = false;
   /* Wait until hero animations have played before enabling parallax */
-  setTimeout(function () { heroReady = true; }, 19000);
+  setTimeout(function () { heroReady = true; }, 14000);
   window.addEventListener('scroll', function () {
     if (!ticking) {
       requestAnimationFrame(function () {
