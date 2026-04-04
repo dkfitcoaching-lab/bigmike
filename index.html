@@ -128,70 +128,58 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
 /* SCROLL PROGRESS */
 .scroll-progress{position:fixed;top:0;left:0;height:2px;width:0;background:var(--goldGrad);z-index:9999;pointer-events:none;box-shadow:0 0 8px var(--accGlow),0 0 20px rgba(224,176,48,.1);transition:width .08s linear}
 .scroll-progress::after{content:'';position:absolute;top:-2px;right:-1px;width:6px;height:6px;border-radius:50%;background:rgba(255,240,180,.9);box-shadow:0 0 10px rgba(224,176,48,.8),0 0 20px rgba(224,176,48,.4),0 0 40px rgba(224,176,48,.2);pointer-events:none}
-/* BRAND REVEAL — Championship title card
-   Sequence: horizon light → name materializes → details resolve */
+/* BRAND REVEAL — Suspenseful credential buildup
+   Sequence: horizon → credentials one by one → name reveal → slash exit */
 .brand-reveal{position:fixed;inset:0;z-index:10000;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;padding:0 28px}
-/* Ambient glow — extremely subtle, no visible shape */
 .brand-reveal::before{content:'';position:absolute;top:46%;left:50%;width:100%;height:40%;background:radial-gradient(ellipse 80% 100% at 50% 50%,rgba(160,130,50,.04) 0%,transparent 60%);transform:translate(-50%,-50%);animation:brAmbient 5s ease-in-out 1s both;pointer-events:none}
-/* Scan line — sweeps through frame, tech feel */
+/* Scan line — sweeps through frame */
 .br-scan{position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 5%,rgba(200,175,100,.08) 20%,rgba(200,175,100,.2) 45%,rgba(220,200,130,.3) 50%,rgba(200,175,100,.2) 55%,rgba(200,175,100,.08) 80%,transparent 95%);z-index:5;pointer-events:none;opacity:0;animation:brScanDown 2.4s cubic-bezier(.4,0,.2,1) .2s both;box-shadow:0 0 20px rgba(200,175,100,.08)}
-/* Pulse rings — concentric circles expanding from center */
-.br-pulse-rings{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:0;height:0;z-index:2;pointer-events:none}
-.br-ring{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);border-radius:50%;border:1px solid rgba(200,175,100,.1);opacity:0;animation:brPulse 3.5s cubic-bezier(.15,.8,.25,1) both}
-.br-ring:nth-child(1){animation-delay:1.8s}.br-ring:nth-child(2){animation-delay:2.2s;border-color:rgba(200,175,100,.07)}.br-ring:nth-child(3){animation-delay:2.6s;border-color:rgba(200,175,100,.04)}
-/* Crossed swords — SVG drawn behind the name */
-.br-swords{position:absolute;top:50%;left:50%;transform:translate(-50%,-52%);z-index:3;pointer-events:none;opacity:0;animation:brSwordsIn 1.8s cubic-bezier(.2,.8,.3,1) 2s both}
-.br-swords svg{width:clamp(240px,55vw,480px);height:auto}
-.br-swords line,.br-swords path{stroke:rgba(220,195,130,.25);stroke-width:1.8;fill:none;stroke-dasharray:200;stroke-dashoffset:200;animation:brSwordDraw 1.8s cubic-bezier(.4,0,.2,1) 2.2s forwards}
-.br-swords .blade-fill{fill:rgba(200,175,100,.04);stroke:none;opacity:0;animation:brBladeFill 1s ease-out 3.6s forwards}
-@keyframes brBladeFill{0%{opacity:0}100%{opacity:1}}
-/* Horizon line — the first thing that appears, a crack of golden light */
+/* Horizon line — crack of golden light */
 .br-streak{position:absolute;top:50%;left:50%;height:1px;width:0;transform:translate(-50%,-50%);z-index:3;
   background:linear-gradient(90deg,transparent,rgba(200,175,100,.15) 20%,rgba(220,195,120,.4) 40%,rgba(245,225,160,.6) 50%,rgba(220,195,120,.4) 60%,rgba(200,175,100,.15) 80%,transparent);
   box-shadow:0 0 20px rgba(200,175,100,.15),0 0 60px rgba(180,150,60,.06);
   animation:brHorizon 2.4s cubic-bezier(.15,.9,.25,1) .6s both}
-/* Glow bloom that appears WITH the horizon */
+/* Credential slides — JS controls visibility */
+.br-cred{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:6;text-align:center;opacity:0;pointer-events:none;transition:none}
+.br-cred-show{font-family:var(--display);font-size:clamp(14px,2.5vw,22px);font-weight:600;color:rgba(200,185,140,.8);letter-spacing:.08em;line-height:1.6;white-space:nowrap}
+.br-cred-place{font-family:var(--mono);font-size:clamp(9px,1.2vw,12px);letter-spacing:.5em;text-transform:uppercase;color:rgba(224,176,48,.7);margin-top:14px}
+/* Glow bloom */
 .br-name-glow{position:absolute;top:46%;left:50%;transform:translate(-50%,-50%);width:min(400px,80vw);height:60px;
   background:radial-gradient(ellipse 100% 100%,rgba(200,175,100,.06) 0%,transparent 70%);
-  filter:blur(25px);pointer-events:none;z-index:1;opacity:0;animation:brBloom 3s ease-out 1.4s both}
-/* Kicker — IFBB PRO */
-.br-kicker{font-family:var(--mono);font-size:10px;letter-spacing:.6em;text-transform:uppercase;color:rgba(200,175,120,.6);opacity:0;
-  animation:brTextIn 1.4s cubic-bezier(.3,0,.15,1) 1.8s both;
-  margin-bottom:20px;position:relative;z-index:4;text-align:center}
+  filter:blur(25px);pointer-events:none;z-index:1;opacity:0}
+/* Crossed swords — behind the name */
+.br-swords{position:absolute;top:50%;left:50%;transform:translate(-50%,-52%);z-index:3;pointer-events:none;opacity:0}
+.br-swords svg{width:clamp(240px,55vw,480px);height:auto}
+.br-swords line,.br-swords path{stroke:rgba(220,195,130,.25);stroke-width:1.8;fill:none;stroke-dasharray:200;stroke-dashoffset:200}
+.br-swords .blade-fill{fill:rgba(200,175,100,.04);stroke:none;opacity:0}
 /* Main name — materializes from the light */
 .br-name{font-family:var(--display);font-size:clamp(52px,13vw,130px);font-weight:900;line-height:.95;letter-spacing:.05em;position:relative;z-index:4;text-align:center;white-space:nowrap;
   background:linear-gradient(100deg,#6B4E14 0%,#8B6820 12%,#BF9930 28%,#D4B048 38%,#E8CC68 45%,#F5E8A8 49%,#FFFCE8 51%,#F5E8A8 53%,#E8CC68 57%,#D4B048 64%,#BF9930 74%,#8B6820 88%,#6B4E14 100%);
   background-size:220% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  opacity:0;animation:brNameReveal 2.2s cubic-bezier(.15,.85,.25,1) 2.4s both,brShimmer 5s ease-in-out 5.2s infinite;
-  margin-bottom:16px;filter:drop-shadow(0 0 20px rgba(200,170,80,.2))}
-/* Gold rule — draws itself from center */
+  opacity:0;margin-bottom:16px;filter:drop-shadow(0 0 20px rgba(200,170,80,.2))}
+/* Gold rule */
 .br-line{height:1px;width:0;position:relative;z-index:4;
   background:linear-gradient(90deg,transparent,rgba(200,175,100,.25) 15%,rgba(230,205,130,.65) 40%,rgba(250,235,170,.85) 50%,rgba(230,205,130,.65) 60%,rgba(200,175,100,.25) 85%,transparent);
-  box-shadow:0 0 12px rgba(200,175,100,.15);
-  animation:brLineGrow 1.2s cubic-bezier(.25,.9,.25,1) 3.6s both}
-/* Credentials */
-.br-title{font-family:var(--mono);font-size:9px;letter-spacing:.4em;text-transform:uppercase;color:rgba(180,168,145,.45);opacity:0;
-  animation:brTextIn 1s cubic-bezier(.3,0,.15,1) 4s both;
-  margin-top:18px;position:relative;z-index:4;text-align:center;white-space:nowrap}
-/* Corner brackets — draw in from edges */
-.br-corners{position:absolute;width:clamp(280px,58vw,500px);height:clamp(200px,34vw,300px);top:50%;left:50%;transform:translate(-50%,-52%);pointer-events:none;z-index:2}
+  box-shadow:0 0 12px rgba(200,175,100,.15);opacity:0}
+/* Corner brackets */
+.br-corners{position:absolute;width:clamp(280px,58vw,500px);height:clamp(200px,34vw,300px);top:50%;left:50%;transform:translate(-50%,-52%);pointer-events:none;z-index:2;opacity:0}
 .br-corners::before,.br-corners::after,.br-corner-tl,.br-corner-br{content:'';position:absolute;width:32px;height:32px;opacity:0}
-.br-corners::before{top:0;left:0;border-top:1px solid rgba(200,175,100,.18);border-left:1px solid rgba(200,175,100,.18);animation:brCornerTL 1s cubic-bezier(.25,.9,.25,1) 3s both}
-.br-corners::after{bottom:0;right:0;border-bottom:1px solid rgba(200,175,100,.18);border-right:1px solid rgba(200,175,100,.18);animation:brCornerBR 1s cubic-bezier(.25,.9,.25,1) 3s both}
-.br-corner-tl{top:0;right:0;border-top:1px solid rgba(200,175,100,.18);border-right:1px solid rgba(200,175,100,.18);animation:brCornerTR 1s cubic-bezier(.25,.9,.25,1) 3.1s both}
-.br-corner-br{bottom:0;left:0;border-bottom:1px solid rgba(200,175,100,.18);border-left:1px solid rgba(200,175,100,.18);animation:brCornerBL 1s cubic-bezier(.25,.9,.25,1) 3.1s both}
-/* Particles — embers drifting up from the horizon */
+.br-corners::before{top:0;left:0;border-top:1px solid rgba(200,175,100,.18);border-left:1px solid rgba(200,175,100,.18)}
+.br-corners::after{bottom:0;right:0;border-bottom:1px solid rgba(200,175,100,.18);border-right:1px solid rgba(200,175,100,.18)}
+.br-corner-tl{top:0;right:0;border-top:1px solid rgba(200,175,100,.18);border-right:1px solid rgba(200,175,100,.18)}
+.br-corner-br{bottom:0;left:0;border-bottom:1px solid rgba(200,175,100,.18);border-left:1px solid rgba(200,175,100,.18)}
+/* Particles */
 .br-particles{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:3}
-.br-particle{position:absolute;border-radius:50%;background:rgba(220,195,120,.5);animation:brEmber linear both}
-.br-particle:nth-child(1){left:30%;top:52%;width:2px;height:2px;animation-duration:5.5s;animation-delay:1.4s}
-.br-particle:nth-child(2){left:45%;top:54%;width:1.5px;height:1.5px;animation-duration:6s;animation-delay:1.8s}
-.br-particle:nth-child(3){left:60%;top:51%;width:1px;height:1px;animation-duration:5s;animation-delay:2s}
-.br-particle:nth-child(4){left:38%;top:53%;width:1.5px;height:1.5px;animation-duration:6.5s;animation-delay:2.4s}
-.br-particle:nth-child(5){left:55%;top:52%;width:1px;height:1px;animation-duration:5.8s;animation-delay:1.6s}
-.br-particle:nth-child(6){left:25%;top:55%;width:1px;height:1px;animation-duration:6.2s;animation-delay:2.6s}
-.br-particle:nth-child(7){left:70%;top:53%;width:1.5px;height:1.5px;animation-duration:5.2s;animation-delay:2.2s}
-.br-particle:nth-child(8){left:48%;top:50%;width:2px;height:2px;animation-duration:5.6s;animation-delay:2.8s}
-/* Slash exit — diagonal sword blades that cut the screen apart */
+.br-particle{position:absolute;border-radius:50%;background:rgba(220,195,120,.5);opacity:0}
+.br-particle:nth-child(1){left:30%;top:52%;width:2px;height:2px}
+.br-particle:nth-child(2){left:45%;top:54%;width:1.5px;height:1.5px}
+.br-particle:nth-child(3){left:60%;top:51%;width:1px;height:1px}
+.br-particle:nth-child(4){left:38%;top:53%;width:1.5px;height:1.5px}
+.br-particle:nth-child(5){left:55%;top:52%;width:1px;height:1px}
+.br-particle:nth-child(6){left:25%;top:55%;width:1px;height:1px}
+.br-particle:nth-child(7){left:70%;top:53%;width:1.5px;height:1.5px}
+.br-particle:nth-child(8){left:48%;top:50%;width:2px;height:2px}
+/* Slash exit */
 .br-slash{position:absolute;top:50%;left:50%;width:0;height:2px;z-index:20;pointer-events:none;
   background:linear-gradient(90deg,transparent 0%,rgba(255,240,180,.05) 8%,rgba(255,240,200,.6) 35%,rgba(255,255,255,1) 48%,rgba(255,255,240,1) 52%,rgba(255,240,200,.6) 65%,rgba(255,240,180,.05) 92%,transparent 100%);
   box-shadow:0 0 15px rgba(255,240,180,.8),0 0 40px rgba(224,176,48,.5),0 0 80px rgba(224,176,48,.25),0 0 120px rgba(200,160,40,.1);
@@ -199,36 +187,31 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
 .br-slash-l{transform:translate(-50%,-50%) rotate(-30deg);animation:brSlash .35s cubic-bezier(.1,0,.2,1) forwards}
 .br-slash-r{transform:translate(-50%,-50%) rotate(30deg);animation:brSlash .35s cubic-bezier(.1,0,.2,1) .06s forwards}
 @keyframes brSlash{0%{width:0;opacity:0}20%{opacity:1}100%{width:250vmax;opacity:1}}
-/* Slash sparks — burst from center on impact */
 .br-spark{position:absolute;width:3px;height:3px;border-radius:50%;background:rgba(255,240,180,.9);z-index:21;pointer-events:none;box-shadow:0 0 6px rgba(255,240,180,.8),0 0 12px rgba(224,176,48,.5)}
-/* Flash — explosive white/gold burst on impact */
 .br-flash{position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;z-index:19;pointer-events:none;
   background:radial-gradient(circle,rgba(255,255,255,.9) 0%,rgba(255,245,200,.6) 25%,rgba(224,176,48,.2) 50%,transparent 70%);
   transform:translate(-50%,-50%);animation:brFlash .7s cubic-bezier(.1,0,.2,1) forwards}
 @keyframes brFlash{0%{width:0;height:0;opacity:.8}20%{opacity:.7}100%{width:250vmax;height:250vmax;opacity:0}}
-/* Line fade — gold rule dissolves before slashes */
 @keyframes brLineFade{0%{opacity:1}100%{opacity:0;transform:scaleX(0)}}
-/* Exit — explosive shatter after sword slash */
 .brand-reveal.exit{animation:brExit 1s cubic-bezier(.3,0,.9,1) forwards}
-.brand-reveal.exit .br-kicker,.brand-reveal.exit .br-title,.brand-reveal.exit .br-corners,.brand-reveal.exit .br-swords{animation:brContentShatter .6s cubic-bezier(.3,0,.8,1) forwards}
+.brand-reveal.exit .br-corners,.brand-reveal.exit .br-swords{animation:brContentShatter .6s cubic-bezier(.3,0,.8,1) forwards}
 @keyframes brContentShatter{0%{opacity:1;filter:brightness(1)}25%{filter:brightness(1.4)}100%{opacity:0;filter:brightness(1) blur(6px);transform:scale(1.06)}}
 /* Keyframes */
 @keyframes brScanDown{0%{top:25%;opacity:0}8%{opacity:.5}50%{opacity:.3}100%{top:75%;opacity:0}}
-@keyframes brPulse{0%{width:30px;height:30px;opacity:0}12%{opacity:.35}40%{opacity:.12}100%{width:min(500px,90vw);height:min(500px,90vw);opacity:0}}
 @keyframes brSwordsIn{0%{opacity:0;transform:translate(-50%,-52%) scale(.8)}100%{opacity:1;transform:translate(-50%,-52%) scale(1)}}
 @keyframes brSwordDraw{0%{stroke-dashoffset:200}100%{stroke-dashoffset:0}}
 @keyframes brHorizon{0%{width:0;opacity:0}25%{opacity:.4}60%{opacity:1}100%{width:min(80vw,700px);opacity:1}}
 @keyframes brAmbient{0%{opacity:0}100%{opacity:1}}
 @keyframes brBloom{0%{opacity:0;transform:translate(-50%,-50%) scaleX(.3)}100%{opacity:1;transform:translate(-50%,-50%) scaleX(1)}}
-@keyframes brTextIn{0%{opacity:0;transform:translateY(10px);filter:blur(4px)}100%{opacity:1;transform:translateY(0);filter:blur(0)}}
+@keyframes brCredIn{0%{opacity:0;transform:translate(-50%,-50%) translateY(12px);filter:blur(6px)}100%{opacity:1;transform:translate(-50%,-50%) translateY(0);filter:blur(0)}}
+@keyframes brCredOut{0%{opacity:1;transform:translate(-50%,-50%);filter:blur(0)}100%{opacity:0;transform:translate(-50%,-50%) translateY(-8px);filter:blur(4px)}}
 @keyframes brNameReveal{0%{opacity:0;transform:translateY(16px) scale(.97);filter:blur(12px) drop-shadow(0 0 0 transparent)}20%{opacity:.3;filter:blur(6px) drop-shadow(0 0 10px rgba(200,170,80,.1))}55%{opacity:.75;filter:blur(1.5px) drop-shadow(0 0 16px rgba(200,170,80,.18))}100%{opacity:1;transform:translateY(0) scale(1);filter:blur(0) drop-shadow(0 0 20px rgba(200,170,80,.2))}}
 @keyframes brShimmer{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 @keyframes brLineGrow{0%{width:0;opacity:0}100%{width:clamp(90px,20vw,180px);opacity:1}}
-@keyframes brCornerTL{0%{opacity:0;transform:translate(-8px,-8px)}100%{opacity:1;transform:translate(0,0)}}
-@keyframes brCornerBR{0%{opacity:0;transform:translate(8px,8px)}100%{opacity:1;transform:translate(0,0)}}
-@keyframes brCornerTR{0%{opacity:0;transform:translate(8px,-8px)}100%{opacity:1;transform:translate(0,0)}}
-@keyframes brCornerBL{0%{opacity:0;transform:translate(-8px,8px)}100%{opacity:1;transform:translate(0,0)}}
+@keyframes brCornerIn{0%{opacity:0}100%{opacity:1}}
 @keyframes brEmber{0%{opacity:0;transform:translateY(0) scale(1)}8%{opacity:.7}40%{opacity:.4}100%{opacity:0;transform:translateY(calc(-30vh - 20px)) translateX(8px) scale(.3)}}
+@keyframes brBladeFill{0%{opacity:0}100%{opacity:1}}
+@keyframes brPortalRing{0%{width:20px;height:20px;opacity:0}15%{opacity:.4}50%{opacity:.15}100%{width:min(600px,100vw);height:min(600px,100vw);opacity:0}}
 @keyframes brExit{0%{opacity:1;filter:brightness(1) blur(0)}20%{filter:brightness(1.3) blur(0)}40%{opacity:.85;filter:brightness(1.1) blur(2px)}70%{opacity:.3;filter:brightness(1) blur(6px)}100%{opacity:0;filter:blur(10px);transform:scale(1.04)}}
 /* OVERLAYS */
 .grain{position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:.028}
@@ -273,26 +256,27 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
 .mm-badge{font-family:var(--mono);font-size:8px;letter-spacing:.2em;color:var(--dm);margin-top:44px;text-transform:uppercase;opacity:.5}
 .mm::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 10%,rgba(224,176,48,.15) 50%,transparent 90%)}
 /* HERO */
-.hero{min-height:100vh;min-height:100svh;display:flex;align-items:flex-end;justify-content:center;position:relative;overflow:hidden;padding:120px 24px 60px}
+.hero{min-height:100vh;min-height:100svh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:80px 24px 60px}
 .hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--goldGrad);opacity:.3;z-index:3;box-shadow:0 0 40px var(--accGlow),0 0 80px rgba(224,176,48,.12),0 -2px 30px rgba(224,176,48,.06)}
 .hero-bg{position:absolute;inset:-5%;background:url('img/hero-stage-2025.jpg') center 15%/cover no-repeat;z-index:0;animation:heroKenBurns 30s cubic-bezier(.45,0,.55,1) infinite alternate;will-change:transform;filter:contrast(1.15) brightness(.78) saturate(.85) sepia(.04)}
 .hero-ov{position:absolute;inset:0;z-index:1;
   background:
-    linear-gradient(90deg,rgba(2,2,2,.85) 0%,rgba(2,2,2,.4) 18%,transparent 35%,transparent 65%,rgba(2,2,2,.4) 82%,rgba(2,2,2,.85) 100%),
+    linear-gradient(90deg,rgba(2,2,2,.92) 0%,rgba(2,2,2,.65) 12%,rgba(2,2,2,.25) 25%,transparent 40%,transparent 60%,rgba(2,2,2,.25) 75%,rgba(2,2,2,.65) 88%,rgba(2,2,2,.92) 100%),
     linear-gradient(180deg,
-    rgba(2,2,2,.7) 0%,
-    rgba(2,2,2,.35) 12%,
-    rgba(2,2,2,.12) 28%,
-    rgba(2,2,2,.08) 38%,
-    rgba(2,2,2,.3) 50%,
-    rgba(2,2,2,.7) 62%,
-    rgba(2,2,2,.93) 75%,
-    rgba(2,2,2,.98) 85%,
-    rgba(2,2,2,1) 92%)}
-.hero-ov::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 65% 55% at 50% 30%,transparent 0%,rgba(2,2,2,.35) 55%,rgba(2,2,2,.75) 100%);pointer-events:none}
+    rgba(2,2,2,.88) 0%,
+    rgba(2,2,2,.5) 8%,
+    rgba(2,2,2,.2) 18%,
+    rgba(2,2,2,.08) 32%,
+    rgba(2,2,2,.05) 42%,
+    rgba(2,2,2,.15) 52%,
+    rgba(2,2,2,.5) 62%,
+    rgba(2,2,2,.85) 72%,
+    rgba(2,2,2,.96) 82%,
+    rgba(2,2,2,1) 90%)}
+.hero-ov::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 45% at 50% 35%,transparent 0%,rgba(2,2,2,.4) 50%,rgba(2,2,2,.85) 100%);pointer-events:none}
 .hero-ov::after{content:'';position:absolute;inset:0;background:
-  radial-gradient(ellipse 45% 40% at 50% 33%,rgba(224,176,48,.06) 0%,transparent 55%),
-  radial-gradient(ellipse 30% 50% at 50% 50%,rgba(200,160,40,.03) 0%,transparent 50%);
+  radial-gradient(ellipse 40% 35% at 50% 35%,rgba(224,176,48,.06) 0%,transparent 50%),
+  radial-gradient(ellipse 25% 40% at 50% 40%,rgba(200,160,40,.03) 0%,transparent 50%);
   pointer-events:none;animation:breathe 8s ease-in-out infinite}
 /* HERO LIGHT LEAK — cinematic light flare */
 .hero-leak{position:absolute;top:-20%;right:-10%;width:60%;height:80%;background:radial-gradient(ellipse at center,rgba(224,176,48,.06),rgba(224,176,48,.02) 40%,transparent 70%);z-index:1;pointer-events:none;animation:leakDrift 15s ease-in-out infinite alternate;transform:rotate(-15deg);filter:blur(40px)}
@@ -307,15 +291,16 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
 .hero-flare{position:absolute;top:38%;left:0;right:0;height:1px;z-index:2;pointer-events:none;
   background:linear-gradient(90deg,transparent 5%,rgba(224,176,48,.03) 15%,rgba(255,240,180,.08) 35%,rgba(255,245,200,.14) 48%,rgba(255,250,220,.18) 50%,rgba(255,245,200,.14) 52%,rgba(255,240,180,.08) 65%,rgba(224,176,48,.03) 85%,transparent 95%);
   box-shadow:0 0 60px rgba(224,176,48,.06),0 0 120px rgba(224,176,48,.03);
-  opacity:0;animation:heroFlareIn 2s ease-out 7.5s forwards;filter:blur(1px)}
+  opacity:0;animation:heroFlareIn 2s ease-out 17.5s forwards;filter:blur(1px)}
 @keyframes heroFlareIn{0%{opacity:0;transform:scaleX(.3)}100%{opacity:1;transform:scaleX(1)}}
 /* Breathing side vignette — cinematic depth */
 .hero-breath{position:absolute;inset:0;z-index:1;pointer-events:none;
   background:
-    radial-gradient(ellipse 40% 80% at 0% 50%,rgba(0,0,0,.5),transparent),
-    radial-gradient(ellipse 40% 80% at 100% 50%,rgba(0,0,0,.5),transparent);
+    radial-gradient(ellipse 45% 90% at 0% 50%,rgba(0,0,0,.7),transparent),
+    radial-gradient(ellipse 45% 90% at 100% 50%,rgba(0,0,0,.7),transparent),
+    radial-gradient(ellipse 90% 40% at 50% 0%,rgba(0,0,0,.6),transparent);
   animation:heroBreathe 8s ease-in-out infinite}
-@keyframes heroBreathe{0%,100%{opacity:.7}50%{opacity:.9}}
+@keyframes heroBreathe{0%,100%{opacity:.8}50%{opacity:1}}
 .hero-dust{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
 .hero-dust span{position:absolute;width:2px;height:2px;background:var(--acc);border-radius:50%;opacity:0;animation:dustFloat linear infinite;box-shadow:0 0 6px rgba(224,176,48,.4)}
 .hero-dust span:nth-child(1){left:15%;top:80%;animation-duration:8s}.hero-dust span:nth-child(2){left:45%;top:90%;animation-duration:12s;animation-delay:2s;width:1.5px;height:1.5px}.hero-dust span:nth-child(3){left:72%;top:85%;animation-duration:10s;animation-delay:4s}.hero-dust span:nth-child(4){left:30%;top:95%;animation-duration:14s;animation-delay:1s;width:1px;height:1px}.hero-dust span:nth-child(5){left:88%;top:88%;animation-duration:9s;animation-delay:3s;width:1.5px;height:1.5px}.hero-dust span:nth-child(6){left:8%;top:92%;animation-duration:11s;animation-delay:5s}.hero-dust span:nth-child(7){left:60%;top:82%;animation-duration:13s;animation-delay:6s;width:1px;height:1px}.hero-dust span:nth-child(8){left:52%;top:96%;animation-duration:7s;animation-delay:.5s}
@@ -328,23 +313,23 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
 @keyframes heroLineGrow{from{width:0;opacity:0}to{width:clamp(20px,6vw,60px);opacity:.5}}
 @keyframes heroSlideIn{from{opacity:0;transform:translateY(16px);letter-spacing:.7em;filter:blur(3px)}to{opacity:1;transform:translateY(0);letter-spacing:.45em;filter:blur(0)}}
 /* HERO H1 — carved gold, maximum presence */
-.hero h1{font-family:var(--display);font-size:clamp(58px,14vw,140px);font-weight:900;line-height:.88;margin-bottom:0;letter-spacing:.05em;white-space:nowrap;
+.hero h1{font-family:var(--display);font-size:clamp(62px,15vw,150px);font-weight:900;line-height:.88;margin-bottom:0;letter-spacing:.05em;white-space:nowrap;
   background:linear-gradient(100deg,#6B4E14 0%,#8B6820 12%,#BF9930 28%,#D4B048 38%,#E8CC68 45%,#F5E8A8 49%,#FFFCE8 51%,#F5E8A8 53%,#E8CC68 57%,#D4B048 64%,#BF9930 74%,#8B6820 88%,#6B4E14 100%);
   background-size:220% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  opacity:0;animation:heroTitleIn 1.4s var(--ease) 6.1s forwards,brShimmer 5s ease-in-out 8s infinite;
+  opacity:0;animation:heroTitleIn 1.8s var(--ease) 16s forwards,brShimmer 5s ease-in-out 18.5s infinite;
   filter:drop-shadow(0 2px 16px rgba(200,170,80,.25)) drop-shadow(0 4px 40px rgba(180,140,40,.12)) drop-shadow(0 0 80px rgba(160,120,30,.08));
   position:relative}
 /* Subtle underline accent beneath the name */
 .hero h1::after{content:'';position:absolute;bottom:-8px;left:12%;right:12%;height:1.5px;
   background:linear-gradient(90deg,transparent,rgba(224,176,48,.4) 20%,rgba(255,240,180,.7) 50%,rgba(224,176,48,.4) 80%,transparent);
-  opacity:0;animation:heroEmLine .8s var(--ease) 7.5s forwards;box-shadow:0 0 30px rgba(224,176,48,.25),0 0 60px rgba(224,176,48,.1)}
+  opacity:0;animation:heroEmLine .8s var(--ease) 17.8s forwards;box-shadow:0 0 30px rgba(224,176,48,.25),0 0 60px rgba(224,176,48,.1)}
 @keyframes heroEmLine{from{opacity:0;left:45%;right:45%}to{opacity:1;left:15%;right:15%}}
 @keyframes heroTitleIn{from{opacity:0;transform:translateY(40px) scale(.96);filter:blur(6px) drop-shadow(0 0 0 transparent)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0) drop-shadow(0 2px 20px rgba(224,176,48,.3)) drop-shadow(0 4px 40px rgba(224,176,48,.12)) drop-shadow(0 0 80px rgba(224,176,48,.06))}}
-.hero-sub{font-family:var(--mono);font-size:clamp(10px,1.4vw,13px);letter-spacing:.35em;text-transform:uppercase;color:rgba(224,176,48,.6);line-height:1;margin-top:28px;opacity:0;animation:heroFadeUp .8s var(--ease) 6.9s forwards;text-shadow:0 1px 6px rgba(0,0,0,.95);position:relative;display:inline-block}
+.hero-sub{font-family:var(--mono);font-size:clamp(10px,1.4vw,13px);letter-spacing:.35em;text-transform:uppercase;color:rgba(224,176,48,.6);line-height:1;margin-top:28px;opacity:0;animation:heroFadeUp .8s var(--ease) 17s forwards;text-shadow:0 1px 6px rgba(0,0,0,.95);position:relative;display:inline-block}
 .hero-sub::before,.hero-sub::after{content:'';position:absolute;top:50%;width:clamp(30px,8vw,80px);height:1px;background:linear-gradient(90deg,transparent,rgba(224,176,48,.3),transparent)}
 .hero-sub::before{right:calc(100% + 16px)}
 .hero-sub::after{left:calc(100% + 16px)}
-.hero-ctas{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:36px;opacity:0;animation:heroFadeUp .8s var(--ease) 7.2s forwards}
+.hero-ctas{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:36px;opacity:0;animation:heroFadeUp .8s var(--ease) 17.4s forwards}
 .hero-scroll{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);z-index:2;color:var(--dm);animation:bounce 2.5s ease-in-out infinite;transition:opacity .5s}
 /* SECTIONS */
 .section{padding:100px 24px;position:relative;overflow:hidden}
@@ -543,7 +528,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 .footer-copy{font-family:var(--mono);font-size:9px;color:var(--dm);letter-spacing:.08em;margin-bottom:16px}
 .vat{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:8px;letter-spacing:.08em;color:var(--dmL);transition:color .3s;text-transform:uppercase;opacity:.6}.vat:hover{color:var(--dm);opacity:1}
 /* KEYFRAMES */
-@keyframes shimmer{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@keyframes shimmer{0%{background-position:0% 50%}100%{background-position:200% 50%}}
 @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
 @keyframes breathe{0%,100%{opacity:.4}50%{opacity:.8}}
 @keyframes orbFloat{0%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-20px) scale(1.1)}66%{transform:translate(-20px,10px) scale(.95)}100%{transform:translate(0,0) scale(1)}}
@@ -631,25 +616,30 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 <div class="brand-reveal" aria-hidden="true" id="brandReveal">
   <div class="br-scan"></div>
   <div class="br-streak"></div>
-  <div class="br-pulse-rings"><div class="br-ring"></div><div class="br-ring"></div><div class="br-ring"></div></div>
+  <!-- Credential slides — shown one at a time by JS -->
+  <div class="br-cred" id="brCred1">
+    <div class="br-cred-show">IFBB Pro Masters World Championship</div>
+    <div class="br-cred-place">2024 &middot; 1st Place</div>
+  </div>
+  <div class="br-cred" id="brCred2">
+    <div class="br-cred-show">IFBB Pro Masters World Championship</div>
+    <div class="br-cred-place">2025 &middot; 1st Place</div>
+  </div>
+  <div class="br-cred" id="brCred3">
+    <div class="br-cred-show" style="font-size:clamp(18px,3.5vw,30px);font-weight:700">2&times; Olympian</div>
+  </div>
+  <!-- Name reveal phase -->
   <div class="br-swords"><svg viewBox="0 0 160 100" fill="none">
-    <!-- Left sword blade -->
     <path d="M25,85 L75,15 L80,18 L30,88 Z" class="blade-fill"/>
     <line x1="27" y1="86" x2="78" y2="16" stroke-linecap="round"/>
-    <!-- Left sword guard -->
     <line x1="38" y1="72" x2="22" y2="80" stroke-linecap="round"/>
     <line x1="36" y1="68" x2="20" y2="76" stroke-linecap="round"/>
-    <!-- Left pommel -->
     <path d="M22,84 Q20,88 24,90 Q28,88 26,84" stroke-linecap="round"/>
-    <!-- Right sword blade -->
     <path d="M135,85 L85,15 L80,18 L130,88 Z" class="blade-fill"/>
     <line x1="133" y1="86" x2="82" y2="16" stroke-linecap="round"/>
-    <!-- Right sword guard -->
     <line x1="122" y1="72" x2="138" y2="80" stroke-linecap="round"/>
     <line x1="124" y1="68" x2="140" y2="76" stroke-linecap="round"/>
-    <!-- Right pommel -->
     <path d="M138,84 Q140,88 136,90 Q132,88 134,84" stroke-linecap="round"/>
-    <!-- Crown/crest at intersection -->
     <path d="M74,16 L80,6 L86,16" stroke-linecap="round"/>
     <path d="M77,12 L80,8 L83,12" stroke-linecap="round"/>
   </svg></div>
@@ -659,10 +649,8 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
   </div>
   <div class="br-corners"><div class="br-corner-tl"></div><div class="br-corner-br"></div></div>
   <div class="br-name-glow"></div>
-  <div class="br-kicker">IFBB Pro</div>
   <div class="br-name">Big Mike Ely</div>
   <div class="br-line"></div>
-  <div class="br-title">2x World Champion · 2x Olympian · Coach</div>
 </div>
 
 <!-- GRAIN + VIGNETTE -->
@@ -721,7 +709,6 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
     <span></span><span></span><span></span><span></span>
   </div>
   <div class="hero-content">
-    <p class="hero-kicker">IFBB Pro · 2x Olympian · 2x World Champion</p>
     <h1>BIG MIKE ELY</h1>
     <p class="hero-sub">Coaching Since 1996</p>
     <div class="hero-ctas">
@@ -1286,18 +1273,90 @@ document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.s-h
   revealObs.observe(el);
 });
 
-/* ── BRAND REVEAL — cinematic intro, sword slash exit ── */
+/* ── BRAND REVEAL — suspenseful credential buildup → portal exit ── */
 (function () {
   var br = document.getElementById('brandReveal');
   if (!br) return;
 
-  /* 1) Gold line fades out */
+  var T = 0; /* running timeline in ms */
+
+  /* Helper: animate a credential in, hold, then out */
+  function showCred(id, inDelay, holdMs) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    setTimeout(function () {
+      el.style.animation = 'brCredIn 1.2s cubic-bezier(.3,0,.15,1) forwards';
+    }, inDelay);
+    setTimeout(function () {
+      el.style.animation = 'brCredOut .8s cubic-bezier(.5,0,.8,1) forwards';
+    }, inDelay + holdMs);
+  }
+
+  /* ── PHASE 1: Credentials fade in/out one by one ── */
+  T = 1800;
+  showCred('brCred1', T, 2200);       /* World Championship 2024 */
+  T += 3200;
+  showCred('brCred2', T, 2200);       /* World Championship 2025 */
+  T += 3200;
+  showCred('brCred3', T, 1800);       /* 2× Olympian */
+  T += 2800;
+
+  /* ── PHASE 2: Darkness deepens after Olympian — portal effect ── */
+  var portalStart = T;
+  setTimeout(function () {
+    /* Pulse rings expand from center — portal opening */
+    for (var i = 0; i < 3; i++) {
+      var ring = document.createElement('div');
+      ring.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);border-radius:50%;border:1px solid rgba(200,175,100,' + (.12 - i * .03) + ');width:20px;height:20px;opacity:0;z-index:2;pointer-events:none;animation:brPortalRing 2s cubic-bezier(.15,.8,.25,1) ' + (i * .3) + 's both';
+      br.appendChild(ring);
+    }
+  }, portalStart);
+
+  /* ── PHASE 3: Swords draw + name materializes ── */
+  var nameStart = portalStart + 600;
+  setTimeout(function () {
+    /* Swords */
+    var swords = br.querySelector('.br-swords');
+    if (swords) {
+      swords.style.animation = 'brSwordsIn 1.8s cubic-bezier(.2,.8,.3,1) forwards';
+      swords.querySelectorAll('line,path:not(.blade-fill)').forEach(function (el) {
+        el.style.animation = 'brSwordDraw 1.8s cubic-bezier(.4,0,.2,1) .2s forwards';
+      });
+      swords.querySelectorAll('.blade-fill').forEach(function (el) {
+        el.style.animation = 'brBladeFill 1s ease-out 1.6s forwards';
+      });
+    }
+    /* Corners */
+    var corners = br.querySelector('.br-corners');
+    if (corners) {
+      corners.style.animation = 'brCornerIn .8s ease-out .6s forwards';
+      corners.querySelectorAll('*').forEach(function (c) { c.style.opacity = '1'; });
+    }
+    /* Particles */
+    br.querySelectorAll('.br-particle').forEach(function (p, i) {
+      p.style.animation = 'brEmber ' + (5 + i * .3) + 's linear ' + (.4 + i * .2) + 's both';
+    });
+    /* Name glow */
+    var glow = br.querySelector('.br-name-glow');
+    if (glow) glow.style.animation = 'brBloom 3s ease-out .4s both';
+  }, nameStart);
+
+  setTimeout(function () {
+    /* Name */
+    var name = br.querySelector('.br-name');
+    if (name) name.style.animation = 'brNameReveal 2.2s cubic-bezier(.15,.85,.25,1) forwards,brShimmer 5s ease-in-out 3s infinite';
+    /* Gold line */
+    var line = br.querySelector('.br-line');
+    if (line) line.style.animation = 'brLineGrow 1.2s cubic-bezier(.25,.9,.25,1) .8s both';
+  }, nameStart + 400);
+
+  /* ── PHASE 4: Hold name, then slash exit ── */
+  var slashStart = nameStart + 3800;
   setTimeout(function () {
     var line = br.querySelector('.br-line');
     if (line) line.style.animation = 'brLineFade .6s ease-out forwards';
-  }, 5000);
+  }, slashStart);
 
-  /* 2) Sword slashes — two diagonal blades tear through */
   setTimeout(function () {
     var sl = document.createElement('div');
     sl.className = 'br-slash br-slash-l';
@@ -1305,16 +1364,12 @@ document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.s-h
     sr.className = 'br-slash br-slash-r';
     br.appendChild(sl);
     br.appendChild(sr);
-  }, 5500);
+  }, slashStart + 500);
 
-  /* 3) Impact flash + sparks + shatter exit */
   setTimeout(function () {
-    /* Center flash */
     var flash = document.createElement('div');
     flash.className = 'br-flash';
     br.appendChild(flash);
-
-    /* Burst of sparks from center */
     for (var i = 0; i < 12; i++) {
       var spark = document.createElement('div');
       spark.className = 'br-spark';
@@ -1325,18 +1380,15 @@ document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.s-h
       var dur = 400 + Math.random() * 400;
       spark.style.cssText = 'top:50%;left:50%;transform:translate(-50%,-50%);opacity:1;transition:all ' + dur + 'ms cubic-bezier(.2,0,.5,1)';
       br.appendChild(spark);
-      /* Force reflow then animate out */
       spark.offsetWidth;
       spark.style.transform = 'translate(calc(-50% + ' + dx + 'px), calc(-50% + ' + dy + 'px)) scale(0)';
       spark.style.opacity = '0';
     }
-
-    /* Trigger exit */
     br.classList.add('exit');
-  }, 5850);
+  }, slashStart + 850);
 
-  /* 4) Clean up */
-  setTimeout(function () { if (br.parentNode) br.remove(); }, 7200);
+  /* Clean up */
+  setTimeout(function () { if (br.parentNode) br.remove(); }, slashStart + 2200);
 })();
 
 /* ── HERO SCROLL ARROW — hide on first scroll past 100px ── */
