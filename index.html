@@ -216,7 +216,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
 @keyframes brScanDown{0%{top:25%;opacity:0}8%{opacity:.5}50%{opacity:.3}100%{top:75%;opacity:0}}
 @keyframes brPulse{0%{width:30px;height:30px;opacity:0}12%{opacity:.35}40%{opacity:.12}100%{width:min(500px,90vw);height:min(500px,90vw);opacity:0}}
 @keyframes brSwordsIn{0%{opacity:0;transform:translate(-50%,-52%) scale(.8)}100%{opacity:1;transform:translate(-50%,-52%) scale(1)}}
-@keyframes brSwordDraw{to{stroke-dashoffset:0}}
+@keyframes brSwordDraw{0%{stroke-dashoffset:200}100%{stroke-dashoffset:0}}
 @keyframes brHorizon{0%{width:0;opacity:0}25%{opacity:.4}60%{opacity:1}100%{width:min(80vw,700px);opacity:1}}
 @keyframes brAmbient{0%{opacity:0}100%{opacity:1}}
 @keyframes brBloom{0%{opacity:0;transform:translate(-50%,-50%) scaleX(.3)}100%{opacity:1;transform:translate(-50%,-50%) scaleX(1)}}
@@ -289,8 +289,11 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
     rgba(2,2,2,.93) 75%,
     rgba(2,2,2,.98) 85%,
     rgba(2,2,2,1) 92%)}
-.hero-ov::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 32%,transparent 0%,rgba(2,2,2,.3) 60%,rgba(2,2,2,.7) 100%);pointer-events:none}
-.hero-ov::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 45% at 50% 35%,rgba(224,176,48,.05) 0%,transparent 60%);pointer-events:none;animation:breathe 8s ease-in-out infinite}
+.hero-ov::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 65% 55% at 50% 30%,transparent 0%,rgba(2,2,2,.35) 55%,rgba(2,2,2,.75) 100%);pointer-events:none}
+.hero-ov::after{content:'';position:absolute;inset:0;background:
+  radial-gradient(ellipse 45% 40% at 50% 33%,rgba(224,176,48,.06) 0%,transparent 55%),
+  radial-gradient(ellipse 30% 50% at 50% 50%,rgba(200,160,40,.03) 0%,transparent 50%);
+  pointer-events:none;animation:breathe 8s ease-in-out infinite}
 /* HERO LIGHT LEAK — cinematic light flare */
 .hero-leak{position:absolute;top:-20%;right:-10%;width:60%;height:80%;background:radial-gradient(ellipse at center,rgba(224,176,48,.06),rgba(224,176,48,.02) 40%,transparent 70%);z-index:1;pointer-events:none;animation:leakDrift 15s ease-in-out infinite alternate;transform:rotate(-15deg);filter:blur(40px)}
 @keyframes leakDrift{0%{transform:rotate(-15deg) translate(0,0);opacity:.6}100%{transform:rotate(-10deg) translate(-5%,8%);opacity:1}}
@@ -329,12 +332,12 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
   background:linear-gradient(100deg,#6B4E14 0%,#8B6820 12%,#BF9930 28%,#D4B048 38%,#E8CC68 45%,#F5E8A8 49%,#FFFCE8 51%,#F5E8A8 53%,#E8CC68 57%,#D4B048 64%,#BF9930 74%,#8B6820 88%,#6B4E14 100%);
   background-size:220% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
   opacity:0;animation:heroTitleIn 1.4s var(--ease) 6.1s forwards,brShimmer 5s ease-in-out 8s infinite;
-  filter:drop-shadow(0 1px 12px rgba(200,170,80,.2)) drop-shadow(0 4px 30px rgba(180,140,40,.1)) drop-shadow(0 0 60px rgba(160,120,30,.06));
+  filter:drop-shadow(0 2px 16px rgba(200,170,80,.25)) drop-shadow(0 4px 40px rgba(180,140,40,.12)) drop-shadow(0 0 80px rgba(160,120,30,.08));
   position:relative}
 /* Subtle underline accent beneath the name */
-.hero h1::after{content:'';position:absolute;bottom:-6px;left:15%;right:15%;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(224,176,48,.4) 20%,rgba(255,240,180,.6) 50%,rgba(224,176,48,.4) 80%,transparent);
-  opacity:0;animation:heroEmLine .8s var(--ease) 7.5s forwards;box-shadow:0 0 20px rgba(224,176,48,.2)}
+.hero h1::after{content:'';position:absolute;bottom:-8px;left:12%;right:12%;height:1.5px;
+  background:linear-gradient(90deg,transparent,rgba(224,176,48,.4) 20%,rgba(255,240,180,.7) 50%,rgba(224,176,48,.4) 80%,transparent);
+  opacity:0;animation:heroEmLine .8s var(--ease) 7.5s forwards;box-shadow:0 0 30px rgba(224,176,48,.25),0 0 60px rgba(224,176,48,.1)}
 @keyframes heroEmLine{from{opacity:0;left:45%;right:45%}to{opacity:1;left:15%;right:15%}}
 @keyframes heroTitleIn{from{opacity:0;transform:translateY(40px) scale(.96);filter:blur(6px) drop-shadow(0 0 0 transparent)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0) drop-shadow(0 2px 20px rgba(224,176,48,.3)) drop-shadow(0 4px 40px rgba(224,176,48,.12)) drop-shadow(0 0 80px rgba(224,176,48,.06))}}
 .hero-sub{font-family:var(--mono);font-size:clamp(10px,1.4vw,13px);letter-spacing:.35em;text-transform:uppercase;color:rgba(224,176,48,.6);line-height:1;margin-top:28px;opacity:0;animation:heroFadeUp .8s var(--ease) 6.9s forwards;text-shadow:0 1px 6px rgba(0,0,0,.95);position:relative;display:inline-block}
@@ -1153,16 +1156,16 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
     <p class="reveal" style="font-size:16px;color:var(--ow);line-height:1.8;margin-bottom:32px">All inquiries reviewed personally. Include your competition history, current standing, and goals. Response within 24&nbsp;hours.</p>
     <form class="reveal" id="contactForm" style="text-align:left;max-width:480px;margin:0 auto 24px" onsubmit="return submitContactForm(event)">
       <div class="form-group">
-        <label class="form-label">Name</label>
-        <input type="text" name="name" required class="form-input" placeholder="Your full name">
+        <label class="form-label" for="cf-name">Name</label>
+        <input type="text" id="cf-name" name="name" required class="form-input" placeholder="Your full name" autocomplete="name">
       </div>
       <div class="form-group">
-        <label class="form-label">Email or Phone</label>
-        <input type="text" name="contact" required class="form-input" placeholder="How to reach you">
+        <label class="form-label" for="cf-contact">Email or Phone</label>
+        <input type="text" id="cf-contact" name="contact" required class="form-input" placeholder="How to reach you" autocomplete="email">
       </div>
       <div class="form-group">
-        <label class="form-label">What are you looking for?</label>
-        <select name="service" class="form-select">
+        <label class="form-label" for="cf-service">What are you looking for?</label>
+        <select id="cf-service" name="service" class="form-select">
           <option value="contest-prep">Contest Prep</option>
           <option value="online-coaching">Online Coaching</option>
           <option value="1on1-training">1-on-1 Training</option>
@@ -1172,8 +1175,8 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
         </select>
       </div>
       <div class="form-group">
-        <label class="form-label">Tell me about your goals</label>
-        <textarea name="message" rows="4" class="form-textarea" placeholder="Where you are in the sport, your competition history, what you want to achieve..."></textarea>
+        <label class="form-label" for="cf-message">Tell me about your goals</label>
+        <textarea id="cf-message" name="message" rows="4" class="form-textarea" placeholder="Where you are in the sport, your competition history, what you want to achieve..."></textarea>
       </div>
       <button type="submit" class="btn-p form-submit">Send Inquiry</button>
     </form>
