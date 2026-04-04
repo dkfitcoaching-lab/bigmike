@@ -138,8 +138,8 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
 .br-ring:nth-child(1){animation-delay:1.8s}.br-ring:nth-child(2){animation-delay:2.2s;border-color:rgba(200,175,100,.07)}.br-ring:nth-child(3){animation-delay:2.6s;border-color:rgba(200,175,100,.04)}
 /* Crossed swords — SVG drawn behind the name */
 .br-swords{position:absolute;top:50%;left:50%;transform:translate(-50%,-52%);z-index:3;pointer-events:none;opacity:0;animation:brSwordsIn 1.8s cubic-bezier(.2,.8,.3,1) 2s both}
-.br-swords svg{width:clamp(120px,30vw,220px);height:auto}
-.br-swords line,.br-swords path{stroke:rgba(200,175,100,.12);stroke-width:1;fill:none;stroke-dasharray:100;stroke-dashoffset:100;animation:brSwordDraw 1.6s cubic-bezier(.4,0,.2,1) 2.2s forwards}
+.br-swords svg{width:clamp(180px,40vw,320px);height:auto}
+.br-swords line,.br-swords path{stroke:rgba(220,195,130,.2);stroke-width:1.5;fill:none;stroke-dasharray:100;stroke-dashoffset:100;animation:brSwordDraw 1.6s cubic-bezier(.4,0,.2,1) 2.2s forwards}
 /* Horizon line — the first thing that appears, a crack of golden light */
 .br-streak{position:absolute;top:50%;left:50%;height:1px;width:0;transform:translate(-50%,-50%);z-index:3;
   background:linear-gradient(90deg,transparent,rgba(200,175,100,.15) 20%,rgba(220,195,120,.4) 40%,rgba(245,225,160,.6) 50%,rgba(220,195,120,.4) 60%,rgba(200,175,100,.15) 80%,transparent);
@@ -295,6 +295,13 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
 .hero-orb-2{width:400px;height:400px;background:radial-gradient(circle,rgba(224,176,48,.08),transparent 70%);top:40%;right:-8%;animation:orbFloat2 14s ease-in-out infinite,breathe 8s ease-in-out infinite;animation-delay:2s,1s}
 .hero-orb-3{width:300px;height:300px;background:radial-gradient(circle,rgba(200,160,40,.06),transparent 70%);bottom:10%;left:30%;animation:orbFloat 16s ease-in-out infinite,breathe 7s ease-in-out infinite;animation-delay:4s,2s}
 .hero-warmth{position:absolute;bottom:0;left:0;right:0;height:40%;background:linear-gradient(to top,rgba(224,176,48,.04),rgba(224,176,48,.01) 60%,transparent);z-index:1;pointer-events:none}
+/* Breathing side vignette — cinematic depth */
+.hero-breath{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    radial-gradient(ellipse 40% 80% at 0% 50%,rgba(0,0,0,.5),transparent),
+    radial-gradient(ellipse 40% 80% at 100% 50%,rgba(0,0,0,.5),transparent);
+  animation:heroBreathe 8s ease-in-out infinite}
+@keyframes heroBreathe{0%,100%{opacity:.7}50%{opacity:.9}}
 .hero-dust{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
 .hero-dust span{position:absolute;width:2px;height:2px;background:var(--acc);border-radius:50%;opacity:0;animation:dustFloat linear infinite;box-shadow:0 0 6px rgba(224,176,48,.4)}
 .hero-dust span:nth-child(1){left:15%;top:80%;animation-duration:8s}.hero-dust span:nth-child(2){left:45%;top:90%;animation-duration:12s;animation-delay:2s;width:1.5px;height:1.5px}.hero-dust span:nth-child(3){left:72%;top:85%;animation-duration:10s;animation-delay:4s}.hero-dust span:nth-child(4){left:30%;top:95%;animation-duration:14s;animation-delay:1s;width:1px;height:1px}.hero-dust span:nth-child(5){left:88%;top:88%;animation-duration:9s;animation-delay:3s;width:1.5px;height:1.5px}.hero-dust span:nth-child(6){left:8%;top:92%;animation-duration:11s;animation-delay:5s}.hero-dust span:nth-child(7){left:60%;top:82%;animation-duration:13s;animation-delay:6s;width:1px;height:1px}.hero-dust span:nth-child(8){left:52%;top:96%;animation-duration:7s;animation-delay:.5s}
@@ -673,6 +680,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
     <div class="hero-orb hero-orb-3"></div>
   </div>
   <div class="hero-warmth" aria-hidden="true"></div>
+  <div class="hero-breath" aria-hidden="true"></div>
   <div class="hero-dust" aria-hidden="true">
     <span></span><span></span><span></span><span></span>
     <span></span><span></span><span></span><span></span>
