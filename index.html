@@ -150,8 +150,9 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
 /* Crossed swords — behind the name */
 .br-swords{position:absolute;top:50%;left:50%;transform:translate(-50%,-46%);z-index:2;pointer-events:none;opacity:0}
 .br-swords svg{width:clamp(280px,60vw,520px);height:auto}
-.br-swords line,.br-swords path{stroke:rgba(255,250,230,.1);stroke-width:1;fill:none;stroke-dasharray:200;stroke-dashoffset:200}
-.br-swords .blade-fill{fill:rgba(255,250,230,.015);stroke:none;opacity:0}
+.br-swords line,.br-swords path,.br-swords circle{stroke:rgba(255,250,230,.12);stroke-width:.8;fill:none;stroke-dasharray:200;stroke-dashoffset:200}
+.br-swords .blade-fill{fill:rgba(255,250,230,.02);stroke:none;stroke-dasharray:none;stroke-dashoffset:0;opacity:0}
+.br-swords circle{stroke-dasharray:20;stroke-dashoffset:20}
 /* Main name — materializes from the light */
 .br-name{font-family:var(--display);font-size:clamp(56px,14vw,150px);font-weight:900;line-height:.92;letter-spacing:.05em;position:relative;z-index:5;text-align:center;white-space:nowrap;
   background:linear-gradient(100deg,#6B4E14 0%,#8B6820 12%,#BF9930 28%,#D4B048 38%,#E8CC68 45%,#F5E8A8 49%,#FFFCE8 51%,#F5E8A8 53%,#E8CC68 57%,#D4B048 64%,#BF9930 74%,#8B6820 88%,#6B4E14 100%);
@@ -619,19 +620,35 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
     <div class="br-cred-show" style="font-size:clamp(18px,3.5vw,30px);font-weight:700">2&times; Olympian</div>
   </div>
   <!-- Name reveal phase -->
-  <div class="br-swords"><svg viewBox="0 0 160 100" fill="none">
-    <path d="M25,85 L75,15 L80,18 L30,88 Z" class="blade-fill"/>
-    <line x1="27" y1="86" x2="78" y2="16" stroke-linecap="round"/>
-    <line x1="38" y1="72" x2="22" y2="80" stroke-linecap="round"/>
-    <line x1="36" y1="68" x2="20" y2="76" stroke-linecap="round"/>
-    <path d="M22,84 Q20,88 24,90 Q28,88 26,84" stroke-linecap="round"/>
-    <path d="M135,85 L85,15 L80,18 L130,88 Z" class="blade-fill"/>
-    <line x1="133" y1="86" x2="82" y2="16" stroke-linecap="round"/>
-    <line x1="122" y1="72" x2="138" y2="80" stroke-linecap="round"/>
-    <line x1="124" y1="68" x2="140" y2="76" stroke-linecap="round"/>
-    <path d="M138,84 Q140,88 136,90 Q132,88 134,84" stroke-linecap="round"/>
-    <path d="M74,16 L80,6 L86,16" stroke-linecap="round"/>
-    <path d="M77,12 L80,8 L83,12" stroke-linecap="round"/>
+  <div class="br-swords"><svg viewBox="0 0 200 120" fill="none">
+    <!-- LEFT SWORD — full blade with taper, crossguard, grip, pommel -->
+    <path d="M30,100 L32,98 L78,18 L80,14 L82,18 L36,98 L38,100 Z" class="blade-fill"/>
+    <path d="M30,100 L80,14" stroke-linecap="round"/>
+    <path d="M38,100 L82,18" stroke-linecap="round"/>
+    <!-- Left crossguard — curved, substantial -->
+    <path d="M42,88 C38,84 28,86 22,90" stroke-linecap="round"/>
+    <path d="M44,86 C40,82 30,84 24,88" stroke-linecap="round"/>
+    <!-- Left grip wrap marks -->
+    <line x1="34" y1="96" x2="37" y2="93" stroke-linecap="round"/>
+    <line x1="32" y1="99" x2="35" y2="96" stroke-linecap="round"/>
+    <!-- Left pommel -->
+    <circle cx="33" cy="104" r="3"/>
+    <!-- RIGHT SWORD — mirrored -->
+    <path d="M170,100 L168,98 L122,18 L120,14 L118,18 L164,98 L162,100 Z" class="blade-fill"/>
+    <path d="M170,100 L120,14" stroke-linecap="round"/>
+    <path d="M162,100 L118,18" stroke-linecap="round"/>
+    <!-- Right crossguard -->
+    <path d="M158,88 C162,84 172,86 178,90" stroke-linecap="round"/>
+    <path d="M156,86 C160,82 170,84 176,88" stroke-linecap="round"/>
+    <!-- Right grip wrap marks -->
+    <line x1="166" y1="96" x2="163" y2="93" stroke-linecap="round"/>
+    <line x1="168" y1="99" x2="165" y2="96" stroke-linecap="round"/>
+    <!-- Right pommel -->
+    <circle cx="167" cy="104" r="3"/>
+    <!-- Crown at blade tips intersection -->
+    <path d="M95,14 L100,4 L105,14" stroke-linecap="round"/>
+    <path d="M97,10 L100,5 L103,10" stroke-linecap="round"/>
+    <circle cx="100" cy="3" r="1.5"/>
   </svg></div>
   <div class="br-particles">
     <div class="br-particle"></div><div class="br-particle"></div><div class="br-particle"></div><div class="br-particle"></div>
@@ -1309,8 +1326,8 @@ document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.s-h
     var swords = br.querySelector('.br-swords');
     if (swords) {
       swords.style.animation = 'brSwordsIn 1.8s cubic-bezier(.2,.8,.3,1) forwards';
-      swords.querySelectorAll('line,path:not(.blade-fill)').forEach(function (el) {
-        el.style.animation = 'brSwordDraw 1.8s cubic-bezier(.4,0,.2,1) .2s forwards';
+      swords.querySelectorAll('line,path:not(.blade-fill),circle').forEach(function (el) {
+        el.style.animation = 'brSwordDraw 2s cubic-bezier(.4,0,.2,1) .2s forwards';
       });
       swords.querySelectorAll('.blade-fill').forEach(function (el) {
         el.style.animation = 'brBladeFill 1s ease-out 1.6s forwards';
