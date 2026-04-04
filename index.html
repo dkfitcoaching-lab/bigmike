@@ -131,46 +131,47 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
 /* BRAND REVEAL — Suspenseful credential buildup
    Sequence: horizon → credentials one by one → name reveal → slash exit */
 .brand-reveal{position:fixed;inset:0;z-index:10000;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;padding:0 28px}
-.brand-reveal::before{content:'';position:absolute;top:46%;left:50%;width:100%;height:40%;background:radial-gradient(ellipse 80% 100% at 50% 50%,rgba(160,130,50,.04) 0%,transparent 60%);transform:translate(-50%,-50%);animation:brAmbient 5s ease-in-out 1s both;pointer-events:none}
+.brand-reveal::before{content:'';position:absolute;top:46%;left:50%;width:100%;height:40%;background:radial-gradient(ellipse 80% 100% at 50% 50%,rgba(255,255,255,.015) 0%,transparent 60%);transform:translate(-50%,-50%);animation:brAmbient 5s ease-in-out 1s both;pointer-events:none}
 /* Scan line — sweeps through frame */
-.br-scan{position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 5%,rgba(200,175,100,.08) 20%,rgba(200,175,100,.2) 45%,rgba(220,200,130,.3) 50%,rgba(200,175,100,.2) 55%,rgba(200,175,100,.08) 80%,transparent 95%);z-index:5;pointer-events:none;opacity:0;animation:brScanDown 2.4s cubic-bezier(.4,0,.2,1) .2s both;box-shadow:0 0 20px rgba(200,175,100,.08)}
+.br-scan{position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 5%,rgba(255,255,255,.04) 20%,rgba(255,255,255,.1) 45%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.1) 55%,rgba(255,255,255,.04) 80%,transparent 95%);z-index:5;pointer-events:none;opacity:0;animation:brScanDown 2.4s cubic-bezier(.4,0,.2,1) .2s both;box-shadow:0 0 20px rgba(255,255,255,.03)}
 /* Horizon line — crack of golden light */
 .br-streak{position:absolute;top:50%;left:50%;height:1px;width:0;transform:translate(-50%,-50%);z-index:3;
-  background:linear-gradient(90deg,transparent,rgba(200,175,100,.15) 20%,rgba(220,195,120,.4) 40%,rgba(245,225,160,.6) 50%,rgba(220,195,120,.4) 60%,rgba(200,175,100,.15) 80%,transparent);
-  box-shadow:0 0 20px rgba(200,175,100,.15),0 0 60px rgba(180,150,60,.06);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.06) 20%,rgba(255,255,255,.15) 40%,rgba(255,250,240,.25) 50%,rgba(255,255,255,.15) 60%,rgba(255,255,255,.06) 80%,transparent);
+  box-shadow:0 0 30px rgba(255,255,255,.04),0 0 80px rgba(255,255,255,.02);
   animation:brHorizon 2.4s cubic-bezier(.15,.9,.25,1) .6s both}
 /* Credential slides — JS controls visibility */
 .br-cred{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:6;text-align:center;opacity:0;pointer-events:none;transition:none}
-.br-cred-show{font-family:var(--display);font-size:clamp(14px,2.5vw,22px);font-weight:600;color:rgba(200,185,140,.8);letter-spacing:.08em;line-height:1.6;white-space:nowrap}
-.br-cred-place{font-family:var(--mono);font-size:clamp(9px,1.2vw,12px);letter-spacing:.5em;text-transform:uppercase;color:rgba(224,176,48,.7);margin-top:14px}
+.br-cred-show{font-family:var(--display);font-size:clamp(15px,2.8vw,24px);font-weight:600;color:rgba(235,230,218,.82);letter-spacing:.08em;line-height:1.6;white-space:nowrap}
+.br-cred-place{font-family:var(--mono);font-size:clamp(10px,1.3vw,13px);letter-spacing:.5em;text-transform:uppercase;color:rgba(235,230,218,.55);margin-top:14px}
 /* Glow bloom */
-.br-name-glow{position:absolute;top:46%;left:50%;transform:translate(-50%,-50%);width:min(400px,80vw);height:60px;
-  background:radial-gradient(ellipse 100% 100%,rgba(200,175,100,.06) 0%,transparent 70%);
-  filter:blur(25px);pointer-events:none;z-index:1;opacity:0}
+.br-name-glow{position:absolute;top:46%;left:50%;transform:translate(-50%,-50%);width:min(500px,85vw);height:80px;
+  background:radial-gradient(ellipse 100% 100%,rgba(255,250,230,.04) 0%,transparent 70%);
+  filter:blur(30px);pointer-events:none;z-index:1;opacity:0}
 /* Crossed swords — behind the name */
-.br-swords{position:absolute;top:50%;left:50%;transform:translate(-50%,-52%);z-index:3;pointer-events:none;opacity:0}
-.br-swords svg{width:clamp(240px,55vw,480px);height:auto}
-.br-swords line,.br-swords path{stroke:rgba(220,195,130,.25);stroke-width:1.8;fill:none;stroke-dasharray:200;stroke-dashoffset:200}
-.br-swords .blade-fill{fill:rgba(200,175,100,.04);stroke:none;opacity:0}
+.br-swords{position:absolute;top:50%;left:50%;transform:translate(-50%,-46%);z-index:2;pointer-events:none;opacity:0}
+.br-swords svg{width:clamp(280px,60vw,520px);height:auto}
+.br-swords line,.br-swords path,.br-swords circle{stroke:rgba(255,250,230,.22);stroke-width:.9;fill:none;stroke-dasharray:200;stroke-dashoffset:200}
+.br-swords .blade-fill{fill:rgba(255,250,230,.04);stroke:none;stroke-dasharray:none;stroke-dashoffset:0;opacity:0}
+.br-swords circle{stroke-dasharray:20;stroke-dashoffset:20}
 /* Main name — materializes from the light */
-.br-name{font-family:var(--display);font-size:clamp(52px,13vw,130px);font-weight:900;line-height:.95;letter-spacing:.05em;position:relative;z-index:4;text-align:center;white-space:nowrap;
+.br-name{font-family:var(--display);font-size:clamp(56px,15vw,180px);font-weight:900;line-height:.92;letter-spacing:.05em;position:relative;z-index:5;text-align:center;white-space:nowrap;
   background:linear-gradient(100deg,#6B4E14 0%,#8B6820 12%,#BF9930 28%,#D4B048 38%,#E8CC68 45%,#F5E8A8 49%,#FFFCE8 51%,#F5E8A8 53%,#E8CC68 57%,#D4B048 64%,#BF9930 74%,#8B6820 88%,#6B4E14 100%);
   background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
   opacity:0;margin-bottom:16px;filter:drop-shadow(0 0 20px rgba(200,170,80,.2))}
 /* Gold rule */
 .br-line{height:1px;width:0;position:relative;z-index:4;
-  background:linear-gradient(90deg,transparent,rgba(200,175,100,.25) 15%,rgba(230,205,130,.65) 40%,rgba(250,235,170,.85) 50%,rgba(230,205,130,.65) 60%,rgba(200,175,100,.25) 85%,transparent);
-  box-shadow:0 0 12px rgba(200,175,100,.15);opacity:0}
+  background:linear-gradient(90deg,transparent,rgba(255,250,230,.15) 15%,rgba(255,250,230,.4) 40%,rgba(255,252,240,.6) 50%,rgba(255,250,230,.4) 60%,rgba(255,250,230,.15) 85%,transparent);
+  box-shadow:0 0 12px rgba(255,255,255,.06);opacity:0}
 /* Corner brackets */
 .br-corners{position:absolute;width:clamp(280px,58vw,500px);height:clamp(200px,34vw,300px);top:50%;left:50%;transform:translate(-50%,-52%);pointer-events:none;z-index:2;opacity:0}
 .br-corners::before,.br-corners::after,.br-corner-tl,.br-corner-br{content:'';position:absolute;width:32px;height:32px;opacity:0}
-.br-corners::before{top:0;left:0;border-top:1px solid rgba(200,175,100,.18);border-left:1px solid rgba(200,175,100,.18)}
-.br-corners::after{bottom:0;right:0;border-bottom:1px solid rgba(200,175,100,.18);border-right:1px solid rgba(200,175,100,.18)}
-.br-corner-tl{top:0;right:0;border-top:1px solid rgba(200,175,100,.18);border-right:1px solid rgba(200,175,100,.18)}
-.br-corner-br{bottom:0;left:0;border-bottom:1px solid rgba(200,175,100,.18);border-left:1px solid rgba(200,175,100,.18)}
+.br-corners::before{top:0;left:0;border-top:1px solid rgba(255,250,240,.1);border-left:1px solid rgba(255,250,240,.1)}
+.br-corners::after{bottom:0;right:0;border-bottom:1px solid rgba(255,250,240,.1);border-right:1px solid rgba(255,250,240,.1)}
+.br-corner-tl{top:0;right:0;border-top:1px solid rgba(255,250,240,.1);border-right:1px solid rgba(255,250,240,.1)}
+.br-corner-br{bottom:0;left:0;border-bottom:1px solid rgba(255,250,240,.1);border-left:1px solid rgba(255,250,240,.1)}
 /* Particles */
 .br-particles{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:3}
-.br-particle{position:absolute;border-radius:50%;background:rgba(220,195,120,.5);opacity:0}
+.br-particle{position:absolute;border-radius:50%;background:rgba(255,250,230,.4);opacity:0}
 .br-particle:nth-child(1){left:30%;top:52%;width:2px;height:2px}
 .br-particle:nth-child(2){left:45%;top:54%;width:1.5px;height:1.5px}
 .br-particle:nth-child(3){left:60%;top:51%;width:1px;height:1px}
@@ -180,16 +181,16 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
 .br-particle:nth-child(7){left:70%;top:53%;width:1.5px;height:1.5px}
 .br-particle:nth-child(8){left:48%;top:50%;width:2px;height:2px}
 /* Slash exit */
-.br-slash{position:absolute;top:50%;left:50%;width:0;height:2px;z-index:20;pointer-events:none;
-  background:linear-gradient(90deg,transparent 0%,rgba(255,240,180,.05) 8%,rgba(255,240,200,.6) 35%,rgba(255,255,255,1) 48%,rgba(255,255,240,1) 52%,rgba(255,240,200,.6) 65%,rgba(255,240,180,.05) 92%,transparent 100%);
-  box-shadow:0 0 15px rgba(255,240,180,.8),0 0 40px rgba(224,176,48,.5),0 0 80px rgba(224,176,48,.25),0 0 120px rgba(200,160,40,.1);
+.br-slash{position:absolute;top:50%;left:50%;width:0;height:1.5px;z-index:20;pointer-events:none;
+  background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.03) 8%,rgba(255,255,255,.5) 35%,rgba(255,255,255,.95) 48%,rgba(255,255,255,.95) 52%,rgba(255,255,255,.5) 65%,rgba(255,255,255,.03) 92%,transparent 100%);
+  box-shadow:0 0 10px rgba(255,255,255,.6),0 0 30px rgba(255,255,255,.2),0 0 60px rgba(255,255,255,.08);
   transform-origin:center center;border-radius:1px}
 .br-slash-l{transform:translate(-50%,-50%) rotate(-30deg);animation:brSlash .35s cubic-bezier(.1,0,.2,1) forwards}
 .br-slash-r{transform:translate(-50%,-50%) rotate(30deg);animation:brSlash .35s cubic-bezier(.1,0,.2,1) .06s forwards}
 @keyframes brSlash{0%{width:0;opacity:0}20%{opacity:1}100%{width:250vmax;opacity:1}}
-.br-spark{position:absolute;width:3px;height:3px;border-radius:50%;background:rgba(255,240,180,.9);z-index:21;pointer-events:none;box-shadow:0 0 6px rgba(255,240,180,.8),0 0 12px rgba(224,176,48,.5)}
+.br-spark{position:absolute;width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.9);z-index:21;pointer-events:none;box-shadow:0 0 6px rgba(255,255,255,.8),0 0 12px rgba(255,255,255,.4)}
 .br-flash{position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;z-index:19;pointer-events:none;
-  background:radial-gradient(circle,rgba(255,255,255,.9) 0%,rgba(255,245,200,.6) 25%,rgba(224,176,48,.2) 50%,transparent 70%);
+  background:radial-gradient(circle,rgba(255,255,255,.9) 0%,rgba(255,255,255,.5) 25%,rgba(255,255,255,.15) 50%,transparent 70%);
   transform:translate(-50%,-50%);animation:brFlash .7s cubic-bezier(.1,0,.2,1) forwards}
 @keyframes brFlash{0%{width:0;height:0;opacity:.8}20%{opacity:.7}100%{width:250vmax;height:250vmax;opacity:0}}
 @keyframes brLineFade{0%{opacity:1}100%{opacity:0;transform:scaleX(0)}}
@@ -241,9 +242,9 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
 .nav-cta::before{content:'';position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.2) 45%,rgba(255,255,255,.3) 50%,rgba(255,255,255,.2) 55%,transparent 60%);transform:translateX(-100%);transition:transform .6s var(--ease)}
 .nav-cta:hover::before{transform:translateX(100%)}
 .nav-cta:hover{box-shadow:0 4px 20px var(--accM),0 0 40px rgba(224,176,48,.12);transform:translateY(-1px)}
-.nav-burger{display:none;width:44px;height:44px;align-items:center;justify-content:center;color:var(--mu);transition:color .3s,transform .3s var(--ease)}
-.nav-burger:hover{color:var(--acc);transform:scale(1.1)}
-.nav-burger svg{transition:transform .4s var(--ease)}
+.nav-burger{display:none;width:44px;height:44px;align-items:center;justify-content:center;color:var(--acc);transition:color .3s,transform .3s var(--ease);opacity:.85}
+.nav-burger:hover{color:var(--accVib);transform:scale(1.15);opacity:1}
+.nav-burger svg{transition:transform .4s var(--ease);filter:drop-shadow(0 0 6px rgba(224,176,48,.2))}
 /* MOBILE MENU */
 .mm{position:fixed;inset:0;z-index:200;background:rgba(2,2,2,.97);backdrop-filter:blur(50px) saturate(1.2);-webkit-backdrop-filter:blur(50px) saturate(1.2);display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .4s var(--ease)}
 .mm::before{content:'';position:absolute;top:50%;left:50%;width:500px;height:500px;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(224,176,48,.04),transparent 60%);pointer-events:none;animation:breathe 6s ease-in-out infinite}
@@ -257,22 +258,22 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
 .mm-badge{font-family:var(--mono);font-size:8px;letter-spacing:.2em;color:var(--dm);margin-top:44px;text-transform:uppercase;opacity:.5}
 .mm::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 10%,rgba(224,176,48,.15) 50%,transparent 90%)}
 /* HERO */
-.hero{min-height:100vh;min-height:100svh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:80px 24px 60px}
+.hero{min-height:100vh;min-height:100svh;display:flex;align-items:flex-end;justify-content:center;position:relative;overflow:hidden;padding:80px 24px 0}
 .hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--goldGrad);opacity:.3;z-index:3;box-shadow:0 0 40px var(--accGlow),0 0 80px rgba(224,176,48,.12),0 -2px 30px rgba(224,176,48,.06)}
 .hero-bg{position:absolute;inset:-5%;background:url('img/hero-stage-2025.jpg') center 15%/cover no-repeat;z-index:0;animation:heroKenBurns 30s cubic-bezier(.45,0,.55,1) infinite alternate;will-change:transform;filter:contrast(1.15) brightness(.78) saturate(.85) sepia(.04)}
 .hero-ov{position:absolute;inset:0;z-index:1;
   background:
-    linear-gradient(90deg,rgba(2,2,2,.92) 0%,rgba(2,2,2,.65) 12%,rgba(2,2,2,.25) 25%,transparent 40%,transparent 60%,rgba(2,2,2,.25) 75%,rgba(2,2,2,.65) 88%,rgba(2,2,2,.92) 100%),
+    linear-gradient(90deg,rgba(2,2,2,.85) 0%,rgba(2,2,2,.35) 12%,rgba(2,2,2,.08) 25%,transparent 38%,transparent 62%,rgba(2,2,2,.08) 75%,rgba(2,2,2,.35) 88%,rgba(2,2,2,.85) 100%),
     linear-gradient(180deg,
-    rgba(2,2,2,.88) 0%,
-    rgba(2,2,2,.5) 8%,
-    rgba(2,2,2,.2) 18%,
-    rgba(2,2,2,.08) 32%,
-    rgba(2,2,2,.05) 42%,
-    rgba(2,2,2,.15) 52%,
-    rgba(2,2,2,.5) 62%,
-    rgba(2,2,2,.85) 72%,
-    rgba(2,2,2,.96) 82%,
+    rgba(2,2,2,.75) 0%,
+    rgba(2,2,2,.3) 10%,
+    rgba(2,2,2,.05) 22%,
+    transparent 35%,
+    transparent 45%,
+    rgba(2,2,2,.25) 55%,
+    rgba(2,2,2,.7) 65%,
+    rgba(2,2,2,.92) 75%,
+    rgba(2,2,2,.99) 85%,
     rgba(2,2,2,1) 90%)}
 .hero-ov::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 45% at 50% 35%,transparent 0%,rgba(2,2,2,.4) 50%,rgba(2,2,2,.85) 100%);pointer-events:none}
 .hero-ov::after{content:'';position:absolute;inset:0;background:
@@ -297,17 +298,17 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
 /* Breathing side vignette — cinematic depth */
 .hero-breath{position:absolute;inset:0;z-index:1;pointer-events:none;
   background:
-    radial-gradient(ellipse 45% 90% at 0% 50%,rgba(0,0,0,.7),transparent),
-    radial-gradient(ellipse 45% 90% at 100% 50%,rgba(0,0,0,.7),transparent),
-    radial-gradient(ellipse 90% 40% at 50% 0%,rgba(0,0,0,.6),transparent);
+    radial-gradient(ellipse 35% 80% at 0% 50%,rgba(0,0,0,.5),transparent),
+    radial-gradient(ellipse 35% 80% at 100% 50%,rgba(0,0,0,.5),transparent),
+    radial-gradient(ellipse 80% 35% at 50% 0%,rgba(0,0,0,.5),transparent);
   animation:heroBreathe 8s ease-in-out infinite}
-@keyframes heroBreathe{0%,100%{opacity:.8}50%{opacity:1}}
+@keyframes heroBreathe{0%,100%{opacity:.6}50%{opacity:.85}}
 .hero-dust{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
 .hero-dust span{position:absolute;width:2px;height:2px;background:var(--acc);border-radius:50%;opacity:0;animation:dustFloat linear infinite;box-shadow:0 0 6px rgba(224,176,48,.4)}
 .hero-dust span:nth-child(1){left:15%;top:80%;animation-duration:8s}.hero-dust span:nth-child(2){left:45%;top:90%;animation-duration:12s;animation-delay:2s;width:1.5px;height:1.5px}.hero-dust span:nth-child(3){left:72%;top:85%;animation-duration:10s;animation-delay:4s}.hero-dust span:nth-child(4){left:30%;top:95%;animation-duration:14s;animation-delay:1s;width:1px;height:1px}.hero-dust span:nth-child(5){left:88%;top:88%;animation-duration:9s;animation-delay:3s;width:1.5px;height:1.5px}.hero-dust span:nth-child(6){left:8%;top:92%;animation-duration:11s;animation-delay:5s}.hero-dust span:nth-child(7){left:60%;top:82%;animation-duration:13s;animation-delay:6s;width:1px;height:1px}.hero-dust span:nth-child(8){left:52%;top:96%;animation-duration:7s;animation-delay:.5s}
-.hero-content{position:relative;z-index:2;text-align:center;max-width:800px;padding-bottom:24px}
+.hero-content{position:relative;z-index:2;text-align:center;width:100%;padding:0 24px;padding-bottom:clamp(60px,12vh,120px)}
 /* HERO H1 — carved gold, maximum presence */
-.hero h1{font-family:var(--display);font-size:clamp(62px,15vw,150px);font-weight:900;line-height:.88;margin-bottom:0;letter-spacing:.05em;white-space:nowrap;
+.hero h1{font-family:var(--display);font-size:clamp(72px,11.5vw,180px);font-weight:900;line-height:.88;margin-bottom:0;letter-spacing:.03em;white-space:nowrap;
   background:linear-gradient(100deg,#6B4E14 0%,#8B6820 12%,#BF9930 28%,#D4B048 38%,#E8CC68 45%,#F5E8A8 49%,#FFFCE8 51%,#F5E8A8 53%,#E8CC68 57%,#D4B048 64%,#BF9930 74%,#8B6820 88%,#6B4E14 100%);
   background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
   opacity:0;animation:heroTitleIn 1.8s var(--ease) 16s forwards,brShimmer 8s linear 18.5s infinite;
@@ -319,10 +320,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
   opacity:0;animation:heroEmLine .8s var(--ease) 17.8s forwards;box-shadow:0 0 30px rgba(224,176,48,.25),0 0 60px rgba(224,176,48,.1)}
 @keyframes heroEmLine{from{opacity:0;left:45%;right:45%}to{opacity:1;left:15%;right:15%}}
 @keyframes heroTitleIn{from{opacity:0;transform:translateY(40px) scale(.96);filter:blur(6px) drop-shadow(0 0 0 transparent)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0) drop-shadow(0 2px 20px rgba(224,176,48,.3)) drop-shadow(0 4px 40px rgba(224,176,48,.12)) drop-shadow(0 0 80px rgba(224,176,48,.06))}}
-.hero-sub{font-family:var(--mono);font-size:clamp(10px,1.4vw,13px);letter-spacing:.35em;text-transform:uppercase;color:rgba(224,176,48,.6);line-height:1;margin-top:28px;opacity:0;animation:heroFadeUp .8s var(--ease) 17s forwards;text-shadow:0 1px 6px rgba(0,0,0,.95);position:relative;display:inline-block}
-.hero-sub::before,.hero-sub::after{content:'';position:absolute;top:50%;width:clamp(30px,8vw,80px);height:1px;background:linear-gradient(90deg,transparent,rgba(224,176,48,.3),transparent)}
-.hero-sub::before{right:calc(100% + 16px)}
-.hero-sub::after{left:calc(100% + 16px)}
+.hero-sub{font-family:var(--mono);font-size:clamp(9px,1.2vw,12px);letter-spacing:.4em;text-transform:uppercase;color:rgba(220,215,200,.4);line-height:1;margin-top:24px;opacity:0;animation:heroFadeUp .8s var(--ease) 17s forwards;text-shadow:0 1px 6px rgba(0,0,0,.95)}
 .hero-ctas{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:36px;opacity:0;animation:heroFadeUp .8s var(--ease) 17.4s forwards}
 .hero-scroll{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);z-index:2;color:var(--dm);animation:bounce 2.5s ease-in-out infinite;transition:opacity .5s}
 /* SECTIONS */
@@ -361,6 +359,28 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
 /* INNER CIRCLE */
 .circle-wrap{display:grid;gap:48px;align-items:start}
 .circle-text p{font-size:15px;color:var(--ow);line-height:1.8;margin-bottom:16px}.circle-text p:last-of-type{margin-bottom:0}
+/* ABOUT SECTION — credential showcase */
+.about-creds{max-width:720px;margin:0 auto 64px;display:flex;flex-direction:column;gap:40px}
+.about-cred-row{text-align:center}
+.about-stat{display:flex;align-items:baseline;justify-content:center;gap:14px;margin-bottom:14px;flex-wrap:wrap}
+.about-stat-num{font-family:var(--display);font-size:clamp(36px,5.5vw,52px);font-weight:900;line-height:1;
+  background:var(--goldGrad);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 8s linear infinite}
+.about-stat-title{font-family:var(--display);font-size:clamp(20px,3.2vw,32px);font-weight:700;color:var(--wh);letter-spacing:.03em;line-height:1.1}
+.about-stat-desc{font-family:var(--body);font-size:clamp(14px,1.6vw,16px);color:var(--mu);line-height:1.7;max-width:560px;margin:0 auto}
+/* Photo strip */
+.about-photos{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:56px}
+.about-photos .circle-photo{aspect-ratio:1/1;border-radius:12px}
+/* Training home block */
+.about-home{text-align:center;padding:28px 24px;border:1px solid var(--borderS);border-radius:14px;max-width:560px;margin:0 auto;
+  background:linear-gradient(145deg,rgba(0,0,0,.35),rgba(224,176,48,.015));position:relative;transition:all .4s var(--ease)}
+.about-home::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1px;background:var(--goldGrad);opacity:.15}
+.about-home:hover{border-color:var(--borderH)}
+.about-home-label{font-family:var(--mono);font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--acc);margin-bottom:14px}
+.about-home-names{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px 16px;margin-bottom:10px}
+.about-home-names span,.about-home-names a{font-family:var(--display);font-size:clamp(15px,1.8vw,18px);font-weight:600;color:var(--wh);letter-spacing:.02em;text-decoration:none;transition:color .2s}
+.about-home-names a:hover{color:var(--acc)}
+.about-home-dot{color:var(--borderH);font-size:10px}
+.about-home-meta{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--dm);line-height:1.8}
 /* Credential headline — gold gradient like hero */
 .cred-headline{font-family:var(--display);font-size:clamp(30px,4.5vw,44px);font-weight:900;line-height:1;letter-spacing:.05em;
   background:linear-gradient(100deg,#8B6820 0%,#BF9930 24%,#D4B048 38%,#E8CC68 46%,#F5E8A8 50%,#E8CC68 56%,#D4B048 64%,#BF9930 76%,#8B6820 100%);
@@ -411,10 +431,10 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 .num-label{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--dm);margin-top:10px;transition:color .3s}
 .num-card:hover .num-label{color:var(--mu)}
 /* RESULTS */
-.results-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
-.results-photo{border-radius:12px;overflow:hidden;position:relative;border:1px solid var(--borderS);aspect-ratio:4/3;cursor:pointer;transition:all .5s var(--ease);background:linear-gradient(110deg,var(--card) 30%,rgba(224,176,48,.04) 50%,var(--card) 70%);background-size:200% 100%;animation:imgShimmer 1.8s ease-in-out infinite}
+.results-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.results-photo{border-radius:12px;overflow:hidden;position:relative;border:1px solid var(--borderS);aspect-ratio:1/1;cursor:pointer;transition:all .5s var(--ease);background:linear-gradient(110deg,var(--card) 30%,rgba(224,176,48,.04) 50%,var(--card) 70%);background-size:200% 100%;animation:imgShimmer 1.8s ease-in-out infinite}
 .results-photo:has(img.loaded){animation:none;background:var(--card)}
-.results-photo img{width:100%;height:100%;object-fit:cover;object-position:center 25%;transition:transform .7s var(--ease),filter .7s;filter:contrast(1.05) brightness(.9)}
+.results-photo img{width:100%;height:100%;object-fit:cover;object-position:center 15%;transition:transform .7s var(--ease),filter .7s;filter:contrast(1.05) brightness(.9)}
 .results-photo:hover img{transform:scale(1.06);filter:contrast(1.08) brightness(1.02) saturate(1.05)}
 .results-photo::before{content:'';position:absolute;inset:0;z-index:2;background:linear-gradient(135deg,transparent 40%,rgba(255,240,180,.05) 50%,transparent 60%);opacity:0;transition:opacity .5s var(--ease);pointer-events:none}
 .results-photo:hover::before{opacity:1}
@@ -451,6 +471,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 .gal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
 .gal-item{border-radius:12px;overflow:hidden;position:relative;border:1px solid var(--borderS);aspect-ratio:3/4;cursor:pointer;transition:all .5s var(--ease);background:linear-gradient(110deg,var(--card) 30%,rgba(224,176,48,.04) 50%,var(--card) 70%);background-size:200% 100%;animation:imgShimmer 1.8s ease-in-out infinite}
 .gal-item:has(img.loaded){animation:none;background:var(--card)}
+.gal-item.gal-landscape{aspect-ratio:4/3}
 .gal-item.featured{grid-column:span 2;grid-row:span 2;aspect-ratio:auto;box-shadow:0 0 40px rgba(224,176,48,.04),0 0 80px rgba(224,176,48,.02)}
 .gal-item.featured::after{content:'';position:absolute;inset:-1px;border-radius:12px;background:linear-gradient(135deg,rgba(224,176,48,.15),transparent 40%,transparent 60%,rgba(224,176,48,.15));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;padding:1px;opacity:0;transition:opacity .5s;pointer-events:none}
 .gal-item.featured:hover::after{opacity:1}
@@ -522,7 +543,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 .footer-copy{font-family:var(--mono);font-size:9px;color:var(--dm);letter-spacing:.08em;margin-bottom:16px}
 .vat{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:8px;letter-spacing:.08em;color:var(--dmL);transition:color .3s;text-transform:uppercase;opacity:.6}.vat:hover{color:var(--dm);opacity:1}
 /* KEYFRAMES */
-@keyframes shimmer{0%{background-position:0% 50%}100%{background-position:300% 50%}}
+@keyframes shimmer{0%{background-position:100% 50%}100%{background-position:-100% 50%}}
 @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
 @keyframes breathe{0%,100%{opacity:.4}50%{opacity:.8}}
 @keyframes orbFloat{0%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-20px) scale(1.1)}66%{transform:translate(-20px,10px) scale(.95)}100%{transform:translate(0,0) scale(1)}}
@@ -538,24 +559,24 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
   .brand-reveal{padding:0 20px}
   .br-cred-show{font-size:clamp(12px,3.5vw,18px) !important}
   .br-cred-place{font-size:clamp(8px,2vw,10px) !important;letter-spacing:.3em}
-  .br-name{font-size:clamp(36px,11vw,56px);letter-spacing:.03em}
+  .br-name{font-size:clamp(42px,13vw,72px);letter-spacing:.03em}
   .br-corners{width:clamp(260px,78vw,360px);height:clamp(160px,36vw,240px)}
   .br-corners::before,.br-corners::after,.br-corner-tl,.br-corner-br{width:24px;height:24px}
   .br-swords svg{width:clamp(140px,38vw,240px)}
   .nav-links{display:none}.nav-burger{display:flex}
   .section{padding:64px 20px}.s-head{margin-bottom:32px}
-  .hero{padding:0;padding-top:env(safe-area-inset-top,0px);min-height:100svh;min-height:-webkit-fill-available;align-items:center;justify-content:center}
+  .hero{padding:0;padding-top:env(safe-area-inset-top,0px);min-height:100svh;min-height:-webkit-fill-available;align-items:flex-end;justify-content:center}
   .hero-bg{background-position:center 10%;inset:-3%}
   .hero-ov{background:
-    linear-gradient(90deg,rgba(2,2,2,.88) 0%,rgba(2,2,2,.4) 15%,transparent 35%,transparent 65%,rgba(2,2,2,.4) 85%,rgba(2,2,2,.88) 100%),
+    linear-gradient(90deg,rgba(2,2,2,.7) 0%,rgba(2,2,2,.2) 15%,transparent 30%,transparent 70%,rgba(2,2,2,.2) 85%,rgba(2,2,2,.7) 100%),
     linear-gradient(180deg,
-    rgba(2,2,2,.8) 0%,rgba(2,2,2,.3) 10%,rgba(2,2,2,.05) 25%,transparent 40%,
-    rgba(2,2,2,.15) 52%,rgba(2,2,2,.6) 62%,rgba(2,2,2,.92) 74%,rgba(2,2,2,.99) 84%,rgba(2,2,2,1) 90%)}
-  .hero-content{max-width:100%;padding:0 24px calc(env(safe-area-inset-bottom,0px) + 24px);text-align:center}
-  .hero h1{font-size:clamp(48px,13vw,80px);white-space:normal;line-height:.88;
-    filter:drop-shadow(0 2px 12px rgba(224,176,48,.25)) drop-shadow(0 4px 30px rgba(224,176,48,.1))}
-  .hero h1::after{left:10%;right:10%}
-  .hero-sub{font-size:12px}
+    rgba(2,2,2,.6) 0%,rgba(2,2,2,.15) 10%,transparent 22%,transparent 42%,
+    rgba(2,2,2,.2) 52%,rgba(2,2,2,.65) 62%,rgba(2,2,2,.92) 74%,rgba(2,2,2,.99) 84%,rgba(2,2,2,1) 90%)}
+  .hero-content{max-width:100%;width:100%;padding:0 16px calc(env(safe-area-inset-bottom,0px) + 24px);text-align:center}
+  .hero h1{font-size:clamp(52px,16vw,88px);white-space:normal;line-height:.84;
+    filter:drop-shadow(0 2px 16px rgba(224,176,48,.3)) drop-shadow(0 4px 30px rgba(224,176,48,.12))}
+  .hero h1::after{left:8%;right:8%}
+  .hero-sub{font-size:11px}
   .hero-ctas{margin-top:24px;gap:10px;flex-direction:column;align-items:center}
   .hero-ctas .btn-p,.hero-ctas .btn-s{width:100%;max-width:280px;padding:16px 28px;font-size:11px;min-height:50px}
   .hero-scroll{bottom:8px}
@@ -563,6 +584,11 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
   .nav{padding-top:calc(env(safe-area-inset-top,0px) + 12px);padding-left:calc(env(safe-area-inset-left,0px) + 20px);padding-right:calc(env(safe-area-inset-right,0px) + 20px)}
   .circle-wrap{gap:32px}.circle-grid{gap:8px}
   .circle-photo{aspect-ratio:3/4}
+  .about-photos{grid-template-columns:repeat(3,1fr);gap:8px}
+  .about-photos .circle-photo{aspect-ratio:3/4}
+  .about-creds{gap:28px;margin-bottom:40px}
+  .about-stat{gap:10px}
+  .about-home{max-width:100%}
   .svc-grid{grid-template-columns:1fr}
   .num-grid{grid-template-columns:repeat(2,1fr);gap:10px}
   .results-grid{grid-template-columns:repeat(2,1fr);gap:8px}
@@ -622,19 +648,35 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
     <div class="br-cred-show" style="font-size:clamp(18px,3.5vw,30px);font-weight:700">2&times; Olympian</div>
   </div>
   <!-- Name reveal phase -->
-  <div class="br-swords"><svg viewBox="0 0 160 100" fill="none">
-    <path d="M25,85 L75,15 L80,18 L30,88 Z" class="blade-fill"/>
-    <line x1="27" y1="86" x2="78" y2="16" stroke-linecap="round"/>
-    <line x1="38" y1="72" x2="22" y2="80" stroke-linecap="round"/>
-    <line x1="36" y1="68" x2="20" y2="76" stroke-linecap="round"/>
-    <path d="M22,84 Q20,88 24,90 Q28,88 26,84" stroke-linecap="round"/>
-    <path d="M135,85 L85,15 L80,18 L130,88 Z" class="blade-fill"/>
-    <line x1="133" y1="86" x2="82" y2="16" stroke-linecap="round"/>
-    <line x1="122" y1="72" x2="138" y2="80" stroke-linecap="round"/>
-    <line x1="124" y1="68" x2="140" y2="76" stroke-linecap="round"/>
-    <path d="M138,84 Q140,88 136,90 Q132,88 134,84" stroke-linecap="round"/>
-    <path d="M74,16 L80,6 L86,16" stroke-linecap="round"/>
-    <path d="M77,12 L80,8 L83,12" stroke-linecap="round"/>
+  <div class="br-swords"><svg viewBox="0 0 200 120" fill="none">
+    <!-- LEFT SWORD — full blade with taper, crossguard, grip, pommel -->
+    <path d="M30,100 L32,98 L78,18 L80,14 L82,18 L36,98 L38,100 Z" class="blade-fill"/>
+    <path d="M30,100 L80,14" stroke-linecap="round"/>
+    <path d="M38,100 L82,18" stroke-linecap="round"/>
+    <!-- Left crossguard — curved, substantial -->
+    <path d="M42,88 C38,84 28,86 22,90" stroke-linecap="round"/>
+    <path d="M44,86 C40,82 30,84 24,88" stroke-linecap="round"/>
+    <!-- Left grip wrap marks -->
+    <line x1="34" y1="96" x2="37" y2="93" stroke-linecap="round"/>
+    <line x1="32" y1="99" x2="35" y2="96" stroke-linecap="round"/>
+    <!-- Left pommel -->
+    <circle cx="33" cy="104" r="3"/>
+    <!-- RIGHT SWORD — mirrored -->
+    <path d="M170,100 L168,98 L122,18 L120,14 L118,18 L164,98 L162,100 Z" class="blade-fill"/>
+    <path d="M170,100 L120,14" stroke-linecap="round"/>
+    <path d="M162,100 L118,18" stroke-linecap="round"/>
+    <!-- Right crossguard -->
+    <path d="M158,88 C162,84 172,86 178,90" stroke-linecap="round"/>
+    <path d="M156,86 C160,82 170,84 176,88" stroke-linecap="round"/>
+    <!-- Right grip wrap marks -->
+    <line x1="166" y1="96" x2="163" y2="93" stroke-linecap="round"/>
+    <line x1="168" y1="99" x2="165" y2="96" stroke-linecap="round"/>
+    <!-- Right pommel -->
+    <circle cx="167" cy="104" r="3"/>
+    <!-- Crown at blade tips intersection -->
+    <path d="M95,14 L100,4 L105,14" stroke-linecap="round"/>
+    <path d="M97,10 L100,5 L103,10" stroke-linecap="round"/>
+    <circle cx="100" cy="3" r="1.5"/>
   </svg></div>
   <div class="br-particles">
     <div class="br-particle"></div><div class="br-particle"></div><div class="br-particle"></div><div class="br-particle"></div>
@@ -669,7 +711,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
     <a href="#gallery" data-nav>Gallery</a>
     <a href="#contact" class="nav-cta">Book</a>
   </div>
-  <button class="nav-burger" id="navBurger" aria-label="Open menu"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><line x1="4" y1="8" x2="20" y2="8"/><line x1="10" y1="16" x2="20" y2="16"/></svg></button>
+  <button class="nav-burger" id="navBurger" aria-label="Open menu"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="12" y="3" width="9" height="9" rx="1.2" transform="rotate(45 12 3)" stroke="currentColor" stroke-width="1.2"/><line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" stroke-width=".8" opacity=".4"/><line x1="9" y1="14.5" x2="15" y2="14.5" stroke="currentColor" stroke-width=".8" opacity=".3"/></svg></button>
 </nav>
 
 <!-- MOBILE MENU -->
@@ -715,84 +757,87 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 </section>
 <div class="gw-sm"></div>
 
-<!-- INNER CIRCLE -->
+<!-- ABOUT — WHO IS BIG MIKE ELY -->
 <section class="section" id="about" style="background:var(--surfGrad)">
   <div class="inner">
-    <h2 class="s-head reveal">The Inner Circle</h2>
-    <p class="reveal" style="font-family:var(--mono);font-size:clamp(10px,1.4vw,12px);letter-spacing:.24em;text-transform:uppercase;color:var(--dm);text-align:center;margin-top:-36px;margin-bottom:56px;line-height:1.6">Invite-only coaching &mdash; 30 years in the making</p>
-    <div class="circle-wrap">
-      <div class="circle-text reveal-left">
+    <h2 class="s-head reveal">The Man Behind the Title</h2>
 
-        <!-- PRIMARY CREDENTIAL — Olympia Competitor -->
-        <div style="margin-bottom:32px">
-          <div class="cred-headline">2&times; Olympian</div>
-          <div style="font-family:var(--mono);font-size:clamp(10px,1.3vw,12px);letter-spacing:.18em;text-transform:uppercase;color:var(--acc);margin-top:10px;line-height:1.6">IFBB Pro Olympia Stage &mdash; Invitation by world ranking only</div>
+    <!-- CREDENTIAL SHOWCASE — big typographic moments -->
+    <div class="about-creds reveal">
+      <div class="about-cred-row">
+        <div class="about-stat">
+          <span class="about-stat-num">2&times;</span>
+          <span class="about-stat-title">World Champion</span>
         </div>
-
-        <!-- CREDENTIAL STACK -->
-        <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:28px">
-
-          <div class="cred-card">
-            <span class="cred-num">2&times;</span>
-            <div>
-              <div class="cred-title">IFBB Pro Masters World Champion</div>
-              <div class="cred-sub">Back-to-back &mdash; 2024 &amp; 2025 &middot; Of the 30,000+ NPC competitors each year, fewer than 300 turn pro &middot; Of those, a fraction ever qualify for a world-level stage &middot; Winning it twice, consecutively, places Mike among the rarest in the sport&rsquo;s history</div>
-            </div>
-          </div>
-
-          <div class="cred-card">
-            <span style="font-family:var(--display);font-size:18px;font-weight:700;color:var(--acc);line-height:1;filter:drop-shadow(0 0 8px rgba(224,176,48,.2))">&#9670;</span>
-            <div>
-              <div class="cred-title">IFBB Pro Card &mdash; Coached by Hany Rambod</div>
-              <div class="cred-sub">Earned his pro card with Hany &ldquo;The Pro Creator&rdquo; Rambod backstage &middot; 25 Olympia titles across 6 divisions &middot; Founder &amp; CEO, Evogen Nutrition &middot; Phil Heath (7&times; Mr.&nbsp;O), Chris Bumstead (5&times; Classic Physique), Jay Cutler, Hadi Choopan, Derek Lunsford, Jeremy Buendia (4&times; Men&rsquo;s Physique), Nicole Wilkins (4&times; Figure)</div>
-            </div>
-          </div>
-
-          <div class="cred-card">
-            <span style="font-family:var(--display);font-size:18px;font-weight:700;color:var(--acc);line-height:1;filter:drop-shadow(0 0 8px rgba(224,176,48,.2))">&#9670;</span>
-            <div>
-              <div class="cred-title">NPC National Judge</div>
-              <div class="cred-sub">Active judge &mdash; National Physique Committee</div>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- TRAINING ENVIRONMENT — separate visual block -->
-        <div class="env-block">
-          <div style="font-family:var(--mono);font-size:8px;letter-spacing:.24em;text-transform:uppercase;color:var(--acc);margin-bottom:14px">Training Home</div>
-          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px">
-            <span style="font-family:var(--display);font-size:clamp(14px,1.7vw,16px);font-weight:600;color:var(--wh);letter-spacing:.02em">Center Stage Aesthetics</span>
-            <span style="color:var(--borderH);font-size:10px">&middot;</span>
-            <a href="https://osigym.com" target="_blank" rel="noopener" style="font-family:var(--display);font-size:clamp(14px,1.7vw,16px);font-weight:600;color:var(--wh);letter-spacing:.02em;text-decoration:none;transition:color .2s" onmouseover="this.style.color='var(--acc)'" onmouseout="this.style.color='var(--wh)'">Old School Iron Gym</a>
-          </div>
-          <div style="font-family:var(--mono);font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:var(--dm);margin-top:10px;line-height:1.8">Brook Park, Ohio &middot; Westside Barbell Certified &middot; 16,000 sq&nbsp;ft &middot; The Midwest Mecca</div>
-        </div>
-
+        <p class="about-stat-desc">IFBB Pro Masters World Championship &mdash; Pittsburgh, PA, October 2024 &amp; October 2025. Back-to-back. Of 30,000+ NPC competitors each year, fewer than 300 ever turn pro. Of those, a fraction qualify for the world stage. Winning it twice, consecutively, is nearly unheard of in the sport&rsquo;s history.</p>
       </div>
-      <div class="circle-grid reveal-right">
-        <div class="circle-photo" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-          <img src="img/about-hany-rambod.jpg" alt="Mike with Hany Rambod — The Pro Creator" loading="lazy" style="object-position:center 25%">
-          <div class="circle-label">With Hany Rambod</div>
+
+      <div class="gw" style="max-width:120px;margin:0 auto"></div>
+
+      <div class="about-cred-row">
+        <div class="about-stat">
+          <span class="about-stat-num">2&times;</span>
+          <span class="about-stat-title">Olympian</span>
         </div>
-        <div class="circle-photo" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-          <img src="img/about-tom-platz.jpg" alt="Mike with Tom Platz — The Quadfather" loading="lazy" style="object-position:center 15%">
-          <div class="circle-label">With Tom Platz</div>
+        <p class="about-stat-desc">Masters Olympia, Romania 2023 &amp; 2024. The Olympia stage is reserved for the world&rsquo;s top-ranked professionals &mdash; invitation only. The single highest honor in competitive bodybuilding.</p>
+      </div>
+
+      <div class="gw" style="max-width:120px;margin:0 auto"></div>
+
+      <div class="about-cred-row">
+        <div class="about-stat">
+          <span class="about-stat-num">&#9670;</span>
+          <span class="about-stat-title">Pro Card Under Hany Rambod</span>
         </div>
-        <div class="circle-photo" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-          <img src="img/about-roelly.jpg" alt="Mike with Roelly Winklaar" loading="lazy" style="object-position:center 35%">
-          <div class="circle-label">With Roelly Winklaar</div>
+        <p class="about-stat-desc">Earned his IFBB Pro Card under Hany Rambod &mdash; &ldquo;The Pro Creator&rdquo; &mdash; architect of 25 Olympia titles across 6 divisions. The same coach behind Phil Heath, Chris Bumstead, Jay Cutler, and Hadi Choopan.</p>
+      </div>
+
+      <div class="gw" style="max-width:120px;margin:0 auto"></div>
+
+      <div class="about-cred-row">
+        <div class="about-stat">
+          <span class="about-stat-num">&#9670;</span>
+          <span class="about-stat-title">NPC National Judge</span>
         </div>
-        <div class="circle-photo" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-          <img src="img/about-lifestyle.jpg" alt="Mike and his wife Allie" loading="lazy" style="object-position:center 15%">
-          <div class="circle-label">Mike &amp; Allie</div>
-        </div>
-        <div class="circle-photo" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-          <img src="img/about-dad.jpg" alt="Mike with his father" loading="lazy" style="object-position:center 25%">
-          <div class="circle-label">Like father, like son</div>
-        </div>
+        <p class="about-stat-desc">Active judge with the National Physique Committee. Sees both sides of the stage.</p>
       </div>
     </div>
+
+    <!-- PHOTO STRIP — the people in his world -->
+    <div class="about-photos reveal">
+      <div class="circle-photo" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
+        <img src="img/about-hany-rambod.jpg" alt="Mike with Hany Rambod — The Pro Creator" loading="lazy" style="object-position:center center">
+        <div class="circle-label">With Hany Rambod</div>
+      </div>
+      <div class="circle-photo" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
+        <img src="img/about-tom-platz.jpg" alt="Mike with Tom Platz — The Quadfather" loading="lazy" style="object-position:center 15%">
+        <div class="circle-label">With Tom Platz</div>
+      </div>
+      <div class="circle-photo" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
+        <img src="img/about-roelly.jpg" alt="Mike with Roelly Winklaar" loading="lazy" style="object-position:center 35%">
+        <div class="circle-label">With Roelly Winklaar</div>
+      </div>
+      <div class="circle-photo" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
+        <img src="img/about-lifestyle.jpg" alt="Mike and his wife Allie" loading="lazy" style="object-position:center 25%">
+        <div class="circle-label">Mike &amp; Allie</div>
+      </div>
+      <div class="circle-photo" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
+        <img src="img/about-dad.jpg" alt="Mike with his father" loading="lazy" style="object-position:center 25%">
+        <div class="circle-label">Like father, like son</div>
+      </div>
+    </div>
+
+    <!-- TRAINING HOME — clean, separated -->
+    <div class="about-home reveal">
+      <div class="about-home-label">Training Home</div>
+      <div class="about-home-names">
+        <span>Center Stage Aesthetics</span>
+        <span class="about-home-dot">&middot;</span>
+        <a href="https://osigym.com" target="_blank" rel="noopener">Old School Iron Gym</a>
+      </div>
+      <div class="about-home-meta">Brook Park, Ohio &middot; Westside Barbell Certified &middot; 16,000 sq&nbsp;ft &middot; The Midwest Mecca</div>
+    </div>
+
   </div>
 </section>
 <div class="gw-diamond"></div>
@@ -821,7 +866,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
       </div>
 
       <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/results-procard-lindsay-stage.jpg" alt="Athlete on stage with IFBB Pro Card" loading="lazy">
+        <img src="img/results-procard-lindsay-stage.jpg" alt="Athlete on stage with IFBB Pro Card" loading="lazy" style="object-position:center 20%">
         <div class="results-photo-label">Pro Card</div>
       </div>
 
@@ -836,23 +881,23 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
       </div>
 
       <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/results-procard-female-2.jpg" alt="Athlete raising IFBB Pro Card outdoors" loading="lazy" style="object-position:center 30%">
+        <img src="img/results-procard-female-2.jpg" alt="Athlete raising IFBB Pro Card outdoors" loading="lazy" style="object-position:center 10%">
         <div class="results-photo-label">Pro Card</div>
       </div>
 
       <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/results-procard-female-3.jpg" alt="Athlete holding IFBB Pro Card" loading="lazy">
+        <img src="img/results-procard-female-3.jpg" alt="Athlete holding IFBB Pro Card" loading="lazy" style="object-position:center 18%">
         <div class="results-photo-label">Pro Card</div>
       </div>
 
       <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/results-procard-ladies.jpg" alt="Athlete on stage with medal" loading="lazy" style="object-position:center 30%">
+        <img src="img/results-procard-ladies.jpg" alt="Athlete on stage with medal" loading="lazy" style="object-position:center 40%">
         <div class="results-photo-label">Pro Card</div>
       </div>
 
       <!-- CLIENT TRANSFORMATIONS -->
       <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/results-client-transformation-female.jpg" alt="Client transformation — before and after" loading="lazy">
+        <img src="img/results-client-transformation-female.jpg" alt="Client transformation — before and after" loading="lazy" style="object-position:center center">
         <div class="results-photo-label">Client Transformation</div>
       </div>
 
@@ -862,12 +907,12 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
       </div>
 
       <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/results-client-transformation-usmc.jpg" alt="Client transformation — before and after" loading="lazy">
+        <img src="img/results-client-transformation-usmc.jpg" alt="Client transformation — before and after" loading="lazy" style="object-position:center center">
         <div class="results-photo-label">Client Transformation</div>
       </div>
 
       <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/results-transformation-male.jpg" alt="Client transformation — before and after" loading="lazy">
+        <img src="img/results-transformation-male.jpg" alt="Client transformation — before and after" loading="lazy" style="object-position:center center">
         <div class="results-photo-label">Client Transformation</div>
       </div>
 
@@ -878,7 +923,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
       </div>
 
       <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/event-iwa-best-coach.jpg" alt="Mike Ely receiving Best Team award at NPC Natural Northern USA Championships" loading="lazy">
+        <img src="img/event-iwa-best-coach.jpg" alt="Mike Ely receiving Best Team award at NPC Natural Northern USA Championships" loading="lazy" style="object-position:center center">
         <div class="results-photo-label">Best Team — NPC Natural Northern USA</div>
       </div>
 
@@ -1000,17 +1045,17 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-wings-stage.jpg" alt="Mike Ely back double bicep under stage lights — Wings of Strength" loading="lazy" style="object-position:center 75%">
+        <img src="img/gallery-wings-stage.jpg" alt="Mike Ely back double bicep under stage lights — Wings of Strength" loading="lazy" style="object-position:center 20%">
         <div class="gal-label">Wings of Strength</div>
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-stage-2014.jpg" alt="Mike Ely on stage 2014" loading="lazy" style="object-position:center 20%">
+        <img src="img/gallery-stage-2014.jpg" alt="Mike Ely on stage 2014" loading="lazy" style="object-position:center 15%">
         <div class="gal-label">On Stage — 2014</div>
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-ferrigno-prep.jpg" alt="Mike Ely preparing for Ferrigno Legacy competition" loading="lazy" style="object-position:center 25%">
+        <img src="img/gallery-ferrigno-prep.jpg" alt="Mike Ely preparing for Ferrigno Legacy competition" loading="lazy" style="object-position:center 20%">
         <div class="gal-label">Ferrigno Legacy</div>
       </div>
 
@@ -1047,36 +1092,36 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-gym-back-squats.jpg" alt="Mike Ely squatting with custom Big Mike Ely belt at Old School Iron" loading="lazy" style="object-position:center 28%">
+        <img src="img/gallery-gym-back-squats.jpg" alt="Mike Ely squatting with custom Big Mike Ely belt at Old School Iron" loading="lazy" style="object-position:center 35%">
         <div class="gal-label">Squats — Old School Iron</div>
       </div>
 
       <!-- BACKSTAGE & EVENTS -->
 
-      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-backstage-golds.jpg" alt="Mike Ely backstage in Gold's Gym tank" loading="lazy">
+      <div class="gal-item gal-landscape reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
+        <img src="img/gallery-backstage-golds.jpg" alt="Mike Ely backstage in Gold's Gym tank" loading="lazy" style="object-position:center 20%">
         <div class="gal-label">Backstage — Gold's Gym</div>
       </div>
 
-      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-masters-backstage-trio.jpg" alt="Mike Ely with Vinny Galanti and Ken Jackson backstage at IFBB Masters" loading="lazy">
+      <div class="gal-item gal-landscape reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
+        <img src="img/gallery-masters-backstage-trio.jpg" alt="Mike Ely with Vinny Galanti and Ken Jackson backstage at IFBB Masters" loading="lazy" style="object-position:center center">
         <div class="gal-label">IFBB Masters — Backstage</div>
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-guest-posing-npc-ny.jpg" alt="Mike Ely guest posing at NPC New York" loading="lazy" style="object-position:center 52%">
+        <img src="img/gallery-guest-posing-npc-ny.jpg" alt="Mike Ely guest posing at NPC New York" loading="lazy" style="object-position:center 25%">
         <div class="gal-label">Guest Posing — NPC New York</div>
       </div>
 
       <!-- POSING CLINICS -->
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-posing-clinic.jpg" alt="Mike Ely posing clinic flyer" loading="lazy" style="object-position:center 68%">
+        <img src="img/gallery-posing-clinic.jpg" alt="Mike Ely posing clinic flyer" loading="lazy" style="object-position:center 55%">
         <div class="gal-label">Posing Clinic</div>
       </div>
 
-      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-posing-clinic-group.jpg" alt="Group photo at Mike Ely posing clinic" loading="lazy">
+      <div class="gal-item gal-landscape reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
+        <img src="img/gallery-posing-clinic-group.jpg" alt="Group photo at Mike Ely posing clinic" loading="lazy" style="object-position:center center">
         <div class="gal-label">Posing Clinic — Group</div>
       </div>
 
@@ -1093,22 +1138,22 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-procard-story.jpg" alt="Where the pro card story started" loading="lazy" style="object-position:center 28%">
+        <img src="img/gallery-procard-story.jpg" alt="Where the pro card story started" loading="lazy" style="object-position:center center">
         <div class="gal-label">Where the Pro Card Story Started</div>
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-transformation.jpg" alt="Mike Ely physique evolution" loading="lazy" style="object-position:center 68%">
+        <img src="img/gallery-transformation.jpg" alt="Mike Ely physique evolution" loading="lazy" style="object-position:center center">
         <div class="gal-label">The Evolution — Then to Now</div>
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-gym-prep-2014.jpg" alt="Mike Ely contest prep 2014" loading="lazy" style="object-position:center 20%">
+        <img src="img/gallery-gym-prep-2014.jpg" alt="Mike Ely contest prep 2014" loading="lazy" style="object-position:center center">
         <div class="gal-label">Contest Prep — 2014</div>
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-muscular-dev-2013.jpg" alt="Mike Ely Muscular Development magazine 2013" loading="lazy" style="object-position:center 25%">
+        <img src="img/gallery-muscular-dev-2013.jpg" alt="Mike Ely Muscular Development magazine 2013" loading="lazy" style="object-position:center center">
         <div class="gal-label">Muscular Development — 2013</div>
       </div>
 
@@ -1300,7 +1345,7 @@ document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.s-h
     /* Pulse rings expand from center — portal opening */
     for (var i = 0; i < 3; i++) {
       var ring = document.createElement('div');
-      ring.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);border-radius:50%;border:1px solid rgba(200,175,100,' + (.12 - i * .03) + ');width:20px;height:20px;opacity:0;z-index:2;pointer-events:none;animation:brPortalRing 2s cubic-bezier(.15,.8,.25,1) ' + (i * .3) + 's both';
+      ring.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);border-radius:50%;border:1px solid rgba(255,255,255,' + (.12 - i * .03) + ');width:20px;height:20px;opacity:0;z-index:2;pointer-events:none;animation:brPortalRing 2s cubic-bezier(.15,.8,.25,1) ' + (i * .3) + 's both';
       br.appendChild(ring);
     }
   }, portalStart);
@@ -1312,8 +1357,8 @@ document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.s-h
     var swords = br.querySelector('.br-swords');
     if (swords) {
       swords.style.animation = 'brSwordsIn 1.8s cubic-bezier(.2,.8,.3,1) forwards';
-      swords.querySelectorAll('line,path:not(.blade-fill)').forEach(function (el) {
-        el.style.animation = 'brSwordDraw 1.8s cubic-bezier(.4,0,.2,1) .2s forwards';
+      swords.querySelectorAll('line,path:not(.blade-fill),circle').forEach(function (el) {
+        el.style.animation = 'brSwordDraw 2s cubic-bezier(.4,0,.2,1) .2s forwards';
       });
       swords.querySelectorAll('.blade-fill').forEach(function (el) {
         el.style.animation = 'brBladeFill 1s ease-out 1.6s forwards';
@@ -1337,7 +1382,7 @@ document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.s-h
   setTimeout(function () {
     /* Name */
     var name = br.querySelector('.br-name');
-    if (name) name.style.animation = 'brNameReveal 2.2s cubic-bezier(.15,.85,.25,1) forwards,brShimmer 5s ease-in-out 3s infinite';
+    if (name) name.style.animation = 'brNameReveal 2.2s cubic-bezier(.15,.85,.25,1) forwards,brShimmer 7s linear 3s infinite';
     /* Gold line */
     var line = br.querySelector('.br-line');
     if (line) line.style.animation = 'brLineGrow 1.2s cubic-bezier(.25,.9,.25,1) .8s both';
@@ -1573,13 +1618,16 @@ window.addEventListener('load', function () {
   var heroBg = document.querySelector('.hero-bg');
   var ctaBg = document.querySelector('.cta-bg');
   var ticking = false;
+  var heroReady = false;
+  /* Wait until hero animations have played before enabling parallax */
+  setTimeout(function () { heroReady = true; }, 19000);
   window.addEventListener('scroll', function () {
     if (!ticking) {
       requestAnimationFrame(function () {
         var s = window.scrollY;
         var vh = window.innerHeight;
-        /* Fade + translate hero content as user scrolls */
-        if (heroContent && s < vh) {
+        /* Only fade hero content AFTER initial animations complete */
+        if (heroReady && heroContent && s < vh) {
           var ratio = s / (vh * .6);
           heroContent.style.opacity = Math.max(0, 1 - ratio);
           heroContent.style.transform = 'translateY(' + (s * .25) + 'px)';
