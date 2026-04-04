@@ -583,7 +583,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 }
 @media(max-width:400px){
   .circle-grid{grid-template-columns:1fr}
-  .num-grid{grid-template-columns:1fr}
+  .num-grid{grid-template-columns:repeat(2,1fr)}
   .gal-grid{grid-template-columns:1fr}.gal-item.featured{grid-column:span 1}
   .btn-p{padding:14px 28px;font-size:10px;min-height:44px}
 }
@@ -950,13 +950,13 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 
       <!-- FEATURED — 2-column span, most recent titles -->
       <div class="gal-item featured reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-champion-2024.jpg" alt="Mike Ely most muscular on stage with trophies, 2024 World Title" loading="lazy" style="object-position:center 55%">
-        <div class="gal-label">World Title, 2024</div>
+        <img src="img/gallery-champion-2024.jpg" alt="Mike Ely most muscular on stage with trophies, 2024 IFBB Pro Masters World Championship" loading="lazy" style="object-position:center 60%">
+        <div class="gal-label">IFBB Pro Masters World Champion — 2024</div>
       </div>
 
       <div class="gal-item featured reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-masters-world-champ.jpg" alt="Mike Ely 1st place IFBB Pro Masters World Championship with medal and trophy" loading="lazy">
-        <div class="gal-label">Masters World Champion</div>
+        <img src="img/gallery-masters-world-champ.jpg" alt="Mike Ely 1st place IFBB Pro Masters World Championship 2025 with medal and trophy" loading="lazy">
+        <div class="gal-label">IFBB Pro Masters World Champion — 2025</div>
       </div>
 
       <!-- STAGE — newest to oldest -->
@@ -976,56 +976,56 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
         <div class="gal-label">Chicago Pro, 2015</div>
       </div>
 
-      <div class="gal-item reveal" data-no-lb style="cursor:default">
-        <img src="img/gallery-wings-stage.jpg" alt="Mike Ely back double bicep under stage lights" loading="lazy" style="object-position:center 75%">
-        <div class="gal-label">Wings of Strength — Back Double Bicep</div>
-      </div>
-
-      <div class="gal-item reveal" data-no-lb style="cursor:default">
-        <img src="img/gallery-stage-2014.jpg" alt="Mike Ely on stage 2014" loading="lazy" style="object-position:center 82%">
-        <div class="gal-label">On Stage — 2014</div>
-      </div>
-
-      <div class="gal-item reveal" data-no-lb style="cursor:default">
-        <img src="img/gallery-ferrigno-prep.jpg" alt="Mike Ely preparing for Ferrigno Legacy competition" loading="lazy" style="object-position:center 72%">
-        <div class="gal-label">Ferrigno Legacy Prep</div>
+      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
+        <img src="img/gallery-wings-stage.jpg" alt="Mike Ely back double bicep under stage lights — Wings of Strength" loading="lazy" style="object-position:center 75%">
+        <div class="gal-label">Wings of Strength</div>
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-back-dbl-bicep.jpg" alt="Mike Ely back double bicep pose — Muscular Development" loading="lazy" style="object-position:center center">
+        <img src="img/gallery-stage-2014.jpg" alt="Mike Ely on stage 2014" loading="lazy" style="object-position:center 20%">
+        <div class="gal-label">On Stage — 2014</div>
+      </div>
+
+      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
+        <img src="img/gallery-ferrigno-prep.jpg" alt="Mike Ely preparing for Ferrigno Legacy competition" loading="lazy" style="object-position:center 25%">
+        <div class="gal-label">Ferrigno Legacy</div>
+      </div>
+
+      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
+        <img src="img/gallery-back-dbl-bicep.jpg" alt="Mike Ely back double bicep — Muscular Development" loading="lazy" style="object-position:center center">
         <div class="gal-label">Back Double Bicep — Muscular Development</div>
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-side-chest-stage.jpg" alt="Mike Ely side tricep pose — Muscular Development" loading="lazy" style="object-position:center center">
+        <img src="img/gallery-side-chest-stage.jpg" alt="Mike Ely side tricep — Muscular Development" loading="lazy" style="object-position:center center">
         <div class="gal-label">Side Tricep — Muscular Development</div>
       </div>
 
-      <!-- GYM — current physique -->
+      <!-- GYM -->
 
-      <div class="gal-item reveal" data-no-lb style="cursor:default">
-        <img src="img/gallery-gym-recent.jpg" alt="Mike Ely abs and thigh pose in gym" loading="lazy" style="object-position:center 38%">
+      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
+        <img src="img/gallery-gym-recent.jpg" alt="Mike Ely abs and thigh pose" loading="lazy" style="object-position:center 38%">
         <div class="gal-label">Abs &amp; Thigh</div>
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-rear-lat-spread.jpg" alt="Mike Ely rear lat spread pose" loading="lazy" style="object-position:center 15%">
+        <img src="img/gallery-rear-lat-spread.jpg" alt="Mike Ely rear lat spread" loading="lazy" style="object-position:center 15%">
         <div class="gal-label">Rear Lat Spread</div>
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-front-most-muscular-gym.jpg" alt="Mike Ely most muscular pose in gym" loading="lazy" style="object-position:center 12%">
+        <img src="img/gallery-front-most-muscular-gym.jpg" alt="Mike Ely most muscular" loading="lazy" style="object-position:center 12%">
         <div class="gal-label">Most Muscular</div>
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-gym-side-tricep.jpg" alt="Mike Ely side tricep pose in gym" loading="lazy">
+        <img src="img/gallery-gym-side-tricep.jpg" alt="Mike Ely side tricep" loading="lazy">
         <div class="gal-label">Side Tricep</div>
       </div>
 
-      <div class="gal-item reveal" data-no-lb style="cursor:default">
-        <img src="img/gallery-gym-back-squats.jpg" alt="Mike Ely squatting with custom Big Mike Ely belt" loading="lazy" style="object-position:center 28%">
-        <div class="gal-label">Squats — Old School Iron Gym</div>
+      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
+        <img src="img/gallery-gym-back-squats.jpg" alt="Mike Ely squatting with custom Big Mike Ely belt at Old School Iron" loading="lazy" style="object-position:center 28%">
+        <div class="gal-label">Squats — Old School Iron</div>
       </div>
 
       <!-- BACKSTAGE & EVENTS -->
@@ -1040,16 +1040,16 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
         <div class="gal-label">IFBB Masters — Backstage</div>
       </div>
 
-      <div class="gal-item reveal" data-no-lb style="cursor:default">
-        <img src="img/gallery-guest-posing-npc-ny.jpg" alt="Mike Ely guest posing at NPC show in New York" loading="lazy" style="object-position:center 52%">
+      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
+        <img src="img/gallery-guest-posing-npc-ny.jpg" alt="Mike Ely guest posing at NPC New York" loading="lazy" style="object-position:center 52%">
         <div class="gal-label">Guest Posing — NPC New York</div>
       </div>
 
       <!-- POSING CLINICS -->
 
-      <div class="gal-item reveal" data-no-lb style="cursor:default">
-        <img src="img/gallery-posing-clinic.jpg" alt="Mike Ely conducting posing clinic" loading="lazy" style="object-position:center 68%">
-        <div class="gal-label">Posing Clinic — Teaching the Stage</div>
+      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
+        <img src="img/gallery-posing-clinic.jpg" alt="Mike Ely posing clinic flyer" loading="lazy" style="object-position:center 68%">
+        <div class="gal-label">Posing Clinic</div>
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
@@ -1060,7 +1060,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
       <!-- CLIENT/LEGACY -->
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-gym-front-dbl-bicep.jpg" alt="Client front double bicep pose in gym" loading="lazy" style="object-position:center 15%">
+        <img src="img/gallery-gym-front-dbl-bicep.jpg" alt="Client front double bicep" loading="lazy" style="object-position:center 15%">
         <div class="gal-label">Front Double Bicep</div>
       </div>
 
@@ -1069,24 +1069,24 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
         <div class="gal-label">NPC Nationals — Pro Card, 2017</div>
       </div>
 
-      <div class="gal-item reveal" data-no-lb style="cursor:default">
+      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
         <img src="img/gallery-procard-story.jpg" alt="Where the pro card story started" loading="lazy" style="object-position:center 28%">
         <div class="gal-label">Where the Pro Card Story Started</div>
       </div>
 
-      <div class="gal-item reveal" data-no-lb style="cursor:default">
-        <img src="img/gallery-transformation.jpg" alt="Mike Ely physique evolution over the years" loading="lazy" style="object-position:center 68%">
+      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
+        <img src="img/gallery-transformation.jpg" alt="Mike Ely physique evolution" loading="lazy" style="object-position:center 68%">
         <div class="gal-label">The Evolution — Then to Now</div>
       </div>
 
-      <div class="gal-item reveal" data-no-lb style="cursor:default">
-        <img src="img/gallery-gym-prep-2014.jpg" alt="Mike Ely gym prep 16 weeks out 2014" loading="lazy" style="object-position:center 82%">
-        <div class="gal-label">Contest Prep — 16 Weeks Out, 2014</div>
+      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
+        <img src="img/gallery-gym-prep-2014.jpg" alt="Mike Ely contest prep 2014" loading="lazy" style="object-position:center 20%">
+        <div class="gal-label">Contest Prep — 2014</div>
       </div>
 
-      <div class="gal-item reveal" data-no-lb style="cursor:default">
-        <img src="img/gallery-muscular-dev-2013.jpg" alt="Mike Ely featured in Muscular Development magazine, 2013" loading="lazy" style="object-position:center 75%">
-        <div class="gal-label">Muscular Development — 2013 Feature</div>
+      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
+        <img src="img/gallery-muscular-dev-2013.jpg" alt="Mike Ely Muscular Development magazine 2013" loading="lazy" style="object-position:center 25%">
+        <div class="gal-label">Muscular Development — 2013</div>
       </div>
 
     </div>
