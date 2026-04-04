@@ -410,7 +410,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
 .circle-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .circle-photo{border-radius:14px;overflow:hidden;border:1px solid var(--borderS);position:relative;cursor:pointer;transition:all .6s var(--ease);background:linear-gradient(110deg,var(--card) 30%,rgba(224,176,48,.04) 50%,var(--card) 70%);background-size:200% 100%;animation:imgShimmer 1.8s ease-in-out infinite}
 .circle-photo:has(img.loaded){animation:none;background:var(--card)}
-.circle-photo img{width:100%;height:100%;object-fit:cover;object-position:center 25%;transition:transform .7s var(--ease),opacity .6s var(--ease),filter .7s;filter:contrast(1.05) brightness(.92)}
+.circle-photo img{width:100%;height:100%;object-fit:cover;object-position:center 25%;transition:transform .7s var(--ease),opacity .6s var(--ease),filter .7s;filter:contrast(1.08) brightness(.96) saturate(1.05)}
 img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="lazy"].loaded{opacity:1}
 .circle-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.7));pointer-events:none;opacity:.7;transition:opacity .5s}
 .circle-photo:hover::after{opacity:.2}
@@ -435,39 +435,41 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 .results-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .results-photo{border-radius:12px;overflow:hidden;position:relative;border:1px solid var(--borderS);aspect-ratio:1/1;cursor:pointer;transition:all .5s var(--ease);background:linear-gradient(110deg,var(--card) 30%,rgba(224,176,48,.04) 50%,var(--card) 70%);background-size:200% 100%;animation:imgShimmer 1.8s ease-in-out infinite}
 .results-photo:has(img.loaded){animation:none;background:var(--card)}
-.results-photo img{width:100%;height:100%;object-fit:cover;object-position:center 15%;transition:transform .7s var(--ease),filter .7s;filter:contrast(1.05) brightness(.9)}
-.results-photo:hover img{transform:scale(1.06);filter:contrast(1.08) brightness(1.02) saturate(1.05)}
+.results-photo img{width:100%;height:100%;object-fit:cover;object-position:center 15%;transition:transform .7s var(--ease),filter .7s;filter:contrast(1.08) brightness(.95) saturate(1.05)}
+.results-photo:hover img{transform:scale(1.06);filter:contrast(1.1) brightness(1.04) saturate(1.1)}
 .results-photo::before{content:'';position:absolute;inset:0;z-index:2;background:linear-gradient(135deg,transparent 40%,rgba(255,240,180,.05) 50%,transparent 60%);opacity:0;transition:opacity .5s var(--ease);pointer-events:none}
 .results-photo:hover::before{opacity:1}
 .results-photo::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--goldGrad);opacity:0;transition:opacity .4s var(--ease);box-shadow:0 0 16px var(--accGlow),0 -4px 16px rgba(224,176,48,.08)}
 .results-photo:hover::after{opacity:1}
 .results-photo:hover{box-shadow:0 12px 40px rgba(0,0,0,.5),0 0 40px rgba(224,176,48,.06);border-color:var(--border);transform:translateY(-4px)}
-.results-photo-label{position:absolute;bottom:0;left:0;right:0;padding:12px 14px;background:linear-gradient(transparent,rgba(0,0,0,.9));font-family:var(--mono);font-size:9px;letter-spacing:.08em;color:var(--ow);opacity:.7;transition:all .3s;text-transform:uppercase;z-index:1}
+.results-photo-label{position:absolute;bottom:0;left:0;right:0;padding:14px 16px;background:linear-gradient(transparent,rgba(0,0,0,.92));font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--ow);opacity:.85;transition:all .3s;text-transform:uppercase;z-index:1}
 .results-photo:hover .results-photo-label{opacity:1}
 .results-photo-wide{grid-column:1/-1;aspect-ratio:21/9;max-height:300px}
 .results-photo-wide img{object-position:center center}
 /* SERVICES */
-.svc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
-.svc{background:linear-gradient(160deg,rgba(12,11,8,.95),rgba(20,18,10,.98));border:1px solid var(--borderS);border-radius:14px;padding:36px 28px;position:relative;transition:all .5s var(--ease),transform .15s ease-out;overflow:hidden;box-shadow:0 2px 20px rgba(0,0,0,.3),inset 0 1px 0 rgba(224,176,48,.06);cursor:pointer;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transform-style:preserve-3d;will-change:transform}
-.svc:hover{background:linear-gradient(160deg,rgba(16,14,10,.95),rgba(28,24,12,.98));border-color:var(--borderH);box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 50px var(--accS),0 0 100px rgba(224,176,48,.06),inset 0 1px 0 rgba(224,176,48,.12)}
-.svc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--goldGrad);opacity:0;transition:opacity .4s;box-shadow:0 0 20px var(--accS),0 0 40px rgba(224,176,48,.1)}.svc:hover::before{opacity:1}
+.svc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px}
+.svc{background:linear-gradient(160deg,rgba(12,11,8,.97),rgba(22,19,10,.99));border:1px solid var(--borderS);border-radius:16px;padding:42px 32px;position:relative;transition:all .5s var(--ease),transform .15s ease-out;overflow:hidden;box-shadow:0 4px 30px rgba(0,0,0,.4),0 1px 0 rgba(224,176,48,.04) inset,inset 0 -1px 0 rgba(0,0,0,.3);cursor:pointer;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);transform-style:preserve-3d;will-change:transform}
+.svc:hover{background:linear-gradient(160deg,rgba(18,16,10,.97),rgba(30,26,14,.99));border-color:var(--borderH);box-shadow:0 24px 80px rgba(0,0,0,.7),0 0 60px var(--accS),0 0 120px rgba(224,176,48,.08),inset 0 1px 0 rgba(224,176,48,.15)}
+.svc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--goldGrad);opacity:.25;transition:opacity .4s;box-shadow:0 0 20px var(--accS),0 0 40px rgba(224,176,48,.1)}.svc:hover::before{opacity:1}
 .svc::after{content:'';position:absolute;top:-100%;left:-50%;width:200%;height:100%;background:linear-gradient(180deg,transparent 40%,rgba(224,176,48,.04) 50%,transparent 60%);transform:rotate(-15deg);transition:top 1s var(--ease);pointer-events:none}.svc:hover::after{top:100%}
 /* SVC GLOW FOLLOW — radial glow follows cursor */
-.svc-glow{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .5s;background:radial-gradient(circle 200px at var(--mx,50%) var(--my,50%),rgba(224,176,48,.06),transparent 60%)}
+.svc-glow{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .5s;background:radial-gradient(circle 250px at var(--mx,50%) var(--my,50%),rgba(224,176,48,.08),transparent 60%)}
 .svc:hover .svc-glow{opacity:1}
-.svc-num{font-family:var(--mono);font-size:10px;color:var(--acc);letter-spacing:.1em;margin-bottom:16px;opacity:.3;transition:opacity .3s}.svc:hover .svc-num{opacity:.7}
-.svc-icon{width:52px;height:52px;border-radius:14px;background:linear-gradient(145deg,rgba(12,11,8,1),var(--bg2));border:1px solid var(--borderS);display:flex;align-items:center;justify-content:center;margin-bottom:20px;color:var(--acc);transition:all .4s var(--ease);position:relative}
-.svc-icon::after{content:'';position:absolute;inset:-1px;border-radius:14px;background:conic-gradient(from 0deg,transparent,var(--acc),transparent) border-box;-webkit-mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .4s}
-.svc:hover .svc-icon::after{opacity:.4}
+.svc-num{font-family:var(--mono);font-size:11px;color:var(--acc);letter-spacing:.14em;margin-bottom:18px;opacity:.4;transition:opacity .3s}.svc:hover .svc-num{opacity:.8}
+.svc-icon{width:60px;height:60px;border-radius:16px;background:linear-gradient(145deg,rgba(14,12,8,1),rgba(26,22,12,.95));border:1px solid rgba(224,176,48,.12);display:flex;align-items:center;justify-content:center;margin-bottom:24px;color:var(--acc);transition:all .4s var(--ease);position:relative;box-shadow:0 2px 12px rgba(0,0,0,.3),inset 0 1px 0 rgba(224,176,48,.05)}
+.svc-icon::after{content:'';position:absolute;inset:-1px;border-radius:16px;background:conic-gradient(from 0deg,transparent,var(--acc),transparent) border-box;-webkit-mask:linear-gradient(#fff 0 0) padding-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .4s}
+.svc:hover .svc-icon::after{opacity:.5}
 .svc-icon svg{transition:stroke .3s var(--ease),transform .3s var(--ease),filter .3s}
-.svc:hover .svc-icon{border-color:var(--border);box-shadow:0 0 24px var(--accS),0 0 48px rgba(224,176,48,.06);transform:scale(1.08) rotate(-3deg)}
-.svc:hover .svc-icon svg{stroke:var(--accVib);filter:drop-shadow(0 0 8px rgba(224,176,48,.3))}
-.svc-name{font-family:var(--display);font-size:20px;font-weight:700;color:var(--wh);margin-bottom:10px;letter-spacing:.02em;transition:text-shadow .3s}
-.svc:hover .svc-name{text-shadow:0 0 30px rgba(224,176,48,.1)}
-.svc-desc{font-size:15px;color:var(--ow);line-height:1.8;margin-bottom:24px}
-.svc-book{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--acc);display:inline-flex;align-items:center;gap:8px;transition:all .3s}.svc-book:hover{color:var(--accVib);gap:12px}
-.svc-featured{border-color:var(--border);background:linear-gradient(160deg,rgba(16,14,8,.95),rgba(24,20,10,.98))}
-.svc-badge{position:absolute;top:16px;right:16px;font-family:var(--mono);font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--bg);background:var(--goldGrad);background-size:300% 100%;padding:5px 12px;border-radius:4px;font-weight:600;box-shadow:0 0 16px rgba(224,176,48,.3),0 0 40px rgba(224,176,48,.1);animation:shimmer 7s linear infinite}
+.svc:hover .svc-icon{border-color:rgba(224,176,48,.25);box-shadow:0 0 30px var(--accS),0 0 60px rgba(224,176,48,.08),0 8px 24px rgba(0,0,0,.3);transform:scale(1.1) rotate(-3deg)}
+.svc:hover .svc-icon svg{stroke:var(--accVib);filter:drop-shadow(0 0 10px rgba(224,176,48,.4))}
+.svc-name{font-family:var(--display);font-size:22px;font-weight:700;color:var(--wh);margin-bottom:12px;letter-spacing:.02em;transition:text-shadow .3s}
+.svc:hover .svc-name{text-shadow:0 0 40px rgba(224,176,48,.15)}
+.svc-desc{font-size:15px;color:var(--ow);line-height:1.85;margin-bottom:28px;opacity:.85}
+.svc:hover .svc-desc{opacity:1}
+.svc-book{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc);display:inline-flex;align-items:center;gap:8px;transition:all .3s;opacity:.7}.svc-book:hover{color:var(--accVib);gap:14px;opacity:1}
+.svc-featured{border-color:rgba(224,176,48,.18);background:linear-gradient(160deg,rgba(18,16,8,.97),rgba(28,24,12,.99));box-shadow:0 4px 30px rgba(0,0,0,.4),0 0 40px rgba(224,176,48,.04),inset 0 1px 0 rgba(224,176,48,.1)}
+.svc-featured::before{opacity:.5}
+.svc-badge{position:absolute;top:18px;right:18px;font-family:var(--mono);font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:var(--bg);background:var(--goldGrad);background-size:300% 100%;padding:6px 14px;border-radius:5px;font-weight:600;box-shadow:0 0 20px rgba(224,176,48,.35),0 0 50px rgba(224,176,48,.12);animation:shimmer 7s linear infinite}
 /* GALLERY */
 .gal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 .gal-item{border-radius:12px;overflow:hidden;position:relative;border:1px solid var(--borderS);aspect-ratio:3/4;cursor:pointer;transition:all .5s var(--ease);background:linear-gradient(110deg,var(--card) 30%,rgba(224,176,48,.04) 50%,var(--card) 70%);background-size:200% 100%;animation:imgShimmer 1.8s ease-in-out infinite}
@@ -476,16 +478,16 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 .gal-item.featured{grid-column:span 2;aspect-ratio:1/1;box-shadow:0 0 40px rgba(224,176,48,.04),0 0 80px rgba(224,176,48,.02)}
 .gal-item.featured::after{content:'';position:absolute;inset:-1px;border-radius:12px;background:linear-gradient(135deg,rgba(224,176,48,.15),transparent 40%,transparent 60%,rgba(224,176,48,.15));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;padding:1px;opacity:0;transition:opacity .5s;pointer-events:none}
 .gal-item.featured:hover::after{opacity:1}
-.gal-item.featured img{filter:contrast(1.08) brightness(.9) saturate(1.05)}
-.gal-item.featured:hover img{filter:contrast(1.1) brightness(1.02) saturate(1.1)}
-.gal-item img{width:100%;height:100%;object-fit:cover;object-position:center 20%;transition:transform .7s var(--ease),filter .7s var(--ease);filter:contrast(1.05) brightness(.88)}
-.gal-item:hover img{transform:scale(1.06);filter:contrast(1.08) brightness(1.02)}
+.gal-item.featured img{filter:contrast(1.1) brightness(.96) saturate(1.08)}
+.gal-item.featured:hover img{filter:contrast(1.14) brightness(1.04) saturate(1.12)}
+.gal-item img{width:100%;height:100%;object-fit:cover;object-position:center 20%;transition:transform .7s var(--ease),filter .7s var(--ease);filter:contrast(1.08) brightness(.94) saturate(1.05)}
+.gal-item:hover img{transform:scale(1.06);filter:contrast(1.12) brightness(1.04) saturate(1.1)}
 .gal-item:hover{box-shadow:0 16px 50px rgba(0,0,0,.5),0 0 50px rgba(224,176,48,.08);border-color:var(--border);transform:translateY(-4px)}
 /* Inner light sweep on gallery hover */
 .gal-item::before{content:'';position:absolute;inset:0;z-index:2;background:linear-gradient(135deg,transparent 40%,rgba(255,240,180,.06) 50%,transparent 60%);opacity:0;transition:opacity .5s var(--ease);pointer-events:none}
 .gal-item:hover::before{opacity:1}
-.gal-label{position:absolute;bottom:0;left:0;right:0;padding:14px 16px;background:linear-gradient(transparent,rgba(0,0,0,.92));font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--ow);opacity:0;transition:all .35s;text-transform:uppercase;transform:translateY(4px)}
-.gal-item:hover .gal-label{opacity:1;transform:translateY(0)}
+.gal-label{position:absolute;bottom:0;left:0;right:0;padding:14px 16px;background:linear-gradient(transparent,rgba(0,0,0,.92));font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--ow);opacity:.8;transition:all .35s;text-transform:uppercase;transform:translateY(0)}
+.gal-item:hover .gal-label{opacity:1}
 /* LIGHTBOX */
 .lightbox{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.96);backdrop-filter:blur(30px) saturate(.8);-webkit-backdrop-filter:blur(30px) saturate(.8);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .4s var(--ease);cursor:pointer;padding:20px}
 .lightbox.open{opacity:1;pointer-events:auto}
@@ -886,6 +888,11 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
       </div>
 
       <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
+        <img src="img/results-procard-male.jpg" alt="Athlete holding IFBB Pro Card with Mike Ely backstage" loading="lazy" style="object-position:center 15%">
+        <div class="results-photo-label">Pro Card</div>
+      </div>
+
+      <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
         <img src="img/results-procard-female-2.jpg" alt="Athlete raising IFBB Pro Card outdoors" loading="lazy" style="object-position:center 10%">
         <div class="results-photo-label">Pro Card</div>
       </div>
@@ -930,6 +937,11 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
       <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
         <img src="img/event-iwa-best-coach.jpg" alt="Mike Ely receiving Best Team award at NPC Natural Northern USA Championships" loading="lazy" style="object-position:center center">
         <div class="results-photo-label">Best Team — NPC Natural Northern USA</div>
+      </div>
+
+      <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
+        <img src="img/event-lieberman-team-trophy.jpg" alt="Mike Ely and Dave Lieberman with team trophies" loading="lazy" style="object-position:center center">
+        <div class="results-photo-label">Team Trophy — Lieberman Classic</div>
       </div>
 
     </div>
@@ -1028,19 +1040,25 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
       </div>
 
       <div class="gal-item featured reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-champion-2024.jpg" alt="Mike Ely most muscular on stage with trophies, 2024 IFBB Pro Masters World Championship" loading="lazy" style="object-position:center center">
+        <img src="img/gallery-most-muscular-stage.jpg" alt="Mike Ely most muscular on stage, 2024 IFBB Pro Masters World Championship" loading="lazy" style="object-position:center 20%">
         <div class="gal-label">IFBB Pro Masters World Champion — 2024</div>
+      </div>
+
+      <!-- GYM HIGHLIGHTS — right after featured -->
+      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
+        <img src="img/gallery-rear-lat-spread.jpg" alt="Mike Ely rear lat spread" loading="lazy" style="object-position:center 15%">
+        <div class="gal-label">Rear Lat Spread</div>
+      </div>
+
+      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
+        <img src="img/gallery-front-most-muscular-gym.jpg" alt="Mike Ely most muscular" loading="lazy" style="object-position:center 12%">
+        <div class="gal-label">Most Muscular</div>
       </div>
 
       <!-- STAGE — newest to oldest -->
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-most-muscular-stage.jpg" alt="Mike Ely most muscular pose on stage" loading="lazy" style="object-position:center 15%">
-        <div class="gal-label">Most Muscular — Stage</div>
-      </div>
-
-      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-olympia-romania-back.jpg" alt="Mike Ely back double bicep at Masters Olympia Romania 2023" loading="lazy" style="object-position:center 15%">
+        <img src="img/gallery-olympia-romania-back.jpg" alt="Mike Ely back double bicep at Masters Olympia Romania 2023" loading="lazy" style="object-position:center 35%">
         <div class="gal-label">Masters Olympia — Romania, 2023</div>
       </div>
 
@@ -1075,16 +1093,6 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
         <img src="img/gallery-gym-recent.jpg" alt="Mike Ely abs and thigh pose" loading="lazy" style="object-position:center 20%">
         <div class="gal-label">Abs &amp; Thigh</div>
-      </div>
-
-      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-rear-lat-spread.jpg" alt="Mike Ely rear lat spread" loading="lazy" style="object-position:center 15%">
-        <div class="gal-label">Rear Lat Spread</div>
-      </div>
-
-      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-front-most-muscular-gym.jpg" alt="Mike Ely most muscular" loading="lazy" style="object-position:center 12%">
-        <div class="gal-label">Most Muscular</div>
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
@@ -1302,13 +1310,13 @@ var revealObs = new IntersectionObserver(function (entries) {
   entries.forEach(function (e) {
     if (e.isIntersecting) { e.target.classList.add('vis'); revealObs.unobserve(e.target); }
   });
-}, { threshold: .15 });
+}, { threshold: 0, rootMargin: '0px 0px 80px 0px' });
 
 document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.s-head').forEach(function (el, i) {
   var p = el.parentElement;
   var siblings = p ? Array.from(p.querySelectorAll(':scope > .reveal,:scope > .reveal-left,:scope > .reveal-right,:scope > .reveal-scale')) : [];
   var idx = siblings.indexOf(el);
-  if (idx > 0) el.style.transitionDelay = (idx * 130) + 'ms';
+  if (idx > 0) el.style.transitionDelay = (idx * 80) + 'ms';
   revealObs.observe(el);
 });
 
