@@ -411,6 +411,28 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
   box-shadow:0 0 60px rgba(224,176,48,.25),0 0 100px rgba(224,176,48,.1)}
 .vid-facade:hover .vid-play svg{fill:#fff;filter:drop-shadow(0 0 12px rgba(255,255,255,.4))}
 .vid-caption{text-align:center;margin-top:16px;font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:var(--dm);text-transform:uppercase;line-height:1.7}
+/* RARITY FUNNEL — visual statistical elimination */
+.rarity-funnel{max-width:600px;margin:32px auto 8px;display:flex;flex-direction:column;gap:6px;position:relative}
+.rarity-tier{display:flex;align-items:center;gap:14px;position:relative}
+.rarity-bar{height:28px;border-radius:4px;position:relative;overflow:hidden;transition:all .6s var(--ease);min-width:24px;
+  background:linear-gradient(90deg,rgba(224,176,48,.08),rgba(224,176,48,.03));border:1px solid rgba(224,176,48,.12)}
+.rarity-bar::after{content:'';position:absolute;top:0;left:0;height:100%;border-radius:4px;
+  background:linear-gradient(90deg,rgba(224,176,48,.25),rgba(224,176,48,.12));transition:width 1.2s var(--ease);width:0}
+.rarity-funnel.vis .rarity-bar::after{width:100%}
+.rarity-bar-fill{position:absolute;top:0;left:0;height:100%;border-radius:4px;
+  background:linear-gradient(90deg,rgba(224,176,48,.2),rgba(224,176,48,.06))}
+.rarity-num{font-family:var(--mono);font-size:clamp(10px,1.2vw,12px);letter-spacing:.06em;color:var(--acc);white-space:nowrap;min-width:68px;text-align:right;
+  opacity:.8;transition:opacity .4s}
+.rarity-label{font-family:var(--mono);font-size:clamp(8px,1vw,10px);letter-spacing:.08em;text-transform:uppercase;color:var(--mu);white-space:nowrap;
+  transition:color .4s}
+.rarity-tier:last-child .rarity-num{font-weight:700;color:var(--wh);
+  background:var(--goldGrad);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 7s linear infinite}
+.rarity-tier:last-child .rarity-label{color:var(--ow);font-weight:600}
+.rarity-tier:last-child .rarity-bar{border-color:var(--acc);
+  box-shadow:0 0 20px rgba(224,176,48,.15),0 0 40px rgba(224,176,48,.06)}
+.rarity-tier:last-child .rarity-bar::after{background:var(--goldGrad);opacity:.6}
+.rarity-connector{position:absolute;left:33px;top:0;bottom:0;width:1px;
+  background:linear-gradient(180deg,rgba(224,176,48,.2),rgba(224,176,48,.06));z-index:-1;pointer-events:none}
 /* Credential headline — gold gradient like hero */
 .cred-headline{font-family:var(--display);font-size:clamp(30px,4.5vw,44px);font-weight:900;line-height:1;letter-spacing:.05em;
   background:linear-gradient(100deg,#8B6820 0%,#BF9930 24%,#D4B048 38%,#E8CC68 46%,#F5E8A8 50%,#E8CC68 56%,#D4B048 64%,#BF9930 76%,#8B6820 100%);
@@ -803,7 +825,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
           <span class="about-stat-num">2&times;</span>
           <span class="about-stat-title">World Champion</span>
         </div>
-        <p class="about-stat-desc">IFBB Pro Masters World Championship &mdash; Pittsburgh, PA, 2024 &amp; 2025. Back-to-back. Over 250,000 athletes hold NPC membership in the United States. Roughly 30,000 step on stage each year. Fewer than 300 &mdash; the top 1% &mdash; ever earn an IFBB Pro Card. Of those professionals, only a handful qualify for the World Championship. Winning it once is the pinnacle. Winning it twice, consecutively, places Mike in a class that can be counted on one hand.</p>
+        <p class="about-stat-desc">IFBB Pro Masters World Championship. Pittsburgh, PA. First place, 2024. First place, 2025. Consecutive titles. There are approximately 250,000 registered NPC athletes in the United States. Each year, roughly 30,000 of them compete. The NPC awards around 800 Pro Cards annually across all divisions &mdash; but in men&rsquo;s bodybuilding specifically, that number drops to fewer than 50. Of those professionals, a smaller subset qualify for the World Championship. One athlete per weight class wins it. Mike won his class two years running.</p>
       </div>
 
       <div class="gw" style="max-width:120px;margin:0 auto"></div>
@@ -813,7 +835,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
           <span class="about-stat-num">2&times;</span>
           <span class="about-stat-title">Olympian</span>
         </div>
-        <p class="about-stat-desc">Masters Olympia, Romania &mdash; 2023 &amp; 2024. Of the roughly 1,000 active IFBB Professionals worldwide, only the highest-ranked are invited to the Olympia stage. No application. No entry fee. Invitation only &mdash; extended to those the federation deems the absolute best in the world. The Olympia is to bodybuilding what the Super Bowl is to football: the single most prestigious event in the sport&rsquo;s history. Mike has stood on that stage twice.</p>
+        <p class="about-stat-desc">Masters Olympia. Romania, 2023 &amp; 2024. The Olympia is invitation-only. The IFBB Pro League operates across 75 countries with over 500 sanctioned competitions annually. From that global field, only a select number of athletes per division receive an invitation. No application process exists. The federation extends it directly to those it ranks highest in the world. Mike received that invitation twice.</p>
       </div>
 
       <div class="gw" style="max-width:120px;margin:0 auto"></div>
@@ -823,7 +845,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
           <span class="about-stat-num">&#9670;</span>
           <span class="about-stat-title">Pro Card Under Hany Rambod</span>
         </div>
-        <p class="about-stat-desc">Earned his IFBB Pro Card under Hany Rambod &mdash; known worldwide as &ldquo;The Pro Creator.&rdquo; Rambod is the most decorated coach in the history of professional bodybuilding: 25 Olympia titles across 6 divisions. The architect behind Phil Heath (7x Mr. Olympia), Chris Bumstead (5x Classic Olympia), Jay Cutler, and Hadi Choopan. When Mike earned his Pro Card, Hany was the one standing next to him.</p>
+        <p class="about-stat-desc">IFBB Pro Card earned at the NPC Nationals under the preparation of Hany Rambod. Rambod &mdash; known as &ldquo;The Pro Creator&rdquo; &mdash; holds the record for the most Olympia titles produced by a single coach in the sport&rsquo;s history: 25 titles across 6 divisions. His athletes include Phil Heath (7&times; Mr. Olympia), Chris Bumstead (5&times; Classic Physique Olympia), Jay Cutler (4&times; Mr. Olympia), and Hadi Choopan (1&times; Mr. Olympia). Mike earned his professional status under that coaching lineage.</p>
       </div>
 
       <!-- THE MOMENT — Hany Rambod Pro Card Interview -->
@@ -848,7 +870,17 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
           <span class="about-stat-num">&#9670;</span>
           <span class="about-stat-title">NPC National Judge</span>
         </div>
-        <p class="about-stat-desc">Active judge with the National Physique Committee &mdash; the governing body of amateur competitive bodybuilding in the United States. Mike evaluates competitors at the national level, bringing the same eye for detail to the judging table that built his own career on stage. He sees both sides: what it takes to win, and what the judges are looking for.</p>
+        <p class="about-stat-desc">Active judge with the National Physique Committee, the sole amateur organization recognized by the IFBB Professional League. Mike evaluates athletes at the national level &mdash; the same stage where pro cards are awarded. He has stood on both sides of that table.</p>
+      </div>
+
+      <div class="gw" style="max-width:120px;margin:0 auto"></div>
+
+      <div class="about-cred-row">
+        <div class="about-stat">
+          <span class="about-stat-num">&#9670;</span>
+          <span class="about-stat-title">Academic Foundation</span>
+        </div>
+        <p class="about-stat-desc">Bachelor of Science in Nutritional Science and Master of Science in Exercise Science, both from Bowling Green State University. Three decades of applied work built on formal education in the two disciplines that underpin competitive bodybuilding: nutrition and training science.</p>
       </div>
     </div>
 
