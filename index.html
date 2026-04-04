@@ -468,16 +468,16 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 .svc-featured{border-color:var(--border);background:linear-gradient(160deg,rgba(16,14,8,.95),rgba(24,20,10,.98))}
 .svc-badge{position:absolute;top:16px;right:16px;font-family:var(--mono);font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--bg);background:var(--goldGrad);background-size:300% 100%;padding:5px 12px;border-radius:4px;font-weight:600;box-shadow:0 0 16px rgba(224,176,48,.3),0 0 40px rgba(224,176,48,.1);animation:shimmer 7s linear infinite}
 /* GALLERY */
-.gal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.gal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 .gal-item{border-radius:12px;overflow:hidden;position:relative;border:1px solid var(--borderS);aspect-ratio:3/4;cursor:pointer;transition:all .5s var(--ease);background:linear-gradient(110deg,var(--card) 30%,rgba(224,176,48,.04) 50%,var(--card) 70%);background-size:200% 100%;animation:imgShimmer 1.8s ease-in-out infinite}
 .gal-item:has(img.loaded){animation:none;background:var(--card)}
 .gal-item.gal-landscape{aspect-ratio:4/3}
-.gal-item.featured{grid-column:span 2;grid-row:span 2;aspect-ratio:auto;box-shadow:0 0 40px rgba(224,176,48,.04),0 0 80px rgba(224,176,48,.02)}
+.gal-item.featured{grid-column:span 2;aspect-ratio:1/1;box-shadow:0 0 40px rgba(224,176,48,.04),0 0 80px rgba(224,176,48,.02)}
 .gal-item.featured::after{content:'';position:absolute;inset:-1px;border-radius:12px;background:linear-gradient(135deg,rgba(224,176,48,.15),transparent 40%,transparent 60%,rgba(224,176,48,.15));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;padding:1px;opacity:0;transition:opacity .5s;pointer-events:none}
 .gal-item.featured:hover::after{opacity:1}
 .gal-item.featured img{filter:contrast(1.08) brightness(.9) saturate(1.05)}
 .gal-item.featured:hover img{filter:contrast(1.1) brightness(1.02) saturate(1.1)}
-.gal-item img{width:100%;height:100%;object-fit:cover;object-position:center 25%;transition:transform .7s var(--ease),filter .7s var(--ease);filter:contrast(1.05) brightness(.88)}
+.gal-item img{width:100%;height:100%;object-fit:cover;object-position:center 20%;transition:transform .7s var(--ease),filter .7s var(--ease);filter:contrast(1.05) brightness(.88)}
 .gal-item:hover img{transform:scale(1.06);filter:contrast(1.08) brightness(1.02)}
 .gal-item:hover{box-shadow:0 16px 50px rgba(0,0,0,.5),0 0 50px rgba(224,176,48,.08);border-color:var(--border);transform:translateY(-4px)}
 /* Inner light sweep on gallery hover */
@@ -566,13 +566,13 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
   .nav-links{display:none}.nav-burger{display:flex}
   .section{padding:64px 20px}.s-head{margin-bottom:32px}
   .hero{padding:0;padding-top:env(safe-area-inset-top,0px);min-height:100svh;min-height:-webkit-fill-available;align-items:flex-end;justify-content:center}
-  .hero-bg{background-position:center 10%;inset:-3%}
+  .hero-bg{background-position:center 28%;inset:-3%}
   .hero-ov{background:
     linear-gradient(90deg,rgba(2,2,2,.7) 0%,rgba(2,2,2,.2) 15%,transparent 30%,transparent 70%,rgba(2,2,2,.2) 85%,rgba(2,2,2,.7) 100%),
     linear-gradient(180deg,
     rgba(2,2,2,.6) 0%,rgba(2,2,2,.15) 10%,transparent 22%,transparent 42%,
     rgba(2,2,2,.2) 52%,rgba(2,2,2,.65) 62%,rgba(2,2,2,.92) 74%,rgba(2,2,2,.99) 84%,rgba(2,2,2,1) 90%)}
-  .hero-content{max-width:100%;width:100%;padding:0 16px calc(env(safe-area-inset-bottom,0px) + 24px);text-align:center}
+  .hero-content{max-width:100%;width:100%;padding:0 16px calc(env(safe-area-inset-bottom,0px) + 56px);text-align:center}
   .hero h1{font-size:clamp(52px,16vw,88px);white-space:normal;line-height:.84;
     filter:drop-shadow(0 2px 16px rgba(224,176,48,.3)) drop-shadow(0 4px 30px rgba(224,176,48,.12))}
   .hero h1::after{left:8%;right:8%}
@@ -593,7 +593,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
   .num-grid{grid-template-columns:repeat(2,1fr);gap:10px}
   .results-grid{grid-template-columns:repeat(2,1fr);gap:8px}
   .gal-grid{grid-template-columns:repeat(2,1fr);gap:8px}
-  .gal-item.featured{grid-column:span 2;grid-row:span 1}
+  .gal-item.featured{grid-column:span 2;aspect-ratio:1/1}
   .gal-label{opacity:1;transform:none}
   .cta{padding:80px 20px}.cta-inner{padding:48px 24px;border-radius:16px}
   .cta-inner::after{display:none}
@@ -623,7 +623,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 }
 @media(min-width:1400px){
   .section{padding:120px 40px}.inner{max-width:1300px}
-  .gal-grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+  .gal-grid{grid-template-columns:repeat(4,1fr)}
 }
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms !important;transition-duration:.01ms !important}.reveal,.reveal-left,.reveal-right,.reveal-scale{opacity:1;transform:none;filter:none}.brand-reveal{display:none}.hero-orb{display:none}.hero-leak{display:none}.hero-flare{display:none}.atmos-mesh{display:none}.br-swords{display:none}.br-scan{display:none}.cta-inner::after{display:none}.hero h1,.hero-sub,.hero-ctas{opacity:1;animation:none}}
 </style>
@@ -728,7 +728,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 <!-- HERO -->
 <main id="main">
 <section class="hero">
-  <div class="hero-bg" style="background:url(img/hero-stage-2025.jpg) center 15%/cover no-repeat;will-change:transform" role="img" aria-label="Big Mike Ely on stage — 2x IFBB Pro Masters World Champion"></div>
+  <div class="hero-bg" role="img" aria-label="Big Mike Ely on stage — 2x IFBB Pro Masters World Champion"></div>
   <div class="hero-ov"></div>
   <div class="hero-leak" aria-hidden="true"></div>
   <div class="hero-atmos" aria-hidden="true">
@@ -1016,15 +1016,15 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
     <h2 class="s-head reveal">Built Over a Lifetime</h2>
     <div class="gal-grid" id="galGrid">
 
-      <!-- FEATURED — 2-column span, most recent titles -->
+      <!-- FEATURED — 2-column span, most recent titles (newest first) -->
       <div class="gal-item featured reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-champion-2024.jpg" alt="Mike Ely most muscular on stage with trophies, 2024 IFBB Pro Masters World Championship" loading="lazy" style="object-position:center 60%">
-        <div class="gal-label">IFBB Pro Masters World Champion — 2024</div>
+        <img src="img/gallery-masters-world-champ.jpg" alt="Mike Ely 1st place IFBB Pro Masters World Championship 2025 with medal and trophy" loading="lazy" style="object-position:center 15%">
+        <div class="gal-label">IFBB Pro Masters World Champion — 2025</div>
       </div>
 
       <div class="gal-item featured reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-masters-world-champ.jpg" alt="Mike Ely 1st place IFBB Pro Masters World Championship 2025 with medal and trophy" loading="lazy">
-        <div class="gal-label">IFBB Pro Masters World Champion — 2025</div>
+        <img src="img/gallery-champion-2024.jpg" alt="Mike Ely most muscular on stage with trophies, 2024 IFBB Pro Masters World Championship" loading="lazy" style="object-position:center center">
+        <div class="gal-label">IFBB Pro Masters World Champion — 2024</div>
       </div>
 
       <!-- STAGE — newest to oldest -->
@@ -1044,35 +1044,35 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
         <div class="gal-label">Chicago Pro, 2015</div>
       </div>
 
-      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-wings-stage.jpg" alt="Mike Ely back double bicep under stage lights — Wings of Strength" loading="lazy" style="object-position:center 20%">
+      <div class="gal-item gal-landscape reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
+        <img src="img/gallery-wings-stage.jpg" alt="Mike Ely back double bicep under stage lights — Wings of Strength" loading="lazy" style="object-position:center center">
         <div class="gal-label">Wings of Strength</div>
       </div>
 
-      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-stage-2014.jpg" alt="Mike Ely on stage 2014" loading="lazy" style="object-position:center 15%">
+      <div class="gal-item gal-landscape reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
+        <img src="img/gallery-stage-2014.jpg" alt="Mike Ely on stage 2014" loading="lazy" style="object-position:center center">
         <div class="gal-label">On Stage — 2014</div>
       </div>
 
-      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-ferrigno-prep.jpg" alt="Mike Ely preparing for Ferrigno Legacy competition" loading="lazy" style="object-position:center 20%">
+      <div class="gal-item gal-landscape reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
+        <img src="img/gallery-ferrigno-prep.jpg" alt="Mike Ely preparing for Ferrigno Legacy competition" loading="lazy" style="object-position:center center">
         <div class="gal-label">Ferrigno Legacy</div>
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-back-dbl-bicep.jpg" alt="Mike Ely back double bicep — Muscular Development" loading="lazy" style="object-position:center center">
+        <img src="img/gallery-back-dbl-bicep.jpg" alt="Mike Ely back double bicep — Muscular Development" loading="lazy" style="object-position:center 20%">
         <div class="gal-label">Back Double Bicep — Muscular Development</div>
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-side-chest-stage.jpg" alt="Mike Ely side tricep — Muscular Development" loading="lazy" style="object-position:center center">
+        <img src="img/gallery-side-chest-stage.jpg" alt="Mike Ely side tricep — Muscular Development" loading="lazy" style="object-position:center 20%">
         <div class="gal-label">Side Tricep — Muscular Development</div>
       </div>
 
       <!-- GYM -->
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-gym-recent.jpg" alt="Mike Ely abs and thigh pose" loading="lazy" style="object-position:center 38%">
+        <img src="img/gallery-gym-recent.jpg" alt="Mike Ely abs and thigh pose" loading="lazy" style="object-position:center 20%">
         <div class="gal-label">Abs &amp; Thigh</div>
       </div>
 
@@ -1137,22 +1137,22 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
         <div class="gal-label">NPC Nationals — Pro Card, 2017</div>
       </div>
 
-      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
+      <div class="gal-item gal-landscape reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
         <img src="img/gallery-procard-story.jpg" alt="Where the pro card story started" loading="lazy" style="object-position:center center">
         <div class="gal-label">Where the Pro Card Story Started</div>
       </div>
 
-      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
+      <div class="gal-item gal-landscape reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
         <img src="img/gallery-transformation.jpg" alt="Mike Ely physique evolution" loading="lazy" style="object-position:center center">
         <div class="gal-label">The Evolution — Then to Now</div>
       </div>
 
-      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
+      <div class="gal-item gal-landscape reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
         <img src="img/gallery-gym-prep-2014.jpg" alt="Mike Ely contest prep 2014" loading="lazy" style="object-position:center center">
         <div class="gal-label">Contest Prep — 2014</div>
       </div>
 
-      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
+      <div class="gal-item gal-landscape reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
         <img src="img/gallery-muscular-dev-2013.jpg" alt="Mike Ely Muscular Development magazine 2013" loading="lazy" style="object-position:center center">
         <div class="gal-label">Muscular Development — 2013</div>
       </div>
