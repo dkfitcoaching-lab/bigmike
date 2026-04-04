@@ -411,28 +411,40 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
   box-shadow:0 0 60px rgba(224,176,48,.25),0 0 100px rgba(224,176,48,.1)}
 .vid-facade:hover .vid-play svg{fill:#fff;filter:drop-shadow(0 0 12px rgba(255,255,255,.4))}
 .vid-caption{text-align:center;margin-top:16px;font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:var(--dm);text-transform:uppercase;line-height:1.7}
-/* RARITY FUNNEL — visual statistical elimination */
-.rarity-funnel{max-width:600px;margin:32px auto 8px;display:flex;flex-direction:column;gap:6px;position:relative}
-.rarity-tier{display:flex;align-items:center;gap:14px;position:relative}
-.rarity-bar{height:28px;border-radius:4px;position:relative;overflow:hidden;transition:all .6s var(--ease);min-width:24px;
-  background:linear-gradient(90deg,rgba(224,176,48,.08),rgba(224,176,48,.03));border:1px solid rgba(224,176,48,.12)}
-.rarity-bar::after{content:'';position:absolute;top:0;left:0;height:100%;border-radius:4px;
-  background:linear-gradient(90deg,rgba(224,176,48,.25),rgba(224,176,48,.12));transition:width 1.2s var(--ease);width:0}
-.rarity-funnel.vis .rarity-bar::after{width:100%}
-.rarity-bar-fill{position:absolute;top:0;left:0;height:100%;border-radius:4px;
-  background:linear-gradient(90deg,rgba(224,176,48,.2),rgba(224,176,48,.06))}
-.rarity-num{font-family:var(--mono);font-size:clamp(10px,1.2vw,12px);letter-spacing:.06em;color:var(--acc);white-space:nowrap;min-width:68px;text-align:right;
-  opacity:.8;transition:opacity .4s}
-.rarity-label{font-family:var(--mono);font-size:clamp(8px,1vw,10px);letter-spacing:.08em;text-transform:uppercase;color:var(--mu);white-space:nowrap;
-  transition:color .4s}
-.rarity-tier:last-child .rarity-num{font-weight:700;color:var(--wh);
-  background:var(--goldGrad);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 7s linear infinite}
-.rarity-tier:last-child .rarity-label{color:var(--ow);font-weight:600}
-.rarity-tier:last-child .rarity-bar{border-color:var(--acc);
-  box-shadow:0 0 20px rgba(224,176,48,.15),0 0 40px rgba(224,176,48,.06)}
-.rarity-tier:last-child .rarity-bar::after{background:var(--goldGrad);opacity:.6}
-.rarity-connector{position:absolute;left:33px;top:0;bottom:0;width:1px;
-  background:linear-gradient(180deg,rgba(224,176,48,.2),rgba(224,176,48,.06));z-index:-1;pointer-events:none}
+/* ACHIEVEMENT MONUMENTS — each title as its own golden plaque */
+.monuments{max-width:800px;margin:0 auto 56px;display:flex;flex-direction:column;gap:0}
+.monument{text-align:center;padding:48px 24px;position:relative}
+.monument::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:clamp(40px,8vw,80px);height:1px;
+  background:linear-gradient(90deg,transparent,rgba(224,176,48,.3),transparent);box-shadow:0 0 12px rgba(224,176,48,.08)}
+.monument:last-child::after{display:none}
+.monument-year{font-family:var(--display);font-size:clamp(44px,7vw,68px);font-weight:900;line-height:1;letter-spacing:.03em;
+  background:var(--goldGrad);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:shimmer 8s linear infinite;filter:drop-shadow(0 0 30px rgba(224,176,48,.15))}
+.monument-show{font-family:var(--display);font-size:clamp(15px,2vw,20px);font-weight:600;color:var(--wh);letter-spacing:.04em;margin-top:10px;line-height:1.35}
+.monument-meta{font-family:var(--mono);font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--dm);margin-top:8px}
+.monument-result{display:inline-block;font-family:var(--mono);font-size:clamp(9px,1.1vw,11px);letter-spacing:.3em;text-transform:uppercase;margin-top:14px;padding:6px 20px;
+  border:1px solid rgba(224,176,48,.25);border-radius:4px;
+  background:linear-gradient(135deg,rgba(224,176,48,.08),rgba(224,176,48,.02));
+  color:var(--acc);font-weight:600;
+  box-shadow:0 0 20px rgba(224,176,48,.04)}
+/* Crown monument — the championships get extra presence */
+.monument-crown .monument-year{font-size:clamp(52px,9vw,80px);filter:drop-shadow(0 0 40px rgba(224,176,48,.2)) drop-shadow(0 4px 20px rgba(0,0,0,.4))}
+.monument-crown .monument-result{border-color:var(--acc);
+  background:linear-gradient(135deg,rgba(224,176,48,.15),rgba(224,176,48,.05));
+  box-shadow:0 0 30px rgba(224,176,48,.1),0 0 60px rgba(224,176,48,.04);
+  color:var(--wh)}
+.monument-crown::before{content:'';position:absolute;top:50%;left:50%;width:min(400px,80vw);height:min(200px,40vw);
+  background:radial-gradient(ellipse,rgba(224,176,48,.04),transparent 60%);transform:translate(-50%,-50%);pointer-events:none}
+/* Olympia monument — prestige without placement */
+.monument-olympia .monument-year{color:var(--ow)}
+.monument-olympia .monument-show{font-style:italic}
+/* Pro record — clean list of competition history */
+.pro-record{max-width:600px;margin:0 auto;padding:0}
+.pro-record-entry{display:flex;justify-content:space-between;align-items:baseline;padding:10px 0;border-bottom:1px solid rgba(224,176,48,.06)}
+.pro-record-entry:last-child{border-bottom:none}
+.pro-record-show{font-family:var(--body);font-size:clamp(13px,1.4vw,15px);color:var(--ow)}
+.pro-record-year{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--dm)}
+.pro-record-result{font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--mu);text-transform:uppercase}
 /* Credential headline — gold gradient like hero */
 .cred-headline{font-family:var(--display);font-size:clamp(30px,4.5vw,44px);font-weight:900;line-height:1;letter-spacing:.05em;
   background:linear-gradient(100deg,#8B6820 0%,#BF9930 24%,#D4B048 38%,#E8CC68 46%,#F5E8A8 50%,#E8CC68 56%,#D4B048 64%,#BF9930 76%,#8B6820 100%);
@@ -641,6 +653,9 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
   .about-photos{grid-template-columns:repeat(3,1fr);gap:8px}
   .vid-feature{margin:36px auto 4px}
   .vid-play{width:60px;height:60px}.vid-play svg{width:20px;height:20px}
+  .monument{padding:36px 16px}
+  .monument-crown .monument-year{font-size:clamp(44px,12vw,64px)}
+  .pro-record-entry{flex-wrap:wrap;gap:4px}
   .about-photos .circle-photo{aspect-ratio:3/4}
   .about-creds{gap:28px;margin-bottom:40px}
   .about-stat{gap:10px}
@@ -818,69 +833,113 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
   <div class="inner">
     <h2 class="s-head reveal">About Mike</h2>
 
-    <!-- CREDENTIAL SHOWCASE — big typographic moments -->
-    <div class="about-creds reveal">
-      <div class="about-cred-row">
-        <div class="about-stat">
-          <span class="about-stat-num">2&times;</span>
-          <span class="about-stat-title">World Champion</span>
-        </div>
-        <p class="about-stat-desc">IFBB Pro Masters World Championship. Pittsburgh, PA. First place, 2024. First place, 2025. Consecutive titles. There are approximately 250,000 registered NPC athletes in the United States. Each year, roughly 30,000 of them compete. The NPC awards around 800 Pro Cards annually across all divisions &mdash; but in men&rsquo;s bodybuilding specifically, that number drops to fewer than 50. Of those professionals, a smaller subset qualify for the World Championship. One athlete per weight class wins it. Mike won his class two years running.</p>
+    <!-- ACHIEVEMENT MONUMENTS — each title as its own memorial -->
+    <div class="monuments reveal">
+
+      <!-- THE CROWNS — World Championship victories -->
+      <div class="monument monument-crown">
+        <div class="monument-year">2025</div>
+        <div class="monument-show">IFBB Pro Masters World Championship</div>
+        <div class="monument-meta">Pittsburgh, PA &middot; Men&rsquo;s Bodybuilding 50+</div>
+        <div class="monument-result">1st Place &middot; World Champion</div>
       </div>
 
-      <div class="gw" style="max-width:120px;margin:0 auto"></div>
-
-      <div class="about-cred-row">
-        <div class="about-stat">
-          <span class="about-stat-num">2&times;</span>
-          <span class="about-stat-title">Olympian</span>
-        </div>
-        <p class="about-stat-desc">Masters Olympia. Romania, 2023 &amp; 2024. The Olympia is invitation-only. The IFBB Pro League operates across 75 countries with over 500 sanctioned competitions annually. From that global field, only a select number of athletes per division receive an invitation. No application process exists. The federation extends it directly to those it ranks highest in the world. Mike received that invitation twice.</p>
+      <div class="monument monument-crown">
+        <div class="monument-year">2024</div>
+        <div class="monument-show">IFBB Pro Masters World Championship</div>
+        <div class="monument-meta">Pittsburgh, PA &middot; Men&rsquo;s Bodybuilding</div>
+        <div class="monument-result">1st Place &middot; World Champion</div>
       </div>
 
-      <div class="gw" style="max-width:120px;margin:0 auto"></div>
-
-      <div class="about-cred-row">
-        <div class="about-stat">
-          <span class="about-stat-num">&#9670;</span>
-          <span class="about-stat-title">Pro Card Under Hany Rambod</span>
-        </div>
-        <p class="about-stat-desc">IFBB Pro Card earned at the NPC Nationals under the preparation of Hany Rambod. Rambod &mdash; known as &ldquo;The Pro Creator&rdquo; &mdash; holds the record for the most Olympia titles produced by a single coach in the sport&rsquo;s history: 25 titles across 6 divisions. His athletes include Phil Heath (7&times; Mr. Olympia), Chris Bumstead (5&times; Classic Physique Olympia), Jay Cutler (4&times; Mr. Olympia), and Hadi Choopan (1&times; Mr. Olympia). Mike earned his professional status under that coaching lineage.</p>
+      <!-- THE OLYMPIA — invitation-only, the highest stage -->
+      <div class="monument monument-olympia">
+        <div class="monument-year">2024</div>
+        <div class="monument-show">Masters Olympia</div>
+        <div class="monument-meta">Romania &middot; Invitation Only</div>
       </div>
 
-      <!-- THE MOMENT — Hany Rambod Pro Card Interview -->
-      <div class="vid-feature reveal">
-        <div class="vid-header">
-          <span class="vid-label">The Moment</span>
-          <span class="vid-title">Hany Rambod interviews Mike <span>after earning his Pro Card</span></span>
-        </div>
-        <div class="vid-wrap">
-          <div class="vid-facade" id="vidHany" onclick="playVid(this,'xfGujRPSlJM')" role="button" tabindex="0" aria-label="Play interview video" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();playVid(this,'xfGujRPSlJM')}">
-            <img src="https://img.youtube.com/vi/xfGujRPSlJM/maxresdefault.jpg" alt="Hany Rambod interviews Big Mike Ely after earning his IFBB Pro Card" loading="lazy">
-            <div class="vid-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          </div>
-        </div>
-        <div class="vid-caption">NPC Nationals &middot; Hany Rambod &amp; Big Mike Ely</div>
+      <div class="monument monument-olympia">
+        <div class="monument-year">2023</div>
+        <div class="monument-show">Masters Olympia</div>
+        <div class="monument-meta">Cluj-Napoca, Romania &middot; Invitation Only</div>
       </div>
 
-      <div class="gw" style="max-width:120px;margin:0 auto"></div>
+      <!-- PRO VICTORIES -->
+      <div class="monument">
+        <div class="monument-year">2019</div>
+        <div class="monument-show">IFBB Baltimore Classic Masters Pro</div>
+        <div class="monument-meta">Baltimore, MD &middot; Men&rsquo;s Bodybuilding</div>
+        <div class="monument-result">1st Place</div>
+      </div>
 
+    </div>
+
+    <div class="gw" style="max-width:160px;margin:0 auto 48px"></div>
+
+    <!-- PRO CARD ORIGIN — under Hany Rambod -->
+    <div class="about-cred-row reveal" style="text-align:center;max-width:720px;margin:0 auto 16px">
+      <div class="about-stat">
+        <span class="about-stat-num">&#9670;</span>
+        <span class="about-stat-title">IFBB Pro Card &mdash; 2013</span>
+      </div>
+      <p class="about-stat-desc">NPC Masters Nationals. Men&rsquo;s Bodybuilding, Super-Heavyweight, Over 40. Prepared by Hany Rambod &mdash; &ldquo;The Pro Creator&rdquo; &mdash; coach of 25 Olympia titles across 6 divisions, including Phil Heath, Chris Bumstead, Jay Cutler, and Hadi Choopan.</p>
+    </div>
+
+    <!-- THE MOMENT — Hany Rambod Pro Card Interview -->
+    <div class="vid-feature reveal">
+      <div class="vid-header">
+        <span class="vid-label">The Moment</span>
+        <span class="vid-title">Hany Rambod interviews Mike <span>after earning his Pro Card</span></span>
+      </div>
+      <div class="vid-wrap">
+        <div class="vid-facade" id="vidHany" onclick="playVid(this,'xfGujRPSlJM')" role="button" tabindex="0" aria-label="Play interview video" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();playVid(this,'xfGujRPSlJM')}">
+          <img src="https://img.youtube.com/vi/xfGujRPSlJM/maxresdefault.jpg" alt="Hany Rambod interviews Big Mike Ely after earning his IFBB Pro Card" loading="lazy">
+          <div class="vid-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        </div>
+      </div>
+      <div class="vid-caption">NPC Masters Nationals, 2013 &middot; Hany Rambod &amp; Big Mike Ely</div>
+    </div>
+
+    <div class="gw" style="max-width:160px;margin:48px auto"></div>
+
+    <!-- COMPETITION RECORD — full pro career -->
+    <div class="reveal" style="max-width:600px;margin:0 auto 48px">
+      <div style="text-align:center;margin-bottom:24px">
+        <span style="font-family:var(--mono);font-size:9px;letter-spacing:.4em;text-transform:uppercase;color:var(--dm)">Competition Record</span>
+      </div>
+      <div class="pro-record">
+        <div class="pro-record-entry"><span class="pro-record-show">IFBB Pro Masters World Championship <span class="pro-record-result">&middot; 1st</span></span><span class="pro-record-year">2025</span></div>
+        <div class="pro-record-entry"><span class="pro-record-show">IFBB Pro Masters World Championship <span class="pro-record-result">&middot; 1st</span></span><span class="pro-record-year">2024</span></div>
+        <div class="pro-record-entry"><span class="pro-record-show">Masters Olympia, Romania</span><span class="pro-record-year">2024</span></div>
+        <div class="pro-record-entry"><span class="pro-record-show">Masters Olympia, Romania</span><span class="pro-record-year">2023</span></div>
+        <div class="pro-record-entry"><span class="pro-record-show">IFBB Masters World Pro</span><span class="pro-record-year">2022</span></div>
+        <div class="pro-record-entry"><span class="pro-record-show">IFBB Baltimore Classic Masters Pro <span class="pro-record-result">&middot; 1st</span></span><span class="pro-record-year">2019</span></div>
+        <div class="pro-record-entry"><span class="pro-record-show">IFBB Ferrigno Legacy Pro</span><span class="pro-record-year">2015</span></div>
+        <div class="pro-record-entry"><span class="pro-record-show">Wings of Strength Chicago Pro</span><span class="pro-record-year">2014</span></div>
+        <div class="pro-record-entry"><span class="pro-record-show">NPC Masters Nationals &mdash; Pro Card <span class="pro-record-result">&middot; 1st</span></span><span class="pro-record-year">2013</span></div>
+      </div>
+    </div>
+
+    <div class="gw" style="max-width:160px;margin:0 auto 48px"></div>
+
+    <!-- FOUNDATION — education, judging, coaching -->
+    <div class="about-creds reveal" style="max-width:720px;margin:0 auto 56px">
       <div class="about-cred-row">
         <div class="about-stat">
           <span class="about-stat-num">&#9670;</span>
           <span class="about-stat-title">NPC National Judge</span>
         </div>
-        <p class="about-stat-desc">Active judge with the National Physique Committee, the sole amateur organization recognized by the IFBB Professional League. Mike evaluates athletes at the national level &mdash; the same stage where pro cards are awarded. He has stood on both sides of that table.</p>
+        <p class="about-stat-desc">Active judge with the National Physique Committee, the sole amateur organization recognized by the IFBB Professional League.</p>
       </div>
 
-      <div class="gw" style="max-width:120px;margin:0 auto"></div>
+      <div class="gw" style="max-width:80px;margin:0 auto"></div>
 
       <div class="about-cred-row">
         <div class="about-stat">
           <span class="about-stat-num">&#9670;</span>
           <span class="about-stat-title">Academic Foundation</span>
         </div>
-        <p class="about-stat-desc">Bachelor of Science in Nutritional Science and Master of Science in Exercise Science, both from Bowling Green State University. Three decades of applied work built on formal education in the two disciplines that underpin competitive bodybuilding: nutrition and training science.</p>
+        <p class="about-stat-desc">B.S. Nutritional Science &amp; M.S. Exercise Science, Bowling Green State University. Coaching since 1996. Hundreds of athletes turned professional under his preparation.</p>
       </div>
     </div>
 
