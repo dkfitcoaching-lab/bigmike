@@ -409,8 +409,8 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 .num-label{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--dm);margin-top:10px;transition:color .3s}
 .num-card:hover .num-label{color:var(--mu)}
 /* RESULTS */
-.results-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
-.results-photo{border-radius:12px;overflow:hidden;position:relative;border:1px solid var(--borderS);aspect-ratio:4/3;cursor:pointer;transition:all .5s var(--ease);background:linear-gradient(110deg,var(--card) 30%,rgba(224,176,48,.04) 50%,var(--card) 70%);background-size:200% 100%;animation:imgShimmer 1.8s ease-in-out infinite}
+.results-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.results-photo{border-radius:12px;overflow:hidden;position:relative;border:1px solid var(--borderS);aspect-ratio:1/1;cursor:pointer;transition:all .5s var(--ease);background:linear-gradient(110deg,var(--card) 30%,rgba(224,176,48,.04) 50%,var(--card) 70%);background-size:200% 100%;animation:imgShimmer 1.8s ease-in-out infinite}
 .results-photo:has(img.loaded){animation:none;background:var(--card)}
 .results-photo img{width:100%;height:100%;object-fit:cover;object-position:center 25%;transition:transform .7s var(--ease),filter .7s;filter:contrast(1.05) brightness(.9)}
 .results-photo:hover img{transform:scale(1.06);filter:contrast(1.08) brightness(1.02) saturate(1.05)}
@@ -449,6 +449,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 .gal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
 .gal-item{border-radius:12px;overflow:hidden;position:relative;border:1px solid var(--borderS);aspect-ratio:3/4;cursor:pointer;transition:all .5s var(--ease);background:linear-gradient(110deg,var(--card) 30%,rgba(224,176,48,.04) 50%,var(--card) 70%);background-size:200% 100%;animation:imgShimmer 1.8s ease-in-out infinite}
 .gal-item:has(img.loaded){animation:none;background:var(--card)}
+.gal-item.gal-landscape{aspect-ratio:4/3}
 .gal-item.featured{grid-column:span 2;grid-row:span 2;aspect-ratio:auto;box-shadow:0 0 40px rgba(224,176,48,.04),0 0 80px rgba(224,176,48,.02)}
 .gal-item.featured::after{content:'';position:absolute;inset:-1px;border-radius:12px;background:linear-gradient(135deg,rgba(224,176,48,.15),transparent 40%,transparent 60%,rgba(224,176,48,.15));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;padding:1px;opacity:0;transition:opacity .5s;pointer-events:none}
 .gal-item.featured:hover::after{opacity:1}
@@ -786,7 +787,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
       </div>
       <div class="circle-grid reveal-right">
         <div class="circle-photo" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-          <img src="img/about-hany-rambod.jpg" alt="Mike with Hany Rambod — The Pro Creator" loading="lazy" style="object-position:center 25%">
+          <img src="img/about-hany-rambod.jpg" alt="Mike with Hany Rambod — The Pro Creator" loading="lazy" style="object-position:center center">
           <div class="circle-label">With Hany Rambod</div>
         </div>
         <div class="circle-photo" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
@@ -798,7 +799,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
           <div class="circle-label">With Roelly Winklaar</div>
         </div>
         <div class="circle-photo" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-          <img src="img/about-lifestyle.jpg" alt="Mike and his wife Allie" loading="lazy" style="object-position:center 15%">
+          <img src="img/about-lifestyle.jpg" alt="Mike and his wife Allie" loading="lazy" style="object-position:center 25%">
           <div class="circle-label">Mike &amp; Allie</div>
         </div>
         <div class="circle-photo" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
@@ -830,12 +831,12 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 
       <!-- PRO CARDS -->
       <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/results-procard-lindsay.jpg" alt="Athlete holding IFBB Pro Card with Mike Ely" loading="lazy">
+        <img src="img/results-procard-lindsay.jpg" alt="Athlete holding IFBB Pro Card with Mike Ely" loading="lazy" style="object-position:center 35%">
         <div class="results-photo-label">Pro Card</div>
       </div>
 
       <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/results-procard-lindsay-stage.jpg" alt="Athlete on stage with IFBB Pro Card" loading="lazy">
+        <img src="img/results-procard-lindsay-stage.jpg" alt="Athlete on stage with IFBB Pro Card" loading="lazy" style="object-position:center 30%">
         <div class="results-photo-label">Pro Card</div>
       </div>
 
@@ -845,28 +846,28 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
       </div>
 
       <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/results-procard-backstage.jpg" alt="Mike and athlete backstage with IFBB Pro Card" loading="lazy">
+        <img src="img/results-procard-backstage.jpg" alt="Mike and athlete backstage with IFBB Pro Card" loading="lazy" style="object-position:center 30%">
         <div class="results-photo-label">Pro Card</div>
       </div>
 
       <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/results-procard-female-2.jpg" alt="Athlete raising IFBB Pro Card outdoors" loading="lazy" style="object-position:center 30%">
+        <img src="img/results-procard-female-2.jpg" alt="Athlete raising IFBB Pro Card outdoors" loading="lazy" style="object-position:center 20%">
         <div class="results-photo-label">Pro Card</div>
       </div>
 
       <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/results-procard-female-3.jpg" alt="Athlete holding IFBB Pro Card" loading="lazy">
+        <img src="img/results-procard-female-3.jpg" alt="Athlete holding IFBB Pro Card" loading="lazy" style="object-position:center 30%">
         <div class="results-photo-label">Pro Card</div>
       </div>
 
       <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/results-procard-ladies.jpg" alt="Athlete on stage with medal" loading="lazy" style="object-position:center 30%">
+        <img src="img/results-procard-ladies.jpg" alt="Athlete on stage with medal" loading="lazy" style="object-position:center 50%">
         <div class="results-photo-label">Pro Card</div>
       </div>
 
       <!-- CLIENT TRANSFORMATIONS -->
       <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/results-client-transformation-female.jpg" alt="Client transformation — before and after" loading="lazy">
+        <img src="img/results-client-transformation-female.jpg" alt="Client transformation — before and after" loading="lazy" style="object-position:center center">
         <div class="results-photo-label">Client Transformation</div>
       </div>
 
@@ -876,12 +877,12 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
       </div>
 
       <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/results-client-transformation-usmc.jpg" alt="Client transformation — before and after" loading="lazy">
+        <img src="img/results-client-transformation-usmc.jpg" alt="Client transformation — before and after" loading="lazy" style="object-position:center center">
         <div class="results-photo-label">Client Transformation</div>
       </div>
 
       <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/results-transformation-male.jpg" alt="Client transformation — before and after" loading="lazy">
+        <img src="img/results-transformation-male.jpg" alt="Client transformation — before and after" loading="lazy" style="object-position:center center">
         <div class="results-photo-label">Client Transformation</div>
       </div>
 
@@ -892,7 +893,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
       </div>
 
       <div class="results-photo reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/event-iwa-best-coach.jpg" alt="Mike Ely receiving Best Team award at NPC Natural Northern USA Championships" loading="lazy">
+        <img src="img/event-iwa-best-coach.jpg" alt="Mike Ely receiving Best Team award at NPC Natural Northern USA Championships" loading="lazy" style="object-position:center center">
         <div class="results-photo-label">Best Team — NPC Natural Northern USA</div>
       </div>
 
@@ -1014,17 +1015,17 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-wings-stage.jpg" alt="Mike Ely back double bicep under stage lights — Wings of Strength" loading="lazy" style="object-position:center 75%">
+        <img src="img/gallery-wings-stage.jpg" alt="Mike Ely back double bicep under stage lights — Wings of Strength" loading="lazy" style="object-position:center 62%">
         <div class="gal-label">Wings of Strength</div>
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-stage-2014.jpg" alt="Mike Ely on stage 2014" loading="lazy" style="object-position:center 20%">
+        <img src="img/gallery-stage-2014.jpg" alt="Mike Ely on stage 2014" loading="lazy" style="object-position:center 68%">
         <div class="gal-label">On Stage — 2014</div>
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-ferrigno-prep.jpg" alt="Mike Ely preparing for Ferrigno Legacy competition" loading="lazy" style="object-position:center 25%">
+        <img src="img/gallery-ferrigno-prep.jpg" alt="Mike Ely preparing for Ferrigno Legacy competition" loading="lazy" style="object-position:center 62%">
         <div class="gal-label">Ferrigno Legacy</div>
       </div>
 
@@ -1061,36 +1062,36 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-gym-back-squats.jpg" alt="Mike Ely squatting with custom Big Mike Ely belt at Old School Iron" loading="lazy" style="object-position:center 28%">
+        <img src="img/gallery-gym-back-squats.jpg" alt="Mike Ely squatting with custom Big Mike Ely belt at Old School Iron" loading="lazy" style="object-position:center 35%">
         <div class="gal-label">Squats — Old School Iron</div>
       </div>
 
       <!-- BACKSTAGE & EVENTS -->
 
-      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-backstage-golds.jpg" alt="Mike Ely backstage in Gold's Gym tank" loading="lazy">
+      <div class="gal-item gal-landscape reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
+        <img src="img/gallery-backstage-golds.jpg" alt="Mike Ely backstage in Gold's Gym tank" loading="lazy" style="object-position:center 20%">
         <div class="gal-label">Backstage — Gold's Gym</div>
       </div>
 
-      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-masters-backstage-trio.jpg" alt="Mike Ely with Vinny Galanti and Ken Jackson backstage at IFBB Masters" loading="lazy">
+      <div class="gal-item gal-landscape reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
+        <img src="img/gallery-masters-backstage-trio.jpg" alt="Mike Ely with Vinny Galanti and Ken Jackson backstage at IFBB Masters" loading="lazy" style="object-position:center center">
         <div class="gal-label">IFBB Masters — Backstage</div>
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-guest-posing-npc-ny.jpg" alt="Mike Ely guest posing at NPC New York" loading="lazy" style="object-position:center 52%">
+        <img src="img/gallery-guest-posing-npc-ny.jpg" alt="Mike Ely guest posing at NPC New York" loading="lazy" style="object-position:center 48%">
         <div class="gal-label">Guest Posing — NPC New York</div>
       </div>
 
       <!-- POSING CLINICS -->
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-posing-clinic.jpg" alt="Mike Ely posing clinic flyer" loading="lazy" style="object-position:center 68%">
+        <img src="img/gallery-posing-clinic.jpg" alt="Mike Ely posing clinic flyer" loading="lazy" style="object-position:center 55%">
         <div class="gal-label">Posing Clinic</div>
       </div>
 
-      <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-posing-clinic-group.jpg" alt="Group photo at Mike Ely posing clinic" loading="lazy">
+      <div class="gal-item gal-landscape reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
+        <img src="img/gallery-posing-clinic-group.jpg" alt="Group photo at Mike Ely posing clinic" loading="lazy" style="object-position:center center">
         <div class="gal-label">Posing Clinic — Group</div>
       </div>
 
@@ -1107,22 +1108,22 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-procard-story.jpg" alt="Where the pro card story started" loading="lazy" style="object-position:center 28%">
+        <img src="img/gallery-procard-story.jpg" alt="Where the pro card story started" loading="lazy" style="object-position:center 55%">
         <div class="gal-label">Where the Pro Card Story Started</div>
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-transformation.jpg" alt="Mike Ely physique evolution" loading="lazy" style="object-position:center 68%">
+        <img src="img/gallery-transformation.jpg" alt="Mike Ely physique evolution" loading="lazy" style="object-position:center 52%">
         <div class="gal-label">The Evolution — Then to Now</div>
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-gym-prep-2014.jpg" alt="Mike Ely contest prep 2014" loading="lazy" style="object-position:center 20%">
+        <img src="img/gallery-gym-prep-2014.jpg" alt="Mike Ely contest prep 2014" loading="lazy" style="object-position:center 72%">
         <div class="gal-label">Contest Prep — 2014</div>
       </div>
 
       <div class="gal-item reveal" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
-        <img src="img/gallery-muscular-dev-2013.jpg" alt="Mike Ely Muscular Development magazine 2013" loading="lazy" style="object-position:center 25%">
+        <img src="img/gallery-muscular-dev-2013.jpg" alt="Mike Ely Muscular Development magazine 2013" loading="lazy" style="object-position:center 62%">
         <div class="gal-label">Muscular Development — 2013</div>
       </div>
 
