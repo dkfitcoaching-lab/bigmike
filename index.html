@@ -370,13 +370,15 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{t
 .about-photos{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:56px}
 .about-photos .circle-photo{aspect-ratio:1/1;border-radius:12px}
 /* Training home block */
-.about-home{text-align:center;padding:28px 24px;border:1px solid var(--borderS);border-radius:14px;max-width:560px;margin:0 auto;
+.about-home{text-align:center;padding:48px 32px;border:1px solid var(--border);border-radius:14px;max-width:620px;margin:0 auto;
+  background:linear-gradient(135deg,rgba(224,176,48,.04) 0%,rgba(10,8,4,.6) 30%,rgba(10,8,4,.8) 70%,rgba(224,176,48,.04) 100%);
+  box-shadow:0 8px 40px rgba(0,0,0,.4),0 0 60px rgba(224,176,48,.03),inset 0 1px 0 rgba(224,176,48,.08);
   background:linear-gradient(145deg,rgba(0,0,0,.35),rgba(224,176,48,.015));position:relative;transition:all .4s var(--ease)}
 .about-home::before{content:'';position:absolute;top:0;left:20%;right:20%;height:1px;background:var(--goldGrad);opacity:.15}
 .about-home:hover{border-color:var(--borderH)}
-.about-home-label{font-family:var(--mono);font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--acc);margin-bottom:14px}
+.about-home-label{font-family:var(--mono);font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--acc);margin-bottom:20px;background:var(--goldGrad);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .about-home-names{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px 16px;margin-bottom:10px}
-.about-home-names span,.about-home-names a{font-family:var(--display);font-size:clamp(15px,1.8vw,18px);font-weight:600;color:var(--wh);letter-spacing:.02em;text-decoration:none;transition:color .2s}
+.about-home-names span,.about-home-names a{font-family:var(--display);font-size:clamp(18px,2.2vw,22px);font-weight:700;color:var(--wh);letter-spacing:.03em;text-decoration:none;transition:color .3s}
 .about-home-names a:hover{color:var(--acc)}
 .about-home-dot{color:var(--borderH);font-size:10px}
 .about-home-meta{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--dm);line-height:1.8}
@@ -823,6 +825,10 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
       <div class="circle-photo" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
         <img src="img/about-dad.jpg" alt="Mike with his father" loading="lazy" style="object-position:center 25%">
         <div class="circle-label">Like father, like son</div>
+      </div>
+      <div class="circle-photo" onclick="openLB(this)" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openLB(this)}">
+        <img src="img/about-gym-olympia.jpg" alt="Mike Ely at the gym" loading="lazy" style="object-position:center 15%">
+        <div class="circle-label">In the Trenches</div>
       </div>
     </div>
 
