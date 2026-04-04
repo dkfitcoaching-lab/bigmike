@@ -8,6 +8,9 @@
 <meta name="theme-color" content="#020202">
 <meta name="color-scheme" content="dark">
 <meta name="robots" content="index, follow">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="X-Frame-Options" content="DENY">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="canonical" href="https://ifbbprobigmikeely.com/">
 
 <!-- Open Graph -->
@@ -115,7 +118,7 @@ body.theme-crimson{
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth;overflow-x:hidden;scrollbar-color:var(--accDeep) var(--bg);scroll-padding-top:80px}
 body{background:var(--bg);color:var(--ow);font-family:var(--body);font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
-a{color:inherit;text-decoration:none}img{max-width:100%;display:block;height:auto}
+a{color:inherit;text-decoration:none}img{max-width:100%;display:block;height:auto;image-rendering:auto;-webkit-image-rendering:auto}
 button{font-family:inherit;cursor:pointer;border:none;background:none}a,button{touch-action:manipulation}
 ::selection{background:var(--acc);color:var(--bg)}
 :focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:4px}
@@ -671,7 +674,7 @@ img[loading="lazy"]{opacity:0;transition:opacity .6s var(--ease)}img[loading="la
 <!-- HERO -->
 <main id="main">
 <section class="hero">
-  <div class="hero-bg" style="background:url(img/hero-stage-2025.jpg) center 15%/cover no-repeat" role="img" aria-label="Big Mike Ely on stage — 2x IFBB Pro Masters World Champion"></div>
+  <div class="hero-bg" style="background:url(img/hero-stage-2025.jpg) center 15%/cover no-repeat;will-change:transform" role="img" aria-label="Big Mike Ely on stage — 2x IFBB Pro Masters World Champion"></div>
   <div class="hero-ov"></div>
   <div class="hero-leak" aria-hidden="true"></div>
   <div class="hero-atmos" aria-hidden="true">
